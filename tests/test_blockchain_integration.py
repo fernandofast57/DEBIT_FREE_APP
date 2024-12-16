@@ -11,9 +11,9 @@ class TestBlockchainIntegration(unittest.IsolatedAsyncioTestCase):
         self.service = BlockchainService()
 
         async with self.app.app_context():
-            await db.create_all()
+            await db.create_async_all()
 
     async def asyncTearDown(self):
         async with self.app.app_context():
-            await db.drop_all()
-            db.session.remove()
+            await db.drop_async_all()
+            await db.session.remove()
