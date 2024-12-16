@@ -16,11 +16,29 @@ def transform_to_gold():
     """
     data = request.get_json()
 
+    if not data:
+        return jsonify({
+            'status': 'error',
+            'message': 'Dati JSON mancanti'
+        }), 400
+
     try:
         user_id = int(data.get('user_id'))
+    except (TypeError, ValueError):
+        return jsonify({
+            'status': 'error',
+            'message': 'User ID non valido'
+        }), 400
+
+    try:
         fixing_price = Decimal(str(data.get('fixing_price')))
-    except (TypeError, ValueError, InvalidOperation):
-        raise ValidationError('Parametri non validi')
+        if fixing_price <= 0:
+            raise ValueError("Fixing price deve essere maggiore di zero")
+    except (InvalidOperation, ValueError, TypeError) as e:
+        return jsonify({
+            'status': 'error',
+            'message': f'Fixing price non valido: {str(e)}'
+        }), 400
 
     result = transformation_service.transform_to_gold(user_id, fixing_price)
 
