@@ -1,99 +1,79 @@
-import unittest
+
+import pytest
 from decimal import Decimal
 from unittest.mock import Mock, patch
 from app import create_app, db
 from app.models.models import User, MoneyAccount, GoldAccount
-from app.services.transformation_service import TransformationService
-import asyncio
-from contextlib import contextmanager
-from flask import current_app
+from app.services.blockchain_service import BlockchainService
+from tests.test_base import BaseTest
 
-def async_return(result):
-    f = asyncio.Future()
-    f.set_result(result)
-    return f
-
-class TestBlockchainIntegration(unittest.IsolatedAsyncioTestCase):
-    async def asyncSetUp(self):
-        """Setup una volta per tutti i test"""
-        cls.app = create_app()
-        cls.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-        cls.app.config['TESTING'] = True
-        cls.app_context = cls.app.app_context()
-        cls.app_context.push()
-        db.create_all()
-
-    @classmethod
-    def tearDownClass(cls):
-        """Cleanup alla fine di tutti i test"""
-        db.session.remove()
-        db.drop_all()
-        cls.app_context.pop()
-
-    def setUp(self):
-        """Setup per ogni test"""
-        self.loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(self.loop)
-
-        # Setup test user
-        self.user = User(
-            email='test@test.com',
-            blockchain_address='0x742d35Cc6634C0532925a3b844Bc454e4438f44e'
-        )
-        db.session.add(self.user)
-        db.session.flush()
-
-        # Setup accounts
-        self.money_account = MoneyAccount(
-            user_id=self.user.id,
-            balance=Decimal('1000.00')
-        )
-        self.gold_account = GoldAccount(
-            user_id=self.user.id,
-            balance=Decimal('0')
-        )
-
-        db.session.add_all([self.money_account, self.gold_account])
-        db.session.commit()
-
-        # Inizializza il servizio
-        self.service = TransformationService()
-
-    def tearDown(self):
-        """Cleanup dopo ogni test"""
-        self.loop.close()
-        db.session.query(GoldAccount).delete()
-        db.session.query(MoneyAccount).delete()
-        db.session.query(User).delete()
-        db.session.commit()
-
-    @patch('app.services.blockchain_service.BlockchainService')
-    def test_transform_with_blockchain(self, mock_blockchain_class):
-        """Test trasformazione con tracciamento blockchain"""
-        # Setup mock blockchain service
-        mock_instance = Mock()
-        mock_instance.add_to_batch.return_value = async_return(True)
-        mock_blockchain_class.return_value = mock_instance
-
-        # Reset service per usare il mock
-        self.service.blockchain_service = mock_instance
-
-        # Esegui trasformazione
-        result = self.loop.run_until_complete(
-            self.service.transform_to_gold(
-                user_id=self.user.id,
-                fixing_price=Decimal('1800.50')
+class TestBlockchainIntegration(BaseTest):
+    async def setup(self):
+        await super().setup()
+        self.blockchain_service = BlockchainService()
+        
+        async with self.app.app_context():
+            # Create test user
+            self.user = User(
+                email='test@test.com',
+                blockchain_address='0x742d35Cc6634C0532925a3b844Bc454e4438f44e'
             )
-        )
+            db.session.add(self.user)
+            await db.session.flush()
 
-        # Verifica risultato
-        self.assertEqual(result['status'], 'success')
+            # Create accounts
+            self.money_account = MoneyAccount(
+                user_id=self.user.id,
+                balance=Decimal('1000.00')
+            )
+            self.gold_account = GoldAccount(
+                user_id=self.user.id,
+                balance=Decimal('0')
+            )
+            
+            db.session.add_all([self.money_account, self.gold_account])
+            await db.session.commit()
 
-        # Verifica chiamata blockchain
-        mock_instance.add_to_batch.assert_called_once()
-        call_args = mock_instance.add_to_batch.call_args[1]
-        self.assertEqual(call_args['user_address'], self.user.blockchain_address)
-        self.assertAlmostEqual(float(call_args['fixing_price']), 1800.50)
+    @pytest.mark.asyncio
+    async def test_batch_processing(self):
+        """Test batch processing of blockchain transactions"""
+        mock_web3 = Mock()
+        self.blockchain_service.web3 = mock_web3
+        
+        # Mock transaction data
+        tx_data = {
+            'user_address': self.user.blockchain_address,
+            'euro_amount': 1000,
+            'gold_grams': 0.5,
+            'fixing_price': 2000
+        }
+        
+        result = await self.blockchain_service.add_to_batch(tx_data)
+        assert result is True
+        
+        # Test batch processing
+        mock_web3.eth.send_raw_transaction.return_value = b'0x123'
+        mock_web3.eth.wait_for_transaction_receipt.return_value = {'status': 1}
+        
+        batch_result = await self.blockchain_service.process_batch()
+        assert batch_result['status'] == 'success'
+        assert 'transaction_hash' in batch_result
 
-if __name__ == '__main__':
-    unittest.main()
+    @pytest.mark.asyncio
+    async def test_failed_transaction(self):
+        """Test handling of failed blockchain transactions"""
+        mock_web3 = Mock()
+        self.blockchain_service.web3 = mock_web3
+        
+        mock_web3.eth.send_raw_transaction.side_effect = Exception("Transaction failed")
+        
+        tx_data = {
+            'user_address': self.user.blockchain_address,
+            'euro_amount': 1000,
+            'gold_grams': 0.5,
+            'fixing_price': 2000
+        }
+        
+        await self.blockchain_service.add_to_batch(tx_data)
+        result = await self.blockchain_service.process_batch()
+        assert result['status'] == 'error'
