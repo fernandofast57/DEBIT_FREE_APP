@@ -1,9 +1,10 @@
 from decimal import Decimal
 from datetime import datetime
-from typing import Dict
+from typing import Dict, List
 from app import db
 from app.models.models import User, MoneyAccount, GoldAccount, GoldTransformation
 from app.services.blockchain_service import BlockchainService
+from app.utils.logging_config import logger
 
 
 class TransformationService:
