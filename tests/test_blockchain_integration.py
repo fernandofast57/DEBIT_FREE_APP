@@ -60,20 +60,20 @@ class TestBlockchainService(unittest.TestCase):
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0]['gold_grams'], 0.5)
 
-    @patch('app.services.blockchain_service.BlockchainService.retry_operation', new_callable=AsyncMock)
-    def test_retry_operation(self, mock_retry_operation):
-        mock_retry_operation.side_effect = [Exception("Temporary error"), Exception("Temporary error"), {'status': 'success'}]
-
-        async def sample_operation():
-            if len(mock_retry_operation.side_effect) > 0:
-                raise mock_retry_operation.side_effect.pop(0)
+    async def test_retry_operation(self):
+        attempts = 0
+        
+        async def mock_operation():
+            nonlocal attempts
+            attempts += 1
+            if attempts < 3:
+                raise Exception("Temporary error")
             return {'status': 'success'}
-
-        result = self.loop.run_until_complete(
-            self.service.retry_operation(sample_operation)
-        )
-
+            
+        result = await self.service.retry_operation(mock_operation)
+        
         self.assertEqual(result['status'], 'success')
+        self.assertEqual(attempts, 3)
 
 if __name__ == '__main__':
     unittest.main()
