@@ -9,7 +9,6 @@ import os
 
 class BlockchainService:
     def __init__(self):
-        # Connessione a Polygon
         self.w3 = Web3(Web3.HTTPProvider(os.getenv('POLYGON_RPC_URL', 'http://0.0.0.0:8545')))
         self.contract_address = os.getenv('GOLD_SYSTEM_CONTRACT', '0x0000000000000000000000000000000000000000')
         self.admin_account = Account.from_key(os.getenv('ADMIN_PRIVATE_KEY', '0x' + '1' * 64))
@@ -54,7 +53,6 @@ class BlockchainService:
             }
 
     async def get_user_transactions(self, address: str) -> List[Dict]:
-        """Recupera le transazioni di un utente dalla blockchain"""
         try:
             mock_transaction = {
                 'timestamp': int(datetime.now().timestamp()),
