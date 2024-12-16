@@ -46,7 +46,7 @@ class TransformationService:
             )
 
             if not blockchain_success:
-                return self._error_response('Errore nella registrazione blockchain')
+                return self._error_response('Errore nella registrazione blockchain', 'blockchain')
 
             # Registra la trasformazione nel database
             transformation = self._record_transformation(
@@ -136,9 +136,17 @@ class TransformationService:
         db.session.add(transformation)
         return transformation
 
-    def _error_response(self, message: str) -> Dict:
-        """Genera una risposta di errore."""
-        return {'status': 'error', 'message': message}
+    def _error_response(self, message: str, error_type: str = 'transformation') -> Dict:
+        """Genera una risposta di errore con tipo specifico."""
+        if error_type == 'blockchain':
+            logger.error(f"Blockchain error: {message}")
+            raise BlockchainError(message)
+        elif error_type == 'validation':
+            logger.warning(f"Validation error: {message}")
+            raise ValidationError(message)
+        else:
+            logger.error(f"Transformation error: {message}")
+            raise TransformationError(message)
 
     def _success_response(self, transformation, gross_amount, net_amount, gold_grams, fixing_price):
         """Genera una risposta di successo."""
