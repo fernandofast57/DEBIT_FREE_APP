@@ -105,9 +105,6 @@ class TestSystemFlow:
             # Verifica stato account
             money_account = await db.session.get(MoneyAccount, self.user.id)
             assert money_account.balance == 0
-                user_id=self.user.id,
-                fixing_price=Decimal('1800.50')
-            )
             
-            assert result['status'] == 'success'
-            mock_instance.add_to_batch.assert_called_once()
+            # Verifica finale blockchain
+            mock_blockchain.add_to_batch.assert_called_once()
