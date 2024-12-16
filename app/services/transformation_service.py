@@ -68,9 +68,18 @@ class TransformationService:
             db.session.commit()
 
             return self._success_response(transformation, gross_amount, net_amount, gold_grams, fixing_price)
-        except Exception as e:
+        except ValidationError as e:
+            logger.warning(f"Validation error in transformation for user {user_id}: {str(e)}")
             db.session.rollback()
-            return self._error_response(f'Errore nella trasformazione: {str(e)}')
+            return self._error_response(str(e), 'validation')
+        except BlockchainError as e:
+            logger.error(f"Blockchain error in transformation for user {user_id}: {str(e)}")
+            db.session.rollback()
+            return self._error_response(str(e), 'blockchain')
+        except Exception as e:
+            logger.error(f"Unexpected error in transformation for user {user_id}: {str(e)}")
+            db.session.rollback()
+            return self._error_response(str(e))
 
     async def process_weekly_transformations(self, fixing_price: Decimal) -> Dict:
         """Processa tutte le trasformazioni settimanali."""
@@ -104,6 +113,7 @@ class TransformationService:
                 'transactions': results
             }
         except Exception as e:
+            logger.error(f"Error in weekly transformation process: {str(e)}")
             return self._error_response(f'Errore nel processo settimanale: {str(e)}')
 
     async def get_transformation_history(self, user_id: int) -> Dict:
