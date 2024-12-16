@@ -2,11 +2,13 @@
 from typing import Dict, List
 from web3 import Web3
 from eth_account import Account
+from decimal import Decimal
 from app.utils.logging_config import logger
 
 class BlockchainService:
-    def __init__(self, web3_provider: str = "http://localhost:8545"):
+    def __init__(self, web3_provider: str = "http://0.0.0.0:8545"):
         self.w3 = Web3(Web3.HTTPProvider(web3_provider))
+        self.batch = []
         
     async def connect(self):
         try:
@@ -18,12 +20,42 @@ class BlockchainService:
             logger.error(f"Error connecting to Ethereum node: {str(e)}")
             raise
 
+    async def add_to_batch(self, user_address: str, euro_amount: Decimal, 
+                          gold_grams: Decimal, fixing_price: Decimal) -> bool:
+        try:
+            self.batch.append({
+                'user_address': user_address,
+                'euro_amount': euro_amount,
+                'gold_grams': gold_grams,
+                'fixing_price': fixing_price
+            })
+            return True
+        except Exception as e:
+            logger.error(f"Error adding to batch: {e}")
+            return False
+
+    async def process_batch(self) -> Dict[str, Any]:
+        if not self.batch:
+            return {'status': 'error', 'message': 'Empty batch'}
+            
+        try:
+            await self.connect()
+            # Process the batch here
+            transaction_hash = '0x123...abc'  # Placeholder
+            self.batch = []  # Clear batch after processing
+            return {
+                'status': 'success',
+                'transaction_hash': transaction_hash
+            }
+        except Exception as e:
+            logger.error(f"Error processing batch: {e}")
+            return {'status': 'error', 'message': str(e)}
+
     async def get_user_transactions(self, address: str) -> List[Dict]:
         try:
             if not self.w3.is_connected():
                 await self.connect()
             
-            # Get transaction count
             nonce = self.w3.eth.get_transaction_count(address)
             
             transactions = []
