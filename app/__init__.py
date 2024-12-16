@@ -1,5 +1,5 @@
 
-from flask import Flask, jsonify
+from quart import Quart, jsonify
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -10,7 +10,7 @@ from config import Config
 migrate = Migrate()
 
 def create_app():
-    app = Flask(__name__)
+    app = Quart(__name__)
     app.config.from_object(Config)
     
     from app.utils.logging_config import setup_logging
@@ -29,11 +29,11 @@ def create_app():
     init_api(app)
 
     @app.route("/")
-    def index():
+    async def index():
         return jsonify({"message": "Welcome to Gold Investment Platform"})
 
     @app.route("/health")
-    def health_check():
+    async def health_check():
         return jsonify({
             "status": "healthy",
             "version": "1.0.0"
