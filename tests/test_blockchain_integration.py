@@ -86,6 +86,7 @@ class TestBlockchainIntegration(unittest.TestCase):
             'status': 'success',
             'transaction_hash': '0x123...abc'
         })
+        self.service = TransformationService(blockchain_service=mock_instance)
 
         result = self.loop.run_until_complete(
             self.service.process_weekly_transformations(

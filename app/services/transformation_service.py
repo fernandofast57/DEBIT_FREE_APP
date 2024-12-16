@@ -99,7 +99,7 @@ class TransformationService:
     async def get_transformation_history(self, user_id: int) -> Dict:
         """Recupera lo storico delle trasformazioni di un utente."""
         try:
-            user = User.query.get(user_id)
+            user = User.query.filter_by(id=user_id).first()
             if not user:
                 return {
                     'status': 'error',
