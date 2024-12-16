@@ -30,8 +30,10 @@ class TestSystemFlow:
             
             await self._setup_accounts()
 
-            # Initialize transformation service properly
+            # Initialize services
+            blockchain_service = Mock()
             self.transformation_service = TransformationService()
+            self.transformation_service.blockchain_service = blockchain_service
 
             yield
 
