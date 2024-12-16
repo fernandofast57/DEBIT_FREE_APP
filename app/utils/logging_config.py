@@ -4,30 +4,22 @@ import os
 from logging.handlers import RotatingFileHandler
 
 def setup_logging(app):
-    # Crea directory logs se non esiste
     if not os.path.exists('logs'):
-        os.makedirs('logs')
-
-    # Configurazione del formatter
+        os.mkdir('logs')
+        
     formatter = logging.Formatter(
-        '[%(asctime)s] %(levelname)s in %(module)s: %(message)s'
+        '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
     )
-
-    # Handler per il file
+    
     file_handler = RotatingFileHandler(
-        'logs/app.log', 
-        maxBytes=10240, 
+        'logs/app.log',
+        maxBytes=10240,
         backupCount=10
     )
+    
     file_handler.setFormatter(formatter)
     file_handler.setLevel(logging.INFO)
-
-    # Handler per la console
-    console_handler = logging.StreamHandler()
-    console_handler.setFormatter(formatter)
-    console_handler.setLevel(logging.DEBUG)
-
-    # Configura il logger dell'app
+    
     app.logger.addHandler(file_handler)
-    app.logger.addHandler(console_handler)
     app.logger.setLevel(logging.INFO)
+    app.logger.info('Application startup')
