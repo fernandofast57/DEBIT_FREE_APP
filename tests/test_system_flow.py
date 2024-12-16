@@ -57,8 +57,9 @@ class TestSystemFlow:
 
     @pytest.mark.asyncio
     @patch('app.services.blockchain_service.BlockchainService')
+    @patch('app.services.bonus_distribution_service.BonusDistributionService')
     @patch('app.models.models.User')
-    async def test_complete_flow(self, mock_user_class, mock_blockchain_class):
+    async def test_complete_flow(self, mock_user_class, mock_bonus_class, mock_blockchain_class):
         """Test del flusso completo: bonifico -> trasformazione -> bonus -> blockchain"""
         # Setup mock user
         mock_user = Mock()
@@ -67,12 +68,24 @@ class TestSystemFlow:
         mock_user_class.query.get.return_value = mock_user
 
         # Setup mock blockchain
-        mock_instance = Mock()
-        mock_instance.add_to_batch.return_value = True
-        mock_instance.process_batch.return_value = {'status': 'success', 'transaction_hash': '0x123...'}
-        mock_blockchain_class.return_value = mock_instance
+        mock_blockchain = Mock()
+        mock_blockchain.add_to_batch.return_value = True
+        mock_blockchain.process_batch.return_value = {'status': 'success', 'transaction_hash': '0x123...'}
+        mock_blockchain_class.return_value = mock_blockchain
 
-        self.transformation_service.blockchain_service = mock_instance
+        # Setup mock bonus service
+        mock_bonus = Mock()
+        mock_bonus.distribute_transaction_bonus.return_value = {
+            'status': 'success',
+            'total_distributed': 50.0,
+            'distributions': [
+                {'user_id': 1, 'bonus_amount': 30.0, 'rank_id': 1},
+                {'user_id': 2, 'bonus_amount': 20.0, 'rank_id': 2}
+            ]
+        }
+        mock_bonus_class.return_value = mock_bonus
+
+        self.transformation_service.blockchain_service = mock_blockchain
 
         async with self.app.app_context():
             result = await self.transformation_service.transform_to_gold(
