@@ -1,64 +1,44 @@
 
-from typing import Dict, List, Any, Callable
-import asyncio
-import logging
-from decimal import Decimal
-
-logger = logging.getLogger(__name__)
+from typing import Dict, List
+from web3 import Web3
+from eth_account import Account
+from app.utils.logging_config import logger
 
 class BlockchainService:
-    def __init__(self):
-        self.batch = []
+    def __init__(self, web3_provider: str = "http://localhost:8545"):
+        self.w3 = Web3(Web3.HTTPProvider(web3_provider))
         
-    async def add_to_batch(self, user_address: str, euro_amount: Decimal, 
-                          gold_grams: Decimal, fixing_price: Decimal) -> bool:
+    async def connect(self):
         try:
-            self.batch.append({
-                'user_address': user_address,
-                'euro_amount': euro_amount,
-                'gold_grams': gold_grams,
-                'fixing_price': fixing_price
-            })
+            if not self.w3.is_connected():
+                raise ConnectionError("Failed to connect to Ethereum node")
+            logger.info("Connected to Ethereum node")
             return True
         except Exception as e:
-            logger.error(f"Error adding to batch: {e}")
-            return False
-
-    async def process_batch(self) -> Dict[str, Any]:
-        if not self.batch:
-            return {'status': 'error', 'message': 'Empty batch'}
-            
-        try:
-            # Process the batch here
-            transaction_hash = '0x123...abc'  # Placeholder
-            self.batch = []  # Clear batch after processing
-            return {
-                'status': 'success',
-                'transaction_hash': transaction_hash
-            }
-        except Exception as e:
-            logger.error(f"Error processing batch: {e}")
-            return {'status': 'error', 'message': str(e)}
+            logger.error(f"Error connecting to Ethereum node: {str(e)}")
+            raise
 
     async def get_user_transactions(self, address: str) -> List[Dict]:
         try:
-            # Mock implementation
-            return [{
-                'timestamp': 1639497600,
-                'euro_amount': 1000.00,
-                'gold_grams': 0.5,
-                'fixing_price': 1800.50
-            }]
+            if not self.w3.is_connected():
+                await self.connect()
+            
+            # Get transaction count
+            nonce = self.w3.eth.get_transaction_count(address)
+            
+            transactions = []
+            for i in range(nonce):
+                tx = self.w3.eth.get_transaction_by_nonce(address, i)
+                if tx:
+                    transactions.append({
+                        'hash': tx['hash'].hex(),
+                        'value': self.w3.from_wei(tx['value'], 'ether'),
+                        'from': tx['from'],
+                        'to': tx['to']
+                    })
+            
+            return transactions
+            
         except Exception as e:
-            logger.error(f"Error getting user transactions: {e}")
-            return []
-
-    async def retry_operation(self, operation: Callable, max_retries: int = 3, delay: float = 1.0) -> Dict[str, Any]:
-        for attempt in range(max_retries):
-            try:
-                return await operation()
-            except Exception as e:
-                logger.warning(f"Attempt {attempt + 1}/{max_retries} failed: {e}")
-                if attempt == max_retries - 1:
-                    raise
-                await asyncio.sleep(delay)
+            logger.error(f"Error getting user transactions: {str(e)}")
+            raise
