@@ -70,3 +70,12 @@ class GoldTransformation(db.Model):
 
     def __repr__(self):
         return f'<GoldTransformation {self.id}: €{self.euro_amount} -> {self.gold_grams}g>'
+        
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'euro_amount': float(self.euro_amount),
+            'gold_grams': float(self.gold_grams),
+            'fixing_price': float(self.fixing_price),
+            'timestamp': int(self.created_at.timestamp())
+        }
