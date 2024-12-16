@@ -21,7 +21,10 @@ class TestSystemFlow:
             await db.create_all()
             
             # Setup test user
-            self.user = User(email='test@test.com')
+            self.user = User(
+                email='test@test.com',
+                blockchain_address='0x742d35Cc6634C0532925a3b844Bc454e4438f44e'
+            )
             db.session.add(self.user)
             await db.session.commit()
             
