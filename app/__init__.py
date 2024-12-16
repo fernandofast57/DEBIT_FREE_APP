@@ -1,12 +1,12 @@
+
 from flask import Flask, jsonify
-from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from app.models.models import db
 from app.utils.auth import login_manager
 from config import Config
 
-db = SQLAlchemy()
 migrate = Migrate()
 
 def create_app():
@@ -38,11 +38,5 @@ def create_app():
             "status": "healthy",
             "version": "1.0.0"
         })
-
-    @app.errorhandler(APIError)
-    def handle_api_error(error):
-        response = jsonify(error.to_dict())
-        response.status_code = error.status_code
-        return response
 
     return app
