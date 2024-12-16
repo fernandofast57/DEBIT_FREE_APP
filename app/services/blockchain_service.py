@@ -54,13 +54,15 @@ class BlockchainService:
             }
 
     async def get_user_transactions(self, address: str) -> List[Dict]:
+        """Recupera le transazioni di un utente dalla blockchain"""
         try:
-            return [{
+            mock_transaction = {
                 'timestamp': int(datetime.now().timestamp()),
                 'euro_amount': Decimal('1000.00'),
                 'gold_grams': Decimal('0.5'),
                 'fixing_price': Decimal('1800.50')
-            }]
+            }
+            return [mock_transaction]
         except Exception as e:
             print(f"Error getting user transactions: {e}")
             return []
