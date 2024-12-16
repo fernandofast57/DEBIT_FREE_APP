@@ -7,7 +7,8 @@ from app.services.transformation_service import TransformationService
 class TestSystemFlow(BaseTest):
     async def setup(self):
         await super().setup()
-        self.transformation_service = TransformationService()
+        self.transformation_service = TransformationService(blockchain_service=None)
+        await db.create_all()
 
     @pytest.mark.asyncio
     @patch('app.services.blockchain_service.BlockchainService')
