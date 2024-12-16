@@ -6,7 +6,7 @@ bp = Blueprint('transformations', __name__, url_prefix='/api/v1/transformations'
 transformation_service = TransformationService()
 
 @bp.route('/transform', methods=['POST'])
-def transform_to_gold():
+async def transform_to_gold():
     """
     Trasforma il saldo euro in oro
     {
@@ -40,7 +40,7 @@ def transform_to_gold():
             'message': f'Fixing price non valido: {str(e)}'
         }), 400
 
-    result = transformation_service.transform_to_gold(user_id, fixing_price)
+    result = await transformation_service.transform_to_gold(user_id, fixing_price)
 
     if result['status'] == 'error':
         return jsonify(result), 400

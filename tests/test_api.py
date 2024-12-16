@@ -86,13 +86,17 @@ class TestAPI(unittest.TestCase):
 
     def test_transformation_api(self):
         """Test API trasformazioni"""
-        response = self.client.post('/api/v1/transformations/transform',
-            json={
-                'user_id': self.user.id,
-                'fixing_price': 1800.50
-            },
-            content_type='application/json'
-        )
+        async def async_test():
+            response = await self.client.post('/api/v1/transformations/transform',
+                json={
+                    'user_id': self.user.id,
+                    'fixing_price': 1800.50
+                },
+                content_type='application/json'
+            )
+            return response
+            
+        response = self.loop.run_until_complete(async_test())
         data = json.loads(response.get_data(as_text=True))
 
         self.assertEqual(response.status_code, 200)
