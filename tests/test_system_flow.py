@@ -57,8 +57,16 @@ class TestSystemFlow:
 
     @pytest.mark.asyncio
     @patch('app.services.blockchain_service.BlockchainService')
-    async def test_complete_flow(self, mock_blockchain_class):
+    @patch('app.models.models.User')
+    async def test_complete_flow(self, mock_user_class, mock_blockchain_class):
         """Test del flusso completo: bonifico -> trasformazione -> bonus -> blockchain"""
+        # Setup mock user
+        mock_user = Mock()
+        mock_user.id = 999
+        mock_user.blockchain_address = '0x742d35Cc6634C0532925a3b844Bc454e4438f44e'
+        mock_user_class.query.get.return_value = mock_user
+
+        # Setup mock blockchain
         mock_instance = Mock()
         mock_instance.add_to_batch.return_value = True
         mock_instance.process_batch.return_value = {'status': 'success', 'transaction_hash': '0x123...'}
