@@ -88,7 +88,23 @@ class TestSystemFlow:
         self.transformation_service.blockchain_service = mock_blockchain
 
         async with self.app.app_context():
+            fixing_price = Decimal('1800.50')
             result = await self.transformation_service.transform_to_gold(
+                user_id=self.user.id,
+                fixing_price=fixing_price
+            )
+
+            # Verifica risultato trasformazione
+            assert result['status'] == 'success'
+            assert result['transaction']['fixing_price'] == float(fixing_price)
+            assert 'gold_grams' in result['transaction']
+            
+            # Verifica chiamata blockchain
+            mock_blockchain.add_to_batch.assert_called_once()
+            
+            # Verifica stato account
+            money_account = await db.session.get(MoneyAccount, self.user.id)
+            assert money_account.balance == 0
                 user_id=self.user.id,
                 fixing_price=Decimal('1800.50')
             )
