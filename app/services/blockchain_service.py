@@ -1,5 +1,5 @@
 
-from typing import Dict, List
+from typing import Dict, List, Any
 from web3 import Web3
 from eth_account import Account
 from decimal import Decimal
@@ -68,9 +68,20 @@ class BlockchainService:
                         'from': tx['from'],
                         'to': tx['to']
                     })
-            
             return transactions
-            
         except Exception as e:
             logger.error(f"Error getting user transactions: {str(e)}")
             raise
+
+    async def retry_operation(self, operation):
+        max_retries = 3
+        retry_count = 0
+        
+        while retry_count < max_retries:
+            try:
+                return await operation()
+            except Exception as e:
+                retry_count += 1
+                if retry_count == max_retries:
+                    raise e
+                logger.warning(f"Retry {retry_count}/{max_retries} after error: {str(e)}")
