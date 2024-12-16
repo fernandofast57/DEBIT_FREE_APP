@@ -33,4 +33,10 @@ def create_app():
             "version": "1.0.0"
         })
 
+    @app.errorhandler(APIError)
+    def handle_api_error(error):
+        response = jsonify(error.to_dict())
+        response.status_code = error.status_code
+        return response
+
     return app

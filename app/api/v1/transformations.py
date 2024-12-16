@@ -20,10 +20,7 @@ def transform_to_gold():
         user_id = int(data.get('user_id'))
         fixing_price = Decimal(str(data.get('fixing_price')))
     except (TypeError, ValueError, InvalidOperation):
-        return jsonify({
-            'status': 'error',
-            'message': 'Parametri non validi'
-        }), 400
+        raise ValidationError('Parametri non validi')
 
     result = transformation_service.transform_to_gold(user_id, fixing_price)
 
