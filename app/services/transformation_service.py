@@ -64,15 +64,20 @@ class TransformationService:
             net_amount = gross_amount * (1 - self.total_fee)
             gold_grams = net_amount / fixing_price
 
-            # Registra su blockchain
-            blockchain_success = await self.blockchain_service.add_to_batch(
-                user_address=user.blockchain_address,
-                euro_amount=gross_amount,
-                gold_grams=gold_grams,
-                fixing_price=fixing_price
-            )
+            # Registra su blockchain con gestione mock
+            try:
+                blockchain_success = await self.blockchain_service.add_to_batch(
+                    user_address=user.blockchain_address,
+                    euro_amount=gross_amount,
+                    gold_grams=gold_grams,
+                    fixing_price=fixing_price
+                )
 
-            if not blockchain_success:
+                if not blockchain_success:
+                    logger.error("Blockchain registration failed")
+                    return self._error_response('Errore nella registrazione blockchain', 'blockchain')
+            except Exception as e:
+                logger.error(f"Blockchain error: {str(e)}")
                 return self._error_response('Errore nella registrazione blockchain', 'blockchain')
 
             # Registra la trasformazione nel database
