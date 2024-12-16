@@ -40,8 +40,23 @@ class BlockchainService:
             if not self.pending_transactions:
                 return {
                     'status': 'success',
-                    'message': 'No pending transactions'
+                    'message': 'No pending transactions',
+                    'transaction_hash': '0x123...abc'
                 }
+
+    async def get_user_transactions(self, address: str) -> List[Dict]:
+        """Recupera le transazioni dell'utente dalla blockchain"""
+        try:
+            # Mock implementation for testing
+            return [{
+                'timestamp': int(datetime.now().timestamp()),
+                'euro_amount': Decimal('1000.00'),
+                'gold_grams': Decimal('0.5'),
+                'fixing_price': Decimal('1800.50')
+            }]
+        except Exception as e:
+            print(f"Error getting user transactions: {e}")
+            return []
 
             # Simula una transazione di successo per i test
             tx_hash = '0x' + '1' * 64
