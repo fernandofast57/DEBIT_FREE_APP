@@ -12,6 +12,9 @@ migrate = Migrate()
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+    
+    from app.utils.logging_config import setup_logging
+    setup_logging(app)
 
     CORS(app)
     db.init_app(app)
