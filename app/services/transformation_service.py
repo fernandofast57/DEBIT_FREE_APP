@@ -1,6 +1,6 @@
 from decimal import Decimal
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict, List, Optional, Any
 from app import db
 from app.models.models import User, MoneyAccount, GoldAccount, GoldTransformation
 from app.services.blockchain_service import BlockchainService
@@ -8,15 +8,33 @@ from app.utils.logging_config import logger
 
 
 class TransformationService:
-    def __init__(self, blockchain_service=None):
-        """Inizializza il servizio con il supporto al mock."""
+    def __init__(self, blockchain_service: Optional[BlockchainService] = None):
+        """Initialize the transformation service with optional mock support.
+        
+        Args:
+            blockchain_service (Optional[BlockchainService]): Instance of blockchain service
+                                                            or None for default
+        """
         self.organization_fee = Decimal('0.05')  # 5% struttura
         self.affiliate_fee = Decimal('0.017')    # 1.7% affiliati
         self.total_fee = self.organization_fee + self.affiliate_fee
         self.blockchain_service = blockchain_service or BlockchainService()
 
-    async def transform_to_gold(self, user_id: int, fixing_price: Decimal) -> Dict:
-        """Trasforma il saldo euro dell'utente in oro."""
+    async def transform_to_gold(self, user_id: int, fixing_price: Decimal) -> Dict[str, Any]:
+        """Transform user's euro balance into gold.
+        
+        Args:
+            user_id (int): The ID of the user requesting the transformation
+            fixing_price (Decimal): The current gold fixing price in euros per gram
+            
+        Returns:
+            Dict[str, Any]: Response containing transaction details or error message
+            
+        Raises:
+            ValidationError: If input parameters are invalid
+            BlockchainError: If blockchain registration fails
+            TransformationError: For other transformation-related errors
+        """
         try:
             # Input validation
             if not isinstance(user_id, int) or user_id <= 0:
