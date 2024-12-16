@@ -5,7 +5,6 @@ from decimal import Decimal
 from app import create_app, db
 from app.models.models import User, MoneyAccount, GoldAccount
 from app.services.transformation_service import TransformationService
-from app.models.noble_system import NobleRank
 
 class TestSystemFlow:
     @pytest.fixture(autouse=True)
@@ -26,10 +25,10 @@ class TestSystemFlow:
             db.session.add(self.user)
             await db.session.commit()
             
-            # Setup transformation service
-            self.transformation_service = TransformationService()
-            
             await self._setup_accounts()
+
+            # Initialize transformation service properly
+            self.transformation_service = TransformationService()
 
             yield
 
