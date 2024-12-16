@@ -12,8 +12,11 @@ class TestBlockchainIntegration(unittest.TestCase):
         asyncio.set_event_loop(self.loop)
         
         self.app = create_app()
-        self.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-        self.app.config['TESTING'] = True
+        self.app.config.update({
+            'SQLALCHEMY_DATABASE_URI': 'sqlite:///test.db',
+            'SQLALCHEMY_TRACK_MODIFICATIONS': False,
+            'TESTING': True
+        })
         
         self.loop.run_until_complete(self._async_setup())
 
