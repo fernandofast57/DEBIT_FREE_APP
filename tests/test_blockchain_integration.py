@@ -60,7 +60,10 @@ class TestBlockchainService(unittest.TestCase):
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0]['gold_grams'], 0.5)
 
-    async def test_retry_operation(self):
+    def test_retry_operation(self):
+        return self.loop.run_until_complete(self._test_retry_operation())
+        
+    async def _test_retry_operation(self):
         attempts = 0
         
         async def mock_operation():
@@ -74,6 +77,7 @@ class TestBlockchainService(unittest.TestCase):
         
         self.assertEqual(result['status'], 'success')
         self.assertEqual(attempts, 3)
+        return None
 
 if __name__ == '__main__':
     unittest.main()
