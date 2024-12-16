@@ -1,5 +1,6 @@
 import unittest
 import json
+import asyncio
 from decimal import Decimal
 from app import create_app, db
 from app.models.models import User, MoneyAccount, GoldAccount
@@ -13,6 +14,8 @@ class TestAPI(unittest.TestCase):
         self.client = self.app.test_client()
         self.app_context = self.app.app_context()
         self.app_context.push()
+        self.loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(self.loop)
 
         db.create_all()
 
@@ -45,6 +48,7 @@ class TestAPI(unittest.TestCase):
         db.session.remove()
         db.drop_all()
         self.app_context.pop()
+        self.loop.close()
 
     def test_transfer_api(self):
         """Test API bonifici"""
