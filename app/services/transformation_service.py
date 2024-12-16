@@ -18,11 +18,20 @@ class TransformationService:
     async def transform_to_gold(self, user_id: int, fixing_price: Decimal) -> Dict:
         """Trasforma il saldo euro dell'utente in oro."""
         try:
-            # Debugging
-            print(f"Debug: Starting transformation for user {user_id}")
-
+            # Input validation
+            if not isinstance(user_id, int) or user_id <= 0:
+                raise ValidationError('User ID non valido')
+                
+            if not isinstance(fixing_price, Decimal):
+                try:
+                    fixing_price = Decimal(str(fixing_price))
+                except:
+                    raise ValidationError('Fixing price deve essere un numero valido')
+                    
             if fixing_price <= 0:
-                return self._error_response('Fixing price non valido')
+                raise ValidationError('Fixing price deve essere maggiore di zero')
+                
+            logger.info(f"Starting transformation for user {user_id}")
 
             # Recupera gli account
             user, money_account, gold_account = self._get_user_and_accounts(user_id)
