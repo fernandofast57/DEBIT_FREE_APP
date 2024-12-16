@@ -99,25 +99,23 @@ class TransformationService:
     async def get_transformation_history(self, user_id: int) -> Dict:
         """Recupera lo storico delle trasformazioni di un utente."""
         try:
-            transformations = GoldTransformation.query.filter_by(user_id=user_id).all()
-            user = db.session.get(User, user_id)
+            user = User.query.get(user_id)
+            if not user:
+                return {
+                    'status': 'error',
+                    'message': 'Utente non trovato'
+                }
 
-            blockchain_txs = await self.blockchain_service.get_user_transactions(
-                user.blockchain_address
-            ) if user and user.blockchain_address else []
+            # Recupera trasformazioni dal DB
+            transformations = GoldTransformation.query.filter_by(user_id=user_id).all()
+
+            # Recupera storico dalla blockchain
+            blockchain_history = await self.blockchain_service.get_user_transactions(user.blockchain_address)
 
             return {
                 'status': 'success',
-                'history': [
-                    {
-                        'id': t.id,
-                        'euro_amount': float(t.euro_amount),
-                        'gold_grams': float(t.gold_grams),
-                        'fixing_price': float(t.fixing_price),
-                        'date': t.created_at.isoformat()
-                    } for t in transformations
-                ],
-                'blockchain_history': blockchain_txs
+                'history': [t.to_dict() for t in transformations],
+                'blockchain_history': blockchain_history
             }
         except Exception as e:
             return self._error_response(f'Errore nel recupero storico: {str(e)}')

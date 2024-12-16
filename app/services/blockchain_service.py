@@ -39,7 +39,7 @@ class BlockchainService:
                     'transaction_hash': '0x123...abc'
                 }
             
-            tx_hash = '0x' + '1' * 64
+            tx_hash = '0x123...abc'
             self.pending_transactions = []
             
             return {
