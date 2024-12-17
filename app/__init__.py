@@ -20,11 +20,17 @@ def create_app(config_class=Config):
     with app.app_context():
         db.create_all()
 
+    # Setup logging
+    from app.utils.logging_config import setup_logging
+    setup_logging(app)
+    
     # Register error handlers and authentication
     from app.utils.errors import register_error_handlers
     from app.utils.auth import init_login_manager
     register_error_handlers(app)
     init_login_manager(app)
+    
+    app.logger.info('Application initialized')
 
     # Health check endpoint
     @app.route('/api/health')
