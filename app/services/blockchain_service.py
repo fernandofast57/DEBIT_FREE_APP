@@ -33,10 +33,20 @@ class BlockchainService:
         cost_matic = self.web3.from_wei(gas_price_wei * total_gas, 'ether')
         return float(cost_matic)
     
-    async def process_batch(self, transformations):
+    async def process_batch(self, transformations, max_retries=3):
         try:
             if not transformations:
                 return {'status': 'success', 'message': 'No transactions to process'}
+                
+            for retry in range(max_retries):
+                try:
+                    return await self._try_process_batch(transformations)
+                except Exception as e:
+                    if retry == max_retries - 1:
+                        raise
+                    await asyncio.sleep(2 ** retry)  # Exponential backoff
+                    
+    async def _try_process_batch(self, transformations):
                 
             gas_price = self.web3.eth.gas_price
             max_gas_price_wei = self.web3.to_wei(self.max_gas_price, 'gwei')
