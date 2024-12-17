@@ -16,8 +16,11 @@ class Config:
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)
 
     # Blockchain Configuration
-    BLOCKCHAIN_PROVIDER = os.environ.get('BLOCKCHAIN_PROVIDER') or 'http://localhost:8545'
+    POLYGON_RPC_URL = os.environ.get('POLYGON_RPC_URL') or 'https://rpc-mumbai.maticvigil.com'
+    POLYGON_CHAIN_ID = 80001  # Mumbai testnet
+    POLYGON_PRIVATE_KEY = os.environ.get('POLYGON_PRIVATE_KEY')
     SMART_CONTRACT_ADDRESS = os.environ.get('SMART_CONTRACT_ADDRESS')
+    MAX_GAS_PRICE_GWEI = 50
 
     # Logging Configuration
     LOG_LEVEL = os.environ.get('LOG_LEVEL') or 'INFO'
