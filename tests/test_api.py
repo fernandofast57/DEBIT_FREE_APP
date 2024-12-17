@@ -2,14 +2,12 @@
 import pytest
 from decimal import Decimal
 from app import create_app, db
-from app.models.models import User, MoneyAccount, GoldAccount
-from app.models.noble_system import NobleRank, NobleRelation
+from app.models import User, MoneyAccount, GoldAccount
+from config import TestConfig
 
 @pytest.fixture
 async def app():
-    app = create_app()
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-    app.config['TESTING'] = True
+    app = create_app(TestConfig)
     
     async with app.app_context():
         await db.create_all()
@@ -19,7 +17,6 @@ async def app():
         db.session.add(user)
         await db.session.flush()
 
-        # Setup accounts
         money_account = MoneyAccount(
             user_id=user.id,
             balance=Decimal('1000.00')
@@ -29,14 +26,6 @@ async def app():
             balance=Decimal('0')
         )
         db.session.add_all([money_account, gold_account])
-
-        # Setup noble ranks
-        ranks = [
-            NobleRank(title='Nobile', bonus_rate=Decimal('0.007'), level=1),
-            NobleRank(title='Visconte', bonus_rate=Decimal('0.005'), level=2),
-            NobleRank(title='Conte', bonus_rate=Decimal('0.005'), level=3)
-        ]
-        db.session.add_all(ranks)
         await db.session.commit()
         
         yield app
@@ -50,7 +39,7 @@ def test_client(app):
 
 @pytest.mark.asyncio
 async def test_transformation_api(test_client):
-    """Test API trasformazioni"""
+    """Test API trasformazione"""
     response = await test_client.post('/api/v1/transformations/transform',
         json={
             'user_id': 1,
@@ -63,7 +52,7 @@ async def test_transformation_api(test_client):
 
 @pytest.mark.asyncio
 async def test_transfer_api(test_client):
-    """Test API bonifici"""
+    """Test API trasferimenti"""
     response = await test_client.post('/api/v1/transfers/process',
         json={
             'user_id': 1,
@@ -77,7 +66,7 @@ async def test_transfer_api(test_client):
 
 @pytest.mark.asyncio
 async def test_invalid_inputs(test_client):
-    """Test gestione input non validi"""
+    """Test gestione input invalidi"""
     response = await test_client.post('/api/v1/transfers/process',
         json={
             'user_id': 1,
