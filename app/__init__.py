@@ -17,6 +17,10 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
     CORS(app)
 
+    # Register error handlers
+    from app.utils.errors import register_error_handlers
+    register_error_handlers(app)
+
     # Health check endpoint
     @app.route('/api/health')
     def health_check():
@@ -24,9 +28,15 @@ def create_app(config_class=Config):
 
     # Registrazione dei blueprints
     from app.routes import auth_bp, gold_bp, affiliate_bp
+    from app.api.v1.transformations import bp as transformations_bp
+    from app.api.v1.transfers import bp as transfers_bp
+    from app.api.v1.bonuses import bp as bonuses_bp
 
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(gold_bp, url_prefix='/api/gold')
     app.register_blueprint(affiliate_bp, url_prefix='/api/affiliate')
+    app.register_blueprint(transformations_bp)
+    app.register_blueprint(transfers_bp)
+    app.register_blueprint(bonuses_bp)
 
     return app
