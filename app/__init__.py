@@ -4,9 +4,24 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 from config import Config
+import logging
+from logging.handlers import RotatingFileHandler
+import os
 
 db = SQLAlchemy()
 migrate = Migrate()
+
+def setup_logging(app):
+    if not os.path.exists('logs'):
+        os.mkdir('logs')
+    file_handler = RotatingFileHandler('logs/app.log', maxBytes=10240, backupCount=10)
+    file_handler.setFormatter(logging.Formatter(
+        '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
+    ))
+    file_handler.setLevel(logging.INFO)
+    app.logger.addHandler(file_handler)
+    app.logger.setLevel(logging.INFO)
+    app.logger.info('Gold Investment startup')
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -21,8 +36,8 @@ def create_app(config_class=Config):
         db.create_all()
 
     # Setup logging
-    from app.utils.logging_config import setup_logging
-    setup_logging(app)
+    if not app.debug and not app.testing:
+        setup_logging(app)
     
     # Register error handlers and authentication
     from app.utils.errors import register_error_handlers
