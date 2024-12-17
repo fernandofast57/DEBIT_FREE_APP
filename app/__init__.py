@@ -12,14 +12,19 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
-    # Inizializzazione delle estensioni
+    # Initialize extensions
     db.init_app(app)
     migrate.init_app(app, db)
     CORS(app)
+    
+    with app.app_context():
+        db.create_all()
 
-    # Register error handlers
+    # Register error handlers and authentication
     from app.utils.errors import register_error_handlers
+    from app.utils.auth import init_login_manager
     register_error_handlers(app)
+    init_login_manager(app)
 
     # Health check endpoint
     @app.route('/api/health')
