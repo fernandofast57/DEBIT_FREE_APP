@@ -3,7 +3,7 @@ import pytest
 from decimal import Decimal
 from unittest.mock import Mock, patch
 from app import create_app, db
-from app.models.models import User, MoneyAccount, GoldAccount
+from app.models import User, MoneyAccount, GoldAccount
 from app.services.blockchain_service import BlockchainService
 from tests.test_base import BaseTest
 
@@ -36,11 +36,10 @@ class TestBlockchainIntegration(BaseTest):
 
     @pytest.mark.asyncio
     async def test_batch_processing(self):
-        """Test batch processing of blockchain transactions"""
+        """Test batch processing delle transazioni blockchain"""
         mock_web3 = Mock()
         self.blockchain_service.web3 = mock_web3
         
-        # Mock transaction data
         tx_data = {
             'user_address': self.user.blockchain_address,
             'euro_amount': 1000,
@@ -61,7 +60,7 @@ class TestBlockchainIntegration(BaseTest):
 
     @pytest.mark.asyncio
     async def test_failed_transaction(self):
-        """Test handling of failed blockchain transactions"""
+        """Test gestione transazioni blockchain fallite"""
         mock_web3 = Mock()
         self.blockchain_service.web3 = mock_web3
         
