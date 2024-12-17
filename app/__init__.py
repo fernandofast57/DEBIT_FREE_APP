@@ -1,22 +1,27 @@
 
-from quart import Quart
-from app.models.models import db
-from app.utils.errors import register_error_handlers
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_cors import CORS
+from config import Config
 
-def create_app():
-    app = Quart(__name__)
+db = SQLAlchemy()
+migrate = Migrate()
+
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
     
-    app.config.update({
-        'SQLALCHEMY_DATABASE_URI': 'sqlite:///test.db',
-        'SQLALCHEMY_TRACK_MODIFICATIONS': False,
-        'TESTING': True,
-        'PROVIDE_AUTOMATIC_OPTIONS': True
-    })
-
     db.init_app(app)
-    register_error_handlers(app)
-
-    from app.api.v1.transformations import bp as transformations_bp
-    app.register_blueprint(transformations_bp)
-
+    migrate.init_app(app, db)
+    CORS(app)
+    
+    from app.api.v1 import bp as api_bp
+    app.register_blueprint(api_bp, url_prefix='/api/v1')
+    
+    from app.routes import auth_bp, gold_bp, affiliate_bp
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(gold_bp)
+    app.register_blueprint(affiliate_bp)
+    
     return app
