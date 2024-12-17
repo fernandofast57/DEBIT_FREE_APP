@@ -1,26 +1,29 @@
-
+# config.py
 import os
-from dotenv import load_dotenv
-
-load_dotenv()
+from datetime import timedelta
 
 class Config:
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', "sqlite:///app.db")
+    # Base Configuration
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///gold_investment.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET_KEY = os.getenv('SECRET_KEY', "dev-secret-key")
-    
-    # Blockchain configuration
-    WEB3_PROVIDER = os.getenv('WEB3_PROVIDER', "http://0.0.0.0:8545")
-    CONTRACT_ADDRESS = os.getenv('CONTRACT_ADDRESS')
-    
-    # Logging configuration
-    LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
-    LOG_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    SQLALCHEMY_POOL_SIZE = int(os.environ.get('DB_POOL_SIZE', 10))
+    SQLALCHEMY_MAX_OVERFLOW = int(os.environ.get('DB_MAX_OVERFLOW', 20))
+    SQLALCHEMY_POOL_TIMEOUT = int(os.environ.get('DB_POOL_TIMEOUT', 30))
+
+    # JWT Configuration
+    JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or 'jwt-secret-key'
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)
+
+    # Blockchain Configuration
+    BLOCKCHAIN_PROVIDER = os.environ.get('BLOCKCHAIN_PROVIDER') or 'http://localhost:8545'
+    SMART_CONTRACT_ADDRESS = os.environ.get('SMART_CONTRACT_ADDRESS')
+
+    # Logging Configuration
+    LOG_LEVEL = os.environ.get('LOG_LEVEL') or 'INFO'
     LOG_FILE = 'logs/app.log'
-    LOG_MAX_BYTES = 1024 * 1024  # 1MB
-    LOG_BACKUP_COUNT = 10
 
 class TestConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///test.db"
-    WEB3_PROVIDER = "http://0.0.0.0:8545"
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    WTF_CSRF_ENABLED = False
