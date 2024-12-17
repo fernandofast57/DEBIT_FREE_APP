@@ -1,10 +1,13 @@
+
 # config.py
 import os
 from datetime import timedelta
 
 class Config:
     # Base Configuration
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key'
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-key'
+    
+    # Database Configuration
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///gold_investment.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_POOL_SIZE = int(os.environ.get('DB_POOL_SIZE', 10))
