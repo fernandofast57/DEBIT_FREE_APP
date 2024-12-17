@@ -1,14 +1,17 @@
 
 import pytest
-from unittest.mock import patch, Mock
-from tests.test_base import BaseTest
+from unittest.mock import Mock, patch
 from app.services.transformation_service import TransformationService
+from app.services.blockchain_service import BlockchainService
 
-class TestSystemFlow(BaseTest):
+class TestSystemFlow:
+    @pytest.fixture(autouse=True)
     async def setup(self):
-        await super().setup()
-        self.transformation_service = TransformationService(blockchain_service=None)
-        await db.create_all()
+        """Setup test environment"""
+        self.blockchain_service = Mock(spec=BlockchainService)
+        self.transformation_service = TransformationService(
+            blockchain_service=self.blockchain_service
+        )
 
     @pytest.mark.asyncio
     @patch('app.services.blockchain_service.BlockchainService')
@@ -20,6 +23,6 @@ class TestSystemFlow(BaseTest):
         mock_blockchain_class.return_value = mock_instance
         
         self.transformation_service.blockchain_service = mock_instance
-
-        # Test implementation here
-        assert True  # Replace with actual test logic
+        
+        # Add test implementation here
+        assert True  # Placeholder assertion
