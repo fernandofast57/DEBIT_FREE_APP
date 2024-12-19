@@ -19,7 +19,7 @@
 ```
 
 ## Key Files
-- `config.py`: Configuration settings (DB, JWT, Blockchain, RPC endpoints)
+- `config.py`: Configuration settings using Replit Secrets
 - `main.py`: Application entry point with logging setup
 - `app/services/blockchain_service.py`: Polygon integration with retry mechanism
 - `app/models/models.py`: Database models including noble ranks
@@ -27,11 +27,12 @@
 - `blockchain/tests/NobleGoldSystem.test.js`: Smart contract test suite
 
 ## Recent Changes
-1. Implemented NobleGoldSystem smart contract testing
+1. Implemented secure configuration using Replit Secrets tool
 2. Enhanced smart contract with noble ranks and bonus distribution
 3. Added comprehensive test coverage for blockchain operations
 4. Implemented batch transformation functionality
 5. Added referral system tracking
+6. Improved security with environment variables management
 
 ## Current Status
 
@@ -44,52 +45,56 @@
 - Bonus distribution system
 - Referral tracking system
 - Batch transformation processing
+- Secure secrets management with Replit Secrets
 
-### Critical Points
-1. **Smart Contract Testing**
-   - Unit tests for transformations
-   - Noble ranks validation
-   - Bonus distribution verification
-   - Referral system testing
+### Security Implementation
+1. **Replit Secrets Integration**
+   - SECRET_KEY for Flask
+   - DATABASE_URL for database connection
+   - CONTRACT_ADDRESS for blockchain
+   - PRIVATE_KEY for transactions
+   - RPC_ENDPOINTS for Polygon network
 
-2. **Blockchain Integration**
-   - Multiple RPC endpoints with failover
-   - Transaction retry mechanism
+2. **Smart Contract Security**
+   - Access control implementation
+   - Secure transaction handling
    - Gas optimization
    - Batch processing
 
-3. **Security**
+3. **Backend Security**
+   - Environment variables through Secrets
    - Authentication middleware
-   - Transaction validation
-   - Secure configuration
-   - Smart contract access control
+   - Input validation
+   - Transaction verification
 
-4. **System Features**
-   - Gold transformations
-   - Noble ranks progression
-   - Bonus distribution
-   - Referral tracking
-   - Batch operations
-
-## Next Steps
-1. Add more comprehensive smart contract tests
-2. Enhance noble ranks progression system
-3. Optimize batch transformation gas usage
-4. Implement additional bonus distribution features
+### System Features
+- Gold transformations
+- Noble ranks progression
+- Bonus distribution
+- Referral tracking
+- Batch operations
+- Secure configuration management
 
 ## Testing
-Smart contract tests can be run using:
+Smart contract tests:
 ```bash
 npx hardhat test
 ```
 
-Backend tests can be run using:
+Backend tests:
 ```bash
 pytest tests/ -v
 ```
 
-Local testing uses:
-- Hardhat local blockchain for contract testing
-- SQLite in-memory database for backend
-- Mock blockchain provider for integration tests
-- Test fixtures for common scenarios
+## Environment Setup
+1. Configure Replit Secrets:
+   - Add required keys in Tools -> Secrets
+   - Access via os.environ in Python
+   - Automatic encryption with AES-256
+   - Secure key rotation
+
+2. Local Development:
+   - Uses Replit IDE
+   - Hardhat for contract testing
+   - SQLite database
+   - Automated test suite
