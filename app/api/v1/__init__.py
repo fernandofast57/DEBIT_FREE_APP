@@ -68,7 +68,9 @@ def create_transfer():
         return jsonify({'error': 'An unexpected error occurred'}), 500
 
 from .transformations import bp as transformations_bp
+from .bonuses import bp as bonuses_bp
 app.register_blueprint(transformations_bp, url_prefix='/api/v1/transformations')
+app.register_blueprint(bonuses_bp, url_prefix='/api/v1/bonuses')
 
 # Added Noble System Endpoints (Example -  replace with your actual implementation)
 @bp.route('/noble/bonus', methods=['POST'])
