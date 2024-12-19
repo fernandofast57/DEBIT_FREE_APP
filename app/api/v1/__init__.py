@@ -67,7 +67,8 @@ def create_transfer():
     except Exception as e:
         return jsonify({'error': 'An unexpected error occurred'}), 500
 
-# ... other routes ...
+from .transformations import bp as transformations_bp
+app.register_blueprint(transformations_bp, url_prefix='/api/v1/transformations')
 
 # Added Noble System Endpoints (Example -  replace with your actual implementation)
 @bp.route('/noble/bonus', methods=['POST'])
