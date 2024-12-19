@@ -9,8 +9,43 @@ class BatchCollectionService:
         self.pending_transactions = []
         self.min_amount = Decimal('100')  # Importo minimo bonifico
 
-    def process_bank_transfer(self, user_id: int, amount: Decimal) -> Dict:
-        """Processa un singolo bonifico ricorrente"""
+    def validate_bank_transfer(self, transfer_id: str, technician_id: int) -> Dict:
+        """Convalida manuale di un bonifico da parte del tecnico"""
+        try:
+            # Verifica che il tecnico sia autorizzato
+            if not self._is_authorized_technician(technician_id):
+                return {
+                    'status': 'error',
+                    'message': 'Tecnico non autorizzato'
+                }
+
+            transfer = Transaction.query.filter_by(id=transfer_id, status='pending').first()
+            if not transfer:
+                return {
+                    'status': 'error',
+                    'message': 'Bonifico non trovato o già processato'
+                }
+
+            # Aggiorna il saldo dell'account del cliente
+            money_account = MoneyAccount.query.filter_by(user_id=transfer.user_id).first()
+            money_account.balance += transfer.amount
+            money_account.last_update = datetime.utcnow()
+
+            # Aggiorna lo stato della transazione
+            transfer.status = 'completed'
+            transfer.validated_by = technician_id
+            transfer.validation_date = datetime.utcnow()
+
+            db.session.commit()
+
+            return {
+                'status': 'success',
+                'transaction': {
+                    'id': transfer.id,
+                    'amount': float(transfer.amount),
+                    'new_balance': float(money_account.balance)
+                }
+            }
         try:
             # Verifica importo minimo
             if amount < self.min_amount:
@@ -66,8 +101,46 @@ class BatchCollectionService:
                 'message': f'Errore nel processo bonifico: {str(e)}'
             }
 
-    def process_weekly_batch(self) -> Dict:
-        """Processa tutti i bonifici ricorrenti della settimana"""
+    def process_tuesday_gold_transformation(self) -> Dict:
+        """Processa le trasformazioni in oro ogni martedì al fixing"""
+        try:
+            # Verifica che sia martedì
+            if datetime.now().weekday() != 1:  # 1 = Martedì
+                return {
+                    'status': 'error',
+                    'message': 'Le trasformazioni sono permesse solo il martedì'
+                }
+
+            # Recupera tutti gli account con saldo positivo
+            accounts = MoneyAccount.query.filter(MoneyAccount.balance > 0).all()
+            
+            if not accounts:
+                return {
+                    'status': 'success',
+                    'message': 'Nessun account da processare',
+                    'transactions': []
+                }
+
+            transformation_service = TransformationService()
+            results = []
+
+            # Processa ogni account
+            for account in accounts:
+                result = await transformation_service.transform_to_gold(
+                    account.user_id,
+                    self._get_current_fixing_price()
+                )
+                results.append(result)
+
+            return {
+                'status': 'success',
+                'summary': {
+                    'total_processed': len(results),
+                    'success_count': sum(1 for r in results if r['status'] == 'success'),
+                    'error_count': sum(1 for r in results if r['status'] == 'error')
+                },
+                'transactions': results
+            }
         try:
             results = []
             success_count = 0
