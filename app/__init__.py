@@ -19,7 +19,15 @@ def setup_logging(app):
         '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
     ))
     file_handler.setLevel(logging.INFO)
+    # File handler
     app.logger.addHandler(file_handler)
+    
+    # Console handler
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+    console_handler.setLevel(logging.DEBUG)
+    app.logger.addHandler(console_handler)
+    
     app.logger.setLevel(logging.INFO)
     app.logger.info('Gold Investment startup')
 
