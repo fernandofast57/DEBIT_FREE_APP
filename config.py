@@ -10,10 +10,19 @@ load_dotenv()
 class Config:
     """Base config using Replit Secrets"""
     
+    # Required secrets
+    REQUIRED_SECRETS = {
+        'SECRET_KEY': 'Flask secret key for session security',
+        'DATABASE_URL': 'Database connection URL',
+        'CONTRACT_ADDRESS': 'Blockchain contract address',
+        'PRIVATE_KEY': 'Private key for blockchain transactions',
+        'RPC_ENDPOINTS': 'Comma-separated RPC endpoints'
+    }
+    
     # Flask settings
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    DEBUG = False
-    TESTING = False
+    DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
+    TESTING = os.environ.get('TESTING', 'False').lower() == 'true'
     
     # Database
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
@@ -32,18 +41,22 @@ class Config:
     @classmethod
     def validate_config(cls):
         """Validate required secrets are present"""
-        required = ['SECRET_KEY', 'DATABASE_URL', 'CONTRACT_ADDRESS', 'PRIVATE_KEY', 'RPC_ENDPOINTS']
-        missing = [key for key in required if not os.environ.get(key)]
+        missing = []
+        invalid = []
+        
+        for key, description in cls.REQUIRED_SECRETS.items():
+            value = os.environ.get(key)
+            if not value:
+                missing.append(f"{key} ({description})")
+            elif key == 'CONTRACT_ADDRESS' and (not value.startswith('0x') or len(value) != 42):
+                invalid.append(f"{key}: Invalid contract address format")
+            elif key == 'PRIVATE_KEY' and (not value.startswith('0x') or len(value) != 66):
+                invalid.append(f"{key}: Invalid private key format")
         
         if missing:
             raise ValueError(f"Missing required secrets: {', '.join(missing)}")
-
-        # Validate blockchain addresses
-        if not cls.CONTRACT_ADDRESS.startswith('0x') or len(cls.CONTRACT_ADDRESS) != 42:
-            raise ValueError('Invalid contract address format')
-            
-        if not cls.PRIVATE_KEY.startswith('0x') or len(cls.PRIVATE_KEY) != 66:
-            raise ValueError('Invalid private key format')
+        if invalid:
+            raise ValueError(f"Invalid secret values: {', '.join(invalid)}")
 
 def create_app(config_class=Config):
     """Create Flask app with secure Replit Secrets"""
@@ -53,5 +66,4 @@ def create_app(config_class=Config):
     config_class.validate_config()
     
     app.config.from_object(config_class)
-    
     return app
