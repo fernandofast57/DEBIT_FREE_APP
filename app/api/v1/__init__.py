@@ -68,3 +68,23 @@ def create_transfer():
         return jsonify({'error': 'An unexpected error occurred'}), 500
 
 # ... other routes ...
+
+# Added Noble System Endpoints (Example -  replace with your actual implementation)
+@bp.route('/noble/bonus', methods=['POST'])
+@auth.login_required
+def distribute_bonus():
+    try:
+        # ... Logic to distribute bonus based on request data ...
+        return jsonify({'message': 'Bonus distributed'}), 200
+    except Exception as e:
+        return jsonify({'error': 'An unexpected error occurred'}), 500
+
+
+@bp.route('/noble/status/<int:id>', methods=['GET'])
+@auth.login_required
+def get_noble_status(id):
+    try:
+        # ... Logic to retrieve noble status ...
+        return jsonify({'status': '...'}), 200  # Replace ... with actual status
+    except Exception as e:
+        return jsonify({'error': 'An unexpected error occurred'}), 500
