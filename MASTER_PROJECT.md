@@ -59,7 +59,8 @@ DATABASE_URL=<db-url>
 CONTRACT_ADDRESS=<address>
 PRIVATE_KEY=<key>
 RPC_ENDPOINTS=<endpoints>
-REDIS_URL=<redis-url>
+SQLALCHEMY_DATABASE_URI=<db-url>
+SQLALCHEMY_TRACK_MODIFICATIONS=False
 ```
 
 ## Recent Updates
@@ -69,6 +70,8 @@ REDIS_URL=<redis-url>
 4. Advanced logging system
 5. Noble ranks optimization
 6. Smart contract upgrades
+7. Database configuration fixes
+8. Environment validation improvements
 
 ## Testing
 ```bash
@@ -94,3 +97,44 @@ pytest tests/test_noble_system.py -v
 ✅ Testing suite
 ✅ Documentation
 ✅ Rate limiting
+
+## Known Issues and Pending Fixes
+
+1. Database Configuration
+   - SQLAlchemy URI configuration needs standardization
+   - Database migration error handling needs improvement
+   - Connection pool settings optimization required
+
+2. Security Issues
+   - Rate limiter needs Redis fallback mechanism
+   - Secret rotation schedule needs implementation
+   - Multi-device token revocation system incomplete
+
+3. Blockchain Integration
+   - RPC endpoint failover mechanism needs improvement
+   - Transaction retry logic needs optimization
+   - Gas price estimation needs enhancement
+
+4. Testing Coverage
+   - Integration tests coverage insufficient
+   - Multi-device testing scenarios incomplete
+   - Blockchain mock testing needs expansion
+
+5. Performance Issues
+   - Database query optimization needed
+   - Caching layer implementation required
+   - Background task queue system needed
+
+6. Documentation
+   - API documentation needs updating
+   - Deployment guide needs expansion
+   - Error handling documentation incomplete
+
+Priority Tasks:
+1. Fix SQLAlchemy configuration issues
+2. Implement Redis fallback for rate limiting
+3. Optimize database queries
+4. Complete integration tests
+5. Implement caching layer
+6. Update API documentation
+
