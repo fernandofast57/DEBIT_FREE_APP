@@ -26,7 +26,7 @@ def setup_logging(app):
 
 def create_app(config_class=Config):
     app = Flask(__name__)
-    app.config.from_object(config_class)
+    app.config.from_object(config_class())
 
     # Initialize security manager
     security_manager = SecurityManager(
