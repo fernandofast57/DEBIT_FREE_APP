@@ -4,7 +4,6 @@ from datetime import datetime
 from typing import Dict, List, Optional, Any
 from app import db
 from app.models.models import User, MoneyAccount, GoldAccount, Transaction, GoldTransformation
-from app.services.blockchain_service import BlockchainService
 
 class TransformationService:
     def __init__(self):
@@ -40,27 +39,27 @@ class TransformationService:
             db.session.rollback()
             return {'status': 'error', 'message': str(e)}
 
-    def process_weekly_gold_purchase(self, technician_id: int, fixing_price: Decimal) -> Dict[str, Any]:
-        """Processo acquisto settimanale dell'oro al fixing"""
+    def execute_tuesday_gold_purchase(self, technician_id: int, fixing_price: Decimal) -> Dict[str, Any]:
+        """Esegue l'acquisto dell'oro del martedì e distribuisce ai clienti"""
         try:
             if not self._is_authorized_technician(technician_id):
                 return {'status': 'error', 'message': 'Tecnico non autorizzato'}
 
             # Recupera tutti gli account con saldo positivo
             accounts = MoneyAccount.query.filter(MoneyAccount.balance > 0).all()
+            if not accounts:
+                return {'status': 'success', 'message': 'Nessun account con saldo da processare'}
+
             total_euro = sum(account.balance for account in accounts)
-            
-            # Calcola fee struttura
             structure_fee_amount = total_euro * self.structure_fee
             net_amount = total_euro - structure_fee_amount
 
             transformations = []
             for account in accounts:
-                # Calcola oro per cliente
+                # Calcola oro per cliente (al netto della fee struttura)
                 client_net_amount = account.balance * (1 - self.structure_fee)
                 gold_grams = client_net_amount / fixing_price
                 
-                # Crea trasformazione
                 transformation = GoldTransformation(
                     user_id=account.user_id,
                     euro_amount=account.balance,
