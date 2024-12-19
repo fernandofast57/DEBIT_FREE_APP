@@ -87,7 +87,8 @@ class Config:
         
         # Configurazione base
         self.SECRET_KEY = os.getenv('SECRET_KEY')
-        self.DATABASE_URL = os.getenv('DATABASE_URL')
+        self.SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///instance/gold_investment.db')
+        self.SQLALCHEMY_TRACK_MODIFICATIONS = False
         self.CONTRACT_ADDRESS = os.getenv('CONTRACT_ADDRESS')
         self.PRIVATE_KEY = os.getenv('PRIVATE_KEY')
         self.RPC_ENDPOINTS = self._parse_endpoints()
