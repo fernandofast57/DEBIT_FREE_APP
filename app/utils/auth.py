@@ -1,34 +1,36 @@
 
-from functools import wraps
-from flask import request, jsonify
-from flask_login import LoginManager, current_user
-from app.models.models import User
+from datetime import datetime, timedelta
+from typing import Optional, Dict
+import jwt
+from app.utils.security.security_manager import SecurityManager
+from app.models.models import db
 
-login_manager = LoginManager()
-
-def init_login_manager(app):
-    login_manager.init_app(app)
-    login_manager.login_view = 'auth.login'
-    login_manager.login_message = 'Please log in to access this page.'
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
-def auth_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        auth_header = request.headers.get('Authorization')
-        if not auth_header:
-            return jsonify({'error': 'No authorization header'}), 401
-            
+class AuthManager:
+    def __init__(self, secret_key: str):
+        self.secret_key = secret_key
+        self.security = SecurityManager()
+    
+    def generate_token(self, user_id: int, device_id: str) -> str:
+        payload = {
+            'user_id': user_id,
+            'device_id': device_id,
+            'exp': datetime.utcnow() + timedelta(days=1)
+        }
+        return jwt.encode(payload, self.secret_key, algorithm='HS256')
+    
+    def verify_token(self, token: str) -> Optional[Dict]:
         try:
-            # Simple token validation for now
-            token = auth_header.split(' ')[1]
-            # Set a mock user_id for development
-            request.user_id = 1
-            return f(*args, **kwargs)
-        except Exception:
-            return jsonify({'error': 'Invalid token'}), 401
-            
-    return decorated
+            payload = jwt.decode(token, self.secret_key, algorithms=['HS256'])
+            if self.security.is_token_revoked(token):
+                return None
+            return payload
+        except jwt.ExpiredSignatureError:
+            return None
+        except jwt.InvalidTokenError:
+            return None
+    
+    def revoke_token(self, token: str) -> bool:
+        return self.security.revoke_token(token)
+    
+    def is_valid_device(self, user_id: int, device_id: str) -> bool:
+        return self.security.validate_device(user_id, device_id)

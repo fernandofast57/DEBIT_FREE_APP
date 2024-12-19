@@ -84,3 +84,36 @@ def verify():
         'message': 'User verified',
         'verified': True
     }), 200
+from flask import Blueprint, request, jsonify
+from app.utils.auth import AuthManager
+from app.utils.security.rate_limiter import rate_limit
+from config import Config
+
+auth_bp = Blueprint('auth', __name__)
+auth_manager = AuthManager(Config().SECRET_KEY)
+
+@auth_bp.route('/login', methods=['POST'])
+@rate_limit(max_requests=5, window=60)
+def login():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    device_id = data.get('device_id')
+    
+    if not user_id or not device_id:
+        return jsonify({'error': 'Missing required fields'}), 400
+        
+    if not auth_manager.is_valid_device(user_id, device_id):
+        return jsonify({'error': 'Invalid device'}), 403
+        
+    token = auth_manager.generate_token(user_id, device_id)
+    return jsonify({'token': token})
+
+@auth_bp.route('/logout', methods=['POST'])
+def logout():
+    token = request.headers.get('Authorization')
+    if not token:
+        return jsonify({'error': 'Missing token'}), 401
+        
+    if auth_manager.revoke_token(token):
+        return jsonify({'message': 'Logged out successfully'})
+    return jsonify({'error': 'Invalid token'}), 401
