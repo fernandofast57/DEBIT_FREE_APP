@@ -20,8 +20,11 @@ class TransformationService:
         self.total_fee = self.organization_fee + self.affiliate_fee
         self.blockchain_service = blockchain_service or BlockchainService()
 
-    async def transform_to_gold(self, user_id: int, fixing_price: Decimal) -> Dict[str, Any]:
-        """Transform user's euro balance into gold.
+    async def prepare_transformation(self, user_id: int, fixing_price: Decimal) -> Dict[str, Any]:
+        """Prepare transformation for tuesday batch processing.
+        Only validates and records the intention to transform.
+        The actual transformation happens after gold purchase confirmation.
+        """
         
         Args:
             user_id (int): The ID of the user requesting the transformation
@@ -202,3 +205,46 @@ class TransformationService:
                 'fixing_price': float(fixing_price)
             }
         }
+    async def confirm_gold_purchase(self, technician_id: int, purchase_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
+        """Confirm actual gold purchase by technician and distribute to pending transformations"""
+        try:
+            if not self._is_authorized_technician(technician_id):
+                return self._error_response('Tecnico non autorizzato')
+
+            # Get all pending transformations
+            pending_transformations = GoldTransformation.query.filter_by(status='pending').all()
+            total_requested = sum(t.euro_amount for t in pending_transformations)
+
+            if total_requested > purchase_amount:
+                return self._error_response('Oro acquistato insufficiente per le richieste pendenti')
+
+            results = []
+            for transformation in pending_transformations:
+                # Calculate gold grams for this transformation
+                gold_grams = (transformation.euro_amount * (1 - self.total_fee)) / fixing_price
+                
+                # Update gold account
+                gold_account = GoldAccount.query.filter_by(user_id=transformation.user_id).first()
+                gold_account.balance += gold_grams
+                
+                # Update transformation status
+                transformation.status = 'completed'
+                transformation.completion_date = datetime.utcnow()
+                transformation.gold_grams = gold_grams
+                transformation.fixing_price = fixing_price
+                
+                results.append({
+                    'user_id': transformation.user_id,
+                    'gold_grams': float(gold_grams)
+                })
+
+            db.session.commit()
+            
+            return {
+                'status': 'success',
+                'distributions': results
+            }
+
+        except Exception as e:
+            db.session.rollback()
+            return self._error_response(f'Errore nella conferma acquisto: {str(e)}')
