@@ -1,10 +1,10 @@
 
 import os
-import os
 from app import create_app
-from config import Config
+from app.utils.advanced_config import initialize_system
 
-config = Config()
+# Initialize system with advanced configuration
+config = initialize_system()
 logger = config.logger
 
 app = create_app()
