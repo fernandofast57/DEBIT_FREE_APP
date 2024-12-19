@@ -15,17 +15,18 @@ def mock_contract():
     return Mock()
 
 @pytest.fixture
-def blockchain_service(mock_web3, mock_contract):
-    from app.services.blockchain_service import BlockchainService
-
-@pytest.fixture
 def mock_secrets(monkeypatch):
     """Mock environment secrets for testing"""
     monkeypatch.setenv('PRIVATE_KEY', '0x1234567890123456789012345678901234567890123456789012345678901234')
     monkeypatch.setenv('CONTRACT_ADDRESS', '0x742d35Cc6634C0532925a3b844Bc454e4438f44e')
     monkeypatch.setenv('SECRET_KEY', 'test-secret-key')
     monkeypatch.setenv('DATABASE_URL', 'sqlite:///:memory:')
+    monkeypatch.setenv('RPC_ENDPOINTS', 'http://localhost:8545')
+    return monkeypatch
 
+@pytest.fixture
+def blockchain_service(mock_web3, mock_contract, mock_secrets):
+    from app.services.blockchain_service import BlockchainService
     service = BlockchainService()
     service.web3 = mock_web3
     service.contract = mock_contract
