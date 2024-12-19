@@ -1,4 +1,3 @@
-
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -25,28 +24,22 @@ def setup_logging(app):
     app.logger.info('Gold Investment startup')
 
 def create_app(config_class=Config):
-    app = Flask(__name__)
+    app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_class())
-
-    # Initialize security manager
-    security_manager = SecurityManager(
-        app_name='gold-investment',
-        redis_url='redis://0.0.0.0:6379/0'
-    )
-    app.rate_limiter = security_manager.rate_limiter
     
-    # Initialize extensions
+    # Ensure instance folder exists
+    try:
+        os.makedirs(app.instance_path)
+    except OSError:
+        pass
+        
     db.init_app(app)
     migrate.init_app(app, db)
     CORS(app)
     
     with app.app_context():
-        try:
-            db.create_all()
-        except Exception as e:
-            app.logger.error(f"Database initialization error: {e}")
-            raise
-
+        db.create_all()
+        
     # Setup logging
     if not app.debug and not app.testing:
         setup_logging(app)
