@@ -113,3 +113,45 @@ async def test_transformation_limits(app, transformation_service, test_user):
                 amount=amount,
                 current_gold_price=Decimal('50.00')
             )
+@pytest.mark.asyncio
+async def test_validate_transfer(app, transformation_service):
+    """Test validazione bonifico da parte del tecnico"""
+    with app.app_context():
+        # Setup
+        technician = User(email='tech@example.com', role='technician')
+        client = User(email='client@example.com')
+        transaction = Transaction(
+            user_id=client.id,
+            amount=Decimal('1000.00'),
+            status='pending'
+        )
+        db.session.add_all([technician, client, transaction])
+        db.session.commit()
+
+        # Test validazione
+        result = await transformation_service.validate_transfer(technician.id, transaction.id)
+        assert result['status'] == 'success'
+        assert transaction.status == 'validated'
+        assert transaction.validated_by == technician.id
+
+@pytest.mark.asyncio
+async def test_tuesday_gold_purchase(app, transformation_service):
+    """Test acquisto oro del martedì"""
+    with app.app_context():
+        # Setup
+        technician = User(email='tech@example.com', role='technician')
+        client = User(email='client@example.com')
+        money_account = MoneyAccount(user_id=client.id, balance=Decimal('1000.00'))
+        gold_account = GoldAccount(user_id=client.id, balance=Decimal('0'))
+        
+        db.session.add_all([technician, client, money_account, gold_account])
+        db.session.commit()
+
+        # Test acquisto oro
+        fixing_price = Decimal('1850.00')
+        result = await transformation_service.execute_tuesday_gold_purchase(technician.id, fixing_price)
+        
+        assert result['status'] == 'success'
+        assert result['summary']['total_euro'] == float(Decimal('1000.00'))
+        assert money_account.balance == Decimal('0')
+        assert gold_account.balance > Decimal('0')
