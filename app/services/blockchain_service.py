@@ -8,6 +8,10 @@ from typing import List, Dict
 import asyncio
 from ..utils.retry import retry_with_fallback
 from ..models.models import GoldTransformation
+import os
+# Assuming db is defined elsewhere, adjust as needed
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy()
 
 logger = logging.getLogger(__name__)
 
@@ -116,3 +120,21 @@ class BlockchainService:
         self.web3 = self._initialize_web3()
         self.contract = self._initialize_contract()
         logger.info(f"Switched to RPC endpoint: {self.rpc_endpoints[self.current_rpc_index]}")
+
+    async def _handle_batch_failure(self, transformations: List[GoldTransformation], error: str):
+        """Gestisce il fallimento di un batch"""
+        try:
+            for t in transformations:
+                t.status = 'failed'
+                t.error_message = error
+            db.session.commit()
+            logger.error(f"Batch processing failed: {error}")
+
+            # Ritenta la transazione
+            if "nonce too low" in error.lower():
+                await self._switch_rpc_endpoint()
+                return await self.process_batch_transformation(transformations)
+
+        except Exception as e:
+            logger.error(f"Error handling batch failure: {str(e)}")
+            db.session.rollback()
