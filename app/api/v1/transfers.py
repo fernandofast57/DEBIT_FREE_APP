@@ -32,7 +32,36 @@ def process_transfer():
 
     return jsonify(result)
 
-@bp.route('/batch/add', methods=['POST'])
+@bp.route('/batch/process', methods=['POST'])
+async def process_batch():
+    """
+    Processa un batch di bonifici
+    {
+        "transfers": [
+            {
+                "user_id": 1,
+                "amount": 1000.00,
+                "reference": "TRANSFER-001"
+            },
+            ...
+        ]
+    }
+    """
+    data = request.get_json()
+    transfers = data.get('transfers', [])
+
+    if not transfers:
+        return jsonify({
+            'status': 'error',
+            'message': 'Nessun bonifico da processare'
+        }), 400
+
+    result = await transfer_service.process_batch_transfers(transfers)
+    
+    if result['status'] == 'error':
+        return jsonify(result), 400
+
+    return jsonify(result)
 def add_to_batch():
     """
     Aggiunge un bonifico al batch settimanale
