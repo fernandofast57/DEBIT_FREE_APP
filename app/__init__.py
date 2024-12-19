@@ -41,7 +41,11 @@ def create_app(config_class=Config):
     CORS(app)
     
     with app.app_context():
-        db.create_all()
+        try:
+            db.create_all()
+        except Exception as e:
+            app.logger.error(f"Database initialization error: {e}")
+            raise
 
     # Setup logging
     if not app.debug and not app.testing:
