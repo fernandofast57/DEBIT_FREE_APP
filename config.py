@@ -86,7 +86,7 @@ class Config:
         
         # Configurazione base
         self.SECRET_KEY = os.getenv('SECRET_KEY')
-        db_path = os.path.join('instance', 'gold_investment.db')
+        db_path = os.path.join('instance', 'app.db')
         self.SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI', f'sqlite:///{db_path}')
         os.makedirs('instance', exist_ok=True)
         self.SQLALCHEMY_TRACK_MODIFICATIONS = False
