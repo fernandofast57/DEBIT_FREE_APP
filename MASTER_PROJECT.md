@@ -8,95 +8,114 @@
 │   ├── models/            # Database models including noble system
 │   ├── routes/            # Web routes for auth, gold, affiliate
 │   ├── services/          # Business logic services
-│   └── utils/             # Utility functions
+│   └── utils/             # Utility functions and security
 ├── blockchain/            # Blockchain integration
 │   ├── contracts/         # Smart contracts including NobleGoldSystem
 │   ├── tests/            # Smart contract tests
-│   └── scripts/           # Deployment scripts
+│   └── scripts/          # Deployment scripts
 ├── migrations/            # Database migrations
-├── tests/                 # Test suite
-│   ├── integration/       # Integration tests
-│   ├── unit/             # Unit tests
-│   └── conftest.py       # Test fixtures and configuration
-└── logs/                  # Application logs
+├── tests/                # Test suite
+│   ├── integration/      # Integration tests
+│   ├── unit/            # Unit tests
+│   ├── config/          # Test configurations
+│   └── conftest.py      # Test fixtures and configuration
+└── logs/                # Application logs
 ```
 
-## Key Files
-- `config.py`: Configuration settings using Replit Secrets
-- `main.py`: Application entry point with logging setup
-- `app/services/blockchain_service.py`: Polygon integration with retry mechanism
-- `app/models/models.py`: Database models including noble ranks
-- `blockchain/contracts/GoldSystem.sol`: Smart contract for gold system
-- `tests/conftest.py`: Test fixtures including mock environment variables
+## Key Components
 
-## Recent Changes
-1. Implementato sistema di logging con RotatingFileHandler
-2. Aggiunto supporto per mock dei secrets nei test
-3. Migliorata gestione delle variabili d'ambiente con dotenv
-4. Implementato sistema di retry per le operazioni blockchain
-5. Aggiunta validazione della configurazione all'avvio
-6. Migliorata struttura dei test con fixtures dedicati
+### Configuration System
+- Enhanced environment validation
+- Secure secret management
+- Automated secret rotation
+- Advanced logging with file rotation
+- Multi-environment support
 
-## Current Status
+### Security Features
+- Environment variable validation
+- Contract address format verification
+- Private key validation
+- RPC endpoint security checks
+- Database URL validation
+- Secret rotation mechanism
+- Comprehensive logging system
 
-### Completed
-- Configurazione sicura con Replit Secrets
-- Sistema di logging avanzato
-- Test suite completa con mock
-- Gestione errori e retry per blockchain
-- Validazione configurazione
-- Integrazione con Polygon
-- Sistema Noble ranks
+### Testing Infrastructure
+- Multi-device testing support
+- Device-specific configurations
+- Integration tests
+- Unit tests
+- Blockchain integration tests
 
-### Security Implementation
-1. **Environment Variables**
-   - Gestione sicura con python-dotenv
-   - Validazione all'avvio
-   - Mock per testing
-   - Rotazione sicura dei secrets
+### Blockchain Integration
+- Smart contract interaction
+- Multiple RPC endpoint support
+- Retry mechanism with fallback
+- Transaction validation
+- Noble ranks system
 
-2. **Logging**
-   - RotatingFileHandler per gestione log
-   - Backup automatico dei log
-   - Formattazione standardizzata
-   - Livelli di log configurabili
-
-3. **Testing**
-   - Mock dei secrets per test
-   - Fixtures pytest
-   - Test di integrazione
-   - Test unitari
-
-### System Features
+## Core Features
 - Gold transformations
 - Noble ranks system
 - Bonus distribution
-- Blockchain integration
+- Affiliate management
 - Secure configuration
-- Comprehensive logging
-
-## Testing
-```bash
-# Run all tests
-pytest tests/ -v
-
-# Run specific test category
-pytest tests/unit/ -v
-pytest tests/integration/ -v
-```
+- Advanced logging
+- Multi-device support
 
 ## Environment Setup
-1. Required Environment Variables:
-   ```
-   SECRET_KEY=<secure-random-key>
-   DATABASE_URL=<database-url>
-   CONTRACT_ADDRESS=<contract-address>
-   PRIVATE_KEY=<private-key>
-   RPC_ENDPOINTS=<endpoints>
-   ```
+Required Environment Variables:
+```
+SECRET_KEY=<secure-random-key>
+DATABASE_URL=<database-url>
+CONTRACT_ADDRESS=<contract-address>
+PRIVATE_KEY=<private-key>
+RPC_ENDPOINTS=<comma-separated-endpoints>
+```
 
-2. Local Development:
-   - Uses Replit IDE
-   - SQLite database
-   - Automated test suite
-   - Logging system
+## Running Tests
+```bash
+# All tests
+pytest tests/ -v
+
+# Specific categories
+pytest tests/unit/ -v
+pytest tests/integration/ -v
+pytest tests/test_multi_device.py -v
+```
+
+## Recent Improvements
+1. Added multi-device testing capabilities
+2. Implemented secret rotation system
+3. Enhanced configuration validation
+4. Improved blockchain interaction reliability
+5. Added comprehensive logging
+6. Implemented secure secret management
+
+## Security Implementation
+1. Configuration Validation
+   - Environment variable verification
+   - Format validation for blockchain addresses
+   - Secure endpoint validation
+   - Database URL verification
+
+2. Advanced Logging
+   - Rotating file handler
+   - Structured log format
+   - Multiple log levels
+   - Automated backup
+
+3. Secret Management
+   - Automated rotation
+   - Secure storage
+   - Validation checks
+   - Testing support
+
+## System Status
+- ✅ Secure configuration
+- ✅ Advanced logging
+- ✅ Multi-device testing
+- ✅ Blockchain integration
+- ✅ Noble ranks system
+- ✅ Secret rotation
+- ✅ Comprehensive validation
