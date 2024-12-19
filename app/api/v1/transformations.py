@@ -6,7 +6,50 @@ bp = Blueprint('transformations', __name__, url_prefix='/api/v1/transformations'
 transformation_service = TransformationService()
 
 @bp.route('/transform', methods=['POST'])
-async def transform_to_gold():
+async def validate_bank_transfer():
+    """
+    Validazione bonifico da parte del tecnico
+    {
+        "technician_id": 1,
+        "transaction_id": 123
+    }
+    """
+    data = request.get_json()
+
+    if not data:
+        return jsonify({'status': 'error', 'message': 'Dati mancanti'}), 400
+
+    technician_id = data.get('technician_id')
+    transaction_id = data.get('transaction_id')
+
+    if not technician_id or not transaction_id:
+        return jsonify({'status': 'error', 'message': 'Parametri mancanti'}), 400
+
+    result = transformation_service.validate_transfer(technician_id, transaction_id)
+    return jsonify(result)
+
+@bp.route('/tuesday-gold-purchase', methods=['POST'])
+async def execute_gold_purchase():
+    """
+    Esegue acquisto oro del martedì e distribuisce ai clienti
+    {
+        "technician_id": 1,
+        "fixing_price": 1850.50
+    }
+    """
+    data = request.get_json()
+
+    if not data:
+        return jsonify({'status': 'error', 'message': 'Dati mancanti'}), 400
+
+    try:
+        technician_id = int(data.get('technician_id'))
+        fixing_price = Decimal(str(data.get('fixing_price')))
+    except (TypeError, ValueError, InvalidOperation):
+        return jsonify({'status': 'error', 'message': 'Parametri non validi'}), 400
+
+    result = transformation_service.execute_tuesday_gold_purchase(technician_id, fixing_price)
+    return jsonify(result)
     """
     Trasforma il saldo euro in oro
     {
