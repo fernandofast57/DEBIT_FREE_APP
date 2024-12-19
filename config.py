@@ -1,69 +1,87 @@
 
 import os
-from typing import List
-from flask import Flask
+import logging
+from logging.handlers import RotatingFileHandler
+from typing import Any, Dict, List
 from dotenv import load_dotenv
 
-# Load environment variables from Replit Secrets
-load_dotenv()
+class ConfigValidator:
+    """Validatore per la configurazione"""
+    REQUIRED_VARS = [
+        'SECRET_KEY',
+        'DATABASE_URL',
+        'CONTRACT_ADDRESS',
+        'PRIVATE_KEY',
+        'RPC_ENDPOINTS'
+    ]
+
+    @staticmethod
+    def validate() -> bool:
+        missing = [var for var in ConfigValidator.REQUIRED_VARS 
+                  if not os.getenv(var)]
+        if missing:
+            raise ValueError(f"Missing required environment variables: {', '.join(missing)}")
+        return True
+
+class LogConfig:
+    """Configurazione del sistema di logging"""
+    def __init__(self, app_name: str = 'gold-investment'):
+        self.app_name = app_name
+        self.log_dir = 'logs'
+        self.log_file = f'{self.log_dir}/{app_name}.log'
+        self.max_bytes = 10 * 1024 * 1024  # 10MB
+        self.backup_count = 5
+        self.format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        
+        if not os.path.exists(self.log_dir):
+            os.makedirs(self.log_dir)
+
+    def get_handler(self) -> RotatingFileHandler:
+        handler = RotatingFileHandler(
+            self.log_file,
+            maxBytes=self.max_bytes,
+            backupCount=self.backup_count
+        )
+        handler.setFormatter(logging.Formatter(self.format))
+        return handler
+
+    def setup_logger(self, name: str = None) -> logging.Logger:
+        logger = logging.getLogger(name or self.app_name)
+        logger.setLevel(logging.INFO)
+        logger.addHandler(self.get_handler())
+        return logger
 
 class Config:
-    """Base config using Replit Secrets"""
-    
-    # Required secrets
-    REQUIRED_SECRETS = {
-        'SECRET_KEY': 'Flask secret key for session security',
-        'DATABASE_URL': 'Database connection URL',
-        'CONTRACT_ADDRESS': 'Blockchain contract address',
-        'PRIVATE_KEY': 'Private key for blockchain transactions',
-        'RPC_ENDPOINTS': 'Comma-separated RPC endpoints'
-    }
-    
-    # Flask settings
-    SECRET_KEY = os.environ.get('SECRET_KEY')
-    DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
-    TESTING = os.environ.get('TESTING', 'False').lower() == 'true'
-    
-    # Database
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-    
-    # Blockchain settings
-    CONTRACT_ADDRESS = os.environ.get('CONTRACT_ADDRESS')
-    PRIVATE_KEY = os.environ.get('PRIVATE_KEY')
-    RPC_ENDPOINTS = os.environ.get('RPC_ENDPOINTS', '').split(',')
-    
-    # Noble ranks thresholds
-    NOBLE_THRESHOLD = 10000
-    VISCOUNT_THRESHOLD = 50000
-    COUNT_THRESHOLD = 100000
-
-    @classmethod
-    def validate_config(cls):
-        """Validate required secrets are present"""
-        missing = []
-        invalid = []
+    """Configurazione base"""
+    def __init__(self):
+        # Carica variabili d'ambiente
+        load_dotenv()
         
-        for key, description in cls.REQUIRED_SECRETS.items():
-            value = os.environ.get(key)
-            if not value:
-                missing.append(f"{key} ({description})")
-            elif key == 'CONTRACT_ADDRESS' and (not value.startswith('0x') or len(value) != 42):
-                invalid.append(f"{key}: Invalid contract address format")
-            elif key == 'PRIVATE_KEY' and (not value.startswith('0x') or len(value) != 66):
-                invalid.append(f"{key}: Invalid private key format")
+        # Valida configurazione
+        ConfigValidator.validate()
         
-        if missing:
-            raise ValueError(f"Missing required secrets: {', '.join(missing)}")
-        if invalid:
-            raise ValueError(f"Invalid secret values: {', '.join(invalid)}")
+        # Setup logging
+        self.log_config = LogConfig()
+        self.logger = self.log_config.setup_logger()
+        
+        # Configurazione base
+        self.SECRET_KEY = os.getenv('SECRET_KEY')
+        self.DATABASE_URL = os.getenv('DATABASE_URL')
+        self.CONTRACT_ADDRESS = os.getenv('CONTRACT_ADDRESS')
+        self.PRIVATE_KEY = os.getenv('PRIVATE_KEY')
+        self.RPC_ENDPOINTS = self._parse_endpoints()
+        
+        self.logger.info("Configuration loaded successfully")
 
-def create_app(config_class=Config):
-    """Create Flask app with secure Replit Secrets"""
-    app = Flask(__name__)
-    
-    # Validate secrets before starting
-    config_class.validate_config()
-    
-    app.config.from_object(config_class)
-    return app
+    def _parse_endpoints(self) -> List[str]:
+        """Parse RPC endpoints from environment"""
+        endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
+        return [ep.strip() for ep in endpoints if ep.strip()]
+
+    def get_blockchain_config(self) -> Dict[str, Any]:
+        """Get blockchain specific configuration"""
+        return {
+            'contract_address': self.CONTRACT_ADDRESS,
+            'private_key': self.PRIVATE_KEY,
+            'rpc_endpoints': self.RPC_ENDPOINTS
+        }
