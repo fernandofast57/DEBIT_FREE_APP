@@ -52,3 +52,8 @@ def app(test_config):
     from app import create_app
     app = create_app(test_config)
     return app
+def pytest_configure(config):
+    """Configurazione pytest"""
+    config.addinivalue_line(
+        "markers", "redis: mark test as requiring redis"
+    )
