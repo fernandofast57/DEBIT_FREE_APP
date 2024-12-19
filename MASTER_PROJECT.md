@@ -18,9 +18,9 @@
 ## Core Components
 
 ### Security Layer
+- Advanced rate limiting with Redis support
 - Environment validation
 - Secret rotation system
-- Rate limiting
 - Multi-device support
 - Advanced logging with rotation
 - Blockchain address validation
@@ -59,10 +59,11 @@ DATABASE_URL=<db-url>
 CONTRACT_ADDRESS=<address>
 PRIVATE_KEY=<key>
 RPC_ENDPOINTS=<endpoints>
+REDIS_URL=<redis-url>
 ```
 
 ## Recent Updates
-1. Rate limiting implementation
+1. Redis-based rate limiting implementation
 2. Enhanced security validation
 3. Multi-device support
 4. Advanced logging system
@@ -77,7 +78,8 @@ pytest tests/test_noble_system.py -v
 ```
 
 ## Security Features
-- Rate limiting protection
+- Redis-powered rate limiting
+- IP and user-based request tracking
 - Secret rotation
 - Environment validation
 - Secure logging
@@ -91,3 +93,4 @@ pytest tests/test_noble_system.py -v
 ✅ Smart contracts
 ✅ Testing suite
 ✅ Documentation
+✅ Rate limiting
