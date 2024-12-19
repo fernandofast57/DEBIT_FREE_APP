@@ -39,12 +39,16 @@ def event_loop():
     loop.close()
 
 import pytest
-from app import create_app, db
-from config import Config
+from config import TestConfig
 
-class TestConfig(Config):
-    TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
-    # Use EthereumTesterProvider for testing
-    WEB3_PROVIDER = Web3(EthereumTesterProvider())
-    CHAIN_ID = 1337  # Local test chain ID
+@pytest.fixture
+def test_config():
+    """Fixture for test configuration"""
+    return TestConfig()
+
+@pytest.fixture
+def app(test_config):
+    """Fixture for Flask app with test configuration"""
+    from app import create_app
+    app = create_app(test_config)
+    return app
