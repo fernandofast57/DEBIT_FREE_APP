@@ -1,0 +1,52 @@
+
+{
+  "contractName": "NobleGoldSystem",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "AFFILIATE_FEE",
+      "outputs": [{"type": "uint256"}],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "ORGANIZATION_FEE",
+      "outputs": [{"type": "uint256"}],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {"type": "address[]", "name": "users"},
+        {"type": "uint256[]", "name": "euroAmounts"},
+        {"type": "uint256[]", "name": "goldGrams"}
+      ],
+      "name": "batchTransform",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [{"type": "address", "name": "user"}],
+      "name": "getInvestments",
+      "outputs": [
+        {
+          "components": [
+            {"type": "uint256", "name": "euroAmount"},
+            {"type": "uint256", "name": "goldGrams"},
+            {"type": "uint256", "name": "timestamp"}
+          ],
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
+}
