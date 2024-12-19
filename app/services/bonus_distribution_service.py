@@ -23,10 +23,15 @@ class BonusDistributionService:
         bonus_rate = self.bonus_rates.get(user.noble_rank.rank_name, Decimal('0'))
         return gold_balance * bonus_rate
     
-    def distribute_monthly_bonus(self) -> Dict[int, Decimal]:
+    async def distribute_monthly_bonus(self) -> Dict[int, Decimal]:
         """Distribute monthly bonus to all noble users"""
         noble_users = User.query.join(NobleRank).all()
         distribution_results = {}
+        
+        blockchain_service = BlockchainNobleService(
+            web3_provider=os.getenv('RPC_ENDPOINTS').split(',')[0],
+            contract_address=os.getenv('CONTRACT_ADDRESS')
+        )
         
         for user in noble_users:
             try:
