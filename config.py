@@ -1,35 +1,66 @@
-
-# config.py
-import os
-from datetime import timedelta
-
 class Config:
-    # Base Configuration
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-key'
-    
-    # Database Configuration
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///gold_investment.db'
+    """Base config class"""
+    SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'sqlite:///gold_investment.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_POOL_SIZE = int(os.environ.get('DB_POOL_SIZE', 10))
-    SQLALCHEMY_MAX_OVERFLOW = int(os.environ.get('DB_MAX_OVERFLOW', 20))
-    SQLALCHEMY_POOL_TIMEOUT = int(os.environ.get('DB_POOL_TIMEOUT', 30))
+    RATE_LIMIT = "200/hour"
 
-    # JWT Configuration
-    JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or 'jwt-secret-key'
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)
+    # Blockchain config
+    CONTRACT_ADDRESS = '0x742d35Cc6634C0532925a3b844Bc454e4438f44e'
+    SYSTEM_ADDRESS = '0x742d35Cc6634C0532925a3b844Bc454e4438f44e'
+    PRIVATE_KEY = 'your-private-key'  # Usa variabili d'ambiente in produzione
 
-    # Blockchain Configuration
-    POLYGON_RPC_URL = os.environ.get('POLYGON_RPC_URL') or 'https://rpc-mumbai.maticvigil.com'
-    POLYGON_CHAIN_ID = 80001  # Mumbai testnet
-    POLYGON_PRIVATE_KEY = os.environ.get('POLYGON_PRIVATE_KEY')
-    SMART_CONTRACT_ADDRESS = os.environ.get('SMART_CONTRACT_ADDRESS')
-    MAX_GAS_PRICE_GWEI = 50
+    # RPC endpoints
+    RPC_ENDPOINTS = [
+        "https://rpc-mumbai.maticvigil.com",
+        "https://matic-mumbai.chainstacklabs.com",
+        "https://matic-testnet-archive-rpc.bwarelabs.com"
+    ]
 
-    # Logging Configuration
-    LOG_LEVEL = os.environ.get('LOG_LEVEL') or 'INFO'
-    LOG_FILE = 'logs/app.log'
+# app/__init__.py
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from config import Config
+
+db = SQLAlchemy()
+migrate = Migrate()
+
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
+
+    db.init_app(app)
+    migrate.init_app(app, db)
+
+    # Registra blueprints
+    from app.routes import main
+    app.register_blueprint(main.bp)
+
+    return app
+
+# tests/conftest.py
+import pytest
+from app import create_app, db
+from config import Config
 
 class TestConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
-    WTF_CSRF_ENABLED = False
+
+@pytest.fixture
+def app():
+    app = create_app(TestConfig)
+    with app.app_context():
+        db.create_all()
+        yield app
+        db.session.remove()
+        db.drop_all()
+
+@pytest.fixture
+def client(app):
+    return app.test_client()
+
+@pytest.fixture
+def runner(app):
+    return app.test_cli_runner()

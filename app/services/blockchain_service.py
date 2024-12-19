@@ -1,126 +1,118 @@
+# app/services/blockchain_service.py
 
 from web3 import Web3
 from web3.middleware import geth_poa_middleware
-from eth_account import Account
-from decimal import Decimal
 import json
+import logging
+from typing import List, Dict
 import asyncio
+from ..utils.retry import retry_with_fallback
+from ..models.models import GoldTransformation
+
+logger = logging.getLogger(__name__)
 
 class BlockchainService:
-    def __init__(self, app=None):
-        if app:
-            self.init_app(app)
-            
-    def init_app(self, app):
-        self.web3 = Web3(Web3.HTTPProvider(app.config['POLYGON_RPC_URL']))
-        self.web3.middleware_onion.inject(geth_poa_middleware, layer=0)
-        
-        with open('blockchain/contracts/GoldSystem.json') as f:
-            contract_json = json.load(f)
-        self.contract = self.web3.eth.contract(
-            address=app.config['SMART_CONTRACT_ADDRESS'],
-            abi=contract_json['abi']
-        )
-        
-        self.owner_account = Account.from_key(app.config['POLYGON_PRIVATE_KEY'])
+    def __init__(self):
+        self.rpc_endpoints = [
+            "https://rpc-mumbai.maticvigil.com",
+            "https://matic-mumbai.chainstacklabs.com",
+            "https://matic-testnet-archive-rpc.bwarelabs.com"
+        ]
+        self.current_rpc_index = 0
+        self.web3 = self._initialize_web3()
+        self.contract = self._initialize_contract()
         self.batch_size = 50
-        self.max_gas_price = app.config.get('MAX_GAS_PRICE_GWEI', 50)
-        self.estimated_gas_per_tx = 100000
-        
-    def estimate_batch_cost(self, num_transactions):
-        gas_price_wei = self.web3.eth.gas_price
-        total_gas = self.estimated_gas_per_tx * num_transactions
-        cost_matic = self.web3.from_wei(gas_price_wei * total_gas, 'ether')
-        return float(cost_matic)
-    
-    async def process_batch(self, transformations, max_retries=3):
+        self.pending_transactions = []
+
+    def _initialize_web3(self) -> Web3:
+        """Inizializza Web3 con fallback automatico"""
+        web3 = Web3(Web3.HTTPProvider(self.rpc_endpoints[self.current_rpc_index]))
+        web3.middleware_onion.inject(geth_poa_middleware, layer=0)
+        return web3
+
+    @retry_with_fallback
+    def _initialize_contract(self):
+        """Inizializza il contratto con gestione errori"""
         try:
-            if not transformations:
-                return {'status': 'success', 'message': 'No transactions to process'}
-                
-            for retry in range(max_retries):
-                try:
-                    return await self._try_process_batch(transformations)
-                except Exception as e:
-                    if retry == max_retries - 1:
-                        raise
-                    await asyncio.sleep(2 ** retry)  # Exponential backoff
-                    
-    async def _try_process_batch(self, transformations):
-                
-            gas_price = self.web3.eth.gas_price
-            max_gas_price_wei = self.web3.to_wei(self.max_gas_price, 'gwei')
-            
-            if gas_price > max_gas_price_wei:
-                return {
-                    'status': 'delayed',
-                    'message': f'Gas price too high: {self.web3.from_wei(gas_price, "gwei")} Gwei'
-                }
-            
-            users = []
-            euro_amounts = []
-            gold_amounts = []
-            
-            for tx in transformations[:self.batch_size]:
-                users.append(self.web3.to_checksum_address(tx['user_address']))
-                euro_amounts.append(int(Decimal(tx['euro_amount']) * 100))
-                gold_amounts.append(int(Decimal(tx['gold_amount']) * 10000))
-            
-            nonce = self.web3.eth.get_transaction_count(self.owner_account.address)
-            
-            contract_tx = self.contract.functions.batchTransform(
-                users,
-                euro_amounts,
-                gold_amounts,
-                int(Decimal(transformations[0]['fixing_price']) * 100)
+            with open('blockchain/contracts/GoldSystem.json') as f:
+                contract_json = json.load(f)
+
+            contract = self.web3.eth.contract(
+                address=self.web3.to_checksum_address('0x742d35Cc6634C0532925a3b844Bc454e4438f44e'),
+                abi=contract_json['abi']
+            )
+            return contract
+        except Exception as e:
+            logger.error(f"Contract initialization failed: {str(e)}")
+            raise
+
+    async def process_batch_transformation(self, transformations: List[GoldTransformation]):
+        """Processa un batch di trasformazioni oro"""
+        if not transformations:
+            return
+
+        try:
+            addresses = []
+            amounts = []
+            timestamps = []
+
+            for t in transformations:
+                addresses.append(self.web3.to_checksum_address(t.user_address))
+                amounts.append(self.web3.to_wei(t.gold_grams, 'ether'))
+                timestamps.append(int(t.created_at.timestamp()))
+
+            gas_price = await self._get_optimal_gas_price()
+
+            nonce = self.web3.eth.get_transaction_count(
+                self.web3.to_checksum_address('0x742d35Cc6634C0532925a3b844Bc454e4438f44e')
+            )
+
+            batch_tx = self.contract.functions.batchTransform(
+                addresses,
+                amounts,
+                timestamps
             ).build_transaction({
-                'from': self.owner_account.address,
-                'gas': len(users) * self.estimated_gas_per_tx,
+                'from': self.web3.to_checksum_address('0x742d35Cc6634C0532925a3b844Bc454e4438f44e'),
+                'gas': 2000000,
                 'gasPrice': gas_price,
                 'nonce': nonce,
-                'maxFeePerGas': max_gas_price_wei,
-                'maxPriorityFeePerGas': self.web3.to_wei(1, 'gwei')
             })
-            
-            signed_tx = self.owner_account.sign_transaction(contract_tx)
-            tx_hash = await self._send_transaction(signed_tx.rawTransaction)
-            receipt = await self._wait_for_transaction(tx_hash, timeout=60)
-            
-            if receipt['status'] == 1:
-                batch_cost = self.estimate_batch_cost(len(users))
-                return {
-                    'status': 'success',
-                    'transaction_hash': tx_hash.hex(),
-                    'block_number': receipt['blockNumber'],
-                    'cost_matic': batch_cost,
-                    'cost_per_tx': batch_cost / len(users)
-                }
-            else:
-                return {
-                    'status': 'error',
-                    'message': 'Transaction reverted'
-                }
-                
-        except Exception as e:
-            return {
-                'status': 'error',
-                'message': str(e)
-            }
 
-    async def _wait_for_transaction(self, transaction_hash, timeout=60):
-        start_time = asyncio.get_event_loop().time()
-        while True:
-            if asyncio.get_event_loop().time() - start_time > timeout:
-                raise TimeoutError(f"Transaction not mined after {timeout} seconds")
-            
-            try:
-                receipt = await asyncio.get_event_loop().run_in_executor(
-                    None,
-                    self.web3.eth.get_transaction_receipt,
-                    transaction_hash
-                )
-                if receipt:
-                    return receipt
-            except Exception:
-                pass
-            await asyncio.sleep(0.5)
+            private_key = os.environ.get('PRIVATE_KEY')
+            if not private_key:
+                raise ValueError("Private key not configured")
+            signed_tx = self.web3.eth.account.sign_transaction(
+                batch_tx,
+                private_key=private_key
+            )
+
+            tx_hash = self.web3.eth.send_raw_transaction(signed_tx.rawTransaction)
+            receipt = self.web3.eth.wait_for_transaction_receipt(tx_hash, timeout=180)
+
+            if receipt.status == 1:
+                logger.info(f"Batch processed successfully: {tx_hash.hex()}")
+                return receipt
+            else:
+                raise Exception("Batch transaction failed")
+
+        except Exception as e:
+            logger.error(f"Batch processing failed: {str(e)}")
+            await self._handle_batch_failure(transformations, str(e))
+            raise
+
+    async def _get_optimal_gas_price(self) -> int:
+        try:
+            base_fee = self.web3.eth.get_block('latest').baseFeePerGas
+            max_priority_fee = self.web3.eth.max_priority_fee
+            gas_price = base_fee + max_priority_fee + self.web3.to_wei(0.1, 'gwei')
+            return min(gas_price, self.web3.to_wei(30, 'gwei'))
+        except Exception as e:
+            logger.warning(f"Error getting optimal gas price: {str(e)}")
+            return self.web3.to_wei(20, 'gwei')
+
+    async def _switch_rpc_endpoint(self):
+        """Cambia endpoint RPC in caso di problemi"""
+        self.current_rpc_index = (self.current_rpc_index + 1) % len(self.rpc_endpoints)
+        self.web3 = self._initialize_web3()
+        self.contract = self._initialize_contract()
+        logger.info(f"Switched to RPC endpoint: {self.rpc_endpoints[self.current_rpc_index]}")
