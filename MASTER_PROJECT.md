@@ -10,7 +10,8 @@
 │   ├── services/          # Business logic services
 │   └── utils/             # Utility functions
 ├── blockchain/            # Blockchain integration
-│   ├── contracts/         # Smart contracts
+│   ├── contracts/         # Smart contracts including NobleGoldSystem
+│   ├── tests/            # Smart contract tests
 │   └── scripts/           # Deployment scripts
 ├── migrations/            # Database migrations
 ├── tests/                 # Test suite
@@ -23,13 +24,14 @@
 - `app/services/blockchain_service.py`: Polygon integration with retry mechanism
 - `app/models/models.py`: Database models including noble ranks
 - `blockchain/contracts/GoldSystem.sol`: Smart contract for gold system
+- `blockchain/tests/NobleGoldSystem.test.js`: Smart contract test suite
 
 ## Recent Changes
-1. Implemented multiple RPC endpoints with failover
-2. Enhanced logging system with rotation
-3. Added noble ranks system
-4. Implemented comprehensive test suite
-5. Added retry mechanism for blockchain operations
+1. Implemented NobleGoldSystem smart contract testing
+2. Enhanced smart contract with noble ranks and bonus distribution
+3. Added comprehensive test coverage for blockchain operations
+4. Implemented batch transformation functionality
+5. Added referral system tracking
 
 ## Current Status
 
@@ -37,46 +39,57 @@
 - Project structure and configuration
 - Database models and migrations
 - Smart contract integration
-- Authentication system
+- Smart contract test suite
 - Noble ranks system
-- Logging system with rotation
-- Test environment setup
+- Bonus distribution system
+- Referral tracking system
+- Batch transformation processing
 
 ### Critical Points
-1. **Blockchain Integration**
-   - Multiple RPC endpoints with failover
-   - Retry mechanism for failed transactions
-   - Gas optimization
+1. **Smart Contract Testing**
+   - Unit tests for transformations
+   - Noble ranks validation
+   - Bonus distribution verification
+   - Referral system testing
 
-2. **Testing**
-   - Local blockchain testing
-   - Mock providers for tests
-   - Integration test suite
+2. **Blockchain Integration**
+   - Multiple RPC endpoints with failover
+   - Transaction retry mechanism
+   - Gas optimization
+   - Batch processing
 
 3. **Security**
    - Authentication middleware
-   - Token validation
-   - Secure configuration management
+   - Transaction validation
+   - Secure configuration
+   - Smart contract access control
 
 4. **System Features**
    - Gold transformations
+   - Noble ranks progression
    - Bonus distribution
-   - Batch collection
-   - Noble ranks management
+   - Referral tracking
+   - Batch operations
 
 ## Next Steps
-1. Enhance error recovery in blockchain service
-2. Implement additional noble rank features
-3. Optimize batch processing performance
-4. Add more comprehensive system tests
+1. Add more comprehensive smart contract tests
+2. Enhance noble ranks progression system
+3. Optimize batch transformation gas usage
+4. Implement additional bonus distribution features
 
 ## Testing
-Tests can be run using:
+Smart contract tests can be run using:
+```bash
+npx hardhat test
+```
+
+Backend tests can be run using:
 ```bash
 pytest tests/ -v
 ```
 
 Local testing uses:
-- SQLite in-memory database
-- Mock blockchain provider
+- Hardhat local blockchain for contract testing
+- SQLite in-memory database for backend
+- Mock blockchain provider for integration tests
 - Test fixtures for common scenarios
