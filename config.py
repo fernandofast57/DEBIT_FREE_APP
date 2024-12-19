@@ -21,6 +21,27 @@ class ConfigValidator:
                   if not os.getenv(var)]
         if missing:
             raise ValueError(f"Missing required environment variables: {', '.join(missing)}")
+        
+        # Validate contract address format
+        contract_address = os.getenv('CONTRACT_ADDRESS')
+        if not contract_address.startswith('0x') or len(contract_address) != 42:
+            raise ValueError("Invalid CONTRACT_ADDRESS format")
+        
+        # Validate private key format
+        private_key = os.getenv('PRIVATE_KEY')
+        if not private_key.startswith('0x') or len(private_key) != 66:
+            raise ValueError("Invalid PRIVATE_KEY format")
+        
+        # Validate RPC endpoints
+        rpc_endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
+        if not any(ep.strip().startswith('https://') for ep in rpc_endpoints):
+            raise ValueError("At least one valid HTTPS RPC endpoint required")
+        
+        # Validate database URL
+        db_url = os.getenv('DATABASE_URL')
+        if not any(db_url.startswith(prefix) for prefix in ['sqlite:///', 'postgresql://', 'mysql://']):
+            raise ValueError("Invalid DATABASE_URL format")
+            
         return True
 
 class LogConfig:
