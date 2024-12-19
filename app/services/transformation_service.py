@@ -44,6 +44,9 @@ class TransformationService:
         try:
             if not self._is_authorized_technician(technician_id):
                 return {'status': 'error', 'message': 'Tecnico non autorizzato'}
+            
+            if datetime.utcnow().weekday() != 1:  # Verifica che sia martedì
+                return {'status': 'error', 'message': 'Le trasformazioni sono permesse solo il martedì'}
 
             # Recupera tutti gli account con saldo positivo
             accounts = MoneyAccount.query.filter(MoneyAccount.balance > 0).all()
