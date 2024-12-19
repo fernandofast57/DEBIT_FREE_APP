@@ -11,6 +11,24 @@ class BlockchainNobleService:
             address=contract_address,
             abi=self.load_contract_abi()
         )
+        
+    async def update_noble_rank(self, user_address: str, new_rank: str) -> dict:
+        try:
+            tx_hash = await self.contract.functions.updateNobleRank(
+                user_address,
+                new_rank
+            ).transact()
+            
+            receipt = await self.web3.eth.wait_for_transaction_receipt(tx_hash)
+            return {
+                'status': 'success',
+                'tx_hash': receipt.transactionHash.hex(),
+                'block_number': receipt.blockNumber,
+                'rank': new_rank
+            }
+        except Exception as e:
+            logger.error(f"Error updating noble rank: {str(e)}")
+            return {'status': 'error', 'message': str(e)}
 
     async def distribute_noble_bonus(self, user_address: str, amount: Decimal) -> dict:
         try:
