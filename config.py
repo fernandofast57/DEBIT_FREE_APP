@@ -87,7 +87,7 @@ class Config:
         
         # Configurazione base
         self.SECRET_KEY = os.getenv('SECRET_KEY')
-        self.SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI', 'sqlite:///instance/gold_investment.db')
+        self.SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI', 'sqlite:////home/runner/gold-investment-backend/instance/gold_investment.db')
         if not os.path.exists('instance'):
             os.makedirs('instance')
         self.SQLALCHEMY_TRACK_MODIFICATIONS = False
