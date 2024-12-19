@@ -1,4 +1,3 @@
-
 import pytest
 from decimal import Decimal
 from app.services.transformation_service import TransformationService
@@ -62,3 +61,55 @@ def test_noble_rank_update(app, transformation_service, test_user):
         
         assert result['status'] == 'success'
         assert test_user.noble_rank is not None
+
+@pytest.mark.asyncio
+async def test_transformation_validation(app, transformation_service):
+    with app.app_context():
+        # Test invalid amount
+        with pytest.raises(ValueError, match="Amount must be positive"):
+            await transformation_service.transform_money_to_gold(
+                user_id=1,
+                amount=Decimal('-100.00'),
+                current_gold_price=Decimal('50.00')
+            )
+        
+        # Test zero amount
+        with pytest.raises(ValueError, match="Amount must be positive"):
+            await transformation_service.transform_money_to_gold(
+                user_id=1,
+                amount=Decimal('0.00'),
+                current_gold_price=Decimal('50.00')
+            )
+
+@pytest.mark.asyncio
+async def test_successful_transformation(app, transformation_service, test_user):
+    with app.app_context():
+        initial_money = test_user.money_account.balance
+        initial_gold = test_user.gold_account.balance
+        
+        amount = Decimal('100.00')
+        gold_price = Decimal('50.00')
+        
+        result = await transformation_service.transform_money_to_gold(
+            user_id=test_user.id,
+            amount=amount,
+            current_gold_price=gold_price
+        )
+        
+        assert result['status'] == 'success'
+        assert test_user.money_account.balance == initial_money - amount
+        assert test_user.gold_account.balance == initial_gold + (amount / gold_price)
+
+@pytest.mark.asyncio
+async def test_transformation_limits(app, transformation_service, test_user):
+    with app.app_context():
+        # Test daily limit
+        daily_limit = Decimal('10000.00')
+        amount = daily_limit + Decimal('1.00')
+        
+        with pytest.raises(ValueError, match="Exceeds daily transformation limit"):
+            await transformation_service.transform_money_to_gold(
+                user_id=test_user.id,
+                amount=amount,
+                current_gold_price=Decimal('50.00')
+            )
