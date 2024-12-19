@@ -42,3 +42,43 @@ def get_bonus_history(user_id):
         return jsonify(result), 400
 
     return jsonify(result)
+from flask import Blueprint, jsonify
+from app.services.bonus_distribution_service import BonusDistributionService
+from app.utils.auth import auth_required
+from app.utils.security.rate_limiter import rate_limit
+
+bp = Blueprint('bonuses', __name__)
+bonus_service = BonusDistributionService()
+
+@bp.route('/calculate', methods=['GET'])
+@auth_required
+@rate_limit(requests=5, window=60)
+def calculate_bonus():
+    """Calculate potential bonus for current user"""
+    try:
+        from flask import request
+        user_id = request.user_id
+        user = User.query.get(user_id)
+        
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+            
+        bonus = bonus_service.calculate_user_bonus(user)
+        return jsonify({
+            'bonus_amount': float(bonus),
+            'rank': user.noble_rank.rank_name if user.noble_rank else None
+        })
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@bp.route('/statistics', methods=['GET'])
+@auth_required
+@rate_limit(requests=5, window=60)
+def bonus_statistics():
+    """Get bonus distribution statistics"""
+    try:
+        stats = bonus_service.get_bonus_statistics()
+        return jsonify(stats)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
