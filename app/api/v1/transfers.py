@@ -65,10 +65,22 @@ def add_to_batch():
         'message': 'Bonifico aggiunto al batch'
     })
 
-@bp.route('/batch/process', methods=['POST'])
-def process_weekly_batch():
-    """Processa tutti i bonifici in attesa nel batch"""
-    result = transfer_service.process_weekly_batch()
+@bp.route('/fixing/purchase', methods=['POST'])
+def process_fixing_purchase():
+    """Processa l'acquisto dell'oro al fixing"""
+    data = request.get_json()
+    
+    try:
+        technician_id = int(data.get('technician_id'))
+        fixing_price = Decimal(str(data.get('fixing_price')))
+    except (TypeError, ValueError, InvalidOperation):
+        return jsonify({
+            'status': 'error',
+            'message': 'Parametri non validi'
+        }), 400
+
+    result = await transformation_service.process_fixing_purchase(technician_id, fixing_price)
+    return jsonify(result)
 
     if result['status'] == 'error':
         return jsonify(result), 400

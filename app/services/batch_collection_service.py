@@ -12,7 +12,6 @@ class BatchCollectionService:
     def validate_bank_transfer(self, transfer_id: str, technician_id: int) -> Dict:
         """Convalida manuale di un bonifico da parte del tecnico"""
         try:
-            # Verifica che il tecnico sia autorizzato
             if not self._is_authorized_technician(technician_id):
                 return {
                     'status': 'error',
@@ -20,6 +19,22 @@ class BatchCollectionService:
                 }
 
             transfer = Transaction.query.filter_by(id=transfer_id, status='pending').first()
+            if not transfer:
+                return {
+                    'status': 'error',
+                    'message': 'Bonifico non trovato'
+                }
+
+            # Aggiorna stato bonifico e bilancio cliente
+            transfer.status = 'validated'
+            transfer.validated_by = technician_id
+            transfer.validation_date = datetime.utcnow()
+
+            money_account = MoneyAccount.query.filter_by(user_id=transfer.user_id).first()
+            money_account.balance += transfer.amount
+            money_account.last_update = datetime.utcnow()
+
+            db.session.commit()
             if not transfer:
                 return {
                     'status': 'error',
