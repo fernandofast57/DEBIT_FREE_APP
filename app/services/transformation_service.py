@@ -1,12 +1,10 @@
 
-```python
 from decimal import Decimal
 from datetime import datetime
 from typing import Dict, List, Optional, Any
 from app import db
-from app.models.models import User, MoneyAccount, GoldAccount, GoldTransformation, Transaction
+from app.models.models import User, MoneyAccount, GoldAccount, Transaction, GoldTransformation
 from app.services.blockchain_service import BlockchainService
-from app.utils.logging_config import logger
 
 class TransformationService:
     def __init__(self):
@@ -17,8 +15,33 @@ class TransformationService:
             3: Decimal('0.005')   # 0.5% terzo livello
         }
 
-    async def process_fixing_purchase(self, technician_id: int, fixing_price: Decimal) -> Dict[str, Any]:
-        """Processa l'acquisto dell'oro al fixing per tutti i clienti con saldo positivo"""
+    def validate_transfer(self, technician_id: int, transaction_id: int) -> Dict[str, Any]:
+        """Validazione del bonifico da parte del tecnico"""
+        try:
+            if not self._is_authorized_technician(technician_id):
+                return {'status': 'error', 'message': 'Tecnico non autorizzato'}
+
+            transaction = Transaction.query.get(transaction_id)
+            if not transaction or transaction.status != 'pending':
+                return {'status': 'error', 'message': 'Transazione non valida'}
+
+            # Aggiorna saldo euro cliente
+            money_account = MoneyAccount.query.filter_by(user_id=transaction.user_id).first()
+            money_account.balance += transaction.amount
+            
+            transaction.status = 'validated'
+            transaction.validation_date = datetime.utcnow()
+            transaction.validated_by = technician_id
+            
+            db.session.commit()
+            return {'status': 'success', 'message': 'Bonifico validato'}
+
+        except Exception as e:
+            db.session.rollback()
+            return {'status': 'error', 'message': str(e)}
+
+    def process_weekly_gold_purchase(self, technician_id: int, fixing_price: Decimal) -> Dict[str, Any]:
+        """Processo acquisto settimanale dell'oro al fixing"""
         try:
             if not self._is_authorized_technician(technician_id):
                 return {'status': 'error', 'message': 'Tecnico non autorizzato'}
@@ -31,28 +54,32 @@ class TransformationService:
             structure_fee_amount = total_euro * self.structure_fee
             net_amount = total_euro - structure_fee_amount
 
-            results = []
+            transformations = []
             for account in accounts:
                 # Calcola oro per cliente
                 client_net_amount = account.balance * (1 - self.structure_fee)
                 gold_grams = client_net_amount / fixing_price
                 
-                # Aggiorna account oro cliente
+                # Crea trasformazione
+                transformation = GoldTransformation(
+                    user_id=account.user_id,
+                    euro_amount=account.balance,
+                    gold_grams=gold_grams,
+                    fixing_price=fixing_price,
+                    status='completed',
+                    fee_amount=account.balance * self.structure_fee
+                )
+                transformations.append(transformation)
+                
+                # Aggiorna saldi
                 gold_account = GoldAccount.query.filter_by(user_id=account.user_id).first()
                 gold_account.balance += gold_grams
-                
-                # Calcola e distribuisci bonus referral
-                referral_bonus = self._calculate_referral_bonus(account.user_id, gold_grams)
-                
-                # Azzera saldo euro
                 account.balance = Decimal('0')
                 
-                results.append({
-                    'user_id': account.user_id,
-                    'gold_grams': float(gold_grams),
-                    'referral_bonus': float(referral_bonus)
-                })
+                # Distribuisci bonus referral
+                self._distribute_referral_bonus(account.user_id, gold_grams)
 
+            db.session.add_all(transformations)
             db.session.commit()
             
             return {
@@ -61,7 +88,7 @@ class TransformationService:
                     'total_euro': float(total_euro),
                     'structure_fee': float(structure_fee_amount),
                     'net_amount': float(net_amount),
-                    'transactions': results
+                    'transformations_count': len(transformations)
                 }
             }
 
@@ -69,11 +96,9 @@ class TransformationService:
             db.session.rollback()
             return {'status': 'error', 'message': str(e)}
 
-    def _calculate_referral_bonus(self, user_id: int, gold_amount: Decimal) -> Decimal:
-        """Calcola e distribuisce i bonus referral"""
+    def _distribute_referral_bonus(self, user_id: int, gold_amount: Decimal) -> None:
+        """Distribuisce i bonus referral"""
         user = User.query.get(user_id)
-        total_bonus = Decimal('0')
-        
         if user.referrer_id:
             for level, rate in self.referral_rates.items():
                 referrer = self._get_nth_level_referrer(user, level)
@@ -81,9 +106,6 @@ class TransformationService:
                     bonus_amount = gold_amount * rate
                     referrer_gold_account = GoldAccount.query.filter_by(user_id=referrer.id).first()
                     referrer_gold_account.balance += bonus_amount
-                    total_bonus += bonus_amount
-                    
-        return total_bonus
 
     def _get_nth_level_referrer(self, user: User, level: int) -> Optional[User]:
         """Recupera il referrer di n-esimo livello"""
@@ -93,4 +115,8 @@ class TransformationService:
                 return None
             current_user = User.query.get(current_user.referrer_id)
         return current_user
-```
+
+    def _is_authorized_technician(self, technician_id: int) -> bool:
+        """Verifica se l'utente è un tecnico autorizzato"""
+        user = User.query.get(technician_id)
+        return user and user.role == 'technician'
