@@ -50,6 +50,9 @@ async def execute_gold_purchase():
 
     result = transformation_service.execute_tuesday_gold_purchase(technician_id, fixing_price)
     return jsonify(result)
+
+@bp.route('/transform_to_gold', methods=['POST'])
+async def transform_to_gold():
     """
     Trasforma il saldo euro in oro
     {
