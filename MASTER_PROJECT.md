@@ -15,6 +15,9 @@
 │   └── scripts/           # Deployment scripts
 ├── migrations/            # Database migrations
 ├── tests/                 # Test suite
+│   ├── integration/       # Integration tests
+│   ├── unit/             # Unit tests
+│   └── conftest.py       # Test fixtures and configuration
 └── logs/                  # Application logs
 ```
 
@@ -24,77 +27,76 @@
 - `app/services/blockchain_service.py`: Polygon integration with retry mechanism
 - `app/models/models.py`: Database models including noble ranks
 - `blockchain/contracts/GoldSystem.sol`: Smart contract for gold system
-- `blockchain/tests/NobleGoldSystem.test.js`: Smart contract test suite
+- `tests/conftest.py`: Test fixtures including mock environment variables
 
 ## Recent Changes
-1. Implemented secure configuration using Replit Secrets tool
-2. Enhanced smart contract with noble ranks and bonus distribution
-3. Added comprehensive test coverage for blockchain operations
-4. Implemented batch transformation functionality
-5. Added referral system tracking
-6. Improved security with environment variables management
+1. Implementato sistema di logging con RotatingFileHandler
+2. Aggiunto supporto per mock dei secrets nei test
+3. Migliorata gestione delle variabili d'ambiente con dotenv
+4. Implementato sistema di retry per le operazioni blockchain
+5. Aggiunta validazione della configurazione all'avvio
+6. Migliorata struttura dei test con fixtures dedicati
 
 ## Current Status
 
 ### Completed
-- Project structure and configuration
-- Database models and migrations
-- Smart contract integration
-- Smart contract test suite
-- Noble ranks system
-- Bonus distribution system
-- Referral tracking system
-- Batch transformation processing
-- Secure secrets management with Replit Secrets
+- Configurazione sicura con Replit Secrets
+- Sistema di logging avanzato
+- Test suite completa con mock
+- Gestione errori e retry per blockchain
+- Validazione configurazione
+- Integrazione con Polygon
+- Sistema Noble ranks
 
 ### Security Implementation
-1. **Replit Secrets Integration**
-   - SECRET_KEY for Flask
-   - DATABASE_URL for database connection
-   - CONTRACT_ADDRESS for blockchain
-   - PRIVATE_KEY for transactions
-   - RPC_ENDPOINTS for Polygon network
+1. **Environment Variables**
+   - Gestione sicura con python-dotenv
+   - Validazione all'avvio
+   - Mock per testing
+   - Rotazione sicura dei secrets
 
-2. **Smart Contract Security**
-   - Access control implementation
-   - Secure transaction handling
-   - Gas optimization
-   - Batch processing
+2. **Logging**
+   - RotatingFileHandler per gestione log
+   - Backup automatico dei log
+   - Formattazione standardizzata
+   - Livelli di log configurabili
 
-3. **Backend Security**
-   - Environment variables through Secrets
-   - Authentication middleware
-   - Input validation
-   - Transaction verification
+3. **Testing**
+   - Mock dei secrets per test
+   - Fixtures pytest
+   - Test di integrazione
+   - Test unitari
 
 ### System Features
 - Gold transformations
-- Noble ranks progression
+- Noble ranks system
 - Bonus distribution
-- Referral tracking
-- Batch operations
-- Secure configuration management
+- Blockchain integration
+- Secure configuration
+- Comprehensive logging
 
 ## Testing
-Smart contract tests:
 ```bash
-npx hardhat test
-```
-
-Backend tests:
-```bash
+# Run all tests
 pytest tests/ -v
+
+# Run specific test category
+pytest tests/unit/ -v
+pytest tests/integration/ -v
 ```
 
 ## Environment Setup
-1. Configure Replit Secrets:
-   - Add required keys in Tools -> Secrets
-   - Access via os.environ in Python
-   - Automatic encryption with AES-256
-   - Secure key rotation
+1. Required Environment Variables:
+   ```
+   SECRET_KEY=<secure-random-key>
+   DATABASE_URL=<database-url>
+   CONTRACT_ADDRESS=<contract-address>
+   PRIVATE_KEY=<private-key>
+   RPC_ENDPOINTS=<endpoints>
+   ```
 
 2. Local Development:
    - Uses Replit IDE
-   - Hardhat for contract testing
    - SQLite database
    - Automated test suite
+   - Logging system
