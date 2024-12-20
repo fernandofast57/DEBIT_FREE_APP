@@ -58,3 +58,38 @@ class NobleRank(db.Model):
     points: Mapped[int] = mapped_column(default=0)
     
     user: Mapped["User"] = relationship(back_populates="noble_rank")
+class GoldBar(db.Model):
+    __tablename__ = 'gold_bars'
+    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    serial_number: Mapped[str] = mapped_column(unique=True)
+    weight_grams: Mapped[float]
+    location: Mapped[str]
+    status: Mapped[str]  # in_vault, redeemed, reserved
+    certification: Mapped[str]
+    
+    participations: Mapped[List["GoldBarParticipation"]] = relationship(back_populates="gold_bar")
+
+class GoldBarParticipation(db.Model):
+    __tablename__ = 'gold_bar_participations'
+    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    bar_id: Mapped[int] = mapped_column(db.ForeignKey('gold_bars.id'))
+    user_id: Mapped[int] = mapped_column(db.ForeignKey('users.id'))
+    share_grams: Mapped[float]
+    participation_code: Mapped[str] = mapped_column(unique=True)
+    
+    gold_bar: Mapped["GoldBar"] = relationship(back_populates="participations")
+    user: Mapped["User"] = relationship(back_populates="bar_participations")
+
+class CustomerKYC(db.Model):
+    __tablename__ = 'customer_kyc'
+    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(db.ForeignKey('users.id'), unique=True)
+    verification_status: Mapped[str]  # pending, approved, rejected
+    document_type: Mapped[str]
+    document_number: Mapped[str]
+    expiry_date: Mapped[str]
+    verification_date: Mapped[str]
+    verified_by: Mapped[int] = mapped_column(db.ForeignKey('users.id'))
