@@ -25,11 +25,12 @@ class BonusDistributionService:
         return Decimal('0')
     
     async def distribute_affiliate_bonus(self, buyer_id: int, purchase_amount: Decimal) -> Dict:
-        """Distribute bonus to affiliates up to 3 levels up"""
+        """Distribute bonus to exactly 3 levels up if possible, no more"""
         distribution_results = {}
         current_user = await User.query.get(buyer_id)
         level = 1
         
+        # Strict 3-level limit
         while current_user.referrer_id and level <= 3:
             referrer = await User.query.get(current_user.referrer_id)
             if not referrer:
