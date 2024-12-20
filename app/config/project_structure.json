@@ -1,0 +1,19 @@
+
+{
+  "allowed_modifications": {
+    "bonus_system": {
+      "levels": 3,
+      "rates": {
+        "level1": 0.7,
+        "level2": 0.5,
+        "level3": 0.5
+      }
+    },
+    "organization_fee": 5.0,
+    "allowed_modules": [
+      "app/services/bonus_distribution_service.py",
+      "app/services/blockchain_service.py",
+      "app/services/transformation_service.py"
+    ]
+  }
+}
