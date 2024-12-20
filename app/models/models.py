@@ -93,3 +93,13 @@ class CustomerKYC(db.Model):
     expiry_date: Mapped[str]
     verification_date: Mapped[str]
     verified_by: Mapped[int] = mapped_column(db.ForeignKey('users.id'))
+class GoldReward(db.Model):
+    __tablename__ = 'gold_rewards'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    gold_amount = db.Column(db.Numeric(precision=10, scale=4), nullable=False)  # In grams
+    reward_type = db.Column(db.String(50), nullable=False)  # 'structure' or 'achievement'
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    user = db.relationship('User', backref='gold_rewards')

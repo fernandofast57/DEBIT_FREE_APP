@@ -13,6 +13,18 @@ class BonusDistributionService:
             'level_2': Decimal('0.005'),  # 0.5%
             'level_3': Decimal('0.005')   # 0.5%
         }
+        self.gold_reward_thresholds = {
+            'bronze': Decimal('5000'),    # 0.1g gold
+            'silver': Decimal('10000'),   # 0.25g gold
+            'gold': Decimal('25000'),     # 0.5g gold
+            'platinum': Decimal('50000')  # 1g gold
+        }
+        self.gold_reward_amounts = {
+            'bronze': Decimal('0.1'),
+            'silver': Decimal('0.25'),
+            'gold': Decimal('0.5'),
+            'platinum': Decimal('1.0')
+        }
     
     def calculate_affiliate_bonus(self, purchase_amount: Decimal, level: int) -> Decimal:
         """Calculate bonus based on level and purchase amount"""
@@ -30,6 +42,40 @@ class BonusDistributionService:
         current_user = await User.query.get(buyer_id)
         level = 1
         
+
+    async def calculate_gold_reward(self, user_id: int, transaction_amount: Decimal) -> Optional[Decimal]:
+        """Calculate gold reward based on transaction amount"""
+        user = await User.query.get(user_id)
+        if not user:
+            return None
+            
+        total_volume = user.total_investment + transaction_amount
+        
+        for level, threshold in sorted(self.gold_reward_thresholds.items(), 
+                                    key=lambda x: x[1], reverse=True):
+            if total_volume >= threshold:
+                return self.gold_reward_amounts[level]
+                
+        return Decimal('0')
+        
+    async def distribute_gold_reward(self, user_id: int, transaction_amount: Decimal):
+        """Distribute gold reward if threshold is met"""
+        gold_amount = await self.calculate_gold_reward(user_id, transaction_amount)
+        
+        if gold_amount > 0:
+            reward = GoldReward(
+                user_id=user_id,
+                gold_amount=gold_amount,
+                reward_type='achievement'
+            )
+            db.session.add(reward)
+            
+            user = await User.query.get(user_id)
+            user.gold_account.balance += gold_amount
+            
+            await db.session.commit()
+            logger.info(f"Gold reward distributed to user {user_id}: {gold_amount}g")
+
         # Strict 3-level limit
         while current_user.referrer_id and level <= 3:
             referrer = await User.query.get(current_user.referrer_id)
