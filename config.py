@@ -44,6 +44,46 @@ class ConfigValidator:
             
         return True
 
+class Config:
+    """Configurazione base"""
+    def __init__(self):
+        # Carica variabili d'ambiente
+        load_dotenv()
+        
+        # Setup logging
+        self.log_config = LogConfig()
+        self.logger = self.log_config.setup_logger()
+        
+        # Configurazione base
+        self.SECRET_KEY = os.getenv('SECRET_KEY')
+        self.SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///app.db')
+        self.SQLALCHEMY_TRACK_MODIFICATIONS = False
+        self.CONTRACT_ADDRESS = os.getenv('CONTRACT_ADDRESS')
+        self.PRIVATE_KEY = os.getenv('PRIVATE_KEY')
+        self.RPC_ENDPOINTS = self._parse_endpoints()
+
+    def _parse_endpoints(self) -> List[str]:
+        """Parse RPC endpoints from environment"""
+        endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
+        return [ep.strip() for ep in endpoints if ep.strip()]
+
+    def get_blockchain_config(self) -> Dict[str, Any]:
+        """Get blockchain specific configuration"""
+        return {
+            'contract_address': self.CONTRACT_ADDRESS,
+            'private_key': self.PRIVATE_KEY,
+            'rpc_endpoints': self.RPC_ENDPOINTS
+        }
+
+class TestConfig(Config):
+    """Test configuration"""
+    def __init__(self):
+        super().__init__()
+        self.TESTING = True
+        self.SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+        self.WTF_CSRF_ENABLED = False
+        self.SECRET_KEY = 'test-key'
+
 class LogConfig:
     """Configurazione del sistema di logging"""
     def __init__(self, app_name: str = 'gold-investment'):
@@ -71,49 +111,3 @@ class LogConfig:
         logger.setLevel(logging.INFO)
         logger.addHandler(self.get_handler())
         return logger
-
-class Config:
-    """Configurazione base"""
-    def __init__(self):
-        # Carica variabili d'ambiente
-        load_dotenv()
-        
-        # Valida configurazione
-        ConfigValidator.validate()
-        
-        # Setup logging
-        self.log_config = LogConfig()
-        self.logger = self.log_config.setup_logger()
-        
-        # Configurazione base
-        self.SECRET_KEY = os.getenv('SECRET_KEY')
-        db_path = os.path.abspath(os.path.join(os.getcwd(), 'instance', 'app.db'))
-        os.makedirs(os.path.dirname(db_path), exist_ok=True)
-        self.SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI', f'sqlite:///{db_path}')
-        self.SQLALCHEMY_TRACK_MODIFICATIONS = False
-        self.CONTRACT_ADDRESS = os.getenv('CONTRACT_ADDRESS')
-        self.PRIVATE_KEY = os.getenv('PRIVATE_KEY')
-        self.RPC_ENDPOINTS = self._parse_endpoints()
-        
-        self.logger.info("Configuration loaded successfully")
-
-    def _parse_endpoints(self) -> List[str]:
-        """Parse RPC endpoints from environment"""
-        endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
-        return [ep.strip() for ep in endpoints if ep.strip()]
-
-    def get_blockchain_config(self) -> Dict[str, Any]:
-        """Get blockchain specific configuration"""
-        return {
-            'contract_address': self.CONTRACT_ADDRESS,
-            'private_key': self.PRIVATE_KEY,
-            'rpc_endpoints': self.RPC_ENDPOINTS
-        }
-
-class TestConfig(Config):
-    """Configurazione per testing"""
-    def __init__(self):
-        super().__init__()
-        self.TESTING = True
-        self.SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
-        self.WTF_CSRF_ENABLED = False
