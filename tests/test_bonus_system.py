@@ -82,3 +82,34 @@ def test_rank_based_bonus(app, bonus_service, noble_user):
         
         # Higher ranks should get higher bonuses
         assert amounts[0] < amounts[1] < amounts[2]
+import pytest
+from decimal import Decimal
+from app.services.bonus_distribution_service import BonusDistributionService
+
+@pytest.mark.asyncio
+async def test_multi_level_bonus_distribution(app, bonus_service):
+    """Test bonus distribution across multiple levels matches the specification"""
+    async with app.app_context():
+        # Setup users A -> A' -> A'' -> A'''
+        user_a = User(email='a@test.com')
+        user_a1 = User(email='a1@test.com', referrer_id=user_a.id)
+        user_a2 = User(email='a2@test.com', referrer_id=user_a1.id)
+        user_a3 = User(email='a3@test.com', referrer_id=user_a2.id)
+        
+        db.session.add_all([user_a, user_a1, user_a2, user_a3])
+        await db.session.commit()
+
+        # Test A''' makes purchase
+        purchase_amount = Decimal('1000.00')
+        result = await bonus_service.distribute_affiliate_bonus(user_a3.id, purchase_amount)
+        
+        # Verify A'' gets 0.7%
+        assert result[user_a2.id]['bonus'] == float(purchase_amount * Decimal('0.007'))
+        # Verify A' gets 0.5%  
+        assert result[user_a1.id]['bonus'] == float(purchase_amount * Decimal('0.005'))
+        # Verify A gets 0.5%
+        assert result[user_a.id]['bonus'] == float(purchase_amount * Decimal('0.005'))
+
+        # Verify total bonus is 1.7%
+        total_bonus = sum(r['bonus'] for r in result.values())
+        assert abs(total_bonus - float(purchase_amount * Decimal('0.017'))) < 0.0001
