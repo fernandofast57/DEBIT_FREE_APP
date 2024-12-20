@@ -1,0 +1,33 @@
+
+{% extends 'admin/master.html' %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Total Gold Balance</div>
+                <div class="panel-body">
+                    <h3>{{ "%.4f"|format(total_gold) }}g</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-success">
+                <div class="panel-heading">Total Money Balance</div>
+                <div class="panel-body">
+                    <h3>€ {{ "{:,.2f}".format(total_money) }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-info">
+                <div class="panel-heading">Total Clients</div>
+                <div class="panel-body">
+                    <h3>{{ total_users }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

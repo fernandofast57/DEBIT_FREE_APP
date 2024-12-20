@@ -4,50 +4,59 @@ from flask_admin.contrib.sqla import ModelView
 from flask_admin.base import AdminIndexView
 from flask import redirect, url_for, flash
 from flask_login import current_user
-from app.models.models import db, User, NobleRank, Transaction
+from app.models.models import db, User, NobleRank, Transaction, MoneyAccount, GoldAccount, NobleRelation
+from app.services.noble_rank_service import NobleRankService
 import logging
 from datetime import datetime
+from decimal import Decimal
 
-class SecureModelView(ModelView):
+class SecureBaseView(BaseView):
     def is_accessible(self):
         return current_user.is_authenticated and current_user.is_admin
 
-    def after_model_change(self, form, model, is_created):
-        logging.info(f'Admin action: {"created" if is_created else "modified"} {model.__class__.__name__} ID:{model.id} by {current_user.email}')
-
-    def after_model_delete(self, model):
-        logging.info(f'Admin action: deleted {model.__class__.__name__} ID:{model.id} by {current_user.email}')
-
-class TransactionView(SecureModelView):
-    can_delete = False  # Impedisce l'eliminazione delle transazioni
-    can_create = False  # Solo il sistema può creare transazioni
-    can_edit = False   # Le transazioni non possono essere modificate
-    
-    column_list = ['id', 'user_id', 'amount', 'status', 'created_at', 'validation_date', 'validated_by']
-    column_searchable_list = ['user_id', 'status']
-    column_filters = ['status', 'created_at', 'validation_date']
-    
-    def _format_amount(view, context, model, name):
-        return f"€ {model.amount:,.2f}"
-    
-    column_formatters = {
-        'amount': _format_amount
-    }
-
-class AuditLogView(BaseView):
+class DashboardView(SecureBaseView):
     @expose('/')
     def index(self):
-        if not current_user.is_authenticated or not current_user.is_admin:
-            return redirect(url_for('auth.login'))
-            
-        with open('logs/admin_audit.log', 'r') as f:
-            audit_logs = f.readlines()[-100:]  # Ultimi 100 log
-        return self.render('admin/audit_log.html', logs=audit_logs)
+        total_gold = db.session.query(db.func.sum(GoldAccount.balance)).scalar() or 0
+        total_money = db.session.query(db.func.sum(MoneyAccount.balance)).scalar() or 0
+        total_users = User.query.count()
+        
+        return self.render('admin/dashboard.html',
+                         total_gold=total_gold,
+                         total_money=total_money,
+                         total_users=total_users)
 
-admin = Admin(name='Gold Investment Admin', template_mode='bootstrap3',
-             index_view=AdminIndexView())
+class ClientView(SecureModelView):
+    column_list = ['id', 'username', 'email', 'money_account.balance', 'gold_account.balance', 'noble_rank.rank']
+    column_searchable_list = ['username', 'email']
+    column_filters = ['noble_rank.rank']
+    
+    def _format_balance(view, context, model, name):
+        if name == 'money_account.balance':
+            return f"€ {model.money_account.balance:,.2f}" if model.money_account else "€ 0.00"
+        return f"{model.gold_account.balance:,.4f}g" if model.gold_account else "0.0000g"
+    
+    column_formatters = {
+        'money_account.balance': _format_balance,
+        'gold_account.balance': _format_balance
+    }
 
-admin.add_view(SecureModelView(User, db.session))
-admin.add_view(SecureModelView(NobleRank, db.session))
-admin.add_view(TransactionView(Transaction, db.session))
-admin.add_view(AuditLogView(name='Audit Log', endpoint='audit'))
+class NetworkView(SecureBaseView):
+    @expose('/')
+    def index(self):
+        network_data = NobleRankService.get_complete_network()
+        return self.render('admin/network.html', network=network_data)
+
+class AccountingView(SecureBaseView):
+    @expose('/')
+    def index(self):
+        transactions = Transaction.query.order_by(Transaction.timestamp.desc()).limit(100)
+        return self.render('admin/accounting.html', transactions=transactions)
+
+admin = Admin(name='Gold Investment Admin', template_mode='bootstrap3')
+
+admin.add_view(DashboardView(name='Dashboard', endpoint='admin'))
+admin.add_view(ClientView(User, db.session, name='Clients'))
+admin.add_view(TransactionView(Transaction, db.session, name='Transactions'))
+admin.add_view(NetworkView(name='Affiliate Network', endpoint='network'))
+admin.add_view(AccountingView(name='Accounting', endpoint='accounting'))
