@@ -2,30 +2,40 @@
 import logging
 from logging.handlers import RotatingFileHandler
 import os
-from flask import Flask
 
-def setup_logging(app: Flask) -> None:
-    """Setup logging configuration for the application"""
+def setup_logging():
+    """Configure enhanced logging system"""
+    # Create logs directory if it doesn't exist
     if not os.path.exists('logs'):
-        os.mkdir('logs')
+        os.makedirs('logs')
         
-    formatter = logging.Formatter(
-        '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
-    )
+    # Main application logger
+    main_logger = logging.getLogger('app')
+    main_logger.setLevel(logging.INFO)
     
-    file_handler = RotatingFileHandler(
+    # File handler with rotation
+    handler = RotatingFileHandler(
         'logs/app.log',
-        maxBytes=10240,
+        maxBytes=10000000,  # 10MB
         backupCount=10
     )
-    file_handler.setFormatter(formatter)
-    file_handler.setLevel(logging.INFO)
     
-    app.logger.addHandler(file_handler)
-    app.logger.setLevel(logging.INFO)
+    # Detailed formatter
+    formatter = logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s - [%(filename)s:%(lineno)d]'
+    )
+    handler.setFormatter(formatter)
+    main_logger.addHandler(handler)
     
-    # Also log to console in development
-    if not os.environ.get('PRODUCTION'):
-        console_handler = logging.StreamHandler()
-        console_handler.setFormatter(formatter)
-        app.logger.addHandler(console_handler)
+    # Also log validation errors
+    validation_logger = logging.getLogger('validation')
+    validation_logger.setLevel(logging.WARNING)
+    validation_handler = RotatingFileHandler(
+        'logs/validation.log',
+        maxBytes=5000000,  # 5MB
+        backupCount=5
+    )
+    validation_handler.setFormatter(formatter)
+    validation_logger.addHandler(validation_handler)
+    
+    return main_logger, validation_logger
