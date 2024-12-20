@@ -30,8 +30,8 @@ contract NobleGoldSystem is Ownable, ReentrancyGuard {
     mapping(address => address[]) public referrals;
     mapping(address => bool) public verifiedAccounts;
     
-    uint256 public constant CLIENT_SHARE = 883; // 88.3%
-    uint256 public constant NETWORK_SHARE = 67; // 6.7%
+    uint256 public constant CLIENT_SHARE = 933; // 93.3%
+    uint256 public constant NETWORK_SHARE = 17; // 1.7%
     uint256 public constant OPERATIONAL_SHARE = 50; // 5%
     uint256 public constant BASIS_POINTS = 1000;
     

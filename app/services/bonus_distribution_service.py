@@ -13,6 +13,7 @@ class BonusDistributionService:
             'level_2': Decimal('0.005'),  # 0.5%
             'level_3': Decimal('0.005'),  # 0.5%
             'operational': Decimal('0.05') # 5.0%
+            # Total network bonus: 1.7%
         }
         self.operational_wallet = os.getenv('OPERATIONAL_WALLET_ADDRESS')
         
