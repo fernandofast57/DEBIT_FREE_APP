@@ -1,0 +1,121 @@
+L'errore indica che la chiave privata per Polygon non è impostata correttamente. Creiamo uno script di deploy completo e configuriamo le variabili d'ambiente:
+pitoneCopia# blockchain/scripts/deploy.py
+from web3 import Web3
+from eth_account import Account
+from eth_utils import to_checksum_address
+import json
+import os
+from dotenv import load_dotenv
+
+def deploy_contract():
+    try:
+        # Carica variabili d'ambiente
+        load_dotenv()
+        
+        # Verifica chiave privata
+        private_key = os.getenv('POLYGON_PRIVATE_KEY')
+        if not private_key or not private_key.startswith('0x'):
+            raise ValueError("POLYGON_PRIVATE_KEY deve essere una stringa hex valida che inizia con '0x'")
+            
+        # Setup connessione Polygon
+        w3 = Web3(Web3.HTTPProvider(os.getenv('POLYGON_RPC_URL')))
+        if not w3.is_connected():
+            raise ConnectionError("Impossibile connettersi alla rete Polygon")
+            
+        # Setup account
+        account = Account.from_key(private_key)
+        print(f"Deploying from address: {account.address}")
+        
+        # Carica bytecode e abi
+        with open('blockchain/contracts/GoldSystem.sol') as file:
+            solidity_file = file.read()
+            
+        print("Compilando il contratto...")
+        # Compila il contratto (assumendo che sia installato solc)
+        from solcx import compile_source
+        compiled_sol = compile_source(
+            solidity_file,
+            output_values=['abi', 'bin']
+        )
+        contract_interface = compiled_sol['<stdin>:GoldSystem']
+        
+        # Costruisci il contratto
+        GoldSystem = w3.eth.contract(
+            abi=contract_interface['abi'],
+            bytecode=contract_interface['bin']
+        )
+        
+        # Stima gas
+        gas_estimate = GoldSystem.constructor().estimate_gas()
+        print(f"Gas stimato per il deploy: {gas_estimate}")
+        
+        # Prepara la transazione
+        transaction = {
+            'from': account.address,
+            'gas': gas_estimate,
+            'gasPrice': w3.eth.gas_price,
+            'nonce': w3.eth.get_transaction_count(account.address)
+        }
+        
+        # Deploy del contratto
+        print("Deploying contract...")
+        contract_tx = GoldSystem.constructor().build_transaction(transaction)
+        signed_tx = account.sign_transaction(contract_tx)
+        tx_hash = w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+        
+        # Attendi la conferma
+        print("Waiting for confirmation...")
+        tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
+        
+        contract_address = tx_receipt['contractAddress']
+        print(f"Contract deployed at: {contract_address}")
+        
+        # Salva l'indirizzo del contratto
+        with open('contract_address.txt', 'w') as f:
+            f.write(contract_address)
+            
+        # Salva ABI
+        with open('blockchain/contracts/GoldSystem.json', 'w') as f:
+            json.dump(contract_interface['abi'], f, indent=2)
+            
+        print("Deploy completato con successo!")
+        return contract_address
+        
+    except Exception as e:
+        print(f"Errore durante il deploy: {str(e)}")
+        raise
+
+if __name__ == '__main__':
+    deploy_contract()
+Crea un file .envnella root del progetto:
+battereCopia# .env
+POLYGON_PRIVATE_KEY=0x123...  # La tua chiave privata
+POLYGON_RPC_URL=https://polygon-mumbai.infura.io/v3/YOUR-PROJECT-ID  # URL RPC di test
+Assicurati di avere le dipendenze necessarie:
+pitoneCopia# requirements.txt (aggiungi queste dipendenze)
+py-solc-x==1.1.1
+python-dotenv==0.19.0
+web3==6.0.0
+Per eseguire il deploy:
+
+Prima di installare le dipendenze:
+
+battereCopiapip install -r requirements.txt
+
+Imposta la chiave privata corretta nel file.env
+Esegui il deploy:
+
+battereCopiapython blockchain/scripts/deploy.py
+Lo script:
+
+Verificare la validità della chiave privata
+Compila il contratto
+Stima il gas
+Segue il deploy
+Salva indirizzo e ABI per uso futuro
+
+Vuoi che:
+
+Aggiungere più controlli di sicurezza?
+Implementare un sistema di verifica post-distribuzione?
+Aggiunta supporto per più reti (mainnet/testnet)?

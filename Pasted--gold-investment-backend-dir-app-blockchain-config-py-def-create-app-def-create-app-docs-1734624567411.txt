@@ -1,0 +1,49 @@
+~/gold-investment-backend$ dir
+app
+blockchain
+config.py
+def\ create_app():
+def_create_app
+docs
+instance
+logs
+main.py
+MASTER_PROJECT.md
+migrations
+node_modules
+package.json
+package-lock.json
+Pasted--2024-12-19-16-03-29-332-ERROR-in-init-Database-initialization-error-sqlite3-OperationalErro-1734624225983.txt
+Pasted--app-services-blockchain-service-py-from-web3-import-Web3-from-web3-middleware-import-geth-poa-mi-1734447756539.txt
+Pasted--app-utils-database-connection-py-from-typing-import-Optional-from-contextlib-import-contextmanag-1734622594049.txt
+Pasted--app-utils-security-config-manager-py-import-os-import-json-import-logging-from-datetime-import-1734620780635.txt
+Pasted--app-utils-security-config-manager-py-import-os-import-json-import-logging-from-datetime-import-1734620807153.txt
+Pasted--app-utils-security-init-py-from-security-manager-import-SecurityManager-from-rate-limiter--1734621890999.txt
+Pasted--app-utils-security-rate-limiter-py-import-time-from-typing-import-Dict-Tuple-from-collections--1734621245485.txt
+Pasted--config-py-import-os-from-typing-import-Optional-List-from-pydantic-import-BaseSettings-valida-1734616852590.txt
+Pasted--config-py-import-os-import-logging-from-logging-handlers-import-RotatingFileHandler-from-typin-1734620278767.txt
+Pasted--contracts-NobleGoldSystem-sol-SPDX-License-Identifier-MIT-pragma-solidity-0-8-20-impor-1734615605440.txt
+Pasted--gold-investment-backend-python-main-py-2024-12-19-15-56-06-858-ERROR-in-init-Database-ini-1734623781036.txt
+Pasted--gold-investment-backend-python-main-py-2024-12-19-15-57-27-093-ERROR-in-init-Database-ini-1734623860752.txt
+Pasted--gold-investment-backend-python-main-py-2024-12-19-15-58-42-565-ERROR-in-init-Database-ini-1734623944503.txt
+Pasted--gold-investment-backend-python-main-py-2024-12-19-16-00-25-393-ERROR-in-init-Database-ini-1734624038971.txt
+Pasted-Il-problema-la-connessione-al-nodo-RPC-Per-essere-sicuri-che-funzioni-in-ambiente-Replit-modific-1734450114782.txt
+Pasted-L-errore-indica-che-la-chiave-privata-per-Polygon-non-impostata-correttamente-Creiamo-uno-script--1734449425602.txt
+Pasted-Questo-errore-indica-che-lo-script-non-riesce-a-connettersi-alla-rete-Polygon-Dobbiamo-prima-config-1734449773567.txt
+Pasted--Root-directory-setup-mkdir-p-gold-investment-platform-cd-gold-investment-platform-Python-b-1734616233899.txt
+Pasted-Se-fossi-un-programmatore-con-lunga-esperienza-nel-settore-la-prima-cosa-che-farei-per-evitare-cost-1734606743816.txt
+Pasted--test-NobleGoldSystem-test-js-const-expect-require-chai-const-ethers-require-ha-1734615698211.txt
+Pasted--tests-test-rate-limiting-py-import-pytest-import-time-import-redis-from-unittest-mock-import-1734621506105.txt
+poetry.lock
+__pycache__
+pyproject.toml
+README.md
+replit.nix
+requirements.txt
+Screenshot\ 2024-12-19\ 152936.png
+setup_project.py
+setup.py
+tests
+user\ =\ User.query.get(user_id)
+uv.lock
+wsgi.py

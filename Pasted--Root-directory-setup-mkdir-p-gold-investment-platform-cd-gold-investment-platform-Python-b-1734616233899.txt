@@ -1,0 +1,238 @@
+# Root directory setup
+mkdir -p gold-investment-platform
+cd gold-investment-platform
+
+# Python backend structure
+mkdir -p app/{api/v1,models,routes,services,utils}
+mkdir -p tests/{unit,integration}
+mkdir -p logs
+mkdir -p migrations
+
+# Blockchain structure
+mkdir -p blockchain/{contracts,tests,scripts}
+
+# Create necessary base files
+touch config.py main.py requirements.txt .env .gitignore README.md
+touch app/__init__.py
+touch app/api/v1/__init__.py
+touch app/models/__init__.py
+touch app/routes/__init__.py
+touch app/services/__init__.py
+touch app/utils/__init__.py
+
+# Setup Hardhat project in blockchain directory
+cd blockchain
+npm init -y
+npm install --save-dev hardhat @nomicfoundation/hardhat-toolbox @openzeppelin/contracts dotenv
+
+# Initialize git
+cd ..
+git init
+
+# Create base configuration files
+cat > .gitignore << EOL
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Node
+node_modules/
+.npm
+.env
+
+# Hardhat
+blockchain/cache
+blockchain/artifacts
+blockchain/typechain-types
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+
+# Local development
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+EOL
+
+# Create initial requirements.txt
+cat > requirements.txt << EOL
+flask==2.0.1
+flask-sqlalchemy==2.5.1
+flask-migrate==3.1.0
+python-dotenv==0.19.0
+web3==6.0.0
+pytest==7.3.1
+pytest-asyncio==0.21.0
+python-jose==3.3.0
+pydantic==1.9.0
+EOL
+
+# Create initial config.py
+cat > config.py << EOL
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+class Config:
+    """Base config class"""
+    SECRET_KEY = os.getenv('SECRET_KEY', 'dev')
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///gold_investment.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    
+    # Blockchain config
+    CONTRACT_ADDRESS = os.getenv('CONTRACT_ADDRESS')
+    SYSTEM_ADDRESS = os.getenv('SYSTEM_ADDRESS')
+    PRIVATE_KEY = os.getenv('PRIVATE_KEY')
+    
+    # RPC endpoints
+    RPC_ENDPOINTS = [
+        endpoint.strip()
+        for endpoint in os.getenv('RPC_ENDPOINTS', '').split(',')
+        if endpoint.strip()
+    ]
+
+class TestConfig(Config):
+    """Test config class"""
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+EOL
+
+# Create initial main.py
+cat > main.py << EOL
+from flask import Flask
+from config import Config
+import logging
+from logging.handlers import RotatingFileHandler
+import os
+
+def setup_logging(app):
+    if not os.path.exists('logs'):
+        os.mkdir('logs')
+    file_handler = RotatingFileHandler('logs/gold_investment.log', maxBytes=10240, backupCount=10)
+    file_handler.setFormatter(logging.Formatter(
+        '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
+    ))
+    file_handler.setLevel(logging.INFO)
+    app.logger.addHandler(file_handler)
+    app.logger.setLevel(logging.INFO)
+    app.logger.info('Gold Investment Platform startup')
+
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
+    
+    setup_logging(app)
+    
+    # Initialize extensions
+    from app.models import db
+    db.init_app(app)
+    
+    # Register blueprints
+    from app.routes import main_bp
+    app.register_blueprint(main_bp)
+    
+    return app
+
+if __name__ == '__main__':
+    app = create_app()
+    app.run(debug=True)
+EOL
+
+# Create initial .env template
+cat > .env.example << EOL
+# Flask
+SECRET_KEY=your-secret-key
+DATABASE_URL=sqlite:///gold_investment.db
+
+# Blockchain
+CONTRACT_ADDRESS=
+SYSTEM_ADDRESS=
+PRIVATE_KEY=
+
+# RPC Endpoints (comma-separated)
+RPC_ENDPOINTS=https://polygon-mumbai.g.alchemy.com/v2/your-key,https://rpc-mumbai.maticvigil.com
+
+# Hardhat
+MUMBAI_RPC_URL=
+POLYGONSCAN_API_KEY=
+EOL
+
+# Initialize README.md
+cat > README.md << EOL
+# Gold Investment Platform
+
+A platform for gold investment with noble ranks system and blockchain integration.
+
+## Setup
+
+### Backend
+1. Create virtual environment:
+   \`\`\`bash
+   python -m venv env
+   source env/bin/activate  # or \`env\\Scripts\\activate\` on Windows
+   \`\`\`
+
+2. Install dependencies:
+   \`\`\`bash
+   pip install -r requirements.txt
+   \`\`\`
+
+3. Copy \`.env.example\` to \`.env\` and configure:
+   \`\`\`bash
+   cp .env.example .env
+   \`\`\`
+
+### Blockchain
+1. Install dependencies:
+   \`\`\`bash
+   cd blockchain
+   npm install
+   \`\`\`
+
+2. Run tests:
+   \`\`\`bash
+   npx hardhat test
+   \`\`\`
+
+## Development
+1. Run local blockchain:
+   \`\`\`bash
+   npx hardhat node
+   \`\`\`
+
+2. Run Flask development server:
+   \`\`\`bash
+   flask run
+   \`\`\`
+
+## Testing
+- Run backend tests: \`pytest tests/ -v\`
+- Run smart contract tests: \`cd blockchain && npx hardhat test\`
+EOL

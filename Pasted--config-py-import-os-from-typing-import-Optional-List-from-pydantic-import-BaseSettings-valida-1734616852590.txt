@@ -1,0 +1,151 @@
+# config.py
+import os
+from typing import Optional, List
+from pydantic import BaseSettings, validator
+
+class Settings(BaseSettings):
+    """Secure configuration using Replit Secrets"""
+    
+    # Flask settings
+    SECRET_KEY: str
+    DEBUG: bool = False
+    TESTING: bool = False
+    
+    # Database
+    DATABASE_URL: str
+    
+    # Blockchain settings
+    CONTRACT_ADDRESS: str
+    PRIVATE_KEY: str
+    RPC_ENDPOINTS: str  # Comma-separated list
+    
+    # Noble ranks thresholds
+    NOBLE_THRESHOLD: int = 10000
+    VISCOUNT_THRESHOLD: int = 50000
+    COUNT_THRESHOLD: int = 100000
+    
+    @property
+    def rpc_endpoint_list(self) -> List[str]:
+        """Split RPC endpoints into list"""
+        return [ep.strip() for ep in self.RPC_ENDPOINTS.split(',') if ep.strip()]
+    
+    @validator('PRIVATE_KEY')
+    def validate_private_key(cls, v: str) -> str:
+        """Validate private key format"""
+        if not v.startswith('0x') or len(v) != 66:
+            raise ValueError('Invalid private key format')
+        return v
+    
+    @validator('CONTRACT_ADDRESS')
+    def validate_contract_address(cls, v: str) -> str:
+        """Validate contract address format"""
+        if not v.startswith('0x') or len(v) != 42:
+            raise ValueError('Invalid contract address')
+        return v
+    
+    class Config:
+        """Pydantic configuration"""
+        case_sensitive = True
+        env_file = None  # Don't load from .env file
+
+# app/utils/secrets.py
+from typing import Any, Optional
+import os
+
+class SecretsManager:
+    """Secure secrets management using Replit Secrets"""
+    
+    @staticmethod
+    def get_secret(key: str, default: Any = None) -> Optional[str]:
+        """
+        Get secret from Replit Secrets
+        
+        Args:
+            key: Secret key to retrieve
+            default: Default value if key not found
+            
+        Returns:
+            Secret value or default
+        """
+        try:
+            return os.environ[key]
+        except KeyError:
+            if default is not None:
+                return default
+            raise ValueError(f"Required secret {key} not found")
+    
+    @staticmethod
+    def validate_secrets() -> bool:
+        """
+        Validate that all required secrets are present
+        
+        Returns:
+            bool: True if all required secrets present
+        """
+        required_secrets = [
+            'SECRET_KEY',
+            'DATABASE_URL',
+            'CONTRACT_ADDRESS',
+            'PRIVATE_KEY',
+            'RPC_ENDPOINTS'
+        ]
+        
+        missing = []
+        for secret in required_secrets:
+            if not os.environ.get(secret):
+                missing.append(secret)
+        
+        if missing:
+            raise ValueError(f"Missing required secrets: {', '.join(missing)}")
+        
+        return True
+
+# main.py
+from config import Settings
+from app.utils.secrets import SecretsManager
+import logging
+
+def setup_logging(settings: Settings) -> None:
+    """Configure secure logging"""
+    logging.basicConfig(
+        level=logging.INFO if not settings.DEBUG else logging.DEBUG,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.FileHandler('logs/app.log'),
+            logging.StreamHandler()
+        ]
+    )
+    
+    # Ensure sensitive data isn't logged
+    logging.getLogger('web3').setLevel(logging.INFO)
+    logging.getLogger('urllib3').setLevel(logging.INFO)
+
+def create_app() -> Any:
+    """Create Flask app with secure configuration"""
+    # Validate secrets first
+    SecretsManager.validate_secrets()
+    
+    # Load settings from Replit Secrets
+    settings = Settings()
+    
+    setup_logging(settings)
+    
+    from flask import Flask
+    app = Flask(__name__)
+    
+    # Configure app securely
+    app.config.from_mapping(
+        SECRET_KEY=settings.SECRET_KEY,
+        SQLALCHEMY_DATABASE_URI=settings.DATABASE_URL,
+        SQLALCHEMY_TRACK_MODIFICATIONS=False
+    )
+    
+    # Initialize extensions
+    from app.models import db
+    db.init_app(app)
+    
+    # Register blueprints
+    from app.routes import main_bp
+    app.register_blueprint(main_bp)
+    
+    return app

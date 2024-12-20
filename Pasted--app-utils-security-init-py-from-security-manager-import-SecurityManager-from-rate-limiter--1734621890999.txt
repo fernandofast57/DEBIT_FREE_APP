@@ -1,0 +1,75 @@
+# app/utils/security/__init__.py
+from .security_manager import SecurityManager
+from .rate_limiter import RateLimiter, rate_limit
+
+__all__ = ['SecurityManager', 'RateLimiter', 'rate_limit']
+
+# app/utils/security/security_manager.py
+from .rate_limiter import RateLimiter
+import logging
+
+class SecurityManager:
+    def __init__(self, app_name: str, redis_url: str = None):
+        self.app_name = app_name
+        self.rate_limiter = RateLimiter(redis_url)
+        self.logger = logging.getLogger(app_name)
+        
+        self.setup_logging()
+    
+    def setup_logging(self):
+        handler = logging.FileHandler(f'logs/{self.app_name}_security.log')
+        handler.setFormatter(logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        ))
+        self.logger.addHandler(handler)
+        self.logger.setLevel(logging.INFO)
+    
+    def log_security_event(self, event_type: str, details: dict):
+        self.logger.info(f"Security event: {event_type}", extra={
+            'event_type': event_type,
+            'details': details
+        })
+
+# app/utils/security/rate_limiter.py
+import time
+from typing import Dict, Tuple
+from collections import defaultdict
+from dataclasses import dataclass
+import redis
+from flask import request
+from functools import wraps
+
+@dataclass
+class RateLimit:
+    requests: int
+    window: int
+    by_ip: bool = True
+    by_user: bool = True
+
+class RateLimiter:
+    def __init__(self, redis_url: str = None):
+        self.redis = redis.from_url(redis_url) if redis_url else None
+        self.local_storage: Dict[str, Dict[float, int]] = defaultdict(dict)
+    
+    # ... resto della classe RateLimiter ...
+
+# app/__init__.py
+from flask import Flask
+from config import Config
+
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
+    
+    from app.utils.security import SecurityManager
+    security_manager = SecurityManager(
+        app_name='gold-investment',
+        redis_url=app.config.get('REDIS_URL')
+    )
+    app.rate_limiter = security_manager.rate_limiter
+    
+    # Register blueprints
+    from app.routes import main_bp
+    app.register_blueprint(main_bp)
+    
+    return app

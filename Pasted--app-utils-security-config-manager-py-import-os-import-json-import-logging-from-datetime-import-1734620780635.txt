@@ -1,0 +1,169 @@
+# app/utils/security/config_manager.py
+import os
+import json
+import logging
+from datetime import datetime, timedelta
+from logging.handlers import RotatingFileHandler
+from typing import Dict, List, Optional
+import secrets
+from eth_utils import is_address, is_hex, to_checksum_address
+
+class DeviceConfig:
+    """Configurazione specifica per dispositivo"""
+    def __init__(self, device_id: str):
+        self.device_id = device_id
+        self.last_rotation = None
+        self.rotation_interval = timedelta(days=30)
+        self.active = True
+
+class SecretRotator:
+    """Gestisce la rotazione automatica dei segreti"""
+    
+    def __init__(self):
+        self.last_rotation = datetime.now()
+        self.rotation_interval = timedelta(days=30)
+    
+    def should_rotate(self) -> bool:
+        """Verifica se è necessaria una rotazione"""
+        return datetime.now() - self.last_rotation >= self.rotation_interval
+    
+    def generate_new_secret(self) -> str:
+        """Genera un nuovo segreto sicuro"""
+        return secrets.token_hex(32)
+    
+    def rotate_secrets(self) -> Dict[str, str]:
+        """Esegue la rotazione dei segreti"""
+        new_secrets = {
+            'SECRET_KEY': self.generate_new_secret(),
+            'PRIVATE_KEY': f"0x{self.generate_new_secret()}"
+        }
+        self.last_rotation = datetime.now()
+        return new_secrets
+
+class ConfigValidator:
+    """Validazione avanzata della configurazione"""
+    
+    @staticmethod
+    def validate_contract_address(address: str) -> bool:
+        """Valida l'indirizzo del contratto"""
+        try:
+            if not is_address(address):
+                return False
+            return to_checksum_address(address) == address
+        except:
+            return False
+    
+    @staticmethod
+    def validate_private_key(key: str) -> bool:
+        """Valida la chiave privata"""
+        return is_hex(key) and len(key) == 66 and key.startswith('0x')
+    
+    @staticmethod
+    def validate_rpc_endpoints(endpoints: str) -> bool:
+        """Valida gli endpoint RPC"""
+        endpoints_list = endpoints.split(',')
+        return all(
+            endpoint.strip().startswith(('http://', 'https://'))
+            for endpoint in endpoints_list
+        )
+    
+    @staticmethod
+    def validate_all() -> bool:
+        """Validazione completa della configurazione"""
+        validators = {
+            'CONTRACT_ADDRESS': ConfigValidator.validate_contract_address,
+            'PRIVATE_KEY': ConfigValidator.validate_private_key,
+            'RPC_ENDPOINTS': ConfigValidator.validate_rpc_endpoints
+        }
+        
+        for var, validator in validators.items():
+            value = os.getenv(var)
+            if not value or not validator(value):
+                raise ValueError(f"Invalid configuration for {var}")
+        
+        return True
+
+class LogManager:
+    """Gestione avanzata del logging"""
+    
+    def __init__(self, app_name: str):
+        self.app_name = app_name
+        self.log_dir = 'logs'
+        self.setup_log_directory()
+        
+        self.handler = self.create_rotating_handler()
+        self.logger = self.setup_logger()
+    
+    def setup_log_directory(self):
+        """Crea e verifica la directory dei log"""
+        if not os.path.exists(self.log_dir):
+            os.makedirs(self.log_dir)
+    
+    def create_rotating_handler(self) -> RotatingFileHandler:
+        """Crea un handler con rotazione dei file"""
+        log_file = f"{self.log_dir}/{self.app_name}.log"
+        handler = RotatingFileHandler(
+            log_file,
+            maxBytes=10 * 1024 * 1024,  # 10MB
+            backupCount=5
+        )
+        formatter = logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        )
+        handler.setFormatter(formatter)
+        return handler
+    
+    def setup_logger(self) -> logging.Logger:
+        """Configura il logger principale"""
+        logger = logging.getLogger(self.app_name)
+        logger.setLevel(logging.INFO)
+        logger.addHandler(self.handler)
+        return logger
+
+class AdvancedConfig:
+    """Sistema di configurazione avanzato"""
+    
+    def __init__(self, app_name: str = 'gold-investment'):
+        self.app_name = app_name
+        self.devices: Dict[str, DeviceConfig] = {}
+        self.secret_rotator = SecretRotator()
+        self.log_manager = LogManager(app_name)
+        self.logger = self.log_manager.logger
+        
+        # Validazione iniziale
+        ConfigValidator.validate_all()
+        self.logger.info("Configuration validated successfully")
+    
+    def register_device(self, device_id: str) -> DeviceConfig:
+        """Registra un nuovo dispositivo"""
+        if device_id not in self.devices:
+            self.devices[device_id] = DeviceConfig(device_id)
+            self.logger.info(f"New device registered: {device_id}")
+        return self.devices[device_id]
+    
+    def check_secrets_rotation(self):
+        """Verifica e gestisce la rotazione dei segreti"""
+        if self.secret_rotator.should_rotate():
+            self.logger.info("Starting scheduled secret rotation")
+            new_secrets = self.secret_rotator.rotate_secrets()
+            self._update_secrets(new_secrets)
+            self.logger.info("Secret rotation completed")
+    
+    def _update_secrets(self, new_secrets: Dict[str, str]):
+        """Aggiorna i segreti nel sistema"""
+        for key, value in new_secrets.items():
+            os.environ[key] = value
+            self.logger.info(f"Updated secret: {key}")
+    
+    def get_device_config(self, device_id: str) -> Dict[str, any]:
+        """Ottiene la configurazione per un dispositivo specifico"""
+        device = self.register_device(device_id)
+        return {
+            'device_id': device_id,
+            'active': device.active,
+            'last_rotation': device.last_rotation,
+            'blockchain': {
+                'contract_address': os.getenv('CONTRACT_ADDRESS'),
+                'rpc_endpoints': os.getenv('RPC_ENDPOINTS').split(',')
+            }
+        }

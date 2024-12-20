@@ -1,0 +1,118 @@
+# config.py
+import os
+import logging
+from logging.handlers import RotatingFileHandler
+from typing import Any, Dict, List
+from dotenv import load_dotenv
+
+class ConfigValidator:
+    """Validatore per la configurazione"""
+    REQUIRED_VARS = [
+        'SECRET_KEY',
+        'DATABASE_URL',
+        'CONTRACT_ADDRESS',
+        'PRIVATE_KEY',
+        'RPC_ENDPOINTS'
+    ]
+
+    @staticmethod
+    def validate() -> bool:
+        missing = [var for var in ConfigValidator.REQUIRED_VARS 
+                  if not os.getenv(var)]
+        if missing:
+            raise ValueError(f"Missing required environment variables: {', '.join(missing)}")
+        return True
+
+class LogConfig:
+    """Configurazione del sistema di logging"""
+    def __init__(self, app_name: str = 'gold-investment'):
+        self.app_name = app_name
+        self.log_dir = 'logs'
+        self.log_file = f'{self.log_dir}/{app_name}.log'
+        self.max_bytes = 10 * 1024 * 1024  # 10MB
+        self.backup_count = 5
+        self.format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        
+        if not os.path.exists(self.log_dir):
+            os.makedirs(self.log_dir)
+
+    def get_handler(self) -> RotatingFileHandler:
+        handler = RotatingFileHandler(
+            self.log_file,
+            maxBytes=self.max_bytes,
+            backupCount=self.backup_count
+        )
+        handler.setFormatter(logging.Formatter(self.format))
+        return handler
+
+    def setup_logger(self, name: str = None) -> logging.Logger:
+        logger = logging.getLogger(name or self.app_name)
+        logger.setLevel(logging.INFO)
+        logger.addHandler(self.get_handler())
+        return logger
+
+class Config:
+    """Configurazione base"""
+    def __init__(self):
+        # Carica variabili d'ambiente
+        load_dotenv()
+        
+        # Valida configurazione
+        ConfigValidator.validate()
+        
+        # Setup logging
+        self.log_config = LogConfig()
+        self.logger = self.log_config.setup_logger()
+        
+        # Configurazione base
+        self.SECRET_KEY = os.getenv('SECRET_KEY')
+        self.DATABASE_URL = os.getenv('DATABASE_URL')
+        self.CONTRACT_ADDRESS = os.getenv('CONTRACT_ADDRESS')
+        self.PRIVATE_KEY = os.getenv('PRIVATE_KEY')
+        self.RPC_ENDPOINTS = self._parse_endpoints()
+        
+        self.logger.info("Configuration loaded successfully")
+
+    def _parse_endpoints(self) -> List[str]:
+        """Parse RPC endpoints from environment"""
+        endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
+        return [ep.strip() for ep in endpoints if ep.strip()]
+
+    def get_blockchain_config(self) -> Dict[str, Any]:
+        """Get blockchain specific configuration"""
+        return {
+            'contract_address': self.CONTRACT_ADDRESS,
+            'private_key': self.PRIVATE_KEY,
+            'rpc_endpoints': self.RPC_ENDPOINTS
+        }
+
+class TestConfig(Config):
+    """Configurazione per i test"""
+    def __init__(self):
+        # Override environment variables for testing
+        os.environ.update({
+            'SECRET_KEY': 'test-key',
+            'DATABASE_URL': 'sqlite:///:memory:',
+            'CONTRACT_ADDRESS': '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+            'PRIVATE_KEY': '0x' + 'a' * 64,
+            'RPC_ENDPOINTS': 'http://localhost:8545'
+        })
+        super().__init__()
+        self.TESTING = True
+
+# tests/conftest.py
+import pytest
+from config import TestConfig
+
+@pytest.fixture
+def test_config():
+    """Fixture per la configurazione di test"""
+    return TestConfig()
+
+@pytest.fixture
+def mock_env(monkeypatch):
+    """Fixture per mockare variabili d'ambiente"""
+    def _mock_env(updates: Dict[str, str]):
+        for key, value in updates.items():
+            monkeypatch.setenv(key, value)
+    return _mock_env

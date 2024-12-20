@@ -1,0 +1,31 @@
+Se fossi un programmatore con lunga esperienza nel settore, la prima cosa che farei per evitare costi durante la fase di test sarebbe quella di utilizzare un ambiente di sviluppo locale e una testnet gratuita con faucet di token.
+
+Ecco un approccio consolidato e molto usato dai professionisti:
+
+**1. Test in locale (Hardhat o simili):**  
+- **Hardhat**: Installerei Hardhat nel mio progetto (ad esempio con `npm install --save-dev hardhat`), creerei un progetto Hardhat (`npx hardhat`) e userei il suo nodo locale (`npx hardhat node`) per simulare la blockchain sul mio PC o nel mio ambiente di sviluppo (anche Replit, se configurato correttamente).  
+- **Vantaggi del locale**:  
+  - Puoi eseguire test unitari e di integrazione estremamente veloci senza alcun costo.  
+  - Puoi fare il debugging in tempo reale, impostare breakpoints, ottenere stack trace dettagliati, e reimpostare l’ambiente in pochi secondi.  
+  - Non devi preoccuparti di fondi, chain ID o RPC endpoint.
+
+Con Hardhat (o strumenti simili come Foundry/Anvil) puoi simulare l’esecuzione degli smart contract, verificare le logiche di business, gli eventi, i revert, e tutta la logica interna del tuo contratto, senza mai dover pagare un centesimo.
+
+**2. Passare alla testnet pubblica (come Polygon Mumbai) soltanto dopo:**  
+- Una volta che i test su rete locale sono stabili e completi, passerei a una testnet pubblica, ad esempio Polygon Mumbai.  
+- **Perché testnet pubblica?**  
+  - Per verificare l’interazione con infrastrutture reali (blocchi, finalità, eventuali incompatibilità con altri tool).  
+  - Per simulare lo scenario pubblico di test prima di andare in produzione.  
+- Sulla testnet non paghi costi reali perché:
+  - I MATIC (o altri token) sulla testnet sono gratuiti: li ottieni dai **faucet** testnet.
+  - Questi faucet ti forniscono token di prova senza alcuna spesa, permettendoti di effettuare tutte le transazioni necessarie per testare il contratto sul network pubblico di test.
+
+**3. Solo a validazione ultimata passare alla mainnet:**  
+- Quando i contratti sono stati ampiamente testati su rete locale e testnet, e quando sei sicuro del risultato, allora – e solo allora – effettui il deployment sulla mainnet (dove dovrai utilizzare fondi reali).
+
+**Riassunto del flusso:**  
+1. **Ambiente locale** (Hardhat, Ganache, Foundry) per tutti i test iniziali, rapidi e senza costi.  
+2. **Testnet (Mumbai)** con token gratuiti da faucet per simulare l’ambiente reale senza rischi e senza spese.  
+3. **Mainnet** solo quando il prodotto è affidabile, minimizzando così i costi reali.
+
+Questa è la strategia classica e collaudata da chi lavora da anni con le blockchain: usare prima un nodo locale per la gran parte dello sviluppo e del testing, poi una testnet con fondi di prova, e infine la mainnet. In questo modo riduci a zero i costi fino alla fase finale di deployment in produzione.

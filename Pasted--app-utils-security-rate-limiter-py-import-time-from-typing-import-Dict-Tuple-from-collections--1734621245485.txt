@@ -1,0 +1,142 @@
+# app/utils/security/rate_limiter.py
+import time
+from typing import Dict, Tuple
+from collections import defaultdict
+from dataclasses import dataclass
+import redis
+from flask import request, current_app
+from functools import wraps
+
+@dataclass
+class RateLimit:
+    """Configurazione del rate limit"""
+    requests: int
+    window: int  # in secondi
+    by_ip: bool = True
+    by_user: bool = True
+
+class RateLimiter:
+    """Rate limiting avanzato con supporto Redis"""
+    
+    def __init__(self, redis_url: str = None):
+        self.redis = redis.from_url(redis_url) if redis_url else None
+        self.local_storage: Dict[str, Dict[float, int]] = defaultdict(dict)
+        
+    def _get_identifier(self, by_ip: bool = True, by_user: bool = True) -> str:
+        """Genera un identificatore unico per il rate limiting"""
+        parts = []
+        if by_ip:
+            parts.append(request.remote_addr)
+        if by_user and hasattr(request, 'user'):
+            parts.append(str(request.user.id))
+        return ':'.join(parts) if parts else request.remote_addr
+
+    def is_allowed(self, key: str, limit: RateLimit) -> Tuple[bool, int]:
+        """Verifica se la richiesta è permessa"""
+        if self.redis:
+            return self._check_redis(key, limit)
+        return self._check_local(key, limit)
+
+    def _check_redis(self, key: str, limit: RateLimit) -> Tuple[bool, int]:
+        """Verifica rate limit usando Redis"""
+        current = time.time()
+        pipeline = self.redis.pipeline()
+        
+        # Rimuove i record vecchi e aggiunge il nuovo
+        pipeline.zremrangebyscore(key, 0, current - limit.window)
+        pipeline.zadd(key, {str(current): current})
+        
+        # Conta le richieste nella finestra
+        pipeline.zcount(key, current - limit.window, current)
+        pipeline.expire(key, limit.window)
+        
+        _, _, request_count, _ = pipeline.execute()
+        return request_count <= limit.requests, limit.requests - request_count
+
+    def _check_local(self, key: str, limit: RateLimit) -> Tuple[bool, int]:
+        """Verifica rate limit usando storage locale"""
+        current = time.time()
+        self.local_storage[key] = {
+            ts: count for ts, count in self.local_storage[key].items()
+            if current - ts < limit.window
+        }
+        
+        self.local_storage[key][current] = self.local_storage[key].get(current, 0) + 1
+        request_count = sum(self.local_storage[key].values())
+        
+        return request_count <= limit.requests, limit.requests - request_count
+
+def rate_limit(requests: int = 100, window: int = 60, by_ip: bool = True, by_user: bool = True):
+    """Decoratore per applicare rate limiting"""
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            limiter = current_app.rate_limiter
+            limit = RateLimit(requests, window, by_ip, by_user)
+            key = f"rate_limit:{f.__name__}:{limiter._get_identifier(by_ip, by_user)}"
+            
+            allowed, remaining = limiter.is_allowed(key, limit)
+            
+            if not allowed:
+                return {
+                    'error': 'Rate limit exceeded',
+                    'retry_after': window
+                }, 429
+            
+            response = f(*args, **kwargs)
+            return response
+        return decorated_function
+    return decorator
+
+# app/utils/security/security_manager.py
+from .rate_limiter import RateLimiter
+from typing import Optional
+import logging
+
+class SecurityManager:
+    """Gestore centralizzato della sicurezza"""
+    
+    def __init__(self, app_name: str, redis_url: Optional[str] = None):
+        self.app_name = app_name
+        self.rate_limiter = RateLimiter(redis_url)
+        self.logger = logging.getLogger(app_name)
+        
+        self.setup_logging()
+    
+    def setup_logging(self):
+        """Configura logging sicuro"""
+        handler = logging.FileHandler(f'logs/{self.app_name}_security.log')
+        handler.setFormatter(logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        ))
+        self.logger.addHandler(handler)
+        self.logger.setLevel(logging.INFO)
+    
+    def log_security_event(self, event_type: str, details: dict):
+        """Logga eventi di sicurezza"""
+        self.logger.info(f"Security event: {event_type}", extra={
+            'event_type': event_type,
+            'details': details
+        })
+
+# Example usage in routes
+# app/routes/auth.py
+from flask import Blueprint, request
+from app.utils.security import rate_limit
+
+auth_bp = Blueprint('auth', __name__)
+
+@auth_bp.route('/login', methods=['POST'])
+@rate_limit(requests=5, window=60)  # 5 tentativi per minuto
+def login():
+    return {"message": "Login successful"}
+
+@auth_bp.route('/noble/upgrade', methods=['POST'])
+@rate_limit(requests=10, window=3600)  # 10 upgrade per ora
+def upgrade_noble_rank():
+    return {"message": "Rank upgraded"}
+
+# app/routes/transformations.py
+@rate_limit(requests=100, window=3600)  # 100 trasformazioni per ora
+def transform_gold():
+    return {"message": "Gold transformed"}

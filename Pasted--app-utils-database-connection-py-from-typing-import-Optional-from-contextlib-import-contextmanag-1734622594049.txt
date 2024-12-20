@@ -1,0 +1,179 @@
+# app/utils/database/connection.py
+from typing import Optional
+from contextlib import contextmanager
+import logging
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.pool import QueuePool
+from sqlalchemy.exc import SQLAlchemyError, OperationalError
+
+class DatabaseManager:
+    """Gestore connessioni database con retry e pool"""
+    
+    def __init__(self, uri: str, pool_size: int = 5, max_overflow: int = 10):
+        self.uri = uri
+        self.pool_size = pool_size
+        self.max_overflow = max_overflow
+        self.logger = logging.getLogger('database')
+        self._setup_logging()
+        self.engine = self._create_engine()
+        self.Session = scoped_session(sessionmaker(bind=self.engine))
+
+    def _setup_logging(self):
+        handler = logging.FileHandler('logs/database.log')
+        handler.setFormatter(logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        ))
+        self.logger.addHandler(handler)
+        self.logger.setLevel(logging.INFO)
+
+    def _create_engine(self):
+        """Crea engine SQLAlchemy con configurazione ottimizzata"""
+        try:
+            return create_engine(
+                self.uri,
+                poolclass=QueuePool,
+                pool_size=self.pool_size,
+                max_overflow=self.max_overflow,
+                pool_timeout=30,
+                pool_recycle=1800,  # Ricicla connessioni dopo 30 minuti
+                pool_pre_ping=True  # Verifica connessione prima dell'uso
+            )
+        except SQLAlchemyError as e:
+            self.logger.error(f"Failed to create database engine: {str(e)}")
+            raise
+
+    @contextmanager
+    def session_scope(self):
+        """Context manager per gestire le sessioni del database"""
+        session = self.Session()
+        try:
+            yield session
+            session.commit()
+        except Exception as e:
+            session.rollback()
+            self.logger.error(f"Database session error: {str(e)}")
+            raise
+        finally:
+            session.close()
+
+    def check_connection(self) -> bool:
+        """Verifica la connessione al database"""
+        try:
+            with self.engine.connect() as conn:
+                conn.execute("SELECT 1")
+            return True
+        except OperationalError as e:
+            self.logger.error(f"Database connection check failed: {str(e)}")
+            return False
+
+# app/utils/cache/redis_manager.py
+import redis
+from typing import Optional, Any
+import json
+import logging
+from functools import wraps
+
+class RedisManager:
+    """Gestore Redis con fallback locale"""
+    
+    def __init__(self, redis_url: Optional[str] = None):
+        self.redis_url = redis_url
+        self.client = self._create_client()
+        self.local_cache = {}
+        self.logger = logging.getLogger('redis')
+        self._setup_logging()
+
+    def _setup_logging(self):
+        handler = logging.FileHandler('logs/redis.log')
+        handler.setFormatter(logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        ))
+        self.logger.addHandler(handler)
+        self.logger.setLevel(logging.INFO)
+
+    def _create_client(self) -> Optional[redis.Redis]:
+        """Crea client Redis con gestione errori"""
+        if not self.redis_url:
+            return None
+        
+        try:
+            client = redis.from_url(self.redis_url)
+            client.ping()  # Verifica connessione
+            return client
+        except redis.RedisError as e:
+            self.logger.error(f"Failed to connect to Redis: {str(e)}")
+            return None
+
+    def get(self, key: str, default: Any = None) -> Any:
+        """Ottiene valore con fallback su cache locale"""
+        try:
+            if self.client:
+                value = self.client.get(key)
+                if value:
+                    return json.loads(value)
+            return self.local_cache.get(key, default)
+        except (redis.RedisError, json.JSONDecodeError) as e:
+            self.logger.error(f"Redis get error: {str(e)}")
+            return self.local_cache.get(key, default)
+
+    def set(self, key: str, value: Any, expire: int = None):
+        """Imposta valore con fallback su cache locale"""
+        try:
+            serialized = json.dumps(value)
+            if self.client:
+                if expire:
+                    self.client.setex(key, expire, serialized)
+                else:
+                    self.client.set(key, serialized)
+            self.local_cache[key] = value
+        except (redis.RedisError, json.JSONDecodeError) as e:
+            self.logger.error(f"Redis set error: {str(e)}")
+            self.local_cache[key] = value
+
+# config.py
+from app.utils.database import DatabaseManager
+from app.utils.cache import RedisManager
+import os
+
+class Config:
+    """Configurazione applicazione con gestione DB e Redis"""
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    REDIS_URL = os.getenv('REDIS_URL')
+
+    # Pool configuration
+    DB_POOL_SIZE = 5
+    DB_MAX_OVERFLOW = 10
+
+    @classmethod
+    def init_db(cls):
+        """Inizializza gestore database"""
+        return DatabaseManager(
+            uri=cls.SQLALCHEMY_DATABASE_URI,
+            pool_size=cls.DB_POOL_SIZE,
+            max_overflow=cls.DB_MAX_OVERFLOW
+        )
+
+    @classmethod
+    def init_redis(cls):
+        """Inizializza gestore Redis"""
+        return RedisManager(redis_url=cls.REDIS_URL)
+
+# app/__init__.py
+from flask import Flask
+from config import Config
+
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
+    
+    # Inizializza database
+    db_manager = config_class.init_db()
+    app.db = db_manager
+    
+    # Inizializza Redis
+    redis_manager = config_class.init_redis()
+    app.redis = redis_manager
+    
+    return app
