@@ -30,9 +30,12 @@ contract NobleGoldSystem is Ownable, ReentrancyGuard {
     mapping(address => address[]) public referrals;
     mapping(address => bool) public verifiedAccounts;
     
-    uint256 public constant CLIENT_SHARE = 933; // 93.3%
+    uint256 public constant CLIENT_SHARE = 883; // 88.3%
     uint256 public constant NETWORK_SHARE = 67; // 6.7%
+    uint256 public constant OPERATIONAL_SHARE = 50; // 5%
     uint256 public constant BASIS_POINTS = 1000;
+    
+    address public operationalWallet;
     
     event KYCVerified(address indexed user);
     event IBANVerified(address indexed user);
@@ -77,6 +80,13 @@ contract NobleGoldSystem is Ownable, ReentrancyGuard {
 
         uint256 clientGold = goldGrams.mul(CLIENT_SHARE).div(BASIS_POINTS);
         uint256 networkGold = goldGrams.mul(NETWORK_SHARE).div(BASIS_POINTS);
+        uint256 operationalGold = goldGrams.mul(OPERATIONAL_SHARE).div(BASIS_POINTS);
+        
+        // Transfer operational fee
+        if (operationalWallet != address(0)) {
+            // Implementation for operational gold transfer
+            emit BonusDistributed(user, operationalWallet, operationalGold, "OPERATIONAL");
+        }
 
         investments[user].push(Investment({
             euroAmount: euroAmount,

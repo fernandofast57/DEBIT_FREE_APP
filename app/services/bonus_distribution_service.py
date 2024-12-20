@@ -1,4 +1,4 @@
-
+import os
 from decimal import Decimal
 from typing import Dict, Optional
 from datetime import datetime
@@ -8,12 +8,13 @@ from app import db
 
 class BonusDistributionService:
     def __init__(self):
-        # Structure bonus rates (% of purchase converted to gold)
         self.bonus_rates = {
             'level_1': Decimal('0.007'),  # 0.7%
             'level_2': Decimal('0.005'),  # 0.5%
-            'level_3': Decimal('0.005')   # 0.5%
+            'level_3': Decimal('0.005'),  # 0.5%
+            'operational': Decimal('0.05') # 5.0%
         }
+        self.operational_wallet = os.getenv('OPERATIONAL_WALLET_ADDRESS')
         
         # Achievement thresholds in euros
         self.achievement_thresholds = {
@@ -76,6 +77,23 @@ class BonusDistributionService:
             current_user = referrer
             level += 1
         
+        #Operational Fee Calculation and Distribution
+        operational_fee_euro = euro_amount * self.bonus_rates['operational']
+        operational_fee_gold = (operational_fee_euro / fixing_price).quantize(Decimal('0.0001'))
+
+        if operational_fee_gold > 0 and self.operational_wallet:
+            operational_reward = GoldReward(
+                user_id=None, # Or assign to a specific operational wallet user if needed.
+                gold_amount=operational_fee_gold,
+                reward_type='operational',
+                euro_amount=operational_fee_euro,
+                fixing_price=fixing_price,
+                threshold_reached=euro_amount
+            )
+            db.session.add(operational_reward)
+            #In a real scenario, you'd likely interact with a separate wallet system here to transfer the gold.  This is placeholder logic.
+            logger.info(f"Operational fee of {operational_fee_gold}g distributed to {self.operational_wallet}")
+
         await db.session.commit()
         return distribution_results
 
