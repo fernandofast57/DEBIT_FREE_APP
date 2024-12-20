@@ -1,3 +1,4 @@
+
 import os
 import logging
 from logging.handlers import RotatingFileHandler
@@ -73,14 +74,6 @@ class LogConfig:
 
 class Config:
     """Configurazione base"""
-
-class TestConfig(Config):
-    """Configurazione per testing"""
-    def __init__(self):
-        super().__init__()
-        self.TESTING = True
-        self.SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
-        self.WTF_CSRF_ENABLED = False
     def __init__(self):
         # Carica variabili d'ambiente
         load_dotenv()
@@ -116,3 +109,11 @@ class TestConfig(Config):
             'private_key': self.PRIVATE_KEY,
             'rpc_endpoints': self.RPC_ENDPOINTS
         }
+
+class TestConfig(Config):
+    """Configurazione per testing"""
+    def __init__(self):
+        super().__init__()
+        self.TESTING = True
+        self.SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+        self.WTF_CSRF_ENABLED = False
