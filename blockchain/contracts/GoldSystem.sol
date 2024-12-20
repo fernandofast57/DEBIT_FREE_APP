@@ -13,6 +13,7 @@ contract NobleGoldSystem is Ownable, ReentrancyGuard {
         uint256 euroAmount;
         uint256 goldGrams;
         uint256 timestamp;
+        bool isVerified;
     }
 
     struct Noble {
@@ -20,25 +21,27 @@ contract NobleGoldSystem is Ownable, ReentrancyGuard {
         uint256 totalVolume;
         uint256 directReferrals;
         address upline;
+        bool kycVerified;
+        string ibanHash;
     }
 
     mapping(address => Investment[]) public investments;
     mapping(address => Noble) public nobles;
     mapping(address => address[]) public referrals;
-
+    mapping(address => bool) public verifiedAccounts;
+    
+    uint256 public constant CLIENT_SHARE = 933; // 93.3%
+    uint256 public constant NETWORK_SHARE = 67; // 6.7%
+    uint256 public constant BASIS_POINTS = 1000;
+    
+    event KYCVerified(address indexed user);
+    event IBANVerified(address indexed user);
     event GoldTransformed(
         address indexed user,
         uint256 euroAmount,
         uint256 goldGrams,
         uint256 timestamp
     );
-
-    event RankUpdated(
-        address indexed user,
-        string oldRank,
-        string newRank
-    );
-
     event BonusDistributed(
         address indexed user,
         address indexed referrer,
@@ -46,114 +49,63 @@ contract NobleGoldSystem is Ownable, ReentrancyGuard {
         string bonusType
     );
 
-    uint256 public constant ORGANIZATION_FEE = 50;
-    uint256 public constant AFFILIATE_FEE = 17;
-    uint256 public constant FEE_DENOMINATOR = 1000;
-
     constructor() Ownable(msg.sender) {}
 
-    function batchTransform(
-        address[] calldata users,
-        uint256[] calldata euroAmounts,
-        uint256[] calldata goldGrams
-    ) external onlyOwner nonReentrant {
-        require(users.length == euroAmounts.length && euroAmounts.length == goldGrams.length, 
-                "Arrays length mismatch");
-
-        for (uint i = 0; i < users.length; i++) {
-            _transform(users[i], euroAmounts[i], goldGrams[i]);
-        }
+    modifier onlyVerifiedUser(address user) {
+        require(verifiedAccounts[user], "User not verified");
+        require(nobles[user].kycVerified, "KYC not completed");
+        _;
     }
 
-    function _transform(
+    function verifyKYC(address user) external onlyOwner {
+        nobles[user].kycVerified = true;
+        emit KYCVerified(user);
+    }
+
+    function verifyIBAN(address user, string memory ibanHash) external onlyOwner {
+        nobles[user].ibanHash = ibanHash;
+        emit IBANVerified(user);
+    }
+
+    function transformGold(
         address user,
         uint256 euroAmount,
         uint256 goldGrams
-    ) internal {
-        require(euroAmount > 0, "Amount must be greater than 0");
-        require(goldGrams > 0, "Gold grams must be greater than 0");
+    ) external onlyOwner onlyVerifiedUser(user) nonReentrant {
+        require(euroAmount > 0, "Invalid euro amount");
+        require(goldGrams > 0, "Invalid gold amount");
+
+        uint256 clientGold = goldGrams.mul(CLIENT_SHARE).div(BASIS_POINTS);
+        uint256 networkGold = goldGrams.mul(NETWORK_SHARE).div(BASIS_POINTS);
 
         investments[user].push(Investment({
             euroAmount: euroAmount,
-            goldGrams: goldGrams,
-            timestamp: block.timestamp
+            goldGrams: clientGold,
+            timestamp: block.timestamp,
+            isVerified: true
         }));
 
-        _distributeBonus(user, euroAmount);
-        _updateRank(user);
-
-        emit GoldTransformed(user, euroAmount, goldGrams, block.timestamp);
+        _distributeNetworkBonus(user, networkGold);
+        
+        emit GoldTransformed(user, euroAmount, clientGold, block.timestamp);
     }
 
-    function _updateRank(address user) internal {
-        Noble storage noble = nobles[user];
-        string memory newRank = noble.rank;
-
-        if (noble.totalVolume >= 100000 ether && noble.directReferrals >= 10) {
-            newRank = "count";
-        } else if (noble.totalVolume >= 50000 ether && noble.directReferrals >= 5) {
-            newRank = "viscount";
-        } else if (noble.totalVolume >= 10000 ether && noble.directReferrals >= 2) {
-            newRank = "noble";
-        }
-
-        if (keccak256(bytes(noble.rank)) != keccak256(bytes(newRank))) {
-            string memory oldRank = noble.rank;
-            noble.rank = newRank;
-            emit RankUpdated(user, oldRank, newRank);
-        }
-    }
-
-    function _distributeBonus(address user, uint256 amount) internal {
+    function _distributeNetworkBonus(address user, uint256 networkGold) internal {
         address current = nobles[user].upline;
         uint256 level = 0;
+        uint256[] memory bonusRates = new uint256[](3);
+        bonusRates[0] = 7; // 0.7%
+        bonusRates[1] = 5; // 0.5%
+        bonusRates[2] = 5; // 0.5%
 
-        while (current != address(0) && level < 7) {
-            uint256 bonus;
-            if (level == 1) {
-                bonus = amount.mul(7).div(1000); // 0.7%
-            } else if (level == 2) {
-                bonus = amount.mul(5).div(1000); // 0.5%
-            } else if (level == 3) {
-                bonus = amount.mul(5).div(1000); // 0.5%
-            }
-
-            nobles[current].totalVolume = nobles[current].totalVolume.add(amount);
+        while (current != address(0) && level < 3) {
+            uint256 bonus = networkGold.mul(bonusRates[level]).div(1000);
+            nobles[current].totalVolume = nobles[current].totalVolume.add(bonus);
             
             emit BonusDistributed(user, current, bonus, nobles[current].rank);
             
             current = nobles[current].upline;
             level++;
         }
-    }
-
-    function registerReferral(address user, address referrer) external onlyOwner {
-        require(user != address(0) && referrer != address(0), "Invalid addresses");
-        require(nobles[user].upline == address(0), "Referral already registered");
-        require(user != referrer, "Cannot refer yourself");
-
-        nobles[user].upline = referrer;
-        referrals[referrer].push(user);
-        nobles[referrer].directReferrals = nobles[referrer].directReferrals.add(1);
-
-        _updateRank(referrer);
-    }
-
-    function getInvestments(address user) external view returns (Investment[] memory) {
-        return investments[user];
-    }
-
-    function getNobleInfo(address user) external view returns (
-        string memory rank,
-        uint256 totalVolume,
-        uint256 directReferrals,
-        address upline
-    ) {
-        Noble storage noble = nobles[user];
-        return (noble.rank, noble.totalVolume, noble.directReferrals, noble.upline);
-    }
-
-    function getReferrals(address user) external view returns (address[] memory) {
-        return referrals[user];
     }
 }
