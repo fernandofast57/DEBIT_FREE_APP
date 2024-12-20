@@ -21,68 +21,7 @@ class ConfigValidator:
                   if not os.getenv(var)]
         if missing:
             raise ValueError(f"Missing required environment variables: {', '.join(missing)}")
-        
-        # Validate contract address format
-        contract_address = os.getenv('CONTRACT_ADDRESS')
-        if not contract_address.startswith('0x') or len(contract_address) != 42:
-            raise ValueError("Invalid CONTRACT_ADDRESS format")
-        
-        # Validate private key format
-        private_key = os.getenv('PRIVATE_KEY')
-        if not private_key.startswith('0x') or len(private_key) != 66:
-            raise ValueError("Invalid PRIVATE_KEY format")
-        
-        # Validate RPC endpoints
-        rpc_endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
-        if not any(ep.strip().startswith('https://') for ep in rpc_endpoints):
-            raise ValueError("At least one valid HTTPS RPC endpoint required")
-        
-        # Validate database URL
-        db_url = os.getenv('DATABASE_URL')
-        if not any(db_url.startswith(prefix) for prefix in ['sqlite:///', 'postgresql://', 'mysql://']):
-            raise ValueError("Invalid DATABASE_URL format")
-            
         return True
-
-class Config:
-    """Configurazione base"""
-    def __init__(self):
-        # Carica variabili d'ambiente
-        load_dotenv()
-        
-        # Setup logging
-        self.log_config = LogConfig()
-        self.logger = self.log_config.setup_logger()
-        
-        # Configurazione base
-        self.SECRET_KEY = os.getenv('SECRET_KEY')
-        self.SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///app.db')
-        self.SQLALCHEMY_TRACK_MODIFICATIONS = False
-        self.CONTRACT_ADDRESS = os.getenv('CONTRACT_ADDRESS')
-        self.PRIVATE_KEY = os.getenv('PRIVATE_KEY')
-        self.RPC_ENDPOINTS = self._parse_endpoints()
-
-    def _parse_endpoints(self) -> List[str]:
-        """Parse RPC endpoints from environment"""
-        endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
-        return [ep.strip() for ep in endpoints if ep.strip()]
-
-    def get_blockchain_config(self) -> Dict[str, Any]:
-        """Get blockchain specific configuration"""
-        return {
-            'contract_address': self.CONTRACT_ADDRESS,
-            'private_key': self.PRIVATE_KEY,
-            'rpc_endpoints': self.RPC_ENDPOINTS
-        }
-
-class TestConfig(Config):
-    """Test configuration"""
-    def __init__(self):
-        super().__init__()
-        self.TESTING = True
-        self.SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
-        self.WTF_CSRF_ENABLED = False
-        self.SECRET_KEY = 'test-key'
 
 class LogConfig:
     """Configurazione del sistema di logging"""
@@ -111,3 +50,36 @@ class LogConfig:
         logger.setLevel(logging.INFO)
         logger.addHandler(self.get_handler())
         return logger
+
+class Config:
+    """Configurazione base"""
+    def __init__(self):
+        load_dotenv()
+        self.log_config = LogConfig()
+        self.logger = self.log_config.setup_logger()
+        self.SECRET_KEY = os.getenv('SECRET_KEY')
+        self.SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///app.db')
+        self.SQLALCHEMY_TRACK_MODIFICATIONS = False
+        self.CONTRACT_ADDRESS = os.getenv('CONTRACT_ADDRESS')
+        self.PRIVATE_KEY = os.getenv('PRIVATE_KEY')
+        self.RPC_ENDPOINTS = self._parse_endpoints()
+
+    def _parse_endpoints(self) -> List[str]:
+        endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
+        return [ep.strip() for ep in endpoints if ep.strip()]
+
+    def get_blockchain_config(self) -> Dict[str, Any]:
+        return {
+            'contract_address': self.CONTRACT_ADDRESS,
+            'private_key': self.PRIVATE_KEY,
+            'rpc_endpoints': self.RPC_ENDPOINTS
+        }
+
+class TestConfig(Config):
+    """Test configuration"""
+    def __init__(self):
+        super().__init__()
+        self.TESTING = True
+        self.SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+        self.WTF_CSRF_ENABLED = False
+        self.SECRET_KEY = 'test-key'
