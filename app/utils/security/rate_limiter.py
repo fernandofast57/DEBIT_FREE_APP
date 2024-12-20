@@ -2,6 +2,8 @@
 from collections import defaultdict
 import time
 from typing import Dict, Tuple
+from functools import wraps
+from flask import request
 
 class RateLimiter:
     def __init__(self):
@@ -23,3 +25,15 @@ class RateLimiter:
             return True
             
         return False
+
+def rate_limit(requests_per_window=100, window=3600):
+    limiter = RateLimiter()
+    
+    def decorator(f):
+        @wraps(f)
+        def wrapped(*args, **kwargs):
+            if not limiter.is_allowed(str(request.remote_addr)):
+                return {'error': 'Rate limit exceeded'}, 429
+            return f(*args, **kwargs)
+        return wrapped
+    return decorator
