@@ -1,80 +1,51 @@
 
 from decimal import Decimal
-from typing import List, Dict
-from datetime import datetime
+from typing import Dict
+import os
 from app import db
-from app.models.models import User, GoldAccount, NobleRank
+from app.models.models import User
 from app.utils.logging_config import logger
 
 class BonusDistributionService:
     def __init__(self):
         self.bonus_rates = {
-            'Knight': Decimal('0.01'),  # 1%
-            'Baron': Decimal('0.02'),   # 2%
-            'Count': Decimal('0.03'),   # 3%
-            'Duke': Decimal('0.05')     # 5%
+            'level_1': Decimal('0.007'),  # 0.7%
+            'level_2': Decimal('0.005'),  # 0.5%
+            'level_3': Decimal('0.005')   # 0.5%
         }
     
-    def calculate_user_bonus(self, user: User) -> Decimal:
-        if not user.noble_rank:
-            return Decimal('0')
-            
-        gold_balance = user.gold_account.balance
-        bonus_rate = self.bonus_rates.get(user.noble_rank.rank_name, Decimal('0'))
-        return gold_balance * bonus_rate
+    def calculate_affiliate_bonus(self, purchase_amount: Decimal, level: int) -> Decimal:
+        """Calculate bonus based on level and purchase amount"""
+        if level == 1:
+            return purchase_amount * self.bonus_rates['level_1']
+        elif level == 2:
+            return purchase_amount * self.bonus_rates['level_2']
+        elif level == 3:
+            return purchase_amount * self.bonus_rates['level_3']
+        return Decimal('0')
     
-    async def distribute_monthly_bonus(self) -> Dict[int, Decimal]:
-        """Distribute monthly bonus to all noble users"""
-        noble_users = User.query.join(NobleRank).all()
+    async def distribute_affiliate_bonus(self, buyer_id: int, purchase_amount: Decimal) -> Dict:
+        """Distribute bonus to affiliates up to 3 levels up"""
         distribution_results = {}
+        current_user = await User.query.get(buyer_id)
+        level = 1
         
-        blockchain_service = BlockchainNobleService(
-            web3_provider=os.getenv('RPC_ENDPOINTS').split(',')[0],
-            contract_address=os.getenv('CONTRACT_ADDRESS')
-        )
-        
-        for user in noble_users:
-            try:
-                bonus_amount = self.calculate_user_bonus(user)
-                if bonus_amount > 0:
-                    user.gold_account.balance += bonus_amount
-                    distribution_results[user.id] = bonus_amount
-                    logger.info(f"Bonus distributed to user {user.id}: {bonus_amount}")
-                    
-            except Exception as e:
-                logger.error(f"Error distributing bonus to user {user.id}: {str(e)}")
-                continue
+        while current_user.referrer_id and level <= 3:
+            referrer = await User.query.get(current_user.referrer_id)
+            if not referrer:
+                break
                 
-        db.session.commit()
+            bonus = self.calculate_affiliate_bonus(purchase_amount, level)
+            if bonus > 0:
+                referrer.gold_account.balance += bonus
+                distribution_results[referrer.id] = {
+                    'level': level,
+                    'bonus': float(bonus)
+                }
+                logger.info(f"Bonus distributed to user {referrer.id}: {bonus} at level {level}")
+            
+            current_user = referrer
+            level += 1
+        
+        await db.session.commit()
         return distribution_results
-    
-    def get_bonus_statistics(self) -> Dict:
-        """Get statistics about bonus distribution"""
-        total_distributed = Decimal('0')
-        distribution_by_rank = {}
-        
-        noble_users = User.query.join(NobleRank).all()
-        for user in noble_users:
-            bonus = self.calculate_user_bonus(user)
-            rank_name = user.noble_rank.rank_name
-            
-            if rank_name not in distribution_by_rank:
-                distribution_by_rank[rank_name] = {
-                    'count': 0,
-                    'total_bonus': Decimal('0')
-                }
-                
-            distribution_by_rank[rank_name]['count'] += 1
-            distribution_by_rank[rank_name]['total_bonus'] += bonus
-            total_distributed += bonus
-            
-        return {
-            'total_distributed': float(total_distributed),
-            'distribution_by_rank': {
-                rank: {
-                    'count': stats['count'],
-                    'total_bonus': float(stats['total_bonus'])
-                }
-                for rank, stats in distribution_by_rank.items()
-            }
-        }

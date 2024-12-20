@@ -109,12 +109,13 @@ contract NobleGoldSystem is Ownable, ReentrancyGuard {
         uint256 level = 0;
 
         while (current != address(0) && level < 7) {
-            uint256 bonus = amount.mul(AFFILIATE_FEE).div(FEE_DENOMINATOR);
-            
-            if (keccak256(bytes(nobles[current].rank)) == keccak256(bytes("count"))) {
-                bonus = bonus.mul(2);
-            } else if (keccak256(bytes(nobles[current].rank)) == keccak256(bytes("viscount"))) {
-                bonus = bonus.mul(15).div(10);
+            uint256 bonus;
+            if (level == 1) {
+                bonus = amount.mul(7).div(1000); // 0.7%
+            } else if (level == 2) {
+                bonus = amount.mul(5).div(1000); // 0.5%
+            } else if (level == 3) {
+                bonus = amount.mul(5).div(1000); // 0.5%
             }
 
             nobles[current].totalVolume = nobles[current].totalVolume.add(amount);
