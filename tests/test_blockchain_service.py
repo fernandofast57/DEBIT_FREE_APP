@@ -20,6 +20,23 @@ def blockchain_service(app):
 def test_blockchain_connection(blockchain_service):
     assert blockchain_service.w3.is_connected()
     
+def test_blockchain_validator(blockchain_service):
+    """Test validazione transazioni blockchain"""
+    validator = blockchain_service.validator
+    
+    # Test transazione valida
+    tx_hash = '0x123abc'
+    result = validator.validate_transaction(tx_hash)
+    assert result['valid'] is True
+    assert 'block_number' in result
+    assert 'gas_used' in result
+    
+    # Test transazione non valida
+    invalid_tx = '0xinvalid'
+    result = validator.validate_transaction(invalid_tx)
+    assert result['valid'] is False
+    assert result['status'] == 'error'
+    
 def test_batch_transform(blockchain_service):
     # Test batch transformation logic
     users = [blockchain_service.w3.eth.accounts[1]]
