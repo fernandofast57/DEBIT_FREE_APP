@@ -1,50 +1,38 @@
 
-from decimal import Decimal
-from typing import Optional
-from app.models.models import User, NobleRank
-from app.services.blockchain_noble_service import BlockchainNobleService
-from app.utils.logging_config import logger
+from app.models.models import User, NobleRank, db
+from app.services.blockchain_service import BlockchainService
+from app.utils.logging_config import get_logger
+
+logger = get_logger(__name__)
 
 class NobleRankService:
     def __init__(self):
-        self.rank_requirements = {
-            'Knight': Decimal('10000'),    # 10,000 EUR
-            'Baron': Decimal('50000'),     # 50,000 EUR
-            'Count': Decimal('100000'),    # 100,000 EUR
-            'Duke': Decimal('500000')      # 500,000 EUR
-        }
+        self.blockchain_service = BlockchainService()
         
-    async def calculate_new_rank(self, user: User) -> Optional[str]:
-        """Calculate new rank based on investment volume"""
-        total_investment = user.total_investment
-        
-        for rank, requirement in sorted(self.rank_requirements.items(), 
-                                     key=lambda x: x[1], reverse=True):
-            if total_investment >= requirement:
-                return rank
-                
-        return 'Knight'  # Default rank
-        
-    async def update_user_rank(self, user: User) -> bool:
+    async def update_user_rank(self, user_id: int, new_rank_id: int):
         try:
-            new_rank = await self.calculate_new_rank(user)
-            if new_rank != user.noble_rank.rank_name:
-                blockchain_service = BlockchainNobleService(
-                    web3_provider=os.getenv('RPC_ENDPOINTS').split(',')[0],
-                    contract_address=os.getenv('CONTRACT_ADDRESS')
-                )
+            user = User.query.get(user_id)
+            if not user:
+                raise ValueError(f"User {user_id} not found")
                 
-                result = await blockchain_service.update_noble_rank(
-                    user.blockchain_address, 
-                    new_rank
-                )
+            noble_rank = NobleRank.query.get(new_rank_id)
+            if not noble_rank:
+                raise ValueError(f"Noble rank {new_rank_id} not found")
                 
-                if result['status'] == 'success':
-                    user.noble_rank.rank_name = new_rank
-                    return True
-                    
-            return False
+            user.noble_rank_id = new_rank_id
+            
+            # Update blockchain
+            if user.blockchain_address:
+                await self.blockchain_service.update_noble_rank(
+                    user.blockchain_address,
+                    new_rank_id
+                )
+            
+            db.session.commit()
+            logger.info(f"Updated rank for user {user_id} to {noble_rank.title}")
+            return True
             
         except Exception as e:
-            logger.error(f"Error updating noble rank: {str(e)}")
-            return False
+            db.session.rollback()
+            logger.error(f"Failed to update user rank: {str(e)}")
+            raise

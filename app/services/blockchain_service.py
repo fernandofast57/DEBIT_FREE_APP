@@ -1,55 +1,73 @@
 
 from web3 import Web3
-from decimal import Decimal
+from web3.middleware import geth_poa_middleware
 import os
-from app.utils.logging_config import logger
+import json
+from app.utils.retry import retry_with_backoff
+from app.utils.logging_config import get_logger
+
+logger = get_logger(__name__)
 
 class BlockchainService:
     def __init__(self):
-        self.rpc_endpoint = os.getenv('RPC_ENDPOINTS').split(',')[0]
-        self.web3 = Web3(Web3.HTTPProvider(self.rpc_endpoint))
-        self.contract_address = os.getenv('CONTRACT_ADDRESS')
-        self.private_key = os.getenv('PRIVATE_KEY')
+        self.w3 = None
+        self.contract = None
+        self.setup_web3()
         
-    async def send_transaction(self, function_name: str, *args) -> dict:
+    def setup_web3(self):
+        rpc_endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
+        for endpoint in rpc_endpoints:
+            try:
+                self.w3 = Web3(Web3.HTTPProvider(endpoint.strip()))
+                self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+                if self.w3.is_connected():
+                    logger.info(f"Connected to blockchain node: {endpoint}")
+                    self._setup_contract()
+                    break
+            except Exception as e:
+                logger.error(f"Failed to connect to {endpoint}: {str(e)}")
+                continue
+                
+    def _setup_contract(self):
+        contract_address = os.getenv('CONTRACT_ADDRESS')
+        if not contract_address:
+            raise ValueError("CONTRACT_ADDRESS not set in environment")
+            
         try:
-            contract = self.web3.eth.contract(
-                address=self.contract_address,
-                abi=self.load_contract_abi()
+            with open('blockchain/contracts/GoldSystem.json') as f:
+                contract_json = json.load(f)
+            self.contract = self.w3.eth.contract(
+                address=contract_address,
+                abi=contract_json['abi']
             )
-            
-            function = getattr(contract.functions, function_name)
-            tx = function(*args).build_transaction({
-                'from': self.web3.eth.account.from_key(self.private_key).address,
-                'nonce': self.web3.eth.get_transaction_count(
-                    self.web3.eth.account.from_key(self.private_key).address
-                ),
-                'gas': 2000000,
-                'gasPrice': self.web3.eth.gas_price
-            })
-            
-            signed_tx = self.web3.eth.account.sign_transaction(
-                tx, self.private_key
-            )
-            tx_hash = self.web3.eth.send_raw_transaction(
-                signed_tx.rawTransaction
-            )
-            receipt = self.web3.eth.wait_for_transaction_receipt(tx_hash)
-            
-            return {
-                'status': 'success',
-                'tx_hash': receipt.transactionHash.hex(),
-                'block_number': receipt.blockNumber
-            }
-            
         except Exception as e:
-            logger.error(f"Blockchain transaction error: {str(e)}")
-            return {'status': 'error', 'message': str(e)}
-            
-    def load_contract_abi(self):
-        try:
-            with open('blockchain/contracts/GoldSystem.abi', 'r') as f:
-                return f.read()
-        except Exception as e:
-            logger.error(f"Error loading contract ABI: {str(e)}")
+            logger.error(f"Failed to setup contract: {str(e)}")
             raise
+
+    @retry_with_backoff(max_retries=3)
+    async def update_noble_rank(self, address: str, rank: int):
+        if not self.w3 or not self.contract:
+            raise ValueError("Blockchain connection not initialized")
+            
+        private_key = os.getenv('PRIVATE_KEY')
+        account = self.w3.eth.account.from_key(private_key)
+        
+        nonce = self.w3.eth.get_transaction_count(account.address)
+        
+        transaction = self.contract.functions.updateNobleRank(
+            address,
+            rank
+        ).build_transaction({
+            'from': account.address,
+            'nonce': nonce,
+            'gas': 200000,
+            'gasPrice': self.w3.eth.gas_price
+        })
+        
+        signed_txn = self.w3.eth.account.sign_transaction(
+            transaction, private_key
+        )
+        tx_hash = self.w3.eth.send_raw_transaction(signed_txn.rawTransaction)
+        receipt = self.w3.eth.wait_for_transaction_receipt(tx_hash)
+        
+        return receipt
