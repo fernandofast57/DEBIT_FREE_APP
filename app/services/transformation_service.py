@@ -14,9 +14,15 @@ class TransformationService:
         self.structure_fee = Decimal('0.05')
 
     async def transform_to_gold(self, user_id: int, fixing_price: Decimal) -> Dict[str, Any]:
-        try:
-            user = await User.query.get(user_id)
-            money_account = await MoneyAccount.query.filter_by(user_id=user_id).first()
+        async with db.session.begin_nested():  # Creates savepoint
+            try:
+                user = await User.query.get(user_id)
+                if not user:
+                    return {'status': 'error', 'message': 'User not found'}
+                    
+                money_account = await MoneyAccount.query.filter_by(user_id=user_id).first()
+                if not money_account:
+                    return {'status': 'error', 'message': 'Money account not found'}
             
             if not money_account.balance > 0:
                 return {'status': 'error', 'message': 'Insufficient balance'}
@@ -63,3 +69,17 @@ class TransformationService:
         except Exception as e:
             await db.session.rollback()
             return {'status': 'error', 'message': str(e)}
+async def validate_transformation(self, euro_amount: Decimal, fixing_price: Decimal) -> bool:
+        if euro_amount <= 0:
+            app.logger.error(f"Invalid euro amount: {euro_amount}")
+            return False
+        if fixing_price <= 0:
+            app.logger.error(f"Invalid fixing price: {fixing_price}")
+            return False
+        return True
+
+    async def log_transformation(self, transformation: GoldTransformation) -> None:
+        app.logger.info(
+            f"Transformation completed: {transformation.euro_amount} EUR -> "
+            f"{transformation.gold_grams} g gold at {transformation.fixing_price} EUR/g"
+        )
