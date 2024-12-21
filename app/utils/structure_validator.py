@@ -24,9 +24,28 @@ class StructureValidator:
             'contracts': self.validate_contracts(),
             'services': self.validate_services(),
             'models': self.validate_models(),
-            'api': self.validate_api_structure()
+            'api': self.validate_api_structure(),
+            'blockchain': self.validate_blockchain_integration()
         }
         return results
+        
+    def validate_blockchain_integration(self) -> bool:
+        """Valida l'integrazione blockchain"""
+        try:
+            # Verifica presenza contratti
+            if not os.path.exists('blockchain/contracts/GoldSystem.sol'):
+                self.logger.error("GoldSystem.sol non trovato")
+                return False
+                
+            # Verifica configurazione RPC
+            if 'RPC_ENDPOINTS' not in os.environ:
+                self.logger.error("RPC_ENDPOINTS non configurato")
+                return False
+                
+            return True
+        except Exception as e:
+            self.logger.error(f"Errore validazione blockchain: {str(e)}")
+            return False
     
     def log_modification(self, file_path: str, modification_type: str):
         """Logga ogni modifica al codice"""
