@@ -41,9 +41,17 @@ def get_stats():
     user = User.query.get(user_id)
     if not user:
         return jsonify({'error': 'User not found'}), 404
+
+    # Get direct affiliates
+    affiliates = User.query.filter_by(referrer_id=user_id).all()
+    
+    # Calculate stats
+    total_volume = sum(affiliate.money_account.total_invested for affiliate in affiliates if affiliate.money_account)
+    active_affiliates = sum(1 for affiliate in affiliates if affiliate.money_account and affiliate.money_account.total_invested > 0)
+    total_earnings = sum(affiliate.money_account.referral_bonus for affiliate in affiliates if affiliate.money_account)
         
     return jsonify({
-        'total_earnings': 0.0,
-        'active_affiliates': 0,
-        'total_volume': 0.0
+        'total_earnings': float(total_earnings),
+        'active_affiliates': active_affiliates,
+        'total_volume': float(total_volume)
     })
