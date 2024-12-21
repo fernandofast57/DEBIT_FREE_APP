@@ -1,0 +1,147 @@
+# app/api/v1/__init__.py
+from flask import Blueprint
+
+api_v1 = Blueprint('api_v1', __name__, url_prefix='/api/v1')
+
+from . import transformations, transfers, bonuses
+
+# app/api/v1/transformations.py
+from flask import jsonify, request
+from app.services.blockchain_service import BlockchainService
+from app.models.models import GoldTransformation
+from . import api_v1
+from app.utils.security import rate_limit
+
+@api_v1.route('/transformations/batch', methods=['POST'])
+@rate_limit(requests=10, window=3600)  # 10 richieste per ora
+async def batch_transform():
+    """Processa batch di trasformazioni"""
+    try:
+        data = request.json
+        service = BlockchainService()
+        
+        # Valida i dati in ingresso
+        if not data or 'transactions' not in data:
+            return jsonify({'error': 'Invalid request data'}), 400
+            
+        result = await service.process_batch_transformation(data['transactions'])
+        
+        return jsonify({
+            'status': 'success',
+            'transaction_hash': result.transaction_hash,
+            'processed_count': len(data['transactions'])
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@api_v1.route('/transformations/history', methods=['GET'])
+def get_transformation_history():
+    """Recupera storico trasformazioni"""
+    try:
+        user_id = request.args.get('user_id')
+        page = int(request.args.get('page', 1))
+        per_page = int(request.args.get('per_page', 10))
+        
+        transformations = GoldTransformation.query.filter_by(user_id=user_id)\
+            .order_by(GoldTransformation.created_at.desc())\
+            .paginate(page=page, per_page=per_page)
+            
+        return jsonify({
+            'items': [t.to_dict() for t in transformations.items],
+            'total': transformations.total,
+            'pages': transformations.pages,
+            'current_page': page
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# app/api/v1/transfers.py
+@api_v1.route('/transfers/setup', methods=['POST'])
+@rate_limit(requests=5, window=3600)  # 5 richieste per ora
+def setup_recurring_transfer():
+    """Configura bonifico ricorrente"""
+    try:
+        data = request.json
+        
+        # Valida dati bonifico
+        required_fields = ['iban', 'amount', 'frequency']
+        if not all(field in data for field in required_fields):
+            return jsonify({'error': 'Missing required fields'}), 400
+            
+        # Crea record bonifico
+        transfer = RecurringTransfer(
+            user_id=g.user.id,
+            iban=data['iban'],
+            amount=data['amount'],
+            frequency=data['frequency']
+        )
+        db.session.add(transfer)
+        db.session.commit()
+        
+        return jsonify({
+            'status': 'success',
+            'transfer_id': transfer.id
+        })
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+@api_v1.route('/transfers/status', methods=['GET'])
+def get_transfer_status():
+    """Recupera stato bonifici"""
+    try:
+        user_id = g.user.id
+        transfer_id = request.args.get('transfer_id')
+        
+        query = RecurringTransfer.query.filter_by(user_id=user_id)
+        if transfer_id:
+            query = query.filter_by(id=transfer_id)
+            
+        transfers = query.all()
+        
+        return jsonify({
+            'transfers': [t.to_dict() for t in transfers]
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# app/api/v1/bonuses.py
+@api_v1.route('/bonuses/calculate', methods=['POST'])
+async def calculate_bonuses():
+    """Calcola bonus per trasformazione"""
+    try:
+        data = request.json
+        
+        if 'transformation_id' not in data:
+            return jsonify({'error': 'Missing transformation ID'}), 400
+            
+        service = BonusService()
+        bonuses = await service.calculate_bonuses(data['transformation_id'])
+        
+        return jsonify({
+            'status': 'success',
+            'bonuses': bonuses
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@api_v1.route('/bonuses/history', methods=['GET'])
+def get_bonus_history():
+    """Recupera storico bonus"""
+    try:
+        user_id = g.user.id
+        page = int(request.args.get('page', 1))
+        per_page = int(request.args.get('per_page', 10))
+        
+        bonuses = Bonus.query.filter_by(user_id=user_id)\
+            .order_by(Bonus.created_at.desc())\
+            .paginate(page=page, per_page=per_page)
+            
+        return jsonify({
+            'items': [b.to_dict() for b in bonuses.items],
+            'total': bonuses.total,
+            'pages': bonuses.pages,
+            'current_page': page
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500

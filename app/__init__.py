@@ -43,6 +43,9 @@ def create_app(config_class=Config):
         
     db.init_app(app)
     migrate.init_app(app, db)
+    
+    from app.admin import admin
+    admin.init_app(app)
     CORS(app)
     
     with app.app_context():
