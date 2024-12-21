@@ -31,3 +31,31 @@
     </div>
 </div>
 {% endblock %}
+{% extends "base.html" %}
+{% block content %}
+<div class="dashboard-container">
+  <h1>Gold System Dashboard</h1>
+  
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h3>Total Gold Distributed</h3>
+      <p>{{ total_gold_grams }} g</p>
+    </div>
+    
+    <div class="stat-card">
+      <h3>Weekly Transactions</h3>
+      <p>{{ weekly_transactions }}</p>
+    </div>
+    
+    <div class="stat-card">
+      <h3>Active Networks</h3>
+      <p>{{ active_networks }}</p>
+    </div>
+  </div>
+
+  <div class="actions-panel">
+    <h2>Weekly Processing</h2>
+    <button onclick="processWeeklyGold()">Process Gold Distribution</button>
+  </div>
+</div>
+{% endblock %}
