@@ -11,3 +11,4 @@ pytest-asyncio==0.21.1
 python-jose==3.3.0
 pydantic==2.4.2
 flask-admin==1.6.1
+Flask-Login==0.6.2
