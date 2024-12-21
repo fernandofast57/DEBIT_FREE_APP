@@ -46,8 +46,13 @@ class BlockchainService:
 
     @retry_with_backoff(max_retries=3)
     async def update_noble_rank(self, address: str, rank: int):
+        logger = get_logger(__name__)
         if not self.w3 or not self.contract:
+            logger.error("Blockchain connection not initialized")
             raise ValueError("Blockchain connection not initialized")
+        try:
+            if not self.w3.is_address(address):
+                raise ValueError("Invalid Ethereum address")
             
         private_key = os.getenv('PRIVATE_KEY')
         account = self.w3.eth.account.from_key(private_key)

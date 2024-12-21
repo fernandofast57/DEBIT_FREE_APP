@@ -39,3 +39,12 @@ def setup_logging():
     validation_logger.addHandler(validation_handler)
     
     return main_logger, validation_logger
+def setup_blockchain_logging():
+    logger = logging.getLogger('blockchain')
+    logger.setLevel(logging.INFO)
+    
+    handler = RotatingFileHandler('logs/blockchain.log', maxBytes=10000000, backupCount=5)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+    return logger
