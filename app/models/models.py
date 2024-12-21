@@ -1,6 +1,7 @@
 
 from datetime import datetime
 from decimal import Decimal
+from datetime import datetime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
@@ -21,6 +22,14 @@ class User(UserMixin, db.Model):
     money_account = db.relationship('MoneyAccount', backref='user', uselist=False)
     gold_account = db.relationship('GoldAccount', backref='user', uselist=False)
     noble_rank = db.relationship('NobleRank', backref='users')
+
+class NobleRelation(db.Model):
+    __tablename__ = 'noble_relations'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    noble_id = db.Column(db.Integer, db.ForeignKey('noble_ranks.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class GoldReward(db.Model):
     __tablename__ = 'gold_rewards'
