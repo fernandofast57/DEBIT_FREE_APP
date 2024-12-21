@@ -1,0 +1,29 @@
+/gold-investment-backend$ pip install -r requirements.txt
+Requirement already satisfied: Flask==2.3.3 in ./.pythonlibs/lib/python3.11/site-packages (from -r requirements.txt (line 2)) (2.3.3)
+Collecting Werkzeug==2.3.3 (from -r requirements.txt (line 3))
+  Downloading Werkzeug-2.3.3-py3-none-any.whl.metadata (4.2 kB)
+Requirement already satisfied: Flask-SQLAlchemy==3.0.2 in ./.pythonlibs/lib/python3.11/site-packages (from -r requirements.txt (line 4)) (3.0.2)
+Requirement already satisfied: SQLAlchemy==1.4.41 in ./.pythonlibs/lib/python3.11/site-packages (from -r requirements.txt (line 5)) (1.4.41)
+Requirement already satisfied: Flask-Migrate==4.0.5 in ./.pythonlibs/lib/python3.11/site-packages (from -r requirements.txt (line 6)) (4.0.5)
+Requirement already satisfied: python-dotenv==1.0.0 in ./.pythonlibs/lib/python3.11/site-packages (from -r requirements.txt (line 7)) (1.0.0)
+Requirement already satisfied: web3==6.9.0 in ./.pythonlibs/lib/python3.11/site-packages (from -r requirements.txt (line 8)) (6.9.0)
+Requirement already satisfied: pytest==7.4.2 in ./.pythonlibs/lib/python3.11/site-packages (from -r requirements.txt (line 9)) (7.4.2)
+Requirement already satisfied: pytest-asyncio==0.21.1 in ./.pythonlibs/lib/python3.11/site-packages (from -r requirements.txt (line 10)) (0.21.1)
+Requirement already satisfied: python-jose==3.3.0 in ./.pythonlibs/lib/python3.11/site-packages (from -r requirements.txt (line 11)) (3.3.0)
+Requirement already satisfied: pydantic==2.4.2 in ./.pythonlibs/lib/python3.11/site-packages (from -r requirements.txt (line 12)) (2.4.2)
+Requirement already satisfied: flask-admin==1.6.1 in ./.pythonlibs/lib/python3.11/site-packages (from -r requirements.txt (line 13)) (1.6.1)
+Collecting Flask-Login==0.6.2 (from -r requirements.txt (line 14))
+  Using cached Flask_Login-0.6.2-py3-none-any.whl.metadata (5.8 kB)
+INFO: pip is looking at multiple versions of flask to determine which version is compatible with other requirements. This could take a while.
+ERROR: Cannot install Werkzeug==2.3.3 and flask==2.3.3 because these package versions have conflicting dependencies.
+
+The conflict is caused by:
+    The user requested Werkzeug==2.3.3
+    flask 2.3.3 depends on Werkzeug>=2.3.7
+
+To fix this you could try to:
+1. loosen the range of package versions you've specified
+2. remove package versions to allow pip attempt to solve the dependency conflict
+
+ERROR: ResolutionImpossible: for help visit https://pip.pypa.io/en/latest/topics/dependency-resolution/#dealing-with-dependency-conflicts
+~/gold-investment-backend$ 
