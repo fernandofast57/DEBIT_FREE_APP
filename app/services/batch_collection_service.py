@@ -6,9 +6,13 @@ from app import db
 from app.models.models import User, MoneyAccount, Transaction
 from app.services.blockchain_service import BlockchainService
 
+from app.services.validators.blockchain_validator import BlockchainValidator
+import os
+
 class BatchCollectionService:
     def __init__(self):
         self.blockchain_service = BlockchainService()
+        self.validator = BlockchainValidator(os.getenv('RPC_ENDPOINTS').split(',')[0])
         self.batch_size = 50
         self.pending_transfers = []
 
