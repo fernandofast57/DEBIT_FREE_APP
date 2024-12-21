@@ -1,19 +1,29 @@
 
 {
-  "allowed_modifications": {
-    "bonus_system": {
-      "levels": 3,
-      "rates": {
-        "level1": 0.7,
-        "level2": 0.5,
-        "level3": 0.5
-      }
+    "allowed_modifications": {
+        "allowed_modules": [
+            "app/services",
+            "app/api/v1",
+            "app/models",
+            "app/utils"
+        ],
+        "bonus_system": {
+            "rates": {
+                "level1": 0.007,
+                "level2": 0.005,
+                "level3": 0.005
+            },
+            "levels": 3
+        }
     },
-    "organization_fee": 5.0,
-    "allowed_modules": [
-      "app/services/bonus_distribution_service.py",
-      "app/services/blockchain_service.py",
-      "app/services/transformation_service.py"
-    ]
-  }
+    "critical_files": [
+        "app/config.py",
+        "app/__init__.py",
+        "app/utils/security/security_manager.py"
+    ],
+    "project_structure": {
+        "services": ["transformation", "batch_collection", "bonus_distribution"],
+        "models": ["noble_system", "accounting", "transactions"],
+        "api_endpoints": ["transfers", "transformations", "bonuses"]
+    }
 }
