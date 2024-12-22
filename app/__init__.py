@@ -78,5 +78,7 @@ def create_app(config_class=Config):
     app.register_blueprint(bonuses_bp)
     app.register_blueprint(noble_bp, url_prefix='/api/v1/noble')
     app.register_blueprint(validation_bp, url_prefix='/api/v1/system')
+    from app.api.v1.system import system_bp
+    app.register_blueprint(system_bp, url_prefix='/api/v1/system')
 
     return app
