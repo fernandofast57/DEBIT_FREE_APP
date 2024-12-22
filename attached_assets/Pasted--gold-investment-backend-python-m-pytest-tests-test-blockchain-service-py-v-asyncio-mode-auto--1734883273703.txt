@@ -1,0 +1,39 @@
+~/gold-investment-backend$ python -m pytest tests/test_blockchain_service.py -v --asyncio-mode=auto
+================================================= test session starts ==================================================
+platform linux -- Python 3.11.10, pytest-7.4.2, pluggy-1.5.0 -- /home/runner/gold-investment-backend/.pythonlibs/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/gold-investment-backend
+configfile: pyproject.toml
+plugins: mock-3.14.0, asyncio-0.21.1, web3-6.9.0
+asyncio: mode=Mode.AUTO
+collected 3 items                                                                                                      
+
+tests/test_blockchain_service.py::test_batch_transform ERROR                                                     [ 33%]
+tests/test_blockchain_service.py::test_noble_rank_update ERROR                                                   [ 66%]
+tests/test_blockchain_service.py::test_gas_optimization ERROR                                                    [100%]
+
+======================================================== ERRORS ========================================================
+________________________________________ ERROR at setup of test_batch_transform ________________________________________
+tests/test_blockchain_service.py:9: in blockchain_service
+    w3 = Web3(EthereumTesterProvider())
+.pythonlibs/lib/python3.11/site-packages/web3/providers/eth_tester/main.py:101: in __init__
+    from eth_tester import EthereumTester  # noqa: F811
+E   ModuleNotFoundError: No module named 'eth_tester'
+_______________________________________ ERROR at setup of test_noble_rank_update _______________________________________
+tests/test_blockchain_service.py:9: in blockchain_service
+    w3 = Web3(EthereumTesterProvider())
+.pythonlibs/lib/python3.11/site-packages/web3/providers/eth_tester/main.py:101: in __init__
+    from eth_tester import EthereumTester  # noqa: F811
+E   ModuleNotFoundError: No module named 'eth_tester'
+_______________________________________ ERROR at setup of test_gas_optimization ________________________________________
+tests/test_blockchain_service.py:9: in blockchain_service
+    w3 = Web3(EthereumTesterProvider())
+.pythonlibs/lib/python3.11/site-packages/web3/providers/eth_tester/main.py:101: in __init__
+    from eth_tester import EthereumTester  # noqa: F811
+E   ModuleNotFoundError: No module named 'eth_tester'
+=============================================== short test summary info ================================================
+ERROR tests/test_blockchain_service.py::test_batch_transform - ModuleNotFoundError: No module named 'eth_tester'
+ERROR tests/test_blockchain_service.py::test_noble_rank_update - ModuleNotFoundError: No module named 'eth_tester'
+ERROR tests/test_blockchain_service.py::test_gas_optimization - ModuleNotFoundError: No module named 'eth_tester'
+================================================== 3 errors in 0.17s ===================================================
+~/gold-investment-backend$ 
