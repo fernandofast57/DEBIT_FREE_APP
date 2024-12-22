@@ -1,4 +1,3 @@
-
 import logging
 from logging.handlers import RotatingFileHandler
 import os
@@ -38,7 +37,19 @@ def setup_logging():
     validation_handler.setFormatter(formatter)
     validation_logger.addHandler(validation_handler)
     
-    return main_logger, validation_logger
+    # Transaction logger
+    transaction_logger = logging.getLogger('transactions')
+    transaction_logger.setLevel(logging.INFO)
+    transaction_handler = RotatingFileHandler(
+        'logs/transactions.log',
+        maxBytes=10000000,  # 10MB
+        backupCount=5
+    )
+    transaction_handler.setFormatter(formatter) # Use the same detailed formatter
+    transaction_logger.addHandler(transaction_handler)
+
+    return main_logger, validation_logger, transaction_logger
+
 def setup_blockchain_logging():
     logger = logging.getLogger('blockchain')
     logger.setLevel(logging.INFO)

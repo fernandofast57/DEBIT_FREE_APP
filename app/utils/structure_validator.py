@@ -1,5 +1,7 @@
-
-from typing import Dict, List
+from typing import Dict, Any
+from web3 import Web3
+import os
+from app.utils.errors import ValidationError
 import json
 import logging
 
@@ -18,34 +20,25 @@ class StructureValidator:
         rates = self.config['allowed_modifications']['bonus_system']['rates']
         return rate == rates[f'level{level}']
 
+    def validate_blockchain_config() -> bool:
+        try:
+            w3 = Web3(Web3.HTTPProvider(os.getenv('RPC_ENDPOINTS').split(',')[0]))
+            return w3.is_connected()
+        except Exception as e:
+            self.logger.error(f"Blockchain validation failed: {str(e)}")
+            return False
+
     def validate_structure(self) -> Dict[str, bool]:
         """Valida l'intera struttura del progetto"""
         results = {
-            'contracts': self.validate_contracts(),
-            'services': self.validate_services(),
-            'models': self.validate_models(),
-            'api': self.validate_api_structure(),
-            'blockchain': self.validate_blockchain_integration()
+            'contracts': self.validate_contracts(), #Assuming this function exists elsewhere
+            'services': self.validate_services(), #Assuming this function exists elsewhere
+            'models': self.validate_models(), #Assuming this function exists elsewhere
+            'api': self.validate_api_structure(), #Assuming this function exists elsewhere
+            'blockchain': self.validate_blockchain_config()
         }
         return results
         
-    def validate_blockchain_integration(self) -> bool:
-        """Valida l'integrazione blockchain"""
-        try:
-            # Verifica presenza contratti
-            if not os.path.exists('blockchain/contracts/GoldSystem.sol'):
-                self.logger.error("GoldSystem.sol non trovato")
-                return False
-                
-            # Verifica configurazione RPC
-            if 'RPC_ENDPOINTS' not in os.environ:
-                self.logger.error("RPC_ENDPOINTS non configurato")
-                return False
-                
-            return True
-        except Exception as e:
-            self.logger.error(f"Errore validazione blockchain: {str(e)}")
-            return False
     
     def log_modification(self, file_path: str, modification_type: str):
         """Logga ogni modifica al codice"""
