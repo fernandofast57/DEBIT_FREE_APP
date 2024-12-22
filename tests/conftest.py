@@ -5,6 +5,10 @@ from web3 import Web3, EthereumTesterProvider
 
 @pytest.fixture
 def mock_web3():
+    """
+    Mock Web3 provider per i test. 
+    Funziona sia per Ethereum che Polygon dato che Polygon è compatibile con EVM
+    """
     mock = Mock()
     mock.to_checksum_address = Web3.to_checksum_address
     mock.to_wei = Web3.to_wei
