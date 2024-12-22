@@ -82,4 +82,7 @@ def create_app(config_class=Config):
     from app.api.v1.system import system_bp
     app.register_blueprint(system_bp, url_prefix='/api/v1/system')
 
+    from app.utils.optimization import setup_optimization
+    app = setup_optimization(app)
+
     return app
