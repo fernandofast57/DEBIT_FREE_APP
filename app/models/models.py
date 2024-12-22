@@ -1,9 +1,9 @@
 from datetime import datetime
 from decimal import Decimal
-from datetime import datetime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
+from app.models.noble_system import NobleRank
 
 db = SQLAlchemy()
 

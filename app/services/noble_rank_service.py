@@ -1,5 +1,6 @@
 
-from app.models.models import User, NobleRank, db
+from app.models.models import User, db
+from app.models.noble_system import NobleRank
 from app.services.blockchain_service import BlockchainService
 from app.utils.logging_config import get_logger
 
