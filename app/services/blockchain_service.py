@@ -15,18 +15,29 @@ class BlockchainService:
         self.setup_web3()
         
     def setup_web3(self):
-        rpc_endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
-        for endpoint in rpc_endpoints:
-            try:
-                self.w3 = Web3(Web3.HTTPProvider(endpoint.strip()))
-                self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
-                if self.w3.is_connected():
-                    logger.info(f"Connected to blockchain node: {endpoint}")
-                    self._setup_contract()
-                    break
-            except Exception as e:
-                logger.error(f"Failed to connect to {endpoint}: {str(e)}")
-                continue
+        self.rpc_endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
+        self.current_rpc_index = 0
+        self._connect_to_rpc()
+        
+    def _connect_to_rpc(self):
+        if not self.rpc_endpoints:
+            raise ValueError("No RPC endpoints configured")
+            
+        endpoint = self.rpc_endpoints[self.current_rpc_index].strip()
+        try:
+            self.w3 = Web3(Web3.HTTPProvider(endpoint))
+            self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+            if self.w3.is_connected():
+                logger.info(f"Connected to blockchain node: {endpoint}")
+                self._setup_contract()
+                return True
+        except Exception as e:
+            logger.error(f"Failed to connect to {endpoint}: {str(e)}")
+            return self._try_next_rpc()
+            
+    def _try_next_rpc(self):
+        self.current_rpc_index = (self.current_rpc_index + 1) % len(self.rpc_endpoints)
+        return self._connect_to_rpc()
                 
     def _setup_contract(self):
         contract_address = os.getenv('CONTRACT_ADDRESS')
