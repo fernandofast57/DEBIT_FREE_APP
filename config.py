@@ -78,8 +78,10 @@ class Config:
 class TestConfig(Config):
     """Test configuration"""
     def __init__(self):
-        super().__init__()
         self.TESTING = True
         self.SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
         self.WTF_CSRF_ENABLED = False
         self.SECRET_KEY = 'test-key'
+        self.CONTRACT_ADDRESS = '0x0000000000000000000000000000000000000000'
+        self.PRIVATE_KEY = '0x0000000000000000000000000000000000000000000000000000000000000000'
+        self.RPC_ENDPOINTS = ['http://localhost:8545']
