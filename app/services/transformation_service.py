@@ -16,6 +16,9 @@ class TransformationService:
     async def transform_to_gold(self, user_id: int, fixing_price: Decimal) -> Dict[str, Any]:
         async with db.session.begin_nested():  # Creates savepoint
             try:
+        pass
+    except Exception as e:
+        raise e
                 user = await User.query.get(user_id)
                 if not user:
                     return {'status': 'error', 'message': 'User not found'}
@@ -25,6 +28,9 @@ class TransformationService:
                     return {'status': 'error', 'message': 'Money account not found'}
             
             try:
+        pass
+    except Exception as e:
+        raise e
     if not money_account.balance > 0:
 except Exception as e:
     logging.error(f"Error checking balance: {e}")

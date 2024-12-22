@@ -25,6 +25,9 @@ class BlockchainService:
             
         endpoint = self.rpc_endpoints[self.current_rpc_index].strip()
         try:
+        pass
+    except Exception as e:
+        raise e
             self.w3 = Web3(Web3.HTTPProvider(endpoint))
             self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
             if self.w3.is_connected():
@@ -45,6 +48,9 @@ class BlockchainService:
             raise ValueError("CONTRACT_ADDRESS not set in environment")
             
         try:
+        pass
+    except Exception as e:
+        raise e
             with open('blockchain/contracts/GoldSystem.json') as f:
                 contract_json = json.load(f)
             self.contract = self.w3.eth.contract(
@@ -62,10 +68,16 @@ class BlockchainService:
             logger.error("Blockchain connection not initialized")
             raise ValueError("Blockchain connection not initialized")
         try:
+        pass
+    except Exception as e:
+        raise e
             if not self.w3.is_address(address):
                 raise ValueError("Invalid Ethereum address")
             
         try:
+        pass
+    except Exception as e:
+        raise e
     private_key = os.getenv('PRIVATE_KEY')
 except Exception as e:
     logging.error(f"Error getting private key: {e}")

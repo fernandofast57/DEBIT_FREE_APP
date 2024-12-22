@@ -1,4 +1,3 @@
-
 from datetime import datetime
 from decimal import Decimal
 from datetime import datetime
@@ -7,6 +6,14 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 
 db = SQLAlchemy()
+
+class MoneyAccount(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    balance = db.Column(db.Float, default=0.0)
+    currency = db.Column(db.String(3), default='USD')
+    
+    user = db.relationship('User', backref=db.backref('money_accounts', lazy=True))
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'

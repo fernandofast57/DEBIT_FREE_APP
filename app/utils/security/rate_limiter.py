@@ -1,9 +1,13 @@
-
 from collections import defaultdict
 import time
 from typing import Dict, Tuple
-from functools import wraps
-from flask import request
+from collections import defaultdict
+from dataclasses import dataclass
+
+@dataclass
+class RateLimit:
+    requests: int
+    window: int  # in seconds
 
 class RateLimiter:
     def __init__(self):
