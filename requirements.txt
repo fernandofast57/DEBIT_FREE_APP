@@ -1,6 +1,6 @@
 
-Flask==2.3.3
-Werkzeug==2.3.7
+Flask==3.0.0
+Werkzeug==3.0.0
 Flask-SQLAlchemy==3.0.2
 SQLAlchemy==2.0.23
 Flask-Migrate==4.0.5
@@ -12,3 +12,4 @@ python-jose==3.3.0
 pydantic==2.4.2
 flask-admin==1.6.1
 Flask-Login==0.6.2
+quart==0.19.4
