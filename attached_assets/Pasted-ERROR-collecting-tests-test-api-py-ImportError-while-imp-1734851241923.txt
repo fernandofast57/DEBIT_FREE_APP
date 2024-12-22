@@ -1,0 +1,352 @@
+ERROR collecting tests/test_api.py __________________________________________
+ImportError while importing test module '/home/runner/gold-investment-backend/tests/test_api.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+.pythonlibs/lib/python3.11/site-packages/_pytest/python.py:617: in _importtestmodule
+    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
+.pythonlibs/lib/python3.11/site-packages/_pytest/pathlib.py:567: in import_path
+    importlib.import_module(module_name)
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+<frozen importlib._bootstrap>:1204: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1176: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1147: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:690: in _load_unlocked
+    ???
+.pythonlibs/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:178: in exec_module
+    exec(co, module.__dict__)
+tests/test_api.py:5: in <module>
+    from app.models import User, MoneyAccount, GoldAccount
+E   ImportError: cannot import name 'User' from 'app.models' (/home/runner/gold-investment-backend/app/models/__init__.py)
+_________________________________________ ERROR collecting tests/test_auth.py __________________________________________
+ImportError while importing test module '/home/runner/gold-investment-backend/tests/test_auth.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+.pythonlibs/lib/python3.11/site-packages/_pytest/python.py:617: in _importtestmodule
+    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
+.pythonlibs/lib/python3.11/site-packages/_pytest/pathlib.py:567: in import_path
+    importlib.import_module(module_name)
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+<frozen importlib._bootstrap>:1204: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1176: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1147: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:690: in _load_unlocked
+    ???
+.pythonlibs/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:178: in exec_module
+    exec(co, module.__dict__)
+tests/test_auth.py:5: in <module>
+    from app.utils.auth import AuthManager
+app/utils/auth.py:4: in <module>
+    import jwt
+E   ModuleNotFoundError: No module named 'jwt'
+_______________________________ ERROR collecting tests/test_batch_collection_service.py ________________________________
+ImportError while importing test module '/home/runner/gold-investment-backend/tests/test_batch_collection_service.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+.pythonlibs/lib/python3.11/site-packages/_pytest/python.py:617: in _importtestmodule
+    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
+.pythonlibs/lib/python3.11/site-packages/_pytest/pathlib.py:567: in import_path
+    importlib.import_module(module_name)
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+<frozen importlib._bootstrap>:1204: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1176: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1147: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:690: in _load_unlocked
+    ???
+.pythonlibs/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:178: in exec_module
+    exec(co, module.__dict__)
+tests/test_batch_collection_service.py:4: in <module>
+    from app.services.batch_collection_service import BatchCollectionService
+app/services/batch_collection_service.py:6: in <module>
+    from app.models.models import User, MoneyAccount, Transaction
+E   ImportError: cannot import name 'MoneyAccount' from 'app.models.models' (/home/runner/gold-investment-backend/app/models/models.py)
+________________________________ ERROR collecting tests/test_blockchain_integration.py _________________________________
+.pythonlibs/lib/python3.11/site-packages/_pytest/python.py:617: in _importtestmodule
+    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
+.pythonlibs/lib/python3.11/site-packages/_pytest/pathlib.py:567: in import_path
+    importlib.import_module(module_name)
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+<frozen importlib._bootstrap>:1204: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1176: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1147: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:690: in _load_unlocked
+    ???
+.pythonlibs/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:178: in exec_module
+    exec(co, module.__dict__)
+tests/test_blockchain_integration.py:4: in <module>
+    from app.services.blockchain_service import BlockchainService
+E     File "/home/runner/gold-investment-backend/app/services/blockchain_service.py", line 68
+E       private_key = os.getenv('PRIVATE_KEY')
+E       ^^^^^^^^^^^
+E   SyntaxError: expected 'except' or 'finally' block
+__________________________________ ERROR collecting tests/test_blockchain_service.py ___________________________________
+.pythonlibs/lib/python3.11/site-packages/_pytest/python.py:617: in _importtestmodule
+    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
+.pythonlibs/lib/python3.11/site-packages/_pytest/pathlib.py:567: in import_path
+    importlib.import_module(module_name)
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+<frozen importlib._bootstrap>:1204: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1176: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1147: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:690: in _load_unlocked
+    ???
+.pythonlibs/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:178: in exec_module
+    exec(co, module.__dict__)
+tests/test_blockchain_service.py:9: in <module>
+    from app.services.blockchain_service import BlockchainService
+E     File "/home/runner/gold-investment-backend/app/services/blockchain_service.py", line 68
+E       private_key = os.getenv('PRIVATE_KEY')
+E       ^^^^^^^^^^^
+E   SyntaxError: expected 'except' or 'finally' block
+______________________________ ERROR collecting tests/test_bonus_distribution_service.py _______________________________
+ImportError while importing test module '/home/runner/gold-investment-backend/tests/test_bonus_distribution_service.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+.pythonlibs/lib/python3.11/site-packages/_pytest/python.py:617: in _importtestmodule
+    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
+.pythonlibs/lib/python3.11/site-packages/_pytest/pathlib.py:567: in import_path
+    importlib.import_module(module_name)
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+<frozen importlib._bootstrap>:1204: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1176: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1147: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:690: in _load_unlocked
+    ???
+.pythonlibs/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:178: in exec_module
+    exec(co, module.__dict__)
+tests/test_bonus_distribution_service.py:5: in <module>
+    from app.models.models import User, MoneyAccount
+E   ImportError: cannot import name 'MoneyAccount' from 'app.models.models' (/home/runner/gold-investment-backend/app/models/models.py)
+_____________________________________ ERROR collecting tests/test_bonus_system.py ______________________________________
+ImportError while importing test module '/home/runner/gold-investment-backend/tests/test_bonus_system.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+.pythonlibs/lib/python3.11/site-packages/_pytest/python.py:617: in _importtestmodule
+    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
+.pythonlibs/lib/python3.11/site-packages/_pytest/pathlib.py:567: in import_path
+    importlib.import_module(module_name)
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+<frozen importlib._bootstrap>:1204: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1176: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1147: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:690: in _load_unlocked
+    ???
+.pythonlibs/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:178: in exec_module
+    exec(co, module.__dict__)
+tests/test_bonus_system.py:4: in <module>
+    from app.models.models import User, MoneyAccount, GoldAccount
+E   ImportError: cannot import name 'MoneyAccount' from 'app.models.models' (/home/runner/gold-investment-backend/app/models/models.py)
+____________________________________ ERROR collecting tests/test_complete_system.py ____________________________________
+ImportError while importing test module '/home/runner/gold-investment-backend/tests/test_complete_system.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+.pythonlibs/lib/python3.11/site-packages/_pytest/python.py:617: in _importtestmodule
+    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
+.pythonlibs/lib/python3.11/site-packages/_pytest/pathlib.py:567: in import_path
+    importlib.import_module(module_name)
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+<frozen importlib._bootstrap>:1204: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1176: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1147: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:690: in _load_unlocked
+    ???
+.pythonlibs/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:178: in exec_module
+    exec(co, module.__dict__)
+tests/test_complete_system.py:4: in <module>
+    from app.models import User, MoneyAccount, GoldAccount
+E   ImportError: cannot import name 'User' from 'app.models' (/home/runner/gold-investment-backend/app/models/__init__.py)
+_____________________________________ ERROR collecting tests/test_multi_device.py ______________________________________
+ImportError while importing test module '/home/runner/gold-investment-backend/tests/test_multi_device.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+.pythonlibs/lib/python3.11/site-packages/_pytest/python.py:617: in _importtestmodule
+    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
+.pythonlibs/lib/python3.11/site-packages/_pytest/pathlib.py:567: in import_path
+    importlib.import_module(module_name)
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+<frozen importlib._bootstrap>:1204: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1176: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1147: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:690: in _load_unlocked
+    ???
+.pythonlibs/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:178: in exec_module
+    exec(co, module.__dict__)
+tests/test_multi_device.py:3: in <module>
+    from .config.test_devices import TEST_DEVICES
+E   ImportError: attempted relative import with no known parent package
+_____________________________________ ERROR collecting tests/test_noble_system.py ______________________________________
+ImportError while importing test module '/home/runner/gold-investment-backend/tests/test_noble_system.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+.pythonlibs/lib/python3.11/site-packages/_pytest/python.py:617: in _importtestmodule
+    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
+.pythonlibs/lib/python3.11/site-packages/_pytest/pathlib.py:567: in import_path
+    importlib.import_module(module_name)
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+<frozen importlib._bootstrap>:1204: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1176: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1147: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:690: in _load_unlocked
+    ???
+.pythonlibs/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:178: in exec_module
+    exec(co, module.__dict__)
+tests/test_noble_system.py:3: in <module>
+    from app.models import User, NobleRank
+E   ImportError: cannot import name 'User' from 'app.models' (/home/runner/gold-investment-backend/app/models/__init__.py)
+_____________________________________ ERROR collecting tests/test_rate_limiting.py _____________________________________
+ImportError while importing test module '/home/runner/gold-investment-backend/tests/test_rate_limiting.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+.pythonlibs/lib/python3.11/site-packages/_pytest/python.py:617: in _importtestmodule
+    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
+.pythonlibs/lib/python3.11/site-packages/_pytest/pathlib.py:567: in import_path
+    importlib.import_module(module_name)
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+<frozen importlib._bootstrap>:1204: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1176: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1147: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:690: in _load_unlocked
+    ???
+.pythonlibs/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:178: in exec_module
+    exec(co, module.__dict__)
+tests/test_rate_limiting.py:7: in <module>
+    from app.utils.security.rate_limiter import RateLimiter, RateLimit, rate_limit
+E   ImportError: cannot import name 'RateLimit' from 'app.utils.security.rate_limiter' (/home/runner/gold-investment-backend/app/utils/security/rate_limiter.py)
+______________________________________ ERROR collecting tests/test_system_flow.py ______________________________________
+.pythonlibs/lib/python3.11/site-packages/_pytest/python.py:617: in _importtestmodule
+    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
+.pythonlibs/lib/python3.11/site-packages/_pytest/pathlib.py:567: in import_path
+    importlib.import_module(module_name)
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+<frozen importlib._bootstrap>:1204: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1176: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1147: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:690: in _load_unlocked
+    ???
+.pythonlibs/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:178: in exec_module
+    exec(co, module.__dict__)
+tests/test_system_flow.py:5: in <module>
+    from app.services.transformation_service import TransformationService
+E     File "/home/runner/gold-investment-backend/app/services/transformation_service.py", line 27
+E       if not money_account.balance > 0:
+E       ^^
+E   SyntaxError: expected 'except' or 'finally' block
+________________________________ ERROR collecting tests/test_transformation_service.py _________________________________
+.pythonlibs/lib/python3.11/site-packages/_pytest/python.py:617: in _importtestmodule
+    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
+.pythonlibs/lib/python3.11/site-packages/_pytest/pathlib.py:567: in import_path
+    importlib.import_module(module_name)
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+<frozen importlib._bootstrap>:1204: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1176: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1147: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:690: in _load_unlocked
+    ???
+.pythonlibs/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:178: in exec_module
+    exec(co, module.__dict__)
+tests/test_transformation_service.py:3: in <module>
+    from app.services.transformation_service import TransformationService
+E     File "/home/runner/gold-investment-backend/app/services/transformation_service.py", line 27
+E       if not money_account.balance > 0:
+E       ^^
+E   SyntaxError: expected 'except' or 'finally' block
+_____________________________ ERROR collecting tests/integration/test_batch_blockchain.py ______________________________
+ImportError while importing test module '/home/runner/gold-investment-backend/tests/integration/test_batch_blockchain.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+.pythonlibs/lib/python3.11/site-packages/_pytest/python.py:617: in _importtestmodule
+    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
+.pythonlibs/lib/python3.11/site-packages/_pytest/pathlib.py:567: in import_path
+    importlib.import_module(module_name)
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+<frozen importlib._bootstrap>:1204: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1176: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1147: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:690: in _load_unlocked
+    ???
+.pythonlibs/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:178: in exec_module
+    exec(co, module.__dict__)
+tests/integration/test_batch_blockchain.py:3: in <module>
+    from app.services.batch_collection_service import BatchCollectionService
+app/services/batch_collection_service.py:6: in <module>
+    from app.models.models import User, MoneyAccount, Transaction
+E   ImportError: cannot import name 'MoneyAccount' from 'app.models.models' (/home/runner/gold-investment-backend/app/models/models.py)
+=================================================== warnings summary ===================================================
+tests/config/test_devices.py:5
+  /home/runner/gold-investment-backend/tests/config/test_devices.py:5: PytestCollectionWarning: cannot collect test class 'TestDevice' because it has a __init__ constructor (from: tests/config/test_devices.py)
+    @dataclass
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=============================================== short test summary info ================================================
+ERROR tests/test_api.py
+ERROR tests/test_auth.py
+ERROR tests/test_batch_collection_service.py
+ERROR tests/test_blockchain_integration.py
+ERROR tests/test_blockchain_service.py
+ERROR tests/test_bonus_distribution_service.py
+ERROR tests/test_bonus_system.py
+ERROR tests/test_complete_system.py
+ERROR tests/test_multi_device.py
+ERROR tests/test_noble_system.py
+ERROR tests/test_rate_limiting.py
+ERROR tests/test_system_flow.py
+ERROR tests/test_transformation_service.py
+ERROR tests/integration/test_batch_blockchain.py
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Interrupted: 14 errors during collection !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+============================================ 1 warning, 14 errors in 1.86s =============================================
+~/gold-investment-backend
