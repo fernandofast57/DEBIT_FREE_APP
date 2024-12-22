@@ -1,4 +1,3 @@
-
 from web3 import Web3
 from decimal import Decimal
 from typing import Dict
@@ -11,12 +10,16 @@ class BlockchainValidator:
     def validate_transaction(self, tx_hash: str) -> Dict:
         try:
             receipt = self.web3.eth.get_transaction_receipt(tx_hash)
+            block_number = receipt.blockNumber
+            confirmations = self.web3.eth.block_number - block_number
+            
             return {
                 'valid': receipt.status == 1,
-                'block_number': receipt.blockNumber,
-                'gas_used': receipt.gasUsed,
-                'status': 'success' if receipt.status == 1 else 'failed'
+                'status': 'confirmed' if receipt.status == 1 else 'failed',
+                'confirmations': confirmations,
+                'block': block_number,
+                'gas_used': receipt.gasUsed
             }
         except Exception as e:
-            logger.error(f"Transaction validation error: {str(e)}")
+            logger.error(f"Validation error for tx {tx_hash}: {str(e)}")
             return {'valid': False, 'status': 'error', 'message': str(e)}

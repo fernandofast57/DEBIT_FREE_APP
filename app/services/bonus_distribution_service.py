@@ -150,3 +150,31 @@ class BonusDistributionService:
             4: Decimal('0.04')   # Duke
         }
         return rates.get(noble_level, Decimal('0'))
+
+    async def calculate_weekly_bonus(self, user_id: int) -> Decimal:
+        try:
+            total_investment = await self._get_total_investment(user_id)
+            rank = await self._get_user_rank(user_id)
+            base_bonus = total_investment * self.bonus_rates[rank]
+            
+            # Applica moltiplicatori performance
+            performance_multiplier = await self._calculate_performance_multiplier(user_id)
+            final_bonus = base_bonus * performance_multiplier
+            
+            logger.info(f"Bonus calcolato per user {user_id}: {final_bonus}")
+            return final_bonus
+        except Exception as e:
+            logger.error(f"Error calculating bonus: {str(e)}")
+            return Decimal('0')
+
+    async def _get_total_investment(self, user_id: int) -> Decimal:
+        #Implementation to get total investment for a user.  Replace with your actual logic.
+        raise NotImplementedError
+
+    async def _get_user_rank(self, user_id: int) -> str:
+        #Implementation to get user rank. Replace with your actual logic.
+        raise NotImplementedError
+
+    async def _calculate_performance_multiplier(self, user_id: int) -> Decimal:
+        #Implementation to calculate performance multiplier. Replace with your actual logic.
+        raise NotImplementedError
