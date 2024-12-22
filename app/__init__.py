@@ -67,6 +67,8 @@ def create_app(config_class=Config):
     from app.api.v1.transformations import bp as transformations_bp
     from app.api.v1.transfers import bp as transfers_bp
     from app.api.v1.bonuses import bp as bonuses_bp
+    from app.api.v1.noble import noble_bp
+    from app.api.v1.validation import validation_bp
 
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(gold_bp, url_prefix='/api/gold')
@@ -74,5 +76,7 @@ def create_app(config_class=Config):
     app.register_blueprint(transformations_bp)
     app.register_blueprint(transfers_bp)
     app.register_blueprint(bonuses_bp)
+    app.register_blueprint(noble_bp, url_prefix='/api/v1/noble')
+    app.register_blueprint(validation_bp, url_prefix='/api/v1/system')
 
     return app
