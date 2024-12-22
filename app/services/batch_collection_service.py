@@ -13,7 +13,9 @@ class BatchCollectionService:
     def __init__(self):
         self.blockchain_service = BlockchainService()
         self.validator = BlockchainValidator(os.getenv('RPC_ENDPOINTS').split(',')[0])
-        self.batch_size = 50
+        self.batch_size = 100  # Increased for better throughput
+    self.max_retries = 3
+    self.concurrent_batches = 5
         self.pending_transfers = []
 
     async def process_batch_transfers(self, batch_transfers: List[Dict]) -> Dict:

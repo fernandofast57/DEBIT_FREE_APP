@@ -57,8 +57,9 @@ class BlockchainService:
             logger.error(f"Failed to setup contract: {str(e)}")
             raise
 
-    @retry_with_backoff(max_retries=3)
+    @retry_with_backoff(max_retries=3, initial_delay=1, max_delay=10)
     async def update_noble_rank(self, address: str, rank: int):
+        """Update noble rank with enhanced error handling"""
         if not self.w3 or not self.contract:
             logger.error("Blockchain connection not initialized")
             raise ValueError("Blockchain connection not initialized")
