@@ -1,6 +1,33 @@
 
 from typing import Optional
 from contextlib import contextmanager
+import sqlalchemy
+from sqlalchemy.orm import sessionmaker, scoped_session
+from app.utils.logging_config import logger
+
+class DatabaseManager:
+    def __init__(self, db_url: str, pool_size: int = 10):
+        self.engine = sqlalchemy.create_engine(
+            db_url,
+            pool_size=pool_size,
+            max_overflow=20,
+            pool_timeout=30,
+            pool_recycle=1800
+        )
+        self.Session = scoped_session(sessionmaker(bind=self.engine))
+        
+    @contextmanager
+    def session_scope(self):
+        session = self.Session()
+        try:
+            yield session
+            session.commit()
+        except Exception as e:
+            logger.error(f"Database error: {e}")
+            session.rollback()
+            raise
+        finally:
+            session.close()
 import logging
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session

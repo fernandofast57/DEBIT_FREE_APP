@@ -1,38 +1,32 @@
-
 from collections import defaultdict
 import time
 from typing import Dict, Tuple
-import logging
+import redis
+from app.utils.logging_config import logger
 
-logger = logging.getLogger(__name__)
-
-class RateLimiter:
-    def __init__(self):
-        self._requests = defaultdict(list)
-        self._ip_tracking = defaultdict(int)
-        self._max_requests = 100
-        self._window = 3600  # 1 hour window
-        self._ip_threshold = 1000  # Max requests per IP
+class RobustRateLimiter:
+    def __init__(self, redis_url: str):
+        self.redis = redis.from_url(redis_url)
+        self.window_size = 60  # 1 minute window
+        self.max_requests = 100  # max requests per window
         
-    def is_allowed(self, user_id: str, ip_address: str) -> bool:
+    def is_rate_limited(self, key: str) -> bool:
+        pipe = self.redis.pipeline()
         now = time.time()
-        self._cleanup_old_requests(now)
+        window_start = now - self.window_size
         
-        # Check IP limits
-        if self._ip_tracking[ip_address] > self._ip_threshold:
-            logger.warning(f"IP {ip_address} exceeded threshold")
-            return False
+        try:
+            # Remove old requests
+            pipe.zremrangebyscore(key, 0, window_start)
+            # Count requests in current window
+            pipe.zcard(key)
+            # Add new request
+            pipe.zadd(key, {str(now): now})
+            pipe.expire(key, self.window_size)
             
-        # Check user limits
-        user_requests = self._requests[user_id]
-        if len(user_requests) < self._max_requests:
-            user_requests.append(now)
-            self._ip_tracking[ip_address] += 1
-            return True
+            _, request_count, *_ = pipe.execute()
             
-        return False
-        
-    def _cleanup_old_requests(self, now: float):
-        cutoff = now - self._window
-        for user_id in list(self._requests.keys()):
-            self._requests[user_id] = [t for t in self._requests[user_id] if t > cutoff]
+            return request_count > self.max_requests
+        except redis.RedisError as e:
+            logger.error(f"Redis error in rate limiter: {e}")
+            return False  # Fail open in case of Redis errors
