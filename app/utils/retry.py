@@ -1,36 +1,29 @@
 
 import time
 from functools import wraps
-from typing import Callable, Any
 import logging
 
 logger = logging.getLogger(__name__)
 
-def retry_with_backoff(
-    retries: int = 3,
-    backoff_in_seconds: int = 1,
-    max_backoff_in_seconds: int = 60
-) -> Callable:
-    def decorator(operation: Callable) -> Callable:
-        @wraps(operation)
-        async def wrapper(*args: Any, **kwargs: Any) -> Any:
+def retry_with_backoff(max_retries=3, initial_delay=1, max_delay=60, exponential_base=2):
+    def decorator(func):
+        @wraps(func)
+        async def wrapper(*args, **kwargs):
+            delay = initial_delay
             last_exception = None
-            for attempt in range(retries):
+            
+            for attempt in range(max_retries):
                 try:
-                    return await operation(*args, **kwargs)
+                    return await func(*args, **kwargs)
                 except Exception as e:
                     last_exception = e
-                    if attempt == retries - 1:
-                        raise
-                    sleep_time = min(
-                        max_backoff_in_seconds,
-                        backoff_in_seconds * (2 ** attempt)
-                    )
-                    logger.warning(
-                        f"Attempt {attempt + 1} failed: {str(e)}. "
-                        f"Retrying in {sleep_time} seconds..."
-                    )
-                    time.sleep(sleep_time)
+                    logger.warning(f"Attempt {attempt + 1} failed: {str(e)}")
+                    if attempt < max_retries - 1:
+                        sleep_time = min(delay * (exponential_base ** attempt), max_delay)
+                        time.sleep(sleep_time)
+            
+            logger.error(f"All {max_retries} attempts failed")
             raise last_exception
+            
         return wrapper
     return decorator
