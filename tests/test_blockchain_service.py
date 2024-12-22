@@ -7,10 +7,10 @@ from app.services.blockchain_service import BlockchainService
 @pytest.fixture
 def blockchain_service():
     from eth_tester import EthereumTester, PyEVMBackend
-from web3.providers.eth_tester import EthereumTesterProvider
+    from web3.providers.eth_tester import EthereumTesterProvider
 
-eth_tester = EthereumTester(PyEVMBackend())
-w3 = Web3(EthereumTesterProvider(eth_tester))
+    eth_tester = EthereumTester(PyEVMBackend())
+    w3 = Web3(EthereumTesterProvider(eth_tester))
     service = BlockchainService()
     service.w3 = w3
     service.account = w3.eth.accounts[0]
