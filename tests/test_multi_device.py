@@ -1,6 +1,6 @@
 
 import pytest
-from .config.test_devices import TEST_DEVICES
+from tests.config.test_devices import TEST_DEVICES
 from app import create_app
 
 @pytest.mark.parametrize('device_name,device', TEST_DEVICES.items())

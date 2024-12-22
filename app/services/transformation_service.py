@@ -24,7 +24,11 @@ class TransformationService:
                 if not money_account:
                     return {'status': 'error', 'message': 'Money account not found'}
             
-            if not money_account.balance > 0:
+            try:
+    if not money_account.balance > 0:
+except Exception as e:
+    logging.error(f"Error checking balance: {e}")
+    raise
                 return {'status': 'error', 'message': 'Insufficient balance'}
 
             # Calcola importi

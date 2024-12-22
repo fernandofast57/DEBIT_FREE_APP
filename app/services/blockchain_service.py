@@ -65,7 +65,11 @@ class BlockchainService:
             if not self.w3.is_address(address):
                 raise ValueError("Invalid Ethereum address")
             
-        private_key = os.getenv('PRIVATE_KEY')
+        try:
+    private_key = os.getenv('PRIVATE_KEY')
+except Exception as e:
+    logging.error(f"Error getting private key: {e}")
+    raise
         account = self.w3.eth.account.from_key(private_key)
         
         nonce = self.w3.eth.get_transaction_count(account.address)
