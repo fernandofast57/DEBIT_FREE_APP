@@ -1,4 +1,3 @@
-
 from web3 import Web3
 from decimal import Decimal
 from app.models.noble_system import NobleRank, BonusTransaction
@@ -47,6 +46,15 @@ class BlockchainNobleService:
             logger.error(f"Error distributing noble bonus: {str(e)}")
             return {'status': 'error', 'message': str(e)}
 
+    async def validate_noble_rank(self, user_id: int, rank_id: int) -> bool:
+        try:
+            contract = await self._get_contract()
+            result = await contract.functions.validateNobleRank(user_id, rank_id).call()
+            return result
+        except Exception as e:
+            current_app.logger.error(f"Noble rank validation failed: {str(e)}")
+            return False
+
     async def update_noble_rank(self, user_address: str, new_rank: str) -> dict:
         try:
             tx_hash = await self.contract.functions.updateNobleRank(
@@ -62,3 +70,11 @@ class BlockchainNobleService:
         except Exception as e:
             logger.error(f"Error updating noble rank: {str(e)}")
             return {'status': 'error', 'message': str(e)}
+
+    def load_contract_abi(self):
+        # Load ABI from file or database - Implementation needed
+        pass
+
+    async def _get_contract(self):
+        # This is a placeholder, you need to implement proper contract retrieval
+        return self.contract

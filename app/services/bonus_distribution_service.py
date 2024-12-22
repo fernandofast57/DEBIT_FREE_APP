@@ -8,6 +8,8 @@ from app import db
 
 class BonusDistributionService:
     def __init__(self):
+        self.blockchain_service = BlockchainService()
+        
         self.bonus_rates = {
             'level_1': Decimal('0.007'),  # 0.7%
             'level_2': Decimal('0.005'),  # 0.5%
@@ -131,3 +133,20 @@ class BonusDistributionService:
                 }
         
         return None
+        
+    async def calculate_bonus(self, user_id: int, transaction_amount: Decimal) -> Decimal:
+        user = await User.query.get(user_id)
+        if not user or not user.noble_rank:
+            return Decimal('0')
+            
+        bonus_rate = await self._get_bonus_rate(user.noble_rank.level)
+        return transaction_amount * bonus_rate
+        
+    async def _get_bonus_rate(self, noble_level: int) -> Decimal:
+        rates = {
+            1: Decimal('0.01'),  # Knight
+            2: Decimal('0.02'),  # Baron
+            3: Decimal('0.03'),  # Count
+            4: Decimal('0.04')   # Duke
+        }
+        return rates.get(noble_level, Decimal('0'))
