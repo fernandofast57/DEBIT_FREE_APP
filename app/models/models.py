@@ -46,7 +46,8 @@ class User(UserMixin, db.Model):
     
     money_account = db.relationship('MoneyAccount', backref='user', uselist=False)
     gold_account = db.relationship('GoldAccount', backref='user', uselist=False)
-    noble_rank = db.relationship('NobleRank', backref='users')
+    noble_rank = db.relationship('NobleRank', foreign_keys='User.noble_rank_id', backref='users')
+    noble_rank_id = db.Column(db.Integer, db.ForeignKey('noble_ranks.id'))
 
 class NobleRelation(db.Model):
     __tablename__ = 'noble_relations'
