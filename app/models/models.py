@@ -204,3 +204,20 @@ class GoldReward(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     user = db.relationship('User', backref=db.backref('rewards', lazy=True))
+
+    def __repr__(self):
+        return f"<GoldReward {self.amount}>"
+
+# ---------------------------------------
+# ✅ Modello BonusTransaction (Transazioni Bonus)
+# ---------------------------------------
+class BonusTransaction(db.Model):
+    __tablename__ = 'bonus_transactions'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    amount = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
+    transaction_type = db.Column(db.String(50), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    user = db.relationship('User', backref=db.backref('bonus_transactions', lazy=True))
