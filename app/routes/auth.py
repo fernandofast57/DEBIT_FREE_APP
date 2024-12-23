@@ -93,7 +93,7 @@ auth_bp = Blueprint('auth', __name__)
 auth_manager = AuthManager(Config().SECRET_KEY)
 
 @auth_bp.route('/login', methods=['POST'])
-@rate_limit(max_requests=5, window=60)
+@rate_limit(max_requests=5, window_size=60)
 def login():
     data = request.get_json()
     user_id = data.get('user_id')
