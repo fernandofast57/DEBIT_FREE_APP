@@ -6,7 +6,8 @@ from app.utils.logging_config import APP_NAME
 class SecurityManager:
     def __init__(self, app_name: str = APP_NAME, redis_url: str = None):
         self.app_name = APP_NAME
-        self.rate_limiter = RobustRateLimiter(redis_url)
+        default_redis_url = "redis://localhost:6379/0"
+        self.rate_limiter = RobustRateLimiter(redis_url or default_redis_url)
         self.logger = logging.getLogger(APP_NAME)
         
         self.setup_logging()
