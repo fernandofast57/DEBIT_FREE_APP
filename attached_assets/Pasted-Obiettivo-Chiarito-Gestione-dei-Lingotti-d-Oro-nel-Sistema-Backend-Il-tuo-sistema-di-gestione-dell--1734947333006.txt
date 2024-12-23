@@ -1,0 +1,89 @@
+Obiettivo Chiarito: Gestione dei Lingotti d'Oro nel Sistema Backend
+Il tuo sistema di gestione dell'oro deve riflettere la realtà dei lingotti acquistati e delle frazioni assegnate ai clienti. Di seguito ti propongo una soluzione chiara e strutturata per raggiungere questo obiettivo.
+
+📊 1. Struttura dei Modelli SQLAlchemy
+🏦 Modello GoldBar (Lingotto d'Oro)
+Ogni lingotto rappresenta un oggetto fisico identificabile univocamente da un numero di serie.
+
+pitone
+
+Copia codice
+class GoldBar(db.Model):
+    __tablename__ = 'gold_bars'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    serial_number = db.Column(db.String(50), unique=True, nullable=False)  # Numero seriale univoco del lingotto
+    weight_grams = db.Column(db.Float, nullable=False)  # Peso totale del lingotto (100g o 1000g)
+    status = db.Column(db.String(50), default='in_stock')  # Stato: in_stock, allocated, withdrawn
+    location = db.Column(db.String(100), nullable=True)  # Posizione in magazzino o vault
+    
+    # Relazione con le allocazioni frazionarie nei GoldAccount
+    allocations = db.relationship('GoldAllocation', back_populates='gold_bar')
+
+    def __repr__(self):
+        return f"<GoldBar {self.serial_number}, {self.weight_grams}g, {self.status}>"
+👤 Modello GoldAccount (Conto Oro del Cliente)
+Il cliente possiede una frazione di uno o più lingotti.
+
+pitone
+
+Copia codice
+class GoldAccount(db.Model):
+    __tablename__ = 'gold_accounts'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    balance = db.Column(db.Float, default=0.0)  # Bilancio in grammi (inclusi centesimi di grammo)
+    
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('User', back_populates='gold_account')
+    
+    # Relazione con le allocazioni frazionarie
+    allocations = db.relationship('GoldAllocation', back_populates='gold_account')
+    
+    def __repr__(self):
+        return f"<GoldAccount {self.user.username}, {self.balance:.2f}g>"
+⚖️ Modello GoldAllocation (Allocazione Oro)
+Questo modello traccia la frazione di un lingotto posseduta da un cliente.
+
+pitone
+
+Copia codice
+class GoldAllocation(db.Model):
+    __tablename__ = 'gold_allocations'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    grams_allocated = db.Column(db.Float, nullable=False)  # Grammi allocati a questo cliente
+    
+    gold_bar_id = db.Column(db.Integer, db.ForeignKey('gold_bars.id'))
+    gold_account_id = db.Column(db.Integer, db.ForeignKey('gold_accounts.id'))
+    
+    gold_bar = db.relationship('GoldBar', back_populates='allocations')
+    gold_account = db.relationship('GoldAccount', back_populates='allocations')
+    
+    def __repr__(self):
+        return f"<GoldAllocation {self.grams_allocated:.2f}g on Bar {self.gold_bar.serial_number}>"
+🛠️ 2. Logica del Backend
+🔄Processo di Allocazione Oro ai Clienti
+Ogni settimana/mese, dopo l'acquisto dei lingotti:
+
+I nuovi lingotti vengono aggiunti al database come oggetti GoldBar.
+I grammi accumulati dagli utenti nei MoneyAccount vengono convertiti in oro.
+L'oro viene allocato frazionatamente tra i clienti nei GoldAccount .
+Ogni allocazione viene tracciata con un record nel modello GoldAllocation .
+🧠 Esempio di logica di allocazione:
+pitone
+
+Copia codice
+def allocate_gold_to_customers():
+    """
+    Distribuisce l'oro acquistato tra i clienti in base ai loro MoneyAccount.
+    """
+    total_money = sum(account.balance for account in MoneyAccount.query.all())
+    commission = total_money * 0.05
+    money_after_commission = total_money - commission
+    
+    gold_price_per_gram = get_current_gold_price()  # API per il prezzo dell'oro
+    total_grams = money_after_commission / gold_price_per_gram
+    
+    # Caricare i nuovi lingotti acquistati
+    gold_bars = GoldBar.query.filter_by(status='in_stock
