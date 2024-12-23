@@ -48,6 +48,9 @@
 - `to_be_verified`: Initial verification status
 - `verified`: Confirmed verification status
 - `rejected`: Failed verification status
+- `pending`: Awaiting verification
+- `expired`: Verification period expired
+- `suspended`: Temporarily suspended status
 - `available`: Gold bar status
 - `reserved`: Gold bar allocation status
 - `distributed`: Gold bar distribution status
@@ -60,5 +63,14 @@
 - `noble_bp`: Noble system routes blueprint
 - `transformations_bp`: Gold transformations routes blueprint
 - `transfers_bp`: Money transfers routes blueprint
+
+
+## Service Names
+- `transformation`: Service for handling gold-money transformations
+- `batch_collection`: Service for processing batch operations
+- `bonus_distribution`: Service for managing bonus payments
+- `accounting`: Service for financial record keeping
+- `transactions`: Service for handling all monetary operations
+
 - `bonuses_bp`: Bonus distribution routes blueprint
 - `system_bp`: System management routes blueprint
