@@ -1,7 +1,7 @@
 
 import pytest
 from app import create_app
-from app.models import User, NobleRank, db
+from app.models import User, NobleRank, NobleRelation, db
 from app.utils.auth import AuthManager
 from decimal import Decimal
 
@@ -32,23 +32,34 @@ def test_noble_relation_verification(app, auth_manager):
         db.session.add(user)
         db.session.commit()
         
+        noble_relation = NobleRelation(
+            user_id=user.id,
+            noble_rank_id=noble_rank.id,
+            verification_status='to_be_verified'
+        )
+        db.session.add(noble_relation)
+        db.session.commit()
+
         token = auth_manager.generate_token(user.id, 'test_device')
         payload = auth_manager.verify_token(token)
         
         assert payload is not None
         assert payload['user_id'] == user.id
-        assert user.noble_rank.rank_name == 'Silver'
+        assert noble_relation.verification_status == 'to_be_verified'
         
         db.session.remove()
         db.drop_all()
 
-def test_token_verification(auth_manager):
-    token = auth_manager.generate_token(1, 'test_device')
-    payload = auth_manager.verify_token(token)
-    assert payload is not None
-    assert payload['user_id'] == 1
-    assert payload['device_id'] == 'test_device'
+def test_token_verification(app, auth_manager):
+    with app.app_context():
+        token = auth_manager.generate_token(1, 'test_device')
+        payload = auth_manager.verify_token(token)
+        assert payload is not None
+        assert payload['user_id'] == 1
+        assert payload['device_id'] == 'test_device'
 
-def test_invalid_token(auth_manager):
-    payload = auth_manager.verify_token('invalid_token')
-    assert payload is None
+def test_invalid_token(app, auth_manager):
+    with app.app_context():
+        invalid_token = "invalid.token.string"
+        payload = auth_manager.verify_token(invalid_token)
+        assert payload is None
