@@ -72,5 +72,8 @@
 - `accounting`: Service for financial record keeping
 - `transactions`: Service for handling all monetary operations
 
+## Authentication Decorators
+- `auth_required`: Decorator that validates JWT tokens for protected routes
+
 - `bonuses_bp`: Bonus distribution routes blueprint
 - `system_bp`: System management routes blueprint
