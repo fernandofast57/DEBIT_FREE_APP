@@ -31,7 +31,7 @@ class RobustRateLimiter:
         self.local_storage[key]['count'] += 1
         return self.local_storage[key]['count'] > max_reqs
 
-def rate_limit(max_requests: int = 100, window: int = 60):
+def rate_limit(max_requests: int = 100, window_size: int = 60):
     """Decorator for endpoint-specific rate limiting"""
     def decorator(f):
         @wraps(f)

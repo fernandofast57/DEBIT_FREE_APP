@@ -28,9 +28,8 @@ class TransformationService:
                     return {'status': 'error', 'message': 'Insufficient balance'}
 
                 # Constants from glossary
-                # Constants defined in glossary
-                USER_SHARE = 0.933  # 93.3% for client
-                PLATFORM_FEE = 0.067  # 6.7% platform fee
+                CLIENT_SHARE = 0.933  # 93.3% client share
+                NETWORK_SHARE = 0.067  # 6.7% network fee
                 
                 # Calculate amounts based on glossary definitions
                 euro_amount = money_account.balance
