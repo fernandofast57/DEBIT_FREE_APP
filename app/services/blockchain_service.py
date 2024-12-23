@@ -3,11 +3,40 @@ from web3.middleware import geth_poa_middleware
 import os
 import json
 import logging
+import json
+from datetime import datetime
+from typing import List, Dict, Any
 from app.utils.retry import retry_with_backoff
 from app.utils.logging_config import get_logger, APP_NAME
-from typing import List, Dict
 
 logger = logging.getLogger(APP_NAME)
+
+def log_blockchain_transaction(func):
+    async def wrapper(*args, **kwargs):
+        start_time = datetime.utcnow()
+        try:
+            result = await func(*args, **kwargs)
+            end_time = datetime.utcnow()
+            
+            log_entry = {
+                'transaction_type': func.__name__,
+                'timestamp': start_time.isoformat(),
+                'duration_ms': (end_time - start_time).total_seconds() * 1000,
+                'status': 'success' if result and result.get('status') == 'verified' else 'failed',
+                'args': str(args),
+                'kwargs': str(kwargs)
+            }
+            
+            if result and 'transaction_hash' in result:
+                log_entry['tx_hash'] = result['transaction_hash']
+                
+            logger.info('Blockchain Transaction', extra={'audit': log_entry})
+            return result
+        except Exception as e:
+            logger.error(f'Blockchain Transaction Error: {str(e)}', 
+                        extra={'error': str(e), 'function': func.__name__})
+            raise
+    return wrapper
 
 class BlockchainService:
     def __init__(self):
@@ -69,6 +98,7 @@ class BlockchainService:
             logger.error(f"Failed to setup account: {str(e)}")
             raise
 
+    @log_blockchain_transaction
     @retry_with_backoff(max_retries=3, initial_delay=1, max_delay=10)
     async def update_noble_rank(self, address: str, rank: int):
         """Update noble rank with enhanced error handling"""
@@ -113,6 +143,7 @@ class BlockchainService:
             logger.error(f"Error in update_noble_rank: {str(e)}")
             return {'status': 'rejected', 'message': str(e)}
 
+    @log_blockchain_transaction
     async def process_batch_transformation(self, batch_data: List[Dict]) -> Any:
         """Process a batch of transformations on blockchain with security validation"""
         try:
@@ -169,3 +200,18 @@ class BlockchainService:
     def _validate_nonce(self, nonce: int) -> bool:
         """Validate transaction nonce"""
         return isinstance(nonce, int) and nonce >= 0
+    async def get_transaction_stats(self) -> Dict[str, Any]:
+        """Get statistics about blockchain transactions"""
+        try:
+            stats = {
+                'gas_price': await self.w3.eth.gas_price,
+                'block_number': await self.w3.eth.block_number,
+                'network_id': await self.w3.eth.chain_id,
+                'connected': self.w3.is_connected(),
+                'syncing': await self.w3.eth.syncing,
+                'peer_count': await self.w3.net.peer_count
+            }
+            return {'status': 'verified', 'stats': stats}
+        except Exception as e:
+            logger.error(f"Error getting transaction stats: {str(e)}")
+            return {'status': 'error', 'message': str(e)}
