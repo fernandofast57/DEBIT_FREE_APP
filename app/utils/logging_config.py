@@ -28,6 +28,9 @@ def setup_logging():
     
     return logger
 
+# Create default logger
+logger = setup_logging()
+
 def get_logger(name: str) -> logging.Logger:
     """Get or create a logger with the given name"""
     logger = logging.getLogger(name)
