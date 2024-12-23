@@ -5,7 +5,7 @@ from app.utils.logging_config import APP_NAME
 
 class SecurityManager:
     def __init__(self, app_name: str = APP_NAME, redis_url: str = None):
-        self.app_name = app_name
+        self.app_name = APP_NAME
         self.rate_limiter = RobustRateLimiter(redis_url)
         self.logger = logging.getLogger(APP_NAME)
         
