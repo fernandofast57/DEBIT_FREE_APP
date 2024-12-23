@@ -62,7 +62,7 @@ class TransformationService:
                 await db.session.commit()
                 
                 return {
-                    'status': 'success',
+                    'status': 'verified',
                     'transaction': {
                         'original_amount': float(euro_amount),
                         'gold_grams': float(gold_grams),

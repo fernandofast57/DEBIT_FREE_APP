@@ -19,9 +19,10 @@ class SecurityManager:
     
     def setup_logging(self):
         handler = logging.FileHandler(f'logs/{self.app_name}_security.log')
-        handler.setFormatter(logging.Formatter(
-            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-        ))
+        formatter = logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s - %(statuscode)s'
+        )
+        handler.setFormatter(formatter)
         self.logger.addHandler(handler)
         self.logger.setLevel(logging.INFO)
     

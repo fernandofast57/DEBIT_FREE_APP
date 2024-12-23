@@ -65,14 +65,22 @@ class NobleRelation(db.Model):
     referrer_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     noble_id = db.Column(db.Integer, db.ForeignKey('noble_ranks.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    user = db.relationship('User', foreign_keys=[user_id], backref='noble_relations')
+    referrer = db.relationship('User', foreign_keys=[referrer_id], backref='referrals')
+    noble_rank = db.relationship('NobleRank')
+
+class UserVerification(db.Model):
+    __tablename__ = 'user_verifications'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     verification_status = db.Column(db.Enum('to_be_verified', 'verified', 'rejected', name='verification_status_enum'))
     document_type = db.Column(db.String(50))
     document_number = db.Column(db.String(50))
     verification_date = db.Column(db.DateTime)
-
-    user = db.relationship('User', foreign_keys=[user_id], backref='noble_relations')
-    referrer = db.relationship('User', foreign_keys=[referrer_id], backref='referrals')
-    noble_rank = db.relationship('NobleRank')
+    
+    user = db.relationship('User', backref='verification_status')
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
