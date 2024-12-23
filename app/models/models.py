@@ -191,6 +191,9 @@ class GoldAllocation(db.Model):
     def __repr__(self):
         return f"<GoldAllocation {self.grams_allocated}g>"
 
+# ---------------------------------------
+# ✅ Modello GoldReward (Premi in Oro)
+# ---------------------------------------
 class GoldReward(db.Model):
     __tablename__ = 'gold_rewards'
     
