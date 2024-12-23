@@ -33,21 +33,19 @@ class Transaction(db.Model):
     
     user = db.relationship('User', backref='transactions')
 
-class User(UserMixin, db.Model):
+class User(db.Model):
     __tablename__ = 'users'
     
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
+    username = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128))
-    blockchain_address = db.Column(db.String(42), unique=True)
-    is_admin = db.Column(db.Boolean, default=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    password_hash = db.Column(db.String(128), nullable=False)
     
-    money_account = db.relationship('MoneyAccount', backref='user', uselist=False)
-    gold_account = db.relationship('GoldAccount', backref='user', uselist=False)
-    noble_rank = db.relationship('NobleRank', foreign_keys='User.noble_rank_id', backref='users')
-    noble_rank_id = db.Column(db.Integer, db.ForeignKey('noble_ranks.id'))
+    money_account = db.relationship('MoneyAccount', back_populates='user', uselist=False)
+    gold_account = db.relationship('GoldAccount', back_populates='user', uselist=False)
+    
+    def __repr__(self):
+        return f"<User {self.username}>"
 
 class NobleRelation(db.Model):
     __tablename__ = 'noble_relations'
