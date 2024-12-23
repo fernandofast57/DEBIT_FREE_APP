@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from flask_httpauth import HTTPBasicAuth
 from sqlalchemy.exc import SQLAlchemyError
+from app import db
 from werkzeug.exceptions import BadRequest
 # Assume necessary imports for rate limiting, database (db), and authentication are available
 

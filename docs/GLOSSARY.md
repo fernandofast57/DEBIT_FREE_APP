@@ -74,3 +74,7 @@
 
 ## Authentication Decorators
 - `auth_required`: Decorator that validates JWT tokens for protected routes
+
+## Database Configuration
+- `gold_investment.db`: Main SQLite database name for development
+- `app.db`: Alternative database name used in some configurations
