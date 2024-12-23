@@ -1,14 +1,13 @@
-
 from flask import Blueprint, jsonify, request
 from app.services.transformation_service import TransformationService
 from app.utils.auth import auth_required
 from app.utils.security.rate_limiter import rate_limit
 import asyncio
 
-bp = Blueprint('transformations', __name__)
+transformations_bp = Blueprint('transformations_bp', __name__)
 transformation_service = TransformationService()
 
-@bp.route('/transform', methods=['POST'])
+@transformations_bp.route('/transform', methods=['POST'])
 @auth_required
 @rate_limit(max_requests=5, window_size=60)
 async def transform_gold():
@@ -26,7 +25,7 @@ async def transform_gold():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@bp.route('/batch', methods=['POST'])
+@transformations_bp.route('/batch', methods=['POST'])
 @auth_required
 @rate_limit(max_requests=2, window_size=300)
 async def batch_transform():

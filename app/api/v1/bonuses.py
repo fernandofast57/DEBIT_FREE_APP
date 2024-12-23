@@ -1,13 +1,12 @@
-
 from flask import Blueprint, jsonify, request
 from app.services.bonus_distribution_service import BonusDistributionService
 from app.utils.auth import auth_required
 from app.utils.security.rate_limiter import rate_limit
 
-bp = Blueprint('bonuses', __name__)
+bonuses_bp = Blueprint('bonuses_bp', __name__)
 bonus_service = BonusDistributionService()
 
-@bp.route('/referral', methods=['GET'])
+@bonuses_bp.route('/referral', methods=['GET'])
 @auth_required
 @rate_limit(max_requests=10, window_size=60)
 async def get_referral_bonuses():
@@ -17,7 +16,7 @@ async def get_referral_bonuses():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@bp.route('/noble', methods=['GET'])
+@bonuses_bp.route('/noble', methods=['GET'])
 @auth_required
 @rate_limit(max_requests=10, window_size=60)
 async def get_noble_bonuses():
@@ -27,7 +26,7 @@ async def get_noble_bonuses():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@bp.route('/distribute', methods=['POST'])
+@bonuses_bp.route('/distribute', methods=['POST'])
 @auth_required
 @rate_limit(max_requests=2, window_size=300)
 async def distribute_bonuses():

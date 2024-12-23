@@ -1,12 +1,11 @@
-
 from flask import Blueprint, jsonify, request
 from app.models.models import User
 from app.utils.auth import auth_required
 from app import db
 
-bp = Blueprint('affiliate', __name__)
+affiliate_bp = Blueprint('affiliate_bp', __name__, url_prefix='/affiliate') # Added Blueprint definition
 
-@bp.route('/network', methods=['GET'])
+@affiliate_bp.route('/network', methods=['GET'])
 @auth_required
 def get_network():
     """Get user's affiliate network."""
@@ -32,7 +31,7 @@ def get_network():
         'total_affiliates': len(network)
     })
 
-@bp.route('/stats', methods=['GET'])
+@affiliate_bp.route('/stats', methods=['GET'])
 @auth_required
 def get_stats():
     """Get affiliate statistics."""

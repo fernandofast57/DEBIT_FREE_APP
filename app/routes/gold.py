@@ -1,4 +1,3 @@
-
 from flask import Blueprint, jsonify, request, current_app
 from app.models.models import User, GoldAccount
 from app.utils.auth import auth_required
