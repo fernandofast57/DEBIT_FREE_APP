@@ -152,6 +152,7 @@ class StructureValidator:
             'transactions': self.validate_blockchain_transactions(),
             'security': self.validate_security_config(),
             'business_rules': self.validate_business_rules(),
+            'noble_system': self.validate_noble_system(),
             'status_codes': all(self.validate_status_codes(status) 
                               for status in ['verified', 'to_be_verified', 'rejected'])
         }
@@ -169,6 +170,20 @@ class StructureValidator:
         results = {}
         for rule_type, terms in business_rules.items():
             results[rule_type] = all(term in self.glossary.lower() for term in terms)
+        return results
+
+    def validate_noble_system(self) -> Dict[str, bool]:
+        """Validates noble system integration and verification process"""
+        noble_checks = {
+            'verification': ['kyc_status', 'document_verification', 'noble_verification'],
+            'integration': ['blockchain_noble_service', 'noble_rank_service'],
+            'processes': ['rank_upgrade', 'bonus_calculation', 'verification_workflow'],
+            'documentation': ['document_type', 'document_number', 'verification_date']
+        }
+        
+        results = {}
+        for check_type, requirements in noble_checks.items():
+            results[check_type] = all(req in self.glossary.lower() for req in requirements)
         return results
         
     def log_modification(self, file_path: str, modification_type: str):
