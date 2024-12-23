@@ -37,6 +37,11 @@
 - `SecurityManager`: Manages security operations and rate limiting
 - `APP_NAME`: Application identifier used for logging and security tracking (default: 'gold-investment')
 - `RobustRateLimiter`: Redis-backed rate limiting component
+- `accounting`: Service for financial record keeping
+- `transactions`: Service for handling all monetary operations
+- `transformation`: Service for handling gold-money transformations
+- `batch_collection`: Service for processing batch operations
+- `bonus_distribution`: Service for managing bonus payments
 
 ## Rate Limiting Configuration
 - `rate_limit`: Decorator for endpoint-specific rate limiting
@@ -63,17 +68,9 @@
 - `noble_bp`: Noble system routes blueprint
 - `transformations_bp`: Gold transformations routes blueprint
 - `transfers_bp`: Money transfers routes blueprint
+- `bonuses_bp`: Bonus distribution routes blueprint
+- `system_bp`: System management routes blueprint
 
-
-## Service Names
-- `transformation`: Service for handling gold-money transformations
-- `batch_collection`: Service for processing batch operations
-- `bonus_distribution`: Service for managing bonus payments
-- `accounting`: Service for financial record keeping
-- `transactions`: Service for handling all monetary operations
 
 ## Authentication Decorators
 - `auth_required`: Decorator that validates JWT tokens for protected routes
-
-- `bonuses_bp`: Bonus distribution routes blueprint
-- `system_bp`: System management routes blueprint
