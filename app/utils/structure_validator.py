@@ -153,6 +153,8 @@ class StructureValidator:
             'business_rules': self.validate_business_rules(),
             'noble_system': self.validate_noble_system(),
             'bonus_system': self.validate_bonus_system(),
+            'transactions': self.validate_transaction_processes(),
+            'workflows': self.validate_workflow_processes(),
             'status_codes': all(self.validate_status_codes(status) 
                               for status in ['verified', 'to_be_verified', 'rejected'])
         }
@@ -209,6 +211,34 @@ class StructureValidator:
         except KeyError:
             results['rates'] = False
             
+        return results
+
+    def validate_transaction_processes(self) -> Dict[str, bool]:
+        """Validates transaction processes and constraints"""
+        transaction_checks = {
+            'types': ['purchase', 'sale', 'transfer', 'transformation'],
+            'validation': ['amount_check', 'balance_check', 'kyc_check'],
+            'status_flow': ['pending', 'processing', 'completed', 'failed'],
+            'security': ['signature_check', 'double_spend_check', 'rate_limit_check']
+        }
+        
+        results = {}
+        for check_type, requirements in transaction_checks.items():
+            results[check_type] = all(req in self.glossary.lower() for req in requirements)
+        return results
+
+    def validate_workflow_processes(self) -> Dict[str, bool]:
+        """Validates workflow processes and state transitions"""
+        workflow_checks = {
+            'states': ['initiated', 'validated', 'processed', 'completed'],
+            'transitions': ['validate_kyc', 'process_payment', 'confirm_delivery'],
+            'roles': ['user', 'admin', 'noble', 'system'],
+            'triggers': ['user_action', 'system_event', 'time_based', 'condition_based']
+        }
+        
+        results = {}
+        for check_type, requirements in workflow_checks.items():
+            results[check_type] = all(req in self.glossary.lower() for req in requirements)
         return results
         
     def log_modification(self, file_path: str, modification_type: str):
