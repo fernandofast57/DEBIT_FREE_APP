@@ -36,7 +36,8 @@
 ## Service Names
 - `NobleSystem`: Manages noble system operations
 - `SecurityManager`: Manages security operations
-- `RateLimiter`: Controls API request rates
+- `RobustRateLimiter`: Provides Redis-backed rate limiting for API requests
+- `rate_limit`: Decorator for in-memory rate limiting of individual endpoints
 
 ## Status Codes
 - `to_be_verified`: Initial verification status
