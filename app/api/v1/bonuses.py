@@ -9,7 +9,7 @@ bonus_service = BonusDistributionService()
 
 @bp.route('/referral', methods=['GET'])
 @auth_required
-@rate_limit(requests=10, window=60)
+@rate_limit(max_requests=10, window_size=60)
 async def get_referral_bonuses():
     try:
         result = await bonus_service.get_referral_bonuses(request.user_id)
@@ -19,7 +19,7 @@ async def get_referral_bonuses():
 
 @bp.route('/noble', methods=['GET'])
 @auth_required
-@rate_limit(requests=10, window=60)
+@rate_limit(max_requests=10, window_size=60)
 async def get_noble_bonuses():
     try:
         result = await bonus_service.get_noble_bonuses(request.user_id)
