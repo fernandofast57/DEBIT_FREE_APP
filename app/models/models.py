@@ -1,4 +1,3 @@
-
 from datetime import datetime
 from decimal import Decimal
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -104,7 +103,7 @@ class GoldBar(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     serial_number = db.Column(db.String(50), unique=True, nullable=False)
     weight_grams = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
-    status = db.Column(db.Enum('in_stock', 'allocated', 'reserved', name='gold_bar_status_enum'), default='in_stock')
+    status = db.Column(db.Enum('available', 'reserved', 'distributed', name='gold_bar_status_enum'), default='available') #Corrected based on intention
     location = db.Column(db.String(100))
     
     allocations = db.relationship('GoldAllocation', back_populates='gold_bar')

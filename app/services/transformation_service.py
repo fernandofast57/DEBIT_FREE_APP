@@ -30,12 +30,14 @@ class TransformationService:
                 if not money_account.balance > 0:
                     return {'status': 'error', 'message': 'Insufficient balance'}
 
-                from app.config.constants import CLIENT_SHARE, NETWORK_SHARE
+                from app.config.constants import CLIENT_SHARE, NETWORK_SHARE, STRUCTURE_FEE
                 
-                # Calculate amounts based on glossary definitions
+                # Calculate amounts according to glossary
                 euro_amount = money_account.balance
-                net_amount = euro_amount * CLIENT_SHARE
-                gold_grams = net_amount / fixing_price
+                structure_fee = euro_amount * STRUCTURE_FEE
+                net_amount = euro_amount - structure_fee
+                gold_grams = (net_amount * CLIENT_SHARE) / fixing_price
+                network_gold = (net_amount * NETWORK_SHARE) / fixing_price
                 
                 # Create transformation
                 transformation = GoldTransformation(
