@@ -61,9 +61,10 @@ class NobleRelation(db.Model):
     __tablename__ = 'noble_relations'
     
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     noble_id = db.Column(db.Integer, db.ForeignKey('noble_ranks.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    verification_status = db.Column(db.String(50), default='pending')
 
 class GoldReward(db.Model):
     __tablename__ = 'gold_rewards'
