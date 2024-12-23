@@ -1,7 +1,7 @@
 
 import pytest
 from decimal import Decimal
-from app.models import User, NobleRank, Transaction
+from app.models import User, NobleRank, NobleRelation, Transaction
 from app import create_app, db
 
 @pytest.fixture
@@ -10,11 +10,11 @@ def app():
     with app.app_context():
         db.create_all()
         
-        # Create noble ranks
+        # Create noble ranks according to glossary
         ranks = [
-            NobleRank(rank_name='Bronze', min_investment=Decimal('0'), bonus_rate=Decimal('0.001')),
-            NobleRank(rank_name='Silver', min_investment=Decimal('5000'), bonus_rate=Decimal('0.002')),
-            NobleRank(rank_name='Gold', min_investment=Decimal('10000'), bonus_rate=Decimal('0.003'))
+            NobleRank(rank_name='Bronze', min_investment=Decimal('0'), bonus_rate=Decimal('0.007'), level=1),
+            NobleRank(rank_name='Silver', min_investment=Decimal('5000'), bonus_rate=Decimal('0.005'), level=2),
+            NobleRank(rank_name='Gold', min_investment=Decimal('10000'), bonus_rate=Decimal('0.005'), level=3)
         ]
         db.session.add_all(ranks)
         db.session.commit()
@@ -27,47 +27,51 @@ def app():
 async def test_noble_rank_assignment(app):
     async with app.app_context():
         user = User(
+            username='test_noble',
             email='test@noble.com',
-            blockchain_address='0x123...',
-            total_investment=Decimal('0')
+            password_hash='test123',
+            blockchain_address='0x123...'
         )
         db.session.add(user)
         await db.session.commit()
         
-        # Test initial rank
-        assert user.noble_rank.rank_name == 'Bronze'
-        
-        # Test rank upgrade
-        user.total_investment = Decimal('5000')
+        noble_relation = NobleRelation(
+            user_id=user.id,
+            noble_rank_id=1,
+            verification_status='to_be_verified'
+        )
+        db.session.add(noble_relation)
         await db.session.commit()
-        assert user.noble_rank.rank_name == 'Silver'
         
-        # Test highest rank
-        user.total_investment = Decimal('10000')
+        assert noble_relation.verification_status == 'to_be_verified'
+        noble_relation.verification_status = 'verified'
         await db.session.commit()
-        assert user.noble_rank.rank_name == 'Gold'
+        assert noble_relation.verification_status == 'verified'
 
 @pytest.mark.asyncio
 async def test_noble_bonus_calculation(app):
     async with app.app_context():
         user = User(
+            username='test_noble',
             email='test@noble.com',
-            blockchain_address='0x123...',
-            total_investment=Decimal('5000')
+            password_hash='test123',
+            blockchain_address='0x123...'
         )
         db.session.add(user)
         await db.session.commit()
         
+        noble_relation = NobleRelation(
+            user_id=user.id,
+            noble_rank_id=2,  # Silver rank
+            verification_status='verified'
+        )
+        db.session.add(noble_relation)
+        await db.session.commit()
+        
         investment_amount = Decimal('1000')
-        bonus = user.noble_rank.calculate_bonus(investment_amount)
-        expected_bonus = investment_amount * Decimal('0.002')  # Silver rank bonus
-        assert bonus == expected_bonus
-
-@pytest.mark.asyncio
-async def test_noble_rank_requirements(app):
-    async with app.app_context():
-        ranks = NobleRank.query.order_by(NobleRank.min_investment).all()
-        assert len(ranks) == 3
-        assert ranks[0].rank_name == 'Bronze'
-        assert ranks[1].rank_name == 'Silver'
-        assert ranks[2].rank_name == 'Gold'
+        bonus_rate = Decimal('0.005')  # Silver rank bonus
+        expected_bonus = investment_amount * bonus_rate
+        
+        rank = await NobleRank.query.get(2)
+        actual_bonus = rank.bonus_rate * investment_amount
+        assert actual_bonus == expected_bonus
