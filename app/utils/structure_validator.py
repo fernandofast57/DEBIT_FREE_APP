@@ -63,10 +63,26 @@ class StructureValidator:
             self.logger.error(f"Blockchain validation failed: {str(e)}")
             return False
 
+    def validate_service_names(self) -> Dict[str, bool]:
+        """Validates service names against glossary definitions"""
+        service_names = {
+            'accounting': 'accounting_service',
+            'transactions': 'transaction_validator',
+            'transformation': 'transformation_service',
+            'batch_collection': 'batch_collection_service',
+            'bonus_distribution': 'bonus_distribution_service'
+        }
+        
+        results = {}
+        for glossary_name, service_name in service_names.items():
+            results[service_name] = glossary_name in self.glossary.lower()
+        return results
+
     def validate_structure(self) -> Dict[str, bool]:
         """Validates entire project structure"""
         results = {
             'models': self.validate_model_names(),
+            'services': self.validate_service_names(),
             'blockchain': self.validate_blockchain_config(),
             'status_codes': all(self.validate_status_codes(status) 
                               for status in ['verified', 'to_be_verified', 'rejected'])
