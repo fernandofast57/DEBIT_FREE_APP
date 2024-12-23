@@ -36,8 +36,11 @@
 - `NobleSystem`: Manages noble system operations
 - `SecurityManager`: Manages security operations
 - `APP_NAME`: Application identifier used for logging and security tracking (default: 'gold-investment')
-- `RobustRateLimiter`: Provides Redis-backed rate limiting for API requests
-- `rate_limit`: Decorator for in-memory rate limiting of individual endpoints
+- `RobustRateLimiter`: Redis-backed rate limiting system with configurable window sizes and request limits
+- `rate_limit`: Decorator for endpoint-specific rate limiting
+- `redis_url`: Connection string for Redis (default: "redis://localhost:6379/0")
+- `window_size`: Time window for rate limiting (default: 60 seconds)
+- `max_requests`: Maximum allowed requests per window (default: 100)
 
 ## Status Codes
 - `to_be_verified`: Initial verification status
