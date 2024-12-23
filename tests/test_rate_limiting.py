@@ -4,7 +4,7 @@ import time
 import redis
 from unittest.mock import Mock, patch
 from flask import Flask
-from app.utils.security.rate_limiter import RateLimiter, RateLimit, rate_limit
+from app.utils.security.rate_limiter import RobustRateLimiter, rate_limit
 
 @pytest.fixture
 def app():
@@ -21,7 +21,7 @@ def redis_client():
 @pytest.fixture
 def rate_limiter(redis_client):
     """Fixture per il rate limiter"""
-    return RateLimiter(redis_url='redis://0.0.0.0:6379/0')
+    return RobustRateLimiter(redis_url='redis://0.0.0.0:6379/0')
 
 @pytest.fixture
 def mock_request():
@@ -32,7 +32,7 @@ def mock_request():
     request.user.id = 1
     return request
 
-class TestRateLimiter:
+class TestRobustRateLimiter:
     """Test suite per il sistema di rate limiting"""
 
     def test_local_rate_limiting(self, rate_limiter, mock_request):
