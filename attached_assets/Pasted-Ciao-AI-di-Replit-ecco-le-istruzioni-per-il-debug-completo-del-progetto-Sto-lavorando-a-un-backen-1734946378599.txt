@@ -1,0 +1,53 @@
+Ciao AI di Replit, ecco le istruzioni per il debug completo del progetto:
+
+Sto lavorando a un backend che gestisce investimenti in oro tramite conti virtuali per gli utenti. Dopo settimane di lavoro, voglio assicurarmi che l'implementazione sia corretta e che tutte le funzionalità siano state comprese e integrate adeguatamente.
+
+✅ 📚 Obiettivo del Progetto
+MoneyAccount: Ogni utente ha un conto virtuale in denaro.
+
+GoldAccount: Ogni utente ha un conto virtuale in oro (grammi e centesimi di grammo).
+
+Flusso Settimanale/Mensile:
+
+Gli utenti effettuano bonifici ricorrenti su un conto bancario.
+Ogni bonifico ha un cliente identificativo unico .
+I bonifici vengono raccolti e processati automaticamente.
+Commissione: Viene applicata una commissione del 5% sui soldi ricevuti.
+
+Acquisto di Oro: Con il 95% dei fondi , viene acquistato oro fisico.
+
+Distribuzione Automatica:
+
+I grammi acquistati vengono distribuiti proporzionalmente nei GoldAccount degli utenti, in base al saldo nei loro MoneyAccount .
+I MoneyAccount vengono azzerati dopo la distribuzione.
+Programma di Affiliazione:
+
+Primo livello: 0,7% dei grammi acquistati.
+Secondo livello: 0,5% dei grammi acquistati.
+Terzo livello: 0,5% dei grammi acquistati.
+Questo significa che solo il 93,3% dei grammi acquistati arriva direttamente nei GoldAccount degli utenti.
+Automazione Completa:
+
+Tutto il processo (bonifici → commissioni → acquisto oro → distribuzione → affiliazione) deve essere eseguito automaticamente tramite il backend ogni lunedì sera .
+🛠️ 🔍 Cose da controllare durante il Debug
+Modelli SQLAlchemy:
+
+User: Deve avere correttamente le relazioni con MoneyAccounte GoldAccount.
+MoneyAccount: Deve essere collegato uno-a-uno a Usere gestire i saldi in denaro.
+GoldAccount: Deve essere collegato uno-a-uno a Usere gestire i saldi in grammi d'oro.
+AffiliateTransaction: Deve tracciare correttamente i premi di affiliazione per i livelli 1, 2, e 3.
+Logica di Business Backend:
+
+Viene applicata la commissione del 5% correttamente?
+L'acquisto di oro viene calcolato utilizzando il 95% dei fondi disponibili ?
+I grammi acquistati vengono distribuiti proporzionalmente tra gli utenti in base ai loro saldi nei MoneyAccount ?
+Viene azzerato il saldo dei MoneyAccount dopo la distribuzione?
+I premi di affiliazione (0,7%, 0,5%, 0,5%) vengono calcolati e distribuiti correttamente?
+Automazione:
+
+Esiste un processo automatizzato (Cron Job, Celery, Task Scheduler) che esegue questo ciclo ogni lunedì sera ?
+I task automatizzati generano log dettagliati per eventuali errori o anomalie?
+Amministrazione Flask:
+
+Le viste ClientView, GoldBarViewe altre sono correttamente configurate?
+Le colonne nei modelli sono coerenti con i campi definiti nel database?
