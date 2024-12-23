@@ -8,7 +8,7 @@ bp = Blueprint('noble', __name__)
 
 @bp.route('/rank', methods=['GET'])
 @auth_required
-@rate_limit(requests=10, window=60)
+@rate_limit(max_requests=10, window_size=60)
 def get_user_rank():
     """Get current user's noble rank"""
     user_id = request.user_id
@@ -25,7 +25,7 @@ def get_user_rank():
 
 @bp.route('/requirements', methods=['GET'])
 @auth_required
-@rate_limit(requests=10, window=60)
+@rate_limit(max_requests=10, window_size=60)
 def get_rank_requirements():
     """Get requirements for all noble ranks"""
     ranks = NobleRank.query.all()
