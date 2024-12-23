@@ -8,12 +8,16 @@ from app.models.noble_system import NobleRank
 db = SQLAlchemy()
 
 class MoneyAccount(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    balance = db.Column(db.Float, default=0.0)
-    currency = db.Column(db.String(3), default='USD')
+    __tablename__ = 'money_accounts'
     
-    user = db.relationship('User', backref=db.backref('money_accounts', lazy=True))
+    id = db.Column(db.Integer, primary_key=True)
+    balance = db.Column(db.Float, default=0.0)
+    
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('User', back_populates='money_account')
+    
+    def __repr__(self):
+        return f"<MoneyAccount {self.balance}>"
 
 class GoldAccount(db.Model):
     id = db.Column(db.Integer, primary_key=True)
