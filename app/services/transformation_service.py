@@ -30,9 +30,7 @@ class TransformationService:
                 if not money_account.balance > 0:
                     return {'status': 'error', 'message': 'Insufficient balance'}
 
-                # Constants from glossary
-                CLIENT_SHARE = 0.933  # 93.3% client share
-                NETWORK_SHARE = 0.067  # 6.7% network fee
+                from app.config.constants import CLIENT_SHARE, NETWORK_SHARE
                 
                 # Calculate amounts based on glossary definitions
                 euro_amount = money_account.balance
