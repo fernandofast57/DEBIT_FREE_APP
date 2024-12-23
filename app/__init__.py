@@ -68,7 +68,7 @@ def create_app(config_class=Config):
     from app.api.v1.transformations import bp as transformations_bp
     from app.api.v1.transfers import bp as transfers_bp
     from app.api.v1.bonuses import bp as bonuses_bp
-    from app.api.v1.noble import noble_bp
+    from app.api.v1.noble import bp as noble_bp
     from app.api.v1.validation import validation_bp
 
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
