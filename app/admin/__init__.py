@@ -36,9 +36,9 @@ class DashboardView(SecureBaseView):
 
 
 class ClientView(SecureModelView):
-    column_list = ['id', 'username', 'email', 'money_account.balance', 'gold_account.balance', 'noble_rank.rank']
+    column_list = ['id', 'username', 'email', 'money_account.balance', 'gold_account.balance']
     column_searchable_list = ['username', 'email']
-    column_filters = ['noble_rank.rank']
+    column_filters = ['username', 'email']
 
     def _format_balance(view, context, model, name):
         if name == 'money_account.balance':
