@@ -78,12 +78,31 @@ class StructureValidator:
             results[service_name] = glossary_name in self.glossary.lower()
         return results
 
+    def validate_api_endpoints(self) -> Dict[str, bool]:
+        """Validates API endpoint names against glossary definitions"""
+        endpoint_checks = {
+            'auth_bp': '/auth',
+            'gold_bp': '/gold',
+            'affiliate_bp': '/affiliate',
+            'noble_bp': '/noble',
+            'transformations_bp': '/transformations',
+            'transfers_bp': '/transfers',
+            'bonuses_bp': '/bonuses',
+            'system_bp': '/system'
+        }
+        
+        results = {}
+        for blueprint_name, endpoint in endpoint_checks.items():
+            results[blueprint_name] = blueprint_name in self.glossary.lower()
+        return results
+
     def validate_structure(self) -> Dict[str, bool]:
         """Validates entire project structure"""
         results = {
             'models': self.validate_model_names(),
             'services': self.validate_service_names(),
             'blockchain': self.validate_blockchain_config(),
+            'endpoints': self.validate_api_endpoints(),
             'status_codes': all(self.validate_status_codes(status) 
                               for status in ['verified', 'to_be_verified', 'rejected'])
         }
