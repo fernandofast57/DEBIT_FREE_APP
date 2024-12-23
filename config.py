@@ -4,6 +4,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 from typing import Any, Dict, List
 from dotenv import load_dotenv
+from app.utils.logging_config import APP_NAME
 
 class ConfigValidator:
     """Validatore per la configurazione"""
