@@ -40,13 +40,25 @@ class WeeklyProcessingService:
         db.session.commit()
     
     def _distribute_gold(self, deposits, total_gold_grams, fixing_price):
-        for deposit in deposits:
-            # Calcola oro cliente
-            client_gold = (deposit.amount_eur * (1 - self.STRUCTURE_FEE)) / fixing_price
-            
-            # Aggiorna conto oro cliente
-            gold_account = GoldAccount.query.filter_by(user_id=deposit.user_id).first()
-            gold_account.balance += client_gold
-            
-            # Distribuisci bonus affiliazione
-            self._distribute_affiliate_bonus(deposit.user_id, client_gold)
+        try:
+            for deposit in deposits:
+                # Calcola oro cliente
+                client_gold = (deposit.amount_eur * (1 - self.STRUCTURE_FEE)) / fixing_price
+                
+                # Aggiorna conto oro cliente
+                gold_account = GoldAccount.query.filter_by(user_id=deposit.user_id).first()
+                if not gold_account:
+                    raise ValueError(f"Gold account not found for user {deposit.user_id}")
+                    
+                gold_account.balance += client_gold
+                
+                # Distribuisci bonus affiliazione
+                self._distribute_affiliate_bonus(deposit.user_id, client_gold)
+                
+                # Registra transazione
+                self._record_gold_distribution(deposit.user_id, client_gold, fixing_price)
+                
+        except Exception as e:
+            db.session.rollback()
+            logging.error(f"Error in gold distribution: {str(e)}")
+            raise
