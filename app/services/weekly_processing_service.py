@@ -14,11 +14,16 @@ class WeeklyProcessingService:
     }
     
     def process_weekly_transactions(self, fixing_price: Decimal):
+        logger = logging.getLogger('gold-investment')
+        logger.info("Starting weekly gold distribution process")
+        
         # Raccoglie tutte le transazioni della settimana
         weekly_deposits = AccountingEntry.query.filter_by(
             entry_type='deposit',
             processed=False
         ).all()
+        
+        logger.info(f"Found {len(weekly_deposits)} deposits to process")
         
         total_amount = sum(d.amount_eur for d in weekly_deposits)
         
