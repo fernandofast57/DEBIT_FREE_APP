@@ -158,6 +158,7 @@ class StructureValidator:
             'investments': self.validate_investment_tracking(),
             'performance': self.validate_performance_analytics(),
             'risk_assessment': self.validate_risk_assessment(),
+            'batch_transactions': self.validate_batch_transactions(),
             'status_codes': all(self.validate_status_codes(status) 
                               for status in ['verified', 'to_be_verified', 'rejected'])
         }
@@ -283,6 +284,20 @@ class StructureValidator:
         
         results = {}
         for check_type, requirements in risk_checks.items():
+            results[check_type] = all(req in self.glossary.lower() for req in requirements)
+        return results
+
+    def validate_batch_transactions(self) -> Dict[str, bool]:
+        """Validates batch transaction processing system"""
+        batch_checks = {
+            'processing': ['batch_size', 'processing_interval', 'retry_mechanism'],
+            'validation': ['amount_validation', 'balance_check', 'duplicate_check'],
+            'monitoring': ['batch_status', 'completion_rate', 'error_rate'],
+            'notifications': ['success_notification', 'failure_notification', 'retry_notification']
+        }
+        
+        results = {}
+        for check_type, requirements in batch_checks.items():
             results[check_type] = all(req in self.glossary.lower() for req in requirements)
         return results
 
