@@ -12,10 +12,23 @@ class ValidationReport:
         self.batch_service = BatchCollectionService()
 
     async def generate_report(self):
+        compliance_logger = GlossaryComplianceLogger()
+        
+        # Validate components
+        structure_results = self.structure_validator.validate_structure()
+        blockchain_results = await self._validate_blockchain()
+        batch_results = await self._validate_batch_system()
+        
+        # Log compliance for each component
+        compliance_logger.log_validation('structure', structure_results)
+        compliance_logger.log_validation('blockchain', blockchain_results)
+        compliance_logger.log_validation('batch_system', batch_results)
+        
         results = {
-            'structure': self.structure_validator.validate_structure(),
-            'blockchain': await self._validate_blockchain(),
-            'batch_system': await self._validate_batch_system()
+            'structure': structure_results,
+            'blockchain': blockchain_results,
+            'batch_system': batch_results,
+            'timestamp': datetime.utcnow().isoformat()
         }
         return results
 
