@@ -157,6 +157,7 @@ class StructureValidator:
             'workflows': self.validate_workflow_processes(),
             'investments': self.validate_investment_tracking(),
             'performance': self.validate_performance_analytics(),
+            'risk_assessment': self.validate_risk_assessment(),
             'status_codes': all(self.validate_status_codes(status) 
                               for status in ['verified', 'to_be_verified', 'rejected'])
         }
@@ -268,6 +269,20 @@ class StructureValidator:
         
         results = {}
         for check_type, requirements in performance_checks.items():
+            results[check_type] = all(req in self.glossary.lower() for req in requirements)
+        return results
+
+    def validate_risk_assessment(self) -> Dict[str, bool]:
+        """Validates risk assessment system and parameters"""
+        risk_checks = {
+            'market_risk': ['price_volatility', 'market_liquidity', 'currency_risk'],
+            'operational_risk': ['system_failure', 'process_error', 'human_error'],
+            'compliance_risk': ['regulatory_changes', 'reporting_requirements', 'aml_compliance'],
+            'investment_risk': ['concentration_risk', 'counterparty_risk', 'settlement_risk']
+        }
+        
+        results = {}
+        for check_type, requirements in risk_checks.items():
             results[check_type] = all(req in self.glossary.lower() for req in requirements)
         return results
 
