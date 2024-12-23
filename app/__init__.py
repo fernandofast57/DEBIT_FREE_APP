@@ -70,6 +70,7 @@ def create_app(config_class=Config):
     from app.api.v1.bonuses import bp as bonuses_bp
     from app.api.v1.noble import bp as noble_bp
     from app.api.v1.validation import validation_bp
+    from app.api.v1.system import bp as system_bp
 
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(gold_bp, url_prefix='/api/gold')
