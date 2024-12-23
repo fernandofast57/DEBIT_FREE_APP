@@ -5,6 +5,7 @@ from datetime import datetime
 from app.models.models import User, GoldReward
 from app.utils.logging_config import logger
 from app import db
+from app.services.blockchain_service import BlockchainService
 
 class BonusDistributionService:
     def __init__(self):
