@@ -19,6 +19,10 @@ class SecurityManager:
         self.logger.setLevel(logging.INFO)
     
     def log_security_event(self, event_type: str, details: dict):
+        valid_statuses = ['to_be_verified', 'verified', 'available', 'reserved', 'distributed']
+        if 'status' in details and details['status'] not in valid_statuses:
+            raise ValueError(f"Invalid status code: {details['status']}")
+            
         self.logger.info(f"Security event: {event_type}", extra={
             'event_type': event_type,
             'details': details

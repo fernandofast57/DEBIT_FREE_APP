@@ -27,9 +27,13 @@ class TransformationService:
                 if not money_account.balance > 0:
                     return {'status': 'error', 'message': 'Insufficient balance'}
 
+                # Constants from glossary
+                CLIENT_SHARE = 0.933  # 93.3%
+                NETWORK_SHARE = 0.067  # 6.7%
+                
                 # Calculate amounts
                 euro_amount = money_account.balance
-                net_amount = euro_amount * (1 - self.structure_fee)
+                net_amount = euro_amount * CLIENT_SHARE
                 gold_grams = net_amount / fixing_price
                 
                 # Create transformation

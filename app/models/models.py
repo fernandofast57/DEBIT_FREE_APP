@@ -24,6 +24,8 @@ class GoldAccount(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     balance = db.Column(db.Float, default=0.0)
+    pao_active = db.Column(db.Boolean, default=False)
+    ppo_active = db.Column(db.Boolean, default=False)
     
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = db.relationship('User', back_populates='gold_account')
@@ -38,7 +40,7 @@ class Transaction(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     type = db.Column(db.String(50), nullable=False)
     amount = db.Column(db.Float, nullable=False)
-    status = db.Column(db.String(20), default='pending')
+    status = db.Column(db.Enum('to_be_verified', 'verified', 'available', 'reserved', 'distributed', name='transaction_status'), default='to_be_verified')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     user = db.relationship('User', backref='transactions')
