@@ -1,5 +1,5 @@
 
-from .rate_limiter import RateLimiter
+from .rate_limiter import RobustRateLimiter
 import logging
 
 class SecurityManager:
