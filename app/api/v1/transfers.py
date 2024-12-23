@@ -6,7 +6,7 @@ bp = Blueprint('transfers', __name__, url_prefix='/api/v1/transfers')
 transfer_service = BatchCollectionService()
 
 @bp.route('/process', methods=['POST'])
-def process_transfer():
+async def process_transfer():
     """
     Processa un singolo bonifico
     {

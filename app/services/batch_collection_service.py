@@ -63,7 +63,7 @@ class BatchCollectionService:
             db.session.rollback()
             return {'status': 'error', 'message': str(e)}
 
-    def validate_transfer(self, transaction_id: int, technician_id: int) -> Dict:
+    async def validate_transfer(self, transaction_id: int, technician_id: int) -> Dict:
         """Validazione del bonifico da parte del tecnico"""
         try:
             transaction = Transaction.query.get(transaction_id)
