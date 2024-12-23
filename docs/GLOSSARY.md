@@ -34,9 +34,11 @@
 
 ## Service Names
 - `NobleSystem`: Manages noble system operations
-- `SecurityManager`: Manages security operations
+- `SecurityManager`: Manages security operations and rate limiting
 - `APP_NAME`: Application identifier used for logging and security tracking (default: 'gold-investment')
-- `RobustRateLimiter`: Redis-backed rate limiting system with configurable window sizes and request limits
+- `RobustRateLimiter`: Redis-backed rate limiting component
+
+## Rate Limiting Configuration
 - `rate_limit`: Decorator for endpoint-specific rate limiting
 - `redis_url`: Connection string for Redis (default: "redis://localhost:6379/0")
 - `window_size`: Time window for rate limiting (default: 60 seconds)
