@@ -86,7 +86,7 @@ class KYCView(SecureModelView):
 
 admin = Admin(name='Gold Investment Admin', template_mode='bootstrap3')
 
-admin.add_view(DashboardView(name='Dashboard', endpoint='admin'))
+admin.add_view(DashboardView(name='Dashboard', endpoint='admin_dashboard'))
 admin.add_view(ClientView(User, db.session, name='Clients'))
 admin.add_view(AccountingView(name='Accounting', endpoint='accounting'))
 admin.add_view(NetworkView(name='Affiliate Network', endpoint='network'))
