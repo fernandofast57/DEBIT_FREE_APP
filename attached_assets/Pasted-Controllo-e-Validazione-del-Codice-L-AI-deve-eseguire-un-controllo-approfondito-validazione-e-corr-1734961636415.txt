@@ -1,0 +1,37 @@
+Controllo e Validazione del Codice
+L'AI deve eseguire un controllo approfondito, validazione e correzione del codice presente in tutti i file del progetto seguendo questi passaggi:
+
+Rivedere il Glossario:
+
+Controllare e confrontare ogni riferimento e nome delle entità nel codice con le definizioni contenute nel file docs/GLOSSARY.md.
+Assicurarsi che nomi come NobleRelation, GoldReward, e altri siano usati coerentemente in base al loro significato specifico.
+Modifiche e Correzioni:
+
+Implementare modifiche ai nomi e alle definizioni solo dopo aver controllato manualmente i file specifici. Evitare sostituzioni globali automatiche.
+Per le entità ambigue come NobleRelation, chiarire il contesto e, se necessario, modificarne il nome in VerificationStatus dove appropriato.
+Controllo dei Servizi:
+
+Assicurarsi che i nomi delle classi e dei servizi riflettano le definizioni definite nel glossario. Ad esempio:
+bp = Blueprint('noble_api', __name__)  # Cambiare solo se necessario, mantenere i nomi esistenti se non ci sono conflitti.
+Validazione dei Modelli:
+
+Rivedere i modelli SQLAlchemy per accertarsi che rispettino le convenzioni nominate. Aggiornare i riferimenti come Transaction e GoldTransformation quando si effettua chiamate ai metodi.
+Testing e Logging:
+
+Eseguire tutti i test predefiniti nel modulo di test per garantire che non ci siano regressioni nel codice. I test si trovano nella cartella tests.
+Validare i log di sicurezza e assicurarsi che eventi critici siano registrati nel modo corretto per consentire il monitoraggio.
+Documentazione:
+
+Aggiornare eventuali commenti o documentazione (GLOSSARIO e Documento di Progetto) e nel codice per riflettere le modifiche. Assicurarsi che il codice rimanga leggibile e ben documentato.
+Esempio Pratico
+Ecco un esempio di una modifica che l'AI dovrebbe applicare:
+
+# Classe Modificata per riflettere il corretto uso delle entità
+class NobleRelation(db.Model):
+    __tablename__ = 'noble_relations'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    # Modificato per evitare conflitti di terminologia
+    verification_status = db.Column(db.Enum('to_be_verified', 'verified', 'rejected', name='verification_status_enum'))
+    user = db.relationship('User', backref='noble_relations')
