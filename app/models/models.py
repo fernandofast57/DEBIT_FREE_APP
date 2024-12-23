@@ -84,6 +84,19 @@ class Transaction(db.Model):
     
     user = db.relationship('User', backref='transactions')
 
+class GoldTransformation(db.Model):
+    __tablename__ = 'gold_transformations'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    euro_amount = db.Column(db.Float, nullable=False)
+    gold_grams = db.Column(db.Float, nullable=False)
+    fixing_price = db.Column(db.Float, nullable=False)
+    fee_amount = db.Column(db.Float, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    user = db.relationship('User', backref='gold_transformations')
+
 class GoldBar(db.Model):
     __tablename__ = 'gold_bars'
     

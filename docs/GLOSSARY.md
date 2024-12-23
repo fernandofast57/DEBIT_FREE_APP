@@ -18,6 +18,7 @@
 - `GoldAllocation`: Links gold bars to user accounts
 - `GoldReward`: Tracks gold rewards/bonuses
 - `Transaction`: Records all financial operations
+- `GoldTransformation`: Records money to gold conversion transactions
 
 ## Due Diligence Terms
 - `verification_status`: KYC verification state ('to_be_verified', 'verified', 'rejected')
