@@ -109,10 +109,29 @@ class StructureValidator:
             results[tx_type] = all(field in self.glossary.lower() for field in fields)
         return results
 
+    def validate_schema_definitions(self) -> Dict[str, bool]:
+        """Validates database schema definitions against glossary"""
+        schema_checks = {
+            'User': ['email', 'blockchain_address', 'noble_rank'],
+            'MoneyAccount': ['balance', 'currency', 'user_id'],
+            'GoldAccount': ['balance', 'user_id', 'last_updated'],
+            'Transaction': ['amount', 'status', 'transaction_type'],
+            'GoldTransformation': ['euro_amount', 'gold_grams', 'fixing_price']
+        }
+        
+        results = {}
+        for model_name, fields in schema_checks.items():
+            results[model_name] = {
+                'model_valid': model_name.lower() in self.glossary.lower(),
+                'fields_valid': all(field in self.glossary.lower() for field in fields)
+            }
+        return results
+
     def validate_structure(self) -> Dict[str, bool]:
         """Validates entire project structure"""
         results = {
             'models': self.validate_model_names(),
+            'schemas': self.validate_schema_definitions(),
             'services': self.validate_service_names(),
             'blockchain': self.validate_blockchain_config(),
             'endpoints': self.validate_api_endpoints(),
