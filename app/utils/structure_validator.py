@@ -155,6 +155,7 @@ class StructureValidator:
             'bonus_system': self.validate_bonus_system(),
             'transactions': self.validate_transaction_processes(),
             'workflows': self.validate_workflow_processes(),
+            'investments': self.validate_investment_tracking(),
             'status_codes': all(self.validate_status_codes(status) 
                               for status in ['verified', 'to_be_verified', 'rejected'])
         }
@@ -241,6 +242,20 @@ class StructureValidator:
             results[check_type] = all(req in self.glossary.lower() for req in requirements)
         return results
         
+    def validate_investment_tracking(self) -> Dict[str, bool]:
+        """Validates investment tracking and performance metrics"""
+        investment_checks = {
+            'metrics': ['roi', 'current_value', 'purchase_price', 'holding_period'],
+            'performance': ['daily_gain', 'monthly_gain', 'yearly_gain'],
+            'analytics': ['market_price', 'volume_weighted_price', 'price_trends'],
+            'reporting': ['investment_history', 'performance_report', 'tax_report']
+        }
+        
+        results = {}
+        for check_type, requirements in investment_checks.items():
+            results[check_type] = all(req in self.glossary.lower() for req in requirements)
+        return results
+
     def log_modification(self, file_path: str, modification_type: str):
         """Logs code modifications"""
         self.logger.info(f"Code modification: {modification_type} in {file_path}")
