@@ -74,12 +74,11 @@ def create_app(config_class=Config):
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(gold_bp, url_prefix='/api/gold')
     app.register_blueprint(affiliate_bp, url_prefix='/api/affiliate')
-    app.register_blueprint(transformations_bp)
-    app.register_blueprint(transfers_bp)
-    app.register_blueprint(bonuses_bp)
+    app.register_blueprint(transformations_bp, url_prefix='/api/v1/transformations')
+    app.register_blueprint(transfers_bp, url_prefix='/api/v1/transfers')
+    app.register_blueprint(bonuses_bp, url_prefix='/api/v1/bonuses')
     app.register_blueprint(noble_bp, url_prefix='/api/v1/noble')
-    app.register_blueprint(validation_bp, url_prefix='/api/v1/system')
-    from app.api.v1.system import system_bp
+    app.register_blueprint(validation_bp, url_prefix='/api/v1/validation')
     app.register_blueprint(system_bp, url_prefix='/api/v1/system')
 
     from app.utils.optimization import setup_optimization
