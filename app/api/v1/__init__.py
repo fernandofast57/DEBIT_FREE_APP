@@ -26,13 +26,7 @@ def rate_limit(requests, window):
         return func
     return decorator
 
-# Example auth decorator
-def auth_required(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        auth.login_required(func)(*args, **kwargs)
-        return func(*args, **kwargs)
-    return wrapper
+from app.utils.auth import auth_required
 
 @bp.route('/transformations/batch', methods=['POST'])
 @rate_limit(requests=10, window=3600)
