@@ -40,6 +40,7 @@
 - `RobustRateLimiter`: Redis-backed rate limiting component with retry mechanism
 - `ValidationReport`: System validation and health checking service
 - `StructureValidator`: Code structure and naming validation service
+- `GlossaryComplianceLogger`: Service for logging and tracking compliance with glossary definitions
 - `accounting`: Service for financial record keeping
 - `transactions`: Service for handling all monetary operations
 - `transformation`: Service for handling gold-money transformations
