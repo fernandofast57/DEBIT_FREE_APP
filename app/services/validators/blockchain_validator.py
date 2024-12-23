@@ -15,7 +15,7 @@ class BlockchainValidator:
             
             return {
                 'valid': receipt.status == 1,
-                'status': 'confirmed' if receipt.status == 1 else 'failed',
+                'status': 'verified' if receipt.status == 1 else 'rejected',
                 'confirmations': confirmations,
                 'block': block_number,
                 'gas_used': receipt.gasUsed

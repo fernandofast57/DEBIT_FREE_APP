@@ -74,9 +74,10 @@ class TransformationService:
                 await db.session.rollback()
                 return {'status': 'error', 'message': str(e)}
 
-    async def validate_transformation(self, euro_amount: Decimal, fixing_price: Decimal) -> bool:
+    async def validate_transformation(self, euro_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
+        """Validate transformation according to glossary definitions"""
         if euro_amount <= 0:
-            return False
+            return {'status': 'rejected', 'message': 'Invalid euro amount'}
         if fixing_price <= 0:
-            return False
-        return True
+            return {'status': 'rejected', 'message': 'Invalid fixing price'}
+        return {'status': 'verified', 'message': 'Validation successful'}
