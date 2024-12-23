@@ -1,6 +1,7 @@
 
 from .rate_limiter import RobustRateLimiter
 import logging
+from app.utils.logging_config import APP_NAME
 
 class SecurityManager:
     def __init__(self, app_name: str = APP_NAME, redis_url: str = None):
