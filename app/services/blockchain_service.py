@@ -38,11 +38,26 @@ def log_blockchain_transaction(func):
             raise
     return wrapper
 
+class BlockchainMonitor:  # Added BlockchainMonitor class
+    def __init__(self):
+        pass  # Add monitoring logic here as needed
+
+    def monitor_transactions(self, transaction_data):
+        #Implementation for monitoring transactions
+        pass
+
+    def send_alert(self, message):
+        #Implementation for sending alerts
+        pass
+
+
+
 class BlockchainService:
     def __init__(self):
         self.w3 = None
         self.contract = None
-        self.account = None # Added to store the account
+        self.account = None
+        self.monitor = BlockchainMonitor()
         self.setup_web3()
         
     def setup_web3(self):
@@ -130,6 +145,7 @@ class BlockchainService:
             
             if receipt.status == 1:
                 logger.info(f"Noble rank update successful for address {address}")
+                self.monitor.monitor_transactions({'type': 'update_noble_rank', 'status': 'success', 'tx_hash': receipt.transactionHash.hex()}) #Added monitoring call
                 return {
                     'status': 'verified',
                     'transaction_hash': receipt.transactionHash.hex(),
@@ -137,10 +153,12 @@ class BlockchainService:
                 }
             else:
                 logger.error(f"Noble rank update failed for address {address}")
+                self.monitor.monitor_transactions({'type': 'update_noble_rank', 'status': 'failed', 'tx_hash': receipt.transactionHash.hex()}) #Added monitoring call
                 return {'status': 'rejected', 'message': 'Transaction failed'}
                 
         except Exception as e:
             logger.error(f"Error in update_noble_rank: {str(e)}")
+            self.monitor.send_alert(f"Error in update_noble_rank: {str(e)}") #Added alert call
             return {'status': 'rejected', 'message': str(e)}
 
     @log_blockchain_transaction
@@ -180,10 +198,12 @@ class BlockchainService:
             if receipt.status != 1:
                 raise ValueError("Transaction failed")
                 
+            self.monitor.monitor_transactions({'type': 'process_batch_transformation', 'status': 'success', 'tx_hash': receipt.transactionHash.hex()}) #Added monitoring call
             return receipt
             
         except Exception as e:
             logger.error(f"Blockchain batch processing error: {str(e)}")
+            self.monitor.send_alert(f"Blockchain batch processing error: {str(e)}") #Added alert call
             raise
             
     def _validate_transaction_data(self, tx: Dict) -> bool:
