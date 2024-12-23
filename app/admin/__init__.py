@@ -83,4 +83,11 @@ admin.add_view(ClientView(User, db.session, name='Clients'))
 admin.add_view(AccountingView(name='Accounting', endpoint='accounting'))
 admin.add_view(NetworkView(name='Affiliate Network', endpoint='network'))
 admin.add_view(GoldBarView(GoldBar, db.session, name='Gold Bars'))
-admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management'))
+from app.models.noble_system import NobleRelation
+from app.models.models import User
+
+class KYCView(ModelView):
+    column_list = ['user.id', 'verification_status']
+    form_columns = ['user', 'verification_status']
+    
+admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
