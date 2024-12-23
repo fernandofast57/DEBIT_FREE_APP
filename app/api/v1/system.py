@@ -5,7 +5,7 @@ from app.utils.validation_report import ValidationReport
 from app.services.blockchain_service import BlockchainService
 from app.services.batch_collection_service import BatchCollectionService
 
-system_bp = Blueprint('system', __name__)
+bp = Blueprint('system', __name__)
 
 @system_bp.route('/status', methods=['GET'])
 @auth_required
