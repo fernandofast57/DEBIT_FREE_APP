@@ -1,4 +1,3 @@
-
 import os
 import logging
 from logging.handlers import RotatingFileHandler
@@ -13,7 +12,8 @@ class ConfigValidator:
         'DATABASE_URL',
         'CONTRACT_ADDRESS',
         'PRIVATE_KEY',
-        'RPC_ENDPOINTS'
+        'RPC_ENDPOINTS',
+        'REDIS_URL' #Added Redis URL to required variables
     ]
 
     @staticmethod
@@ -64,6 +64,7 @@ class Config:
         self.CONTRACT_ADDRESS = os.getenv('CONTRACT_ADDRESS')
         self.PRIVATE_KEY = os.getenv('PRIVATE_KEY')
         self.RPC_ENDPOINTS = self._parse_endpoints()
+        self.REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0') #Added Redis URL configuration
 
     def _parse_endpoints(self) -> List[str]:
         endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
@@ -86,3 +87,4 @@ class TestConfig(Config):
         self.CONTRACT_ADDRESS = '0x0000000000000000000000000000000000000000'
         self.PRIVATE_KEY = '0x0000000000000000000000000000000000000000000000000000000000000000'
         self.RPC_ENDPOINTS = ['http://localhost:8545']
+        self.REDIS_URL = 'redis://localhost:6379/0' #Added Redis URL for test config

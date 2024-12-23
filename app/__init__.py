@@ -39,6 +39,9 @@ def create_app(config_class=Config):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_class())
     
+    from app.config.redis_config import RedisConfig
+    app.redis = RedisConfig(app.config.get('REDIS_URL'))
+    
     # Ensure instance folder exists
     try:
         os.makedirs(app.instance_path)
