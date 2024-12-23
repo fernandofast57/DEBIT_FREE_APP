@@ -3,9 +3,10 @@ from flask import Blueprint, jsonify, request
 from app.services.transformation_service import TransformationService
 from app.utils.auth import auth_required
 from app.utils.security.rate_limiter import rate_limit
+import asyncio
 
 bp = Blueprint('transformations', __name__)
-transformation_service = TransformationService()
+transformation_service = asyncio.run(TransformationService())
 
 @bp.route('/transform', methods=['POST'])
 @auth_required
