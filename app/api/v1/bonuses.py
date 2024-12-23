@@ -29,7 +29,7 @@ async def get_noble_bonuses():
 
 @bp.route('/distribute', methods=['POST'])
 @auth_required
-@rate_limit(requests=2, window=300)
+@rate_limit(max_requests=2, window_size=300)
 async def distribute_bonuses():
     try:
         data = request.get_json()
