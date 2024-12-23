@@ -19,6 +19,7 @@ pyjwt = "^2.10.1"
 eth-tester = ">=0.9.1"
 eth-account = ">=0.8.0"
 eth-typing = "3.5.2"
+flask-httpauth = "^4.8.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

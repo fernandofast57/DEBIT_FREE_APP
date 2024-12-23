@@ -920,6 +920,20 @@ aws = ["boto"]
 azure = ["azure-storage-blob"]
 
 [[package]]
+name = "flask-httpauth"
+version = "4.8.0"
+description = "HTTP authentication for Flask routes"
+optional = false
+python-versions = "*"
+files = [
+    {file = "Flask-HTTPAuth-4.8.0.tar.gz", hash = "sha256:66568a05bc73942c65f1e2201ae746295816dc009edd84b482c44c758d75097a"},
+    {file = "Flask_HTTPAuth-4.8.0-py3-none-any.whl", hash = "sha256:a58fedd09989b9975448eef04806b096a3964a7feeebc0a78831ff55685b62b0"},
+]
+
+[package.dependencies]
+flask = "*"
+
+[[package]]
 name = "flask-migrate"
 version = "3.1.0"
 description = "SQLAlchemy database migrations for Flask applications using Alembic."
@@ -2528,4 +2542,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "46eb802d73d48f3dccf7dab0a599e01e23bac384835add049d3b459d8ab2db72"
+content-hash = "bfa84bdb0c9feb321de440f742a0a2f3a6b1b6c470d5fd5cbffc4f7fbe3cc837"
