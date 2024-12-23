@@ -2,6 +2,8 @@
 import time
 from collections import defaultdict
 from typing import Dict, Tuple
+from functools import wraps
+from flask import request
 
 class RobustRateLimiter:
     def __init__(self, redis_url: str = None):
@@ -28,3 +30,16 @@ class RobustRateLimiter:
             
         self.local_storage[key]['count'] += 1
         return self.local_storage[key]['count'] > max_reqs
+
+def rate_limit(max_requests: int = 100, window: int = 60):
+    """Decorator for endpoint-specific rate limiting"""
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            limiter = RobustRateLimiter()
+            key = f"{request.remote_addr}:{f.__name__}"
+            if limiter.is_rate_limited(key, max_requests, window):
+                return {'error': 'Rate limit exceeded'}, 429
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
