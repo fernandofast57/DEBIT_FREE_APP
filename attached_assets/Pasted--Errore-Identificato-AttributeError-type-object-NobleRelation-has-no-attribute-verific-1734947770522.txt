@@ -1,0 +1,142 @@
+### 🚨 **Errore Identificato: `AttributeError: type object 'NobleRelation' has no attribute 'verification_status'`**
+
+L'errore indica che **Flask-Admin** sta cercando di accedere a un attributo chiamato **`verification_status`** nel modello **`NobleRelation`**, ma questo campo **non esiste**.
+
+---
+
+## 🛠️ **1. Analisi del Problema**
+
+Nel file **`app/admin/__init__.py`**, probabilmente hai qualcosa del genere nella definizione di **`KYCView`**:
+
+```python
+class KYCView(SecureModelView):
+    column_list = ['user.username', 'verification_status', 'document_type', 'document_number', 'verification_date']
+    column_searchable_list = ['verification_status', 'document_number']
+    column_filters = ['verification_status', 'document_type']
+    can_delete = False
+```
+
+### ❌ **Problema:**
+- Il modello **`NobleRelation`** non ha un attributo chiamato **`verification_status`**.
+- Stai tentando di visualizzare un campo che non esiste.
+
+---
+
+## ✅ **2. Soluzioni Possibili**
+
+### **Opzione A: Rimuovere i Riferimenti a `verification_status`**
+
+Se il campo **`verification_status`** non è più necessario, puoi semplicemente rimuoverlo dalla configurazione di Flask-Admin.
+
+**📄 Correggi `app/admin/__init__.py`:**
+
+```python
+class KYCView(SecureModelView):
+    column_list = ['user.username', 'document_type', 'document_number', 'verification_date']
+    column_searchable_list = ['document_number']
+    column_filters = ['document_type']
+    can_delete = False
+```
+
+**🔑 Cosa è stato cambiato:**
+- Rimossi tutti i riferimenti a **`verification_status`**.
+
+---
+
+### **Opzione B: Aggiungere `verification_status` al Modello `NobleRelation`**
+
+Se invece il campo **`verification_status`** è richiesto, devi aggiungerlo al modello **`NobleRelation`**.
+
+**📄 Correggi `app/models/models.py`:**
+
+```python
+class NobleRelation(db.Model):
+    __tablename__ = 'noble_relations'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    verification_status = db.Column(db.String(50), default='pending')  # Stato della verifica: pending, approved, rejected
+    document_type = db.Column(db.String(50))
+    document_number = db.Column(db.String(50))
+    verification_date = db.Column(db.DateTime)
+    
+    user = db.relationship('User', back_populates='noble_relation')
+    
+    def __repr__(self):
+        return f"<NobleRelation {self.verification_status}>"
+```
+
+**🔑 Cosa è stato aggiunto:**
+- `verification_status`: Colonna di tipo `String`, con un valore predefinito `'pending'`.
+
+---
+
+## ✅ **3. Aggiorna il Database**
+
+Se hai aggiunto il campo `verification_status`, devi aggiornare il database:
+
+```bash
+flask db migrate -m "Add verification_status to NobleRelation"
+flask db upgrade
+```
+
+Se non stai usando Flask-Migrate, puoi applicare le modifiche direttamente:
+
+```python
+from app import db
+db.create_all()
+```
+
+---
+
+## 🧼 **4. Pulisci la Cache Python**
+
+Assicurati di eliminare i file cache che potrebbero causare conflitti:
+
+```bash
+find . -name '*.pyc' -delete
+find . -name '__pycache__' -type d -exec rm -r {} +
+```
+
+---
+
+## 🚀 **5. Riavvia l'Applicazione**
+
+Riavvia l'applicazione per applicare le modifiche:
+
+```bash
+python main.py
+```
+
+---
+
+## ✅ **6. Riepilogo delle Correzioni**
+
+1. **Se il campo non è richiesto:**  
+   - Rimosso `verification_status` dalla vista Flask-Admin.
+   
+2. **Se il campo è richiesto:**  
+   - Aggiunto `verification_status` al modello `NobleRelation`.
+   - Aggiornato il database con Flask-Migrate.
+
+3. **Pulizia della Cache Python.**
+
+4. **Riavvio dell'applicazione.**
+
+---
+
+## 🧪 **7. Verifica Finale**
+
+- Accedi alla sezione `KYC Management` di Flask-Admin.
+- Assicurati che le colonne:
+   - **`user.username`**  
+   - **`document_type`**  
+   - **`document_number`**  
+   - **`verification_date`**  
+Siano visibili correttamente.
+
+- Se hai aggiunto **`verification_status`**, assicurati che il campo sia visibile e modificabile.
+
+---
+
+Se riscontri ulteriori problemi, condividi il nuovo messaggio di errore. 🚀✨
