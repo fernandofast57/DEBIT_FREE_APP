@@ -8,7 +8,7 @@ from app.models.models import db
 class AuthManager:
     def __init__(self, secret_key: str):
         self.secret_key = secret_key
-        self.security = SecurityManager(app_name='gold-investment')
+        self.security = SecurityManager(app_name=APP_NAME)
     
     def generate_token(self, user_id: int, device_id: str) -> str:
         payload = {

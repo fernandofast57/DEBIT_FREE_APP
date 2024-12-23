@@ -25,7 +25,7 @@ class ConfigValidator:
 
 class LogConfig:
     """Configurazione del sistema di logging"""
-    def __init__(self, app_name: str = 'gold-investment'):
+    def __init__(self, app_name: str = APP_NAME):
         self.app_name = app_name
         self.log_dir = 'logs'
         self.log_file = f'{self.log_dir}/{app_name}.log'

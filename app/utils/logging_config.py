@@ -3,7 +3,8 @@ import os
 import logging
 from logging.handlers import RotatingFileHandler
 
-logger = logging.getLogger('gold-investment')
+APP_NAME = 'gold-investment'
+logger = logging.getLogger(APP_NAME)
 
 def setup_logging():
     if not os.path.exists('logs'):
