@@ -20,12 +20,16 @@ class MoneyAccount(db.Model):
         return f"<MoneyAccount {self.balance}>"
 
 class GoldAccount(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    balance = db.Column(db.Float, default=0.0)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    __tablename__ = 'gold_accounts'
     
-    user = db.relationship('User', backref=db.backref('gold_accounts', lazy=True))
+    id = db.Column(db.Integer, primary_key=True)
+    balance = db.Column(db.Float, default=0.0)
+    
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('User', back_populates='gold_account')
+    
+    def __repr__(self):
+        return f"<GoldAccount {self.balance}>"
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
