@@ -156,6 +156,7 @@ class StructureValidator:
             'transactions': self.validate_transaction_processes(),
             'workflows': self.validate_workflow_processes(),
             'investments': self.validate_investment_tracking(),
+            'performance': self.validate_performance_analytics(),
             'status_codes': all(self.validate_status_codes(status) 
                               for status in ['verified', 'to_be_verified', 'rejected'])
         }
@@ -253,6 +254,20 @@ class StructureValidator:
         
         results = {}
         for check_type, requirements in investment_checks.items():
+            results[check_type] = all(req in self.glossary.lower() for req in requirements)
+        return results
+
+    def validate_performance_analytics(self) -> Dict[str, bool]:
+        """Validates performance analytics system"""
+        performance_checks = {
+            'metrics': ['daily_performance', 'weekly_performance', 'monthly_performance'],
+            'indicators': ['growth_rate', 'risk_metrics', 'volatility'],
+            'benchmarks': ['market_comparison', 'peer_comparison', 'historical_performance'],
+            'reporting': ['performance_summary', 'risk_report', 'trend_analysis']
+        }
+        
+        results = {}
+        for check_type, requirements in performance_checks.items():
             results[check_type] = all(req in self.glossary.lower() for req in requirements)
         return results
 
