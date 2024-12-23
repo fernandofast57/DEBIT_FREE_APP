@@ -1,0 +1,1440 @@
+~/gold-investment-backend$ python -m pytest tests/ -v
+========================================== test session starts ===========================================
+platform linux -- Python 3.11.10, pytest-7.4.3, pluggy-1.5.0 -- /home/runner/gold-investment-backend/.pythonlibs/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/gold-investment-backend/tests
+configfile: pytest.ini
+plugins: mock-3.14.0, web3-6.11.4, asyncio-0.21.1
+asyncio: mode=Mode.AUTO
+collected 49 items                                                                                       
+
+tests/test_api.py::test_transform_endpoint ERROR                                                   [  2%]
+tests/test_auth.py::test_noble_user_auth ERROR                                                     [  4%]
+tests/test_auth.py::test_token_verification FAILED                                                 [  6%]
+tests/test_auth.py::test_invalid_token FAILED                                                      [  8%]
+tests/test_batch_collection_service.py::TestBatchCollectionService::test_duplicate_references FAILED [ 10%]
+tests/test_batch_collection_service.py::TestBatchCollectionService::test_empty_batch FAILED        [ 12%]
+tests/test_batch_collection_service.py::TestBatchCollectionService::test_invalid_batch_transfer FAILED [ 14%]
+tests/test_batch_collection_service.py::TestBatchCollectionService::test_large_batch FAILED        [ 16%]
+tests/test_batch_collection_service.py::TestBatchCollectionService::test_process_batch_transfers FAILED [ 18%]
+tests/test_blockchain_integration.py::test_contract_deployment FAILED                              [ 20%]
+tests/test_blockchain_integration.py::test_connection FAILED                                       [ 22%]
+tests/test_blockchain_service.py::test_batch_transform ERROR                                       [ 24%]
+tests/test_blockchain_service.py::test_noble_rank_update ERROR                                     [ 26%]
+tests/test_blockchain_service.py::test_gas_optimization ERROR                                      [ 28%]
+tests/test_bonus_system.py::test_bonus_calculation ERROR                                           [ 30%]
+tests/test_bonus_system.py::test_bonus_distribution ERROR                                          [ 32%]
+tests/test_bonus_system.py::test_rank_based_bonus ERROR                                            [ 34%]
+tests/test_bonus_system.py::test_multi_level_bonus_distribution ERROR                              [ 36%]
+tests/test_complete_system.py::test_system_health ERROR                                            [ 38%]
+tests/test_complete_system.py::test_user_balance ERROR                                             [ 40%]
+tests/test_complete_system.py::test_transformation_flow ERROR                                      [ 42%]
+tests/test_multi_device.py::test_responsive_layout[desktop-device0] FAILED                         [ 44%]
+tests/test_multi_device.py::test_responsive_layout[mobile-device1] FAILED                          [ 46%]
+tests/test_multi_device.py::test_responsive_layout[tablet-device2] FAILED                          [ 48%]
+tests/test_noble_system.py::test_noble_rank_assignment ERROR                                       [ 51%]
+tests/test_noble_system.py::test_noble_bonus_calculation ERROR                                     [ 53%]
+tests/test_noble_system.py::test_noble_rank_requirements ERROR                                     [ 55%]
+tests/test_rate_limiting.py::TestRobustRateLimiter::test_local_rate_limiting FAILED                [ 57%]
+tests/test_rate_limiting.py::TestRobustRateLimiter::test_redis_rate_limiting FAILED                [ 59%]
+tests/test_rate_limiting.py::TestRobustRateLimiter::test_window_expiration FAILED                  [ 61%]
+tests/test_rate_limiting.py::TestRobustRateLimiter::test_redis_window_expiration FAILED            [ 63%]
+tests/test_rate_limiting.py::TestRobustRateLimiter::test_identifier_generation FAILED              [ 65%]
+tests/test_rate_limiting.py::TestRobustRateLimiter::test_rate_limit_configurations[1-1-True] FAILED [ 67%]
+tests/test_rate_limiting.py::TestRobustRateLimiter::test_rate_limit_configurations[1-1-False] FAILED [ 69%]
+tests/test_rate_limiting.py::TestRobustRateLimiter::test_rate_limit_configurations[5-1-True] FAILED [ 71%]
+tests/test_rate_limiting.py::TestRobustRateLimiter::test_rate_limit_configurations[0-1-False] FAILED [ 73%]
+tests/test_rate_limiting.py::TestRobustRateLimiter::test_redis_failure_fallback FAILED             [ 75%]
+tests/test_system_flow.py::TestSystemFlow::test_complete_flow ERROR                                [ 77%]
+tests/test_system_flow.py::TestSystemFlow::test_failed_transformation ERROR                        [ 79%]
+tests/test_transformation_service.py::test_transform_money_to_gold ERROR                           [ 81%]
+tests/test_transformation_service.py::test_insufficient_funds ERROR                                [ 83%]
+tests/test_transformation_service.py::test_noble_rank_update ERROR                                 [ 85%]
+tests/test_transformation_service.py::test_transformation_validation ERROR                         [ 87%]
+tests/test_transformation_service.py::test_successful_transformation ERROR                         [ 89%]
+tests/test_transformation_service.py::test_transformation_limits ERROR                             [ 91%]
+tests/test_transformation_service.py::test_validate_transfer ERROR                                 [ 93%]
+tests/test_transformation_service.py::test_tuesday_gold_purchase ERROR                             [ 95%]
+tests/integration/test_batch_blockchain.py::test_batch_blockchain_integration ERROR                [ 97%]
+tests/integration/test_batch_blockchain.py::test_batch_validation ERROR                            [100%]
+
+================================================= ERRORS =================================================
+_______________________________ ERROR at setup of test_transform_endpoint ________________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+_________________________________ ERROR at setup of test_noble_user_auth _________________________________
+tests/test_auth.py:10: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+_________________________________ ERROR at setup of test_batch_transform _________________________________
+tests/test_blockchain_service.py:12: in blockchain_service
+    eth_tester = EthereumTester(PyEVMBackend())
+.pythonlibs/lib/python3.11/site-packages/eth_tester/backends/pyevm/main.py:383: in __init__
+    raise BackendDistributionNotFound(
+E   eth_tester.exceptions.BackendDistributionNotFound: The `py-evm` package is not available or not up to date. The `PyEVMBackend` requires py-evm to be installed and importable. Please install or update the `py-evm` library.
+----------------------------------------- Captured stdout setup ------------------------------------------
+Package 'py-evm' not found.
+Package 'py-evm' not found.
+Package 'py-evm' not found.
+Package 'py-evm' not found.
+________________________________ ERROR at setup of test_noble_rank_update ________________________________
+tests/test_blockchain_service.py:12: in blockchain_service
+    eth_tester = EthereumTester(PyEVMBackend())
+.pythonlibs/lib/python3.11/site-packages/eth_tester/backends/pyevm/main.py:383: in __init__
+    raise BackendDistributionNotFound(
+E   eth_tester.exceptions.BackendDistributionNotFound: The `py-evm` package is not available or not up to date. The `PyEVMBackend` requires py-evm to be installed and importable. Please install or update the `py-evm` library.
+----------------------------------------- Captured stdout setup ------------------------------------------
+Package 'py-evm' not found.
+________________________________ ERROR at setup of test_gas_optimization _________________________________
+tests/test_blockchain_service.py:12: in blockchain_service
+    eth_tester = EthereumTester(PyEVMBackend())
+.pythonlibs/lib/python3.11/site-packages/eth_tester/backends/pyevm/main.py:383: in __init__
+    raise BackendDistributionNotFound(
+E   eth_tester.exceptions.BackendDistributionNotFound: The `py-evm` package is not available or not up to date. The `PyEVMBackend` requires py-evm to be installed and importable. Please install or update the `py-evm` library.
+----------------------------------------- Captured stdout setup ------------------------------------------
+Package 'py-evm' not found.
+________________________________ ERROR at setup of test_bonus_calculation ________________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+_______________________________ ERROR at setup of test_bonus_distribution ________________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+________________________________ ERROR at setup of test_rank_based_bonus _________________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+_________________________ ERROR at setup of test_multi_level_bonus_distribution __________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+__________________________________ ERROR at setup of test_system_health __________________________________
+tests/test_complete_system.py:11: in app
+    app = create_app(TestConfig)
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+__________________________________ ERROR at setup of test_user_balance ___________________________________
+tests/test_complete_system.py:11: in app
+    app = create_app(TestConfig)
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+_______________________________ ERROR at setup of test_transformation_flow _______________________________
+tests/test_complete_system.py:11: in app
+    app = create_app(TestConfig)
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+______________________________ ERROR at setup of test_noble_rank_assignment ______________________________
+tests/test_noble_system.py:9: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+_____________________________ ERROR at setup of test_noble_bonus_calculation _____________________________
+tests/test_noble_system.py:9: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+_____________________________ ERROR at setup of test_noble_rank_requirements _____________________________
+tests/test_noble_system.py:9: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+__________________________ ERROR at setup of TestSystemFlow.test_complete_flow ___________________________
+tests/test_system_flow.py:15: in setup
+    self.transformation_service = TransformationService(blockchain_service=self.blockchain_service)
+E   TypeError: TransformationService.__init__() got an unexpected keyword argument 'blockchain_service'
+______________________ ERROR at setup of TestSystemFlow.test_failed_transformation _______________________
+tests/test_system_flow.py:15: in setup
+    self.transformation_service = TransformationService(blockchain_service=self.blockchain_service)
+E   TypeError: TransformationService.__init__() got an unexpected keyword argument 'blockchain_service'
+_____________________________ ERROR at setup of test_transform_money_to_gold _____________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+_______________________________ ERROR at setup of test_insufficient_funds ________________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+________________________________ ERROR at setup of test_noble_rank_update ________________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+____________________________ ERROR at setup of test_transformation_validation ____________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+____________________________ ERROR at setup of test_successful_transformation ____________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+______________________________ ERROR at setup of test_transformation_limits ______________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+________________________________ ERROR at setup of test_validate_transfer ________________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+______________________________ ERROR at setup of test_tuesday_gold_purchase ______________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+__________________________ ERROR at setup of test_batch_blockchain_integration ___________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+________________________________ ERROR at setup of test_batch_validation _________________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+================================================ FAILURES ================================================
+________________________________________ test_token_verification _________________________________________
+tests/test_auth.py:46: in test_token_verification
+    token = auth_manager.generate_token(1, 'test_device')
+E   AttributeError: 'AuthManager' object has no attribute 'generate_token'
+___________________________________________ test_invalid_token ___________________________________________
+tests/test_auth.py:53: in test_invalid_token
+    payload = auth_manager.verify_token('invalid_token')
+E   AttributeError: 'AuthManager' object has no attribute 'verify_token'
+__________________________ TestBatchCollectionService.test_duplicate_references __________________________
+tests/test_batch_collection_service.py:8: in asyncSetUp
+    self.app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+______________________________ TestBatchCollectionService.test_empty_batch _______________________________
+tests/test_batch_collection_service.py:8: in asyncSetUp
+    self.app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+_________________________ TestBatchCollectionService.test_invalid_batch_transfer _________________________
+tests/test_batch_collection_service.py:8: in asyncSetUp
+    self.app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+______________________________ TestBatchCollectionService.test_large_batch _______________________________
+tests/test_batch_collection_service.py:8: in asyncSetUp
+    self.app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+________________________ TestBatchCollectionService.test_process_batch_transfers _________________________
+tests/test_batch_collection_service.py:8: in asyncSetUp
+    self.app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+________________________________________ test_contract_deployment ________________________________________
+tests/test_blockchain_integration.py:15: in test_contract_deployment
+    result = blockchain_service.deploy_contract()
+E   AttributeError: 'BlockchainService' object has no attribute 'deploy_contract'
+____________________________________________ test_connection _____________________________________________
+tests/test_blockchain_integration.py:22: in test_connection
+    assert service.w3.isConnected()
+E   AttributeError: 'Web3' object has no attribute 'isConnected'
+------------------------------------------ Captured stderr call ------------------------------------------
+--- Logging error ---
+Traceback (most recent call last):
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/logging/__init__.py", line 449, in format
+    return self._format(record)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/logging/__init__.py", line 445, in _format
+    return self._fmt % values
+           ~~~~~~~~~~^~~~~~~~
+KeyError: 'statuscode'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/logging/__init__.py", line 1110, in emit
+    msg = self.format(record)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/logging/__init__.py", line 953, in format
+    return fmt.format(record)
+           ^^^^^^^^^^^^^^^^^^
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/logging/__init__.py", line 690, in format
+    s = self.formatMessage(record)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/logging/__init__.py", line 659, in formatMessage
+    return self._style.format(record)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/logging/__init__.py", line 451, in format
+    raise ValueError('Formatting field not found in record: %s' % e)
+ValueError: Formatting field not found in record: 'statuscode'
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pytest/__main__.py", line 5, in <module>
+    raise SystemExit(pytest.console_main())
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/config/__init__.py", line 192, in console_main
+    code = main()
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/config/__init__.py", line 169, in main
+    ret: Union[ExitCode, int] = config.hook.pytest_cmdline_main(
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/main.py", line 318, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/main.py", line 271, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/main.py", line 325, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/main.py", line 350, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/runner.py", line 114, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/runner.py", line 133, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/runner.py", line 222, in call_and_report
+    call = call_runtest_hook(item, when, **kwds)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/runner.py", line 261, in call_runtest_hook
+    return CallInfo.from_call(
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/runner.py", line 341, in from_call
+    result: Optional[TResult] = func()
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/runner.py", line 262, in <lambda>
+    lambda: ihook(item=item, **kwds), when=when, reraise=reraise
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/runner.py", line 169, in pytest_runtest_call
+    item.runtest()
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/python.py", line 1792, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/python.py", line 194, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py", line 1378, in patched
+    return func(*newargs, **newkeywargs)
+  File "/home/runner/gold-investment-backend/tests/test_blockchain_integration.py", line 20, in test_connection
+    service = BlockchainService()
+  File "/home/runner/gold-investment-backend/app/services/blockchain_service.py", line 61, in __init__
+    self.setup_web3()
+  File "/home/runner/gold-investment-backend/app/services/blockchain_service.py", line 66, in setup_web3
+    self._connect_to_rpc()
+  File "/home/runner/gold-investment-backend/app/services/blockchain_service.py", line 77, in _connect_to_rpc
+    logger.info(f"Connected to blockchain node: {endpoint}")
+Message: 'Connected to blockchain node: https://polygon-mumbai.g.alchemy.com/v2/your-key'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/logging/__init__.py", line 449, in format
+    return self._format(record)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/logging/__init__.py", line 445, in _format
+    return self._fmt % values
+           ~~~~~~~~~~^~~~~~~~
+KeyError: 'statuscode'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/logging/__init__.py", line 1110, in emit
+    msg = self.format(record)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/logging/__init__.py", line 953, in format
+    return fmt.format(record)
+           ^^^^^^^^^^^^^^^^^^
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/logging/__init__.py", line 690, in format
+    s = self.formatMessage(record)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/logging/__init__.py", line 659, in formatMessage
+    return self._style.format(record)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/logging/__init__.py", line 451, in format
+    raise ValueError('Formatting field not found in record: %s' % e)
+ValueError: Formatting field not found in record: 'statuscode'
+Call stack:
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pytest/__main__.py", line 5, in <module>
+    raise SystemExit(pytest.console_main())
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/config/__init__.py", line 192, in console_main
+    code = main()
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/config/__init__.py", line 169, in main
+    ret: Union[ExitCode, int] = config.hook.pytest_cmdline_main(
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/main.py", line 318, in pytest_cmdline_main
+    return wrap_session(config, _main)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/main.py", line 271, in wrap_session
+    session.exitstatus = doit(config, session) or 0
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/main.py", line 325, in _main
+    config.hook.pytest_runtestloop(session=session)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/main.py", line 350, in pytest_runtestloop
+    item.config.hook.pytest_runtest_protocol(item=item, nextitem=nextitem)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/runner.py", line 114, in pytest_runtest_protocol
+    runtestprotocol(item, nextitem=nextitem)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/runner.py", line 133, in runtestprotocol
+    reports.append(call_and_report(item, "call", log))
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/runner.py", line 222, in call_and_report
+    call = call_runtest_hook(item, when, **kwds)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/runner.py", line 261, in call_runtest_hook
+    return CallInfo.from_call(
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/runner.py", line 341, in from_call
+    result: Optional[TResult] = func()
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/runner.py", line 262, in <lambda>
+    lambda: ihook(item=item, **kwds), when=when, reraise=reraise
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/runner.py", line 169, in pytest_runtest_call
+    item.runtest()
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/python.py", line 1792, in runtest
+    self.ihook.pytest_pyfunc_call(pyfuncitem=self)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_hooks.py", line 513, in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_manager.py", line 120, in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pluggy/_callers.py", line 103, in _multicall
+    res = hook_impl.function(*args)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/_pytest/python.py", line 194, in pytest_pyfunc_call
+    result = testfunction(**testargs)
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py", line 1378, in patched
+    return func(*newargs, **newkeywargs)
+  File "/home/runner/gold-investment-backend/tests/test_blockchain_integration.py", line 20, in test_connection
+    service = BlockchainService()
+  File "/home/runner/gold-investment-backend/app/services/blockchain_service.py", line 61, in __init__
+    self.setup_web3()
+  File "/home/runner/gold-investment-backend/app/services/blockchain_service.py", line 66, in setup_web3
+    self._connect_to_rpc()
+  File "/home/runner/gold-investment-backend/app/services/blockchain_service.py", line 77, in _connect_to_rpc
+    logger.info(f"Connected to blockchain node: {endpoint}")
+Message: 'Connected to blockchain node: https://polygon-mumbai.g.alchemy.com/v2/your-key'
+Arguments: ()
+------------------------------------------- Captured log call --------------------------------------------
+INFO     gold-investment:blockchain_service.py:77 Connected to blockchain node: https://polygon-mumbai.g.alchemy.com/v2/your-key
+________________________________ test_responsive_layout[desktop-device0] _________________________________
+tests/test_multi_device.py:8: in test_responsive_layout
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+_________________________________ test_responsive_layout[mobile-device1] _________________________________
+tests/test_multi_device.py:8: in test_responsive_layout
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+_________________________________ test_responsive_layout[tablet-device2] _________________________________
+tests/test_multi_device.py:8: in test_responsive_layout
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:93: in <module>
+    admin.add_view(KYCView(NobleRelation, db.session, name='KYC Management', endpoint='kyc'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:910: in _refresh_cache
+    self._refresh_forms_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:835: in _refresh_forms_cache
+    self._create_form_class = self.get_create_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1291: in get_create_form
+    return self.get_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1248: in get_form
+    return self.scaffold_form()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:760: in scaffold_form
+    form_class = form.get_form(self.model, converter,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:550: in get_form
+    for name, p in properties:
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:545: in <genexpr>
+    properties = (find(x) for x in only)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/form.py:528: in find
+    column, path = get_field_with_path(model, name, return_remote_proxy_attr=False)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:160: in get_field_with_path
+    value = getattr(current_model, attribute)
+E   AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+_____________________________ TestRobustRateLimiter.test_local_rate_limiting _____________________________
+tests/test_rate_limiting.py:41: in test_local_rate_limiting
+    limit = RateLimit(requests=2, window=1)
+E   NameError: name 'RateLimit' is not defined
+_____________________________ TestRobustRateLimiter.test_redis_rate_limiting _____________________________
+tests/test_rate_limiting.py:60: in test_redis_rate_limiting
+    limit = RateLimit(requests=2, window=1)
+E   NameError: name 'RateLimit' is not defined
+______________________________ TestRobustRateLimiter.test_window_expiration ______________________________
+tests/test_rate_limiting.py:80: in test_window_expiration
+    limit = RateLimit(requests=1, window=1)
+E   NameError: name 'RateLimit' is not defined
+___________________________ TestRobustRateLimiter.test_redis_window_expiration ___________________________
+tests/test_rate_limiting.py:98: in test_redis_window_expiration
+    limit = RateLimit(requests=1, window=1)
+E   NameError: name 'RateLimit' is not defined
+____________________________ TestRobustRateLimiter.test_identifier_generation ____________________________
+tests/test_rate_limiting.py:117: in test_identifier_generation
+    identifier = rate_limiter._get_identifier(by_ip=True, by_user=True)
+E   AttributeError: 'RobustRateLimiter' object has no attribute '_get_identifier'
+_____________________ TestRobustRateLimiter.test_rate_limit_configurations[1-1-True] _____________________
+tests/test_rate_limiting.py:136: in test_rate_limit_configurations
+    limit = RateLimit(max_requests=max_requests, window_size=window_size)
+E   NameError: name 'RateLimit' is not defined
+____________________ TestRobustRateLimiter.test_rate_limit_configurations[1-1-False] _____________________
+tests/test_rate_limiting.py:136: in test_rate_limit_configurations
+    limit = RateLimit(max_requests=max_requests, window_size=window_size)
+E   NameError: name 'RateLimit' is not defined
+_____________________ TestRobustRateLimiter.test_rate_limit_configurations[5-1-True] _____________________
+tests/test_rate_limiting.py:136: in test_rate_limit_configurations
+    limit = RateLimit(max_requests=max_requests, window_size=window_size)
+E   NameError: name 'RateLimit' is not defined
+____________________ TestRobustRateLimiter.test_rate_limit_configurations[0-1-False] _____________________
+tests/test_rate_limiting.py:136: in test_rate_limit_configurations
+    limit = RateLimit(max_requests=max_requests, window_size=window_size)
+E   NameError: name 'RateLimit' is not defined
+___________________________ TestRobustRateLimiter.test_redis_failure_fallback ____________________________
+tests/test_rate_limiting.py:146: in test_redis_failure_fallback
+    limit = RateLimit(requests=1, window=1)
+E   NameError: name 'RateLimit' is not defined
+============================================ warnings summary ============================================
+config.py:80
+  /home/runner/gold-investment-backend/config.py:80: PytestCollectionWarning: cannot collect test class 'TestConfig' because it has a __init__ constructor (from: test_complete_system.py)
+    class TestConfig(Config):
+
+tests/test_rate_limiting.py:56
+  /home/runner/gold-investment-backend/tests/test_rate_limiting.py:56: PytestUnknownMarkWarning: Unknown pytest.mark.redis - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.redis
+
+tests/test_rate_limiting.py:94
+  /home/runner/gold-investment-backend/tests/test_rate_limiting.py:94: PytestUnknownMarkWarning: Unknown pytest.mark.redis - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.redis
+
+tests/test_rate_limiting.py:141
+  /home/runner/gold-investment-backend/tests/test_rate_limiting.py:141: PytestUnknownMarkWarning: Unknown pytest.mark.redis - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.redis
+
+tests/config/test_devices.py:5
+  /home/runner/gold-investment-backend/tests/config/test_devices.py:5: PytestCollectionWarning: cannot collect test class 'TestDevice' because it has a __init__ constructor (from: config/test_devices.py)
+    @dataclass
+
+test_api.py::test_transform_endpoint
+  /home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/__init__.py:2: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('flask_admin.contrib')`.
+  Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+    __import__('pkg_resources').declare_namespace(__name__)
+
+test_api.py::test_transform_endpoint
+  /home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pkg_resources/__init__.py:2558: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('flask_admin')`.
+  Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+    declare_namespace(parent)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================================== short test summary info =========================================
+FAILED tests/test_auth.py::test_token_verification - AttributeError: 'AuthManager' object has no attribute 'generate_token'
+FAILED tests/test_auth.py::test_invalid_token - AttributeError: 'AuthManager' object has no attribute 'verify_token'
+FAILED tests/test_batch_collection_service.py::TestBatchCollectionService::test_duplicate_references - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+FAILED tests/test_batch_collection_service.py::TestBatchCollectionService::test_empty_batch - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+FAILED tests/test_batch_collection_service.py::TestBatchCollectionService::test_invalid_batch_transfer - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+FAILED tests/test_batch_collection_service.py::TestBatchCollectionService::test_large_batch - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+FAILED tests/test_batch_collection_service.py::TestBatchCollectionService::test_process_batch_transfers - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+FAILED tests/test_blockchain_integration.py::test_contract_deployment - AttributeError: 'BlockchainService' object has no attribute 'deploy_contract'
+FAILED tests/test_blockchain_integration.py::test_connection - AttributeError: 'Web3' object has no attribute 'isConnected'
+FAILED tests/test_multi_device.py::test_responsive_layout[desktop-device0] - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+FAILED tests/test_multi_device.py::test_responsive_layout[mobile-device1] - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+FAILED tests/test_multi_device.py::test_responsive_layout[tablet-device2] - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+FAILED tests/test_rate_limiting.py::TestRobustRateLimiter::test_local_rate_limiting - NameError: name 'RateLimit' is not defined
+FAILED tests/test_rate_limiting.py::TestRobustRateLimiter::test_redis_rate_limiting - NameError: name 'RateLimit' is not defined
+FAILED tests/test_rate_limiting.py::TestRobustRateLimiter::test_window_expiration - NameError: name 'RateLimit' is not defined
+FAILED tests/test_rate_limiting.py::TestRobustRateLimiter::test_redis_window_expiration - NameError: name 'RateLimit' is not defined
+FAILED tests/test_rate_limiting.py::TestRobustRateLimiter::test_identifier_generation - AttributeError: 'RobustRateLimiter' object has no attribute '_get_identifier'
+FAILED tests/test_rate_limiting.py::TestRobustRateLimiter::test_rate_limit_configurations[1-1-True] - NameError: name 'RateLimit' is not defined
+FAILED tests/test_rate_limiting.py::TestRobustRateLimiter::test_rate_limit_configurations[1-1-False] - NameError: name 'RateLimit' is not defined
+FAILED tests/test_rate_limiting.py::TestRobustRateLimiter::test_rate_limit_configurations[5-1-True] - NameError: name 'RateLimit' is not defined
+FAILED tests/test_rate_limiting.py::TestRobustRateLimiter::test_rate_limit_configurations[0-1-False] - NameError: name 'RateLimit' is not defined
+FAILED tests/test_rate_limiting.py::TestRobustRateLimiter::test_redis_failure_fallback - NameError: name 'RateLimit' is not defined
+ERROR tests/test_api.py::test_transform_endpoint - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/test_auth.py::test_noble_user_auth - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/test_blockchain_service.py::test_batch_transform - eth_tester.exceptions.BackendDistributionNotFound: The `py-evm` package is not available or not up to...
+ERROR tests/test_blockchain_service.py::test_noble_rank_update - eth_tester.exceptions.BackendDistributionNotFound: The `py-evm` package is not available or not up to...
+ERROR tests/test_blockchain_service.py::test_gas_optimization - eth_tester.exceptions.BackendDistributionNotFound: The `py-evm` package is not available or not up to...
+ERROR tests/test_bonus_system.py::test_bonus_calculation - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/test_bonus_system.py::test_bonus_distribution - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/test_bonus_system.py::test_rank_based_bonus - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/test_bonus_system.py::test_multi_level_bonus_distribution - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/test_complete_system.py::test_system_health - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/test_complete_system.py::test_user_balance - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/test_complete_system.py::test_transformation_flow - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/test_noble_system.py::test_noble_rank_assignment - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/test_noble_system.py::test_noble_bonus_calculation - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/test_noble_system.py::test_noble_rank_requirements - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/test_system_flow.py::TestSystemFlow::test_complete_flow - TypeError: TransformationService.__init__() got an unexpected keyword argument 'blockchain_service'
+ERROR tests/test_system_flow.py::TestSystemFlow::test_failed_transformation - TypeError: TransformationService.__init__() got an unexpected keyword argument 'blockchain_service'
+ERROR tests/test_transformation_service.py::test_transform_money_to_gold - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/test_transformation_service.py::test_insufficient_funds - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/test_transformation_service.py::test_noble_rank_update - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/test_transformation_service.py::test_transformation_validation - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/test_transformation_service.py::test_successful_transformation - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/test_transformation_service.py::test_transformation_limits - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/test_transformation_service.py::test_validate_transfer - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/test_transformation_service.py::test_tuesday_gold_purchase - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/integration/test_batch_blockchain.py::test_batch_blockchain_integration - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+ERROR tests/integration/test_batch_blockchain.py::test_batch_validation - AttributeError: type object 'NobleRelation' has no attribute 'verification_status'
+=============================== 22 failed, 7 warnings, 27 errors in 7.12s ================================
+~/gold-investment-backend$
