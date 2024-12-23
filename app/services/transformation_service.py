@@ -7,10 +7,14 @@ from app.services.blockchain_service import BlockchainService
 from app.services.validators.transaction_validator import TransactionValidator
 
 class TransformationService:
-    async def __init__(self):
+    def __init__(self):
         self.validator = TransactionValidator()
-        self.blockchain_service = await BlockchainService()
+        self.blockchain_service = BlockchainService()
         self.structure_fee = Decimal('0.05')
+        
+    async def initialize(self):
+        """Async initialization"""
+        self.blockchain_service = await self.blockchain_service.initialize()
 
     async def transform_to_gold(self, user_id: int, fixing_price: Decimal) -> Dict[str, Any]:
         async with db.session.begin_nested():
