@@ -1,0 +1,43 @@
+~/gold-investment-backend$ python -m pytest test_validation.py -v
+========================================== test session starts ===========================================
+platform linux -- Python 3.11.10, pytest-7.4.3, pluggy-1.5.0 -- /home/runner/gold-investment-backend/.pythonlibs/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/gold-investment-backend
+configfile: pyproject.toml
+plugins: mock-3.14.0, web3-6.11.4, asyncio-0.21.1
+asyncio: mode=Mode.STRICT
+collected 0 items / 1 error                                                                              
+
+================================================= ERRORS =================================================
+__________________________________ ERROR collecting test_validation.py ___________________________________
+ImportError while importing test module '/home/runner/gold-investment-backend/test_validation.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+.pythonlibs/lib/python3.11/site-packages/_pytest/python.py:617: in _importtestmodule
+    mod = import_path(self.path, mode=importmode, root=self.config.rootpath)
+.pythonlibs/lib/python3.11/site-packages/_pytest/pathlib.py:567: in import_path
+    importlib.import_module(module_name)
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+<frozen importlib._bootstrap>:1204: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1176: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1147: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:690: in _load_unlocked
+    ???
+.pythonlibs/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:186: in exec_module
+    exec(co, module.__dict__)
+test_validation.py:3: in <module>
+    from app.utils.validation_report import ValidationReport
+app/utils/validation_report.py:3: in <module>
+    from app.utils.structure_validator import StructureValidator
+app/utils/structure_validator.py:4: in <module>
+    from app.utils.errors import ValidationError
+E   ImportError: cannot import name 'ValidationError' from 'app.utils.errors' (/home/runner/gold-investment-backend/app/utils/errors.py)
+======================================== short test summary info =========================================
+ERROR test_validation.py
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+============================================ 1 error in 0.61s ============================================
+~/gold-investment-backend$ 
