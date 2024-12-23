@@ -4,7 +4,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_admin.base import AdminIndexView
 from flask import redirect, url_for, flash
 from flask_login import current_user
-from app.models.models import db, User, Transaction, MoneyAccount, GoldAccount, NobleRelation
+from app.models.models import db, User, Transaction, MoneyAccount, GoldAccount, NobleRelation, GoldBar
 from app.models.noble_system import NobleRank
 from app.services.noble_rank_service import NobleRankService
 import logging
@@ -66,7 +66,7 @@ class AccountingView(SecureBaseView):
 
 
 class GoldBarView(SecureModelView):
-    column_list = ['serial_number', 'weight_grams', 'location', 'status', 'certification']
+    column_list = ['serial_number', 'weight_grams', 'location', 'status']
     column_searchable_list = ['serial_number', 'status']
     column_filters = ['status', 'location']
 
