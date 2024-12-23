@@ -1,4 +1,3 @@
-
 # Project Glossary
 
 ## Core Models
