@@ -1,4 +1,3 @@
-
 from typing import Dict, Any
 from web3 import Web3
 import os
@@ -153,6 +152,7 @@ class StructureValidator:
             'security': self.validate_security_config(),
             'business_rules': self.validate_business_rules(),
             'noble_system': self.validate_noble_system(),
+            'bonus_system': self.validate_bonus_system(),
             'status_codes': all(self.validate_status_codes(status) 
                               for status in ['verified', 'to_be_verified', 'rejected'])
         }
@@ -184,6 +184,31 @@ class StructureValidator:
         results = {}
         for check_type, requirements in noble_checks.items():
             results[check_type] = all(req in self.glossary.lower() for req in requirements)
+        return results
+        
+    def validate_bonus_system(self) -> Dict[str, bool]:
+        """Validates bonus distribution system and rates"""
+        bonus_checks = {
+            'rates': ['client_share', 'network_share', 'operational_share'],
+            'distribution': ['direct_bonus', 'network_bonus', 'leadership_bonus'],
+            'calculations': ['volume_based', 'rank_based', 'time_based'],
+            'conditions': ['minimum_volume', 'active_status', 'kyc_verified']
+        }
+        
+        results = {}
+        for check_type, requirements in bonus_checks.items():
+            results[check_type] = all(req in self.glossary.lower() for req in requirements)
+            
+        # Validate bonus rates from config
+        try:
+            for level in range(1, self.config['allowed_modifications']['bonus_system']['levels'] + 1):
+                rate_key = f'level{level}'
+                if rate_key not in self.config['allowed_modifications']['bonus_system']['rates']:
+                    results['rates'] = False
+                    break
+        except KeyError:
+            results['rates'] = False
+            
         return results
         
     def log_modification(self, file_path: str, modification_type: str):
