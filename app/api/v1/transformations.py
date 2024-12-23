@@ -9,7 +9,7 @@ transformation_service = TransformationService()
 
 @bp.route('/transform', methods=['POST'])
 @auth_required
-@rate_limit(requests=5, window=60)
+@rate_limit(max_requests=5, window_size=60)
 async def transform_gold():
     try:
         data = request.get_json()
@@ -27,7 +27,7 @@ async def transform_gold():
 
 @bp.route('/batch', methods=['POST'])
 @auth_required
-@rate_limit(requests=2, window=300)
+@rate_limit(max_requests=2, window_size=300)
 async def batch_transform():
     try:
         data = request.get_json()
