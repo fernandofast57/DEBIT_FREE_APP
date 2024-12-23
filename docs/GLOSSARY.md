@@ -51,3 +51,14 @@
 - `available`: Gold bar status
 - `reserved`: Gold bar allocation status
 - `distributed`: Gold bar distribution status
+
+## Blueprint Names
+- `auth_bp`: Authentication routes blueprint
+- `gold_bp`: Gold management routes blueprint
+- `affiliate_bp`: Affiliate system routes blueprint
+- `admin_bp`: Admin panel routes blueprint
+- `noble_bp`: Noble system routes blueprint
+- `transformations_bp`: Gold transformations routes blueprint
+- `transfers_bp`: Money transfers routes blueprint
+- `bonuses_bp`: Bonus distribution routes blueprint
+- `system_bp`: System management routes blueprint
