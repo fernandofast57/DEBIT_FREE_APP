@@ -1,0 +1,96 @@
+### 🚨 **Errore Identificato: `NameError: name 'GoldBar' is not defined`**
+
+L'errore indica che stai cercando di usare il modello **`GoldBar`** in `app/admin/__init__.py`, ma questo non è stato importato correttamente.
+
+---
+
+## 🛠️ **1. Importa Correttamente `GoldBar`**
+
+Apri il file **`app/admin/__init__.py`** e assicurati che `GoldBar` venga importato correttamente.
+
+### ✅ **Correzione in `app/admin/__init__.py`:**
+
+```python
+from app.models.models import GoldBar  # Import del modello GoldBar
+from app.models.models import User, MoneyAccount, GoldAccount
+```
+
+Se il modello **`GoldBar`** non si trova in `models.py`, assicurati che sia definito correttamente.
+
+---
+
+## 📄 **2. Struttura Corrotta? Controlla `models.py`**
+
+Apri il file **`app/models/models.py`** e verifica che il modello **`GoldBar`** sia definito correttamente:
+
+```python
+class GoldBar(db.Model):
+    __tablename__ = 'gold_bars'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    serial_number = db.Column(db.String(50), unique=True, nullable=False)
+    weight_grams = db.Column(db.Float, nullable=False)
+    status = db.Column(db.String(50), default='in_stock')  # in_stock, allocated, withdrawn
+    location = db.Column(db.String(100), nullable=True)  # Vault o deposito
+    
+    allocations = db.relationship('GoldAllocation', back_populates='gold_bar')
+    
+    def __repr__(self):
+        return f"<GoldBar {self.serial_number}, {self.weight_grams}g, {self.status}>"
+```
+
+Se `GoldBar` non è presente in `models.py`, copialo direttamente come mostrato sopra.
+
+---
+
+## ✅ **3. Verifica l'Import e le Dipendenze**
+
+- Assicurati che il percorso dell'import sia corretto:
+  ```python
+  from app.models.models import GoldBar
+  ```
+- Assicurati che Flask riconosca il modello eseguendo in Python:
+
+```python
+from app.models.models import GoldBar
+print(GoldBar)
+```
+
+Se non ci sono errori, il modello è importato correttamente.
+
+---
+
+## 🧼 **4. Pulisci la Cache Python**
+
+Assicurati di eliminare i file cache che potrebbero causare conflitti:
+
+```bash
+find . -name '*.pyc' -delete
+find . -name '__pycache__' -type d -exec rm -r {} +
+```
+
+---
+
+## 🚀 **5. Riavvia l'Applicazione**
+
+Riavvia l'applicazione per applicare le modifiche:
+
+```bash
+python main.py
+```
+
+---
+
+## ✅ **6. Riepilogo delle Correzioni**
+
+1. **Import Corretto in `app/admin/__init__.py`:**
+   ```python
+   from app.models.models import GoldBar
+   ```
+2. **Verifica la definizione di `GoldBar` in `models.py`.**
+3. **Pulizia della cache Python.**
+4. **Riavvio dell'applicazione.**
+
+---
+
+Se l'errore persiste, condividi nuovamente il messaggio di errore aggiornato. 🚀✨
