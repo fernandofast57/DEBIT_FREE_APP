@@ -6,10 +6,14 @@ from app.utils.logging_config import APP_NAME
 class SecurityManager:
     def __init__(self, app_name: str = APP_NAME, redis_url: str = None):
         self.app_name = APP_NAME
-        default_redis_url = "redis://localhost:6379/0"
-        self.rate_limiter = RobustRateLimiter(redis_url or default_redis_url)
-        self.logger = logging.getLogger(APP_NAME)
+        try:
+            self.rate_limiter = RobustRateLimiter(redis_url)
+        except Exception as e:
+            self.logger = logging.getLogger(APP_NAME)
+            self.logger.warning(f"Failed to initialize Redis rate limiter: {e}. Using local storage.")
+            self.rate_limiter = RobustRateLimiter(None)
         
+        self.logger = logging.getLogger(APP_NAME)
         self.setup_logging()
     
     def setup_logging(self):
