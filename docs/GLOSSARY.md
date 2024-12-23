@@ -7,49 +7,41 @@
 - `User`: Main user entity with authentication details
 - `MoneyAccount`: User's fiat currency account
 - `GoldAccount`: User's gold balance account
-- `KYC`: Know Your Customer verification status
+- `NobleRelation`: User's noble rank and verification status
 
 ### Noble System
-- `NobleRank`: Defines rank levels in the noble system
-- `NobleRelation`: Manages relationships between users in noble system
+- `NobleRank`: Defines rank levels and bonus rates in the noble system
+- `NobleRelation`: Manages relationships between users and noble ranks
 - `NobleSystem`: Service class for noble system operations
 
 ### Gold Management
 - `GoldBar`: Physical gold bar entity
 - `GoldAllocation`: Links gold bars to user accounts
 - `GoldReward`: Tracks gold rewards/bonuses
-- `PAO`: Piano Accumulo Oro (Gold Accumulation Plan)
-- `PPO`: Piano Protezione Oro (Gold Protection Plan)
-
-### Transactions
 - `Transaction`: Records all financial operations
-- `SEPA`: Single Euro Payments Area transfer method
 
 ## Due Diligence Terms
-- `verification_status`: KYC verification state ('pending', 'verified', 'rejected')
-- `ibanHash`: Hashed IBAN for secure storage
-- `support_transfer`: Initial transfer to verify account ownership
+- `verification_status`: KYC verification state ('to_be_verified', 'verified', 'rejected')
+- `document_type`: Type of verification document
+- `document_number`: Verification document identifier
+- `verification_date`: Date of verification completion
 - `fixing_price`: Daily gold price fixing
-- `CLIENT_SHARE`: Percentage of gold allocated to client (93.3%)
-- `NETWORK_SHARE`: Percentage allocated to network (6.7%)
 
 ## Common Terms
 - `balance`: Account balance (in EUR for MoneyAccount, grams for GoldAccount)
-- `noble_rank`: User's current rank in noble system
-- `verification_status`: KYC verification state
 - `bonus_rate`: Rate for calculating noble system bonuses
+- `level`: Noble rank hierarchy level
+- `title`: Noble rank title
 
 ## Service Names
-- `NobleRankService`: Manages noble ranking operations
-- `BlockchainService`: Handles blockchain interactions
-- `AccountingService`: Manages financial operations
-- `TransformationService`: Handles gold/money conversions
+- `NobleSystem`: Manages noble system operations
 - `SecurityManager`: Manages security operations
 - `RateLimiter`: Controls API request rates
 
 ## Status Codes
-- `to_be_verified`: Initial account status
-- `verified`: Confirmed account status
+- `to_be_verified`: Initial verification status
+- `verified`: Confirmed verification status
+- `rejected`: Failed verification status
 - `available`: Gold bar status
 - `reserved`: Gold bar allocation status
 - `distributed`: Gold bar distribution status
