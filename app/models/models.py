@@ -59,6 +59,7 @@ class NobleRank(db.Model):
 
 class NobleRelation(db.Model):
     __tablename__ = 'noble_relations'
+    verification_status = db.Column(db.String(20), default='pending')
     
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
