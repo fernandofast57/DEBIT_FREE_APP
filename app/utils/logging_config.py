@@ -3,6 +3,8 @@ import logging
 from datetime import datetime
 from typing import Dict, Any
 
+APP_NAME = 'gold-investment'
+
 class GlossaryComplianceLogger:
     def __init__(self, app_name: str = 'gold-investment'):
         self.logger = logging.getLogger(f'{app_name}_compliance')
