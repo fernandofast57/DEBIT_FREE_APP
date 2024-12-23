@@ -151,9 +151,24 @@ class StructureValidator:
             'endpoints': self.validate_api_endpoints(),
             'transactions': self.validate_blockchain_transactions(),
             'security': self.validate_security_config(),
+            'business_rules': self.validate_business_rules(),
             'status_codes': all(self.validate_status_codes(status) 
                               for status in ['verified', 'to_be_verified', 'rejected'])
         }
+        return results
+
+    def validate_business_rules(self) -> Dict[str, bool]:
+        """Validates business rules and domain constraints against glossary"""
+        business_rules = {
+            'noble_ranks': ['bronze', 'silver', 'gold', 'platinum'],
+            'gold_operations': ['buy', 'sell', 'transform', 'transfer'],
+            'commission_types': ['fixed', 'percentage', 'tiered'],
+            'transaction_limits': ['daily_limit', 'monthly_limit', 'minimum_amount']
+        }
+        
+        results = {}
+        for rule_type, terms in business_rules.items():
+            results[rule_type] = all(term in self.glossary.lower() for term in terms)
         return results
         
     def log_modification(self, file_path: str, modification_type: str):
