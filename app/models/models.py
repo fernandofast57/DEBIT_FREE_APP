@@ -1,9 +1,9 @@
-
 from datetime import datetime
 from decimal import Decimal
 from sqlalchemy import Enum
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 db = SQLAlchemy()
 
@@ -190,3 +190,14 @@ class GoldAllocation(db.Model):
 
     def __repr__(self):
         return f"<GoldAllocation {self.grams_allocated}g>"
+
+class GoldReward(db.Model):
+    __tablename__ = 'gold_rewards'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    amount = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
+    reward_type = db.Column(db.String(50), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    user = db.relationship('User', backref=db.backref('rewards', lazy=True))
