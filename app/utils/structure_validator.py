@@ -127,6 +127,20 @@ class StructureValidator:
             }
         return results
 
+    def validate_security_config(self) -> Dict[str, bool]:
+        """Validates security configurations against glossary"""
+        security_checks = {
+            'rate_limiting': ['requests_per_minute', 'cooldown_period'],
+            'authentication': ['jwt_expiration', 'refresh_token'],
+            'noble_verification': ['kyc_status', 'verification_level'],
+            'transaction_security': ['signature', 'nonce', 'timestamp']
+        }
+        
+        results = {}
+        for component, requirements in security_checks.items():
+            results[component] = all(req in self.glossary.lower() for req in requirements)
+        return results
+
     def validate_structure(self) -> Dict[str, bool]:
         """Validates entire project structure"""
         results = {
@@ -136,6 +150,7 @@ class StructureValidator:
             'blockchain': self.validate_blockchain_config(),
             'endpoints': self.validate_api_endpoints(),
             'transactions': self.validate_blockchain_transactions(),
+            'security': self.validate_security_config(),
             'status_codes': all(self.validate_status_codes(status) 
                               for status in ['verified', 'to_be_verified', 'rejected'])
         }
