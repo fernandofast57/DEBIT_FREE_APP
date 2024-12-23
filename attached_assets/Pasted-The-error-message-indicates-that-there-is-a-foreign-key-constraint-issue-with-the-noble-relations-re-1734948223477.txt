@@ -1,0 +1,31 @@
+The error message indicates that there is a foreign key constraint issue with the noble_relations.referrer_id column that cannot find the users table. This typically happens when the referenced table (users in this case) has not been created yet, or there is an issue with the foreign key configuration between the tables.
+
+To resolve this issue, you should ensure that the users table is created before the noble_relations table. Here are some steps to troubleshoot and fix the problem:
+
+Check Model Hierarchy: Ensure that the User model is defined correctly in your models, and that it is being imported into the noble_relations model where the foreign key is set up.
+
+Here's a simple example of what you might have in your models.py file:
+
+from app import db
+class User(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    # Other fields...
+class NobleRelation(db.Model):
+    __tablename__ = 'noble_relations'
+    id = db.Column(db.Integer, primary_key=True)
+    referrer_id = db.Column(db.Integer, db.ForeignKey('users.id'))  # Ensure 'users.id' is correct
+    # Other fields...
+Migration Dependency: Ensure that your database migration scripts are generated in the correct order, where the users table is defined before the noble_relations table.
+
+If using Flask-Migrate, you may want to run:
+
+flask db migrate -m "Creating tables in the correct order."
+Then check if the migration file creates the users table before noble_relations table.
+
+Run the Migration: After confirming the hierarchy and order, run the migration to update your database schema:
+
+flask db upgrade
+Check the Database: Finally, ensure your database is updated and contains both tables. You can use a database management tool or a simple script to check the existing tables.
+
+Please make sure to implement these adjustments in the appropriate context of your codebase, particularly in models.py and migration files. If there are still issues after these adjustments, you may need to look into the migration files generated to ensure they are being created in the right order.
