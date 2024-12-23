@@ -96,6 +96,19 @@ class StructureValidator:
             results[blueprint_name] = blueprint_name in self.glossary.lower()
         return results
 
+    def validate_blockchain_transactions(self) -> Dict[str, bool]:
+        """Validates blockchain transaction types against glossary"""
+        transaction_types = {
+            'gold_transfer': ['transfer', 'amount', 'recipient'],
+            'noble_verification': ['noble_id', 'status', 'timestamp'],
+            'gold_transformation': ['euro_amount', 'gold_grams', 'fixing_price']
+        }
+        
+        results = {}
+        for tx_type, fields in transaction_types.items():
+            results[tx_type] = all(field in self.glossary.lower() for field in fields)
+        return results
+
     def validate_structure(self) -> Dict[str, bool]:
         """Validates entire project structure"""
         results = {
@@ -103,6 +116,7 @@ class StructureValidator:
             'services': self.validate_service_names(),
             'blockchain': self.validate_blockchain_config(),
             'endpoints': self.validate_api_endpoints(),
+            'transactions': self.validate_blockchain_transactions(),
             'status_codes': all(self.validate_status_codes(status) 
                               for status in ['verified', 'to_be_verified', 'rejected'])
         }
