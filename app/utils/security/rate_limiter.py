@@ -10,8 +10,9 @@ class RobustRateLimiter:
         """Redis-backed rate limiting component"""
         self.redis_url = redis_url
         self.local_storage: Dict[str, Dict[str, Tuple[int, float]]] = defaultdict(dict)
-        self.window_size = 60  # default window size from glossary
-        self.max_requests = 100  # default max requests from glossary
+        from app.config.constants import DEFAULT_WINDOW_SIZE, DEFAULT_MAX_REQUESTS
+        self.window_size = DEFAULT_WINDOW_SIZE
+        self.max_requests = DEFAULT_MAX_REQUESTS
         
     def is_rate_limited(self, key: str, max_requests: int = None, window_size: int = None) -> bool:
         """Check if request should be rate limited"""
