@@ -1,0 +1,35 @@
+[2024-12-23 10:38:23,430] INFO in __init__: Gold Investment startup
+2024-12-23 10:38:23,430 - INFO - Gold Investment startup
+Traceback (most recent call last):
+  File "/home/runner/gold-investment-backend/main.py", line 5, in <module>
+    app = create_app()
+          ^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/app/__init__.py", line 67, in create_app
+    from app.routes import auth_bp, gold_bp, affiliate_bp
+  File "/home/runner/gold-investment-backend/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import bp as auth_bp
+  File "/home/runner/gold-investment-backend/app/routes/auth.py", line 93, in <module>
+    auth_manager = AuthManager(Config().SECRET_KEY)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/app/utils/auth.py", line 11, in __init__
+    self.security = SecurityManager(app_name=APP_NAME)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/app/utils/security/security_manager.py", line 9, in __init__
+    self.rate_limiter = RobustRateLimiter(redis_url)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/app/utils/security/rate_limiter.py", line 10, in __init__
+    self.redis = redis.from_url(redis_url)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/redis/utils.py", line 46, in from_url
+    return Redis.from_url(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/redis/client.py", line 139, in from_url
+    connection_pool = ConnectionPool.from_url(url, **kwargs)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/redis/connection.py", line 971, in from_url
+    url_options = parse_url(url)
+                  ^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/redis/connection.py", line 861, in parse_url
+    url.startswith("redis://")
+    ^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'startswith'
