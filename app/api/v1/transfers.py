@@ -95,7 +95,7 @@ def add_to_batch():
     })
 
 @bp.route('/fixing/purchase', methods=['POST'])
-def process_fixing_purchase():
+async def process_fixing_purchase():
     """Processa l'acquisto dell'oro al fixing"""
     data = request.get_json()
     
@@ -109,8 +109,7 @@ def process_fixing_purchase():
         }), 400
 
     result = await transformation_service.process_fixing_purchase(technician_id, fixing_price)
-    return jsonify(result)
-
+    
     if result['status'] == 'error':
         return jsonify(result), 400
 
