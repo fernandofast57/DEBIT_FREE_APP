@@ -20,7 +20,7 @@ def client(app):
 def auth_manager():
     return AuthManager('test_secret_key')
 
-def test_noble_user_auth(app, auth_manager):
+def test_noble_relation_verification(app, auth_manager):
     with app.app_context():
         db.create_all()
         

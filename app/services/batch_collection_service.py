@@ -11,6 +11,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 class BatchCollectionService:
+    """Service for processing batch operations as defined in glossary"""
+    VALID_TRANSACTION_TYPES = ['gold_transfer', 'noble_verification', 'gold_transformation']
     def __init__(self):
         self.blockchain_service = BlockchainService()
         self.validator = BlockchainValidator(os.getenv('RPC_ENDPOINTS').split(',')[0])

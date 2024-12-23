@@ -1,4 +1,3 @@
-
 import unittest
 from app import create_app, db
 from app.services.batch_collection_service import BatchCollectionService
@@ -35,8 +34,8 @@ class TestBatchCollectionService(unittest.IsolatedAsyncioTestCase):
             assert len(transactions) == 2
             assert all(t.status == 'completed' for t in transactions)
 
-    async def test_invalid_batch_transfer(self):
-        """Test handling invalid batch data"""
+    async def test_invalid_gold_transfer(self):
+        """Test invalid gold transfer according to glossary rules"""
         async with self.app.app_context():
             invalid_batch = [
                 {'user_id': 1, 'amount': 'invalid', 'reference': 'TEST-003'}
@@ -46,15 +45,15 @@ class TestBatchCollectionService(unittest.IsolatedAsyncioTestCase):
             assert result['status'] == 'error'
             assert 'message' in result
 
-    async def test_empty_batch(self):
-        """Test handling empty batch"""
+    async def test_empty_transaction_batch(self):
+        """Test empty transaction batch handling"""
         async with self.app.app_context():
             result = await self.service.process_batch_transfers([])
             assert result['status'] == 'error'
             assert 'message' in result
 
-    async def test_large_batch(self):
-        """Test processing large batch"""
+    async def test_large_transaction_batch(self):
+        """Test large transaction batch processing"""
         async with self.app.app_context():
             large_batch = [
                 {'user_id': i, 'amount': '100.00', 'reference': f'TEST-{i}'}
@@ -64,8 +63,8 @@ class TestBatchCollectionService(unittest.IsolatedAsyncioTestCase):
             assert result['status'] == 'success'
             assert 'tx_hash' in result
 
-    async def test_duplicate_references(self):
-        """Test handling duplicate references"""
+    async def test_duplicate_transaction_references(self):
+        """Test duplicate transaction references as per glossary definition"""
         async with self.app.app_context():
             batch = [
                 {'user_id': 1, 'amount': '100.00', 'reference': 'TEST-DUP'},
