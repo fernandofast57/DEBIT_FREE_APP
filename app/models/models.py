@@ -57,17 +57,7 @@ class User(db.Model):
     def __repr__(self):
         return f"<User {self.username}>"
 
-class NobleRelation(db.Model):
-    __tablename__ = 'noble_relations'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    noble_id = db.Column(db.Integer, db.ForeignKey('noble_ranks.id'), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    verification_status = db.Column(db.String(50), default='pending')
-    document_type = db.Column(db.String(50))
-    document_number = db.Column(db.String(50))
-    verification_date = db.Column(db.DateTime)
+# NobleRelation model moved to noble_system.py
 
 class GoldReward(db.Model):
     __tablename__ = 'gold_rewards'
