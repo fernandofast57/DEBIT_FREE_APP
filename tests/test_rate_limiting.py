@@ -142,7 +142,7 @@ class TestRobustRateLimiter:
     def test_redis_failure_fallback(self, app, mock_request):
         """Test del fallback in caso di errore Redis"""
         with patch('flask.request', mock_request):
-            limiter = RateLimiter(redis_url='redis://nonexistent:6379/0')
+            limiter = RobustRateLimiter(redis_url='redis://nonexistent:6379/0')
             limit = RateLimit(requests=1, window=1)
             allowed, _ = limiter.is_allowed("test_fallback", limit)
             assert allowed is True
