@@ -124,17 +124,17 @@ class TestRobustRateLimiter:
             identifier = rate_limiter._get_identifier(by_ip=False, by_user=True)
             assert identifier == '1'
 
-    @pytest.mark.parametrize('requests,window,should_pass', [
+    @pytest.mark.parametrize('max_requests,window_size,should_pass', [
         (1, 1, True),
         (1, 1, False),
         (5, 1, True),
         (0, 1, False),
     ])
-    def test_rate_limit_configurations(self, rate_limiter, mock_request, requests, window, should_pass):
+    def test_rate_limit_configurations(self, rate_limiter, mock_request, max_requests, window_size, should_pass):
         """Test di varie configurazioni di rate limiting"""
         with patch('flask.request', mock_request):
-            limit = RateLimit(requests=requests, window=window)
-            key = f"test_config_{requests}_{window}"
+            limit = RateLimit(max_requests=max_requests, window_size=window_size)
+            key = f"test_config_{max_requests}_{window_size}"
             allowed, _ = rate_limiter._check_local(key, limit)
             assert allowed is should_pass
 

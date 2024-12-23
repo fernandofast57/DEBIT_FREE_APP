@@ -38,7 +38,7 @@ def rate_limit(max_requests: int = 100, window_size: int = 60):
         def decorated_function(*args, **kwargs):
             limiter = RobustRateLimiter()
             key = f"{request.remote_addr}:{f.__name__}"
-            if limiter.is_rate_limited(key, max_requests, window):
+            if limiter.is_rate_limited(key, max_requests, window_size):
                 return {'error': 'Rate limit exceeded'}, 429
             return f(*args, **kwargs)
         return decorated_function
