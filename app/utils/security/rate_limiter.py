@@ -1,7 +1,9 @@
+
 from collections import defaultdict
 import time
 from typing import Dict, Tuple
 import redis
+import functools
 from app.utils.logging_config import logger
 
 class RobustRateLimiter:
@@ -29,4 +31,26 @@ class RobustRateLimiter:
             return request_count > self.max_requests
         except redis.RedisError as e:
             logger.error(f"Redis error in rate limiter: {e}")
-            return False  # Fail open in case of Redis errors
+            return False
+
+def rate_limit(max_requests: int = 100, window: int = 60):
+    def decorator(f):
+        requests = defaultdict(list)
+        
+        @functools.wraps(f)
+        def wrapped(*args, **kwargs):
+            now = time.time()
+            key = f.__name__
+            
+            # Clean old requests
+            requests[key] = [req_time for req_time in requests[key] 
+                           if now - req_time < window]
+            
+            if len(requests[key]) >= max_requests:
+                return {"error": "Rate limit exceeded"}, 429
+                
+            requests[key].append(now)
+            return f(*args, **kwargs)
+            
+        return wrapped
+    return decorator
