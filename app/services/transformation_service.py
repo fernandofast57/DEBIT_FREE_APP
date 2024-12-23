@@ -76,8 +76,40 @@ class TransformationService:
 
     async def validate_transformation(self, euro_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
         """Validate transformation according to glossary definitions"""
-        if euro_amount <= 0:
-            return {'status': 'rejected', 'message': 'Invalid euro amount'}
-        if fixing_price <= 0:
-            return {'status': 'rejected', 'message': 'Invalid fixing price'}
-        return {'status': 'verified', 'message': 'Validation successful'}
+        try:
+            # Validate minimum amount
+            min_amount = Decimal('100.00')  # Minimum amount from glossary
+            if euro_amount < min_amount:
+                return {
+                    'status': 'rejected', 
+                    'message': f'Amount must be at least {min_amount} EUR'
+                }
+
+            # Validate fixing price
+            if fixing_price <= 0:
+                return {
+                    'status': 'rejected',
+                    'message': 'Invalid fixing price'
+                }
+                
+            # Validate transformation timing
+            current_hour = datetime.now().hour
+            if not (9 <= current_hour <= 17):  # Market hours 9:00-17:00
+                return {
+                    'status': 'rejected',
+                    'message': 'Transformations only allowed during market hours (9:00-17:00)'
+                }
+
+            return {
+                'status': 'verified',
+                'message': 'Validation successful',
+                'details': {
+                    'euro_amount': float(euro_amount),
+                    'fixing_price': float(fixing_price),
+                    'gold_grams': float(euro_amount / fixing_price)
+                }
+            }
+            
+        except Exception as e:
+            logger.error(f"Transformation validation error: {str(e)}")
+            return {'status': 'rejected', 'message': str(e)}
