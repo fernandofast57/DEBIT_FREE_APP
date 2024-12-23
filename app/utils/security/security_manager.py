@@ -3,10 +3,10 @@ from .rate_limiter import RobustRateLimiter
 import logging
 
 class SecurityManager:
-    def __init__(self, app_name: str, redis_url: str = None):
+    def __init__(self, app_name: str = APP_NAME, redis_url: str = None):
         self.app_name = app_name
         self.rate_limiter = RobustRateLimiter(redis_url)
-        self.logger = logging.getLogger(app_name)
+        self.logger = logging.getLogger(APP_NAME)
         
         self.setup_logging()
     

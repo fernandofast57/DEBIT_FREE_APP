@@ -1,9 +1,9 @@
-
 from datetime import datetime, timedelta
 from typing import Optional, Dict
 import jwt
 from app.utils.security.security_manager import SecurityManager
 from app.models.models import db
+from app.utils.logging_config import APP_NAME
 
 class AuthManager:
     def __init__(self, secret_key: str):

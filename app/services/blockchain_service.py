@@ -1,13 +1,12 @@
-
 from web3 import Web3
 from web3.middleware import geth_poa_middleware
 import os
 import json
 import logging
 from app.utils.retry import retry_with_backoff
-from app.utils.logging_config import get_logger
+from app.utils.logging_config import get_logger, APP_NAME
 
-logger = get_logger(__name__)
+logger = logging.getLogger(APP_NAME)
 
 class BlockchainService:
     def __init__(self):
