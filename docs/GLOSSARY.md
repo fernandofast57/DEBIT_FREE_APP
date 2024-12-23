@@ -36,6 +36,7 @@
 ## Service Names
 - `NobleSystem`: Manages noble system operations
 - `SecurityManager`: Manages security operations
+- `app_name`: Application identifier used for logging and security tracking (default: 'gold-investment')
 - `RobustRateLimiter`: Provides Redis-backed rate limiting for API requests
 - `rate_limit`: Decorator for in-memory rate limiting of individual endpoints
 
