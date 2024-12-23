@@ -46,6 +46,10 @@ class WeeklyProcessingService:
     
     def _distribute_gold(self, deposits, total_gold_grams, fixing_price):
         try:
+            available_bars = GoldBar.query.filter_by(status='in_stock').all()
+            if not available_bars:
+                raise ValueError("No gold bars available for allocation")
+                
             for deposit in deposits:
                 # Calcola oro cliente
                 client_gold = (deposit.amount_eur * (1 - self.STRUCTURE_FEE)) / fixing_price
@@ -54,7 +58,25 @@ class WeeklyProcessingService:
                 gold_account = GoldAccount.query.filter_by(user_id=deposit.user_id).first()
                 if not gold_account:
                     raise ValueError(f"Gold account not found for user {deposit.user_id}")
-                    
+                
+                remaining_gold = client_gold
+                for bar in available_bars:
+                    allocated_grams = min(remaining_gold, bar.weight_grams)
+                    if allocated_grams > 0:
+                        allocation = GoldAllocation(
+                            grams_allocated=allocated_grams,
+                            gold_bar=bar,
+                            gold_account=gold_account
+                        )
+                        db.session.add(allocation)
+                        remaining_gold -= allocated_grams
+                        
+                        if bar.weight_grams <= allocated_grams:
+                            bar.status = 'allocated'
+                            
+                        if remaining_gold <= 0:
+                            break
+                
                 gold_account.balance += client_gold
                 
                 # Distribuisci bonus affiliazione

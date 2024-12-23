@@ -28,8 +28,10 @@ class GoldAccount(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = db.relationship('User', back_populates='gold_account')
     
+    allocations = db.relationship('GoldAllocation', back_populates='gold_account')
+    
     def __repr__(self):
-        return f"<GoldAccount {self.balance}>"
+        return f"<GoldAccount {self.user.username}, {self.balance:.2f}g>"
 
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -77,3 +79,31 @@ class GoldReward(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     user = db.relationship('User', backref='gold_rewards')
+class GoldBar(db.Model):
+    __tablename__ = 'gold_bars'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    serial_number = db.Column(db.String(50), unique=True, nullable=False)
+    weight_grams = db.Column(db.Float, nullable=False)
+    status = db.Column(db.String(50), default='in_stock')
+    location = db.Column(db.String(100), nullable=True)
+    
+    allocations = db.relationship('GoldAllocation', back_populates='gold_bar')
+
+    def __repr__(self):
+        return f"<GoldBar {self.serial_number}, {self.weight_grams}g, {self.status}>"
+
+class GoldAllocation(db.Model):
+    __tablename__ = 'gold_allocations'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    grams_allocated = db.Column(db.Float, nullable=False)
+    
+    gold_bar_id = db.Column(db.Integer, db.ForeignKey('gold_bars.id'))
+    gold_account_id = db.Column(db.Integer, db.ForeignKey('gold_accounts.id'))
+    
+    gold_bar = db.relationship('GoldBar', back_populates='allocations')
+    gold_account = db.relationship('GoldAccount', back_populates='allocations')
+    
+    def __repr__(self):
+        return f"<GoldAllocation {self.grams_allocated:.2f}g on Bar {self.gold_bar.serial_number}>"
