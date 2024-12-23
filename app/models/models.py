@@ -84,6 +84,21 @@ class Transaction(db.Model):
     
     user = db.relationship('User', backref='transactions')
 
+class GoldReward(db.Model):
+    __tablename__ = 'gold_rewards'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+    gold_amount = db.Column(db.Float, nullable=False)
+    reward_type = db.Column(db.String(50), nullable=False)
+    level = db.Column(db.Integer, nullable=True)
+    euro_amount = db.Column(db.Float, nullable=False)
+    fixing_price = db.Column(db.Float, nullable=False)
+    threshold_reached = db.Column(db.Float, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    user = db.relationship('User', backref='rewards')
+
 class GoldTransformation(db.Model):
     __tablename__ = 'gold_transformations'
     
