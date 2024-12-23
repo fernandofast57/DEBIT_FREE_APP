@@ -37,12 +37,19 @@
 - `NobleSystem`: Manages noble system operations
 - `SecurityManager`: Manages security operations and rate limiting
 - `APP_NAME`: Application identifier used for logging and security tracking (default: 'gold-investment')
-- `RobustRateLimiter`: Redis-backed rate limiting component
+- `RobustRateLimiter`: Redis-backed rate limiting component with retry mechanism
+- `ValidationReport`: System validation and health checking service
+- `StructureValidator`: Code structure and naming validation service
 - `accounting`: Service for financial record keeping
 - `transactions`: Service for handling all monetary operations
 - `transformation`: Service for handling gold-money transformations
 - `batch_collection`: Service for processing batch operations
 - `bonus_distribution`: Service for managing bonus payments
+
+## System Status
+- `operational`: System is fully functional
+- `degraded`: System is running with limited functionality
+- `error`: System encountered an error state
 
 ## Rate Limiting Configuration
 - `rate_limit`: Decorator for endpoint-specific rate limiting
