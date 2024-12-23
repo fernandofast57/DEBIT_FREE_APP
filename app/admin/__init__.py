@@ -1,25 +1,23 @@
+
 from flask_admin import Admin, BaseView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.base import AdminIndexView
 from flask import redirect, url_for, flash
 from flask_login import current_user
-from app.models.models import db, User, Transaction, MoneyAccount, GoldAccount, NobleRelation, GoldBar
-from app.models.noble_system import NobleRank
+from app.models.models import db, User, Transaction, MoneyAccount, GoldAccount, GoldBar
+from app.models.noble_system import NobleRelation, NobleRank
 from app.services.noble_rank_service import NobleRankService
 import logging
 from datetime import datetime
 from decimal import Decimal
 
-
 class SecureBaseView(BaseView):
     def is_accessible(self):
         return current_user.is_authenticated and current_user.is_admin
 
-
 class SecureModelView(ModelView):
     def is_accessible(self):
         return current_user.is_authenticated and current_user.is_admin
-
 
 class DashboardView(SecureBaseView):
     @expose('/')
@@ -32,7 +30,6 @@ class DashboardView(SecureBaseView):
                            total_gold=total_gold,
                            total_money=total_money,
                            total_users=total_users)
-
 
 class ClientView(SecureModelView):
     column_list = ['id', 'username', 'email', 'money_account.balance', 'gold_account.balance']
@@ -49,20 +46,17 @@ class ClientView(SecureModelView):
         'gold_account.balance': _format_balance
     }
 
-
 class NetworkView(SecureBaseView):
     @expose('/')
     def index(self):
         network_data = NobleRankService.get_complete_network()
         return self.render('admin/network.html', network=network_data)
 
-
 class AccountingView(SecureBaseView):
     @expose('/')
     def index(self):
         transactions = Transaction.query.order_by(Transaction.timestamp.desc()).limit(100)
         return self.render('admin/accounting.html', transactions=transactions)
-
 
 class GoldBarView(SecureModelView):
     column_list = ['serial_number', 'weight_grams', 'location', 'status']
@@ -76,13 +70,11 @@ class GoldBarView(SecureModelView):
         'weight_grams': _format_weight
     }
 
-
 class KYCView(SecureModelView):
     column_list = ['user.username', 'verification_status', 'document_type', 'document_number', 'verification_date']
     column_searchable_list = ['verification_status', 'document_number']
     column_filters = ['verification_status', 'document_type']
     can_delete = False
-
 
 admin = Admin(name='Gold Investment Admin', template_mode='bootstrap3')
 
