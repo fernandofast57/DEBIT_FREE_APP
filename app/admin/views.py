@@ -4,7 +4,7 @@ from flask_login import login_required
 from app.utils.auth import admin_required, manager_required
 from app.services.weekly_processing_service import WeeklyProcessingService
 
-admin_bp = Blueprint('admin', __name__)
+admin_bp = Blueprint('admin_views', __name__)
 
 @admin_bp.route('/dashboard')
 @login_required
