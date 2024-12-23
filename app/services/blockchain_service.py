@@ -90,7 +90,17 @@ class BlockchainService:
             tx_hash = self.w3.eth.send_raw_transaction(signed_txn.rawTransaction)
             receipt = self.w3.eth.wait_for_transaction_receipt(tx_hash)
             
-            return receipt
+            if receipt.status == 1:
+                logger.info(f"Noble rank update successful for address {address}")
+                return {
+                    'status': 'verified',
+                    'transaction_hash': receipt.transactionHash.hex(),
+                    'block_number': receipt.blockNumber
+                }
+            else:
+                logger.error(f"Noble rank update failed for address {address}")
+                return {'status': 'rejected', 'message': 'Transaction failed'}
+                
         except Exception as e:
             logger.error(f"Error in update_noble_rank: {str(e)}")
-            raise
+            return {'status': 'rejected', 'message': str(e)}
