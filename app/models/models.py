@@ -98,3 +98,19 @@ class NobleRank(db.Model):
 
     def __repr__(self):
         return f"<NobleRank {self.rank_name}>"
+
+class NobleRelation(db.Model):
+    __tablename__ = 'noble_relations'
+    __table_args__ = {'extend_existing': True}
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    referral_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    verification_status = db.Column(db.String(20), default='pending')
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    user = db.relationship('User', foreign_keys=[user_id], back_populates='noble_relations')
+    referral = db.relationship('User', foreign_keys=[referral_id])
+
+    def __repr__(self):
+        return f"<NobleRelation {self.user_id}>"
