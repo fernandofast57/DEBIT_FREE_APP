@@ -2,18 +2,19 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask import jsonify
 from flask_login import LoginManager
 from flask_cors import CORS
 from config import Config
-from app.utils.security import SecurityManager
 import logging
 from logging.handlers import RotatingFileHandler
 import os
 
+# Inizializzazione delle estensioni
 db = SQLAlchemy()
 migrate = Migrate()
 
+
+# ✅ Setup Logging
 def setup_logging(app):
     if not os.path.exists('logs'):
         os.mkdir('logs')
@@ -23,38 +24,39 @@ def setup_logging(app):
     ))
     file_handler.setLevel(logging.INFO)
     app.logger.addHandler(file_handler)
-    
+
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
     console_handler.setLevel(logging.DEBUG)
     app.logger.addHandler(console_handler)
-    
+
     app.logger.setLevel(logging.INFO)
     app.logger.info('Gold Investment startup')
 
+
+# ✅ Creazione dell'app Flask
 def create_app(config_class=Config):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_class())
-    
+
+    # Inizializzazione delle estensioni
+    db.init_app(app)
+    migrate.init_app(app, db)
+    CORS(app)
+
     from app.config.redis_config import RedisConfig
     app.redis = RedisConfig(app.config.get('REDIS_URL'))
-    
+
+    # Garantisce che la cartella `instance` esista
     try:
         os.makedirs(app.instance_path)
     except OSError:
         pass
-        
-    db.init_app(app)
-    migrate.init_app(app, db)
-    
-    from app.admin import admin
-    admin.init_app(app)
-    CORS(app)
 
     with app.app_context():
-        # Import models in correct dependency order
+        # Importazione dei modelli
         from app.models.models import (
-            User,  # Base tables first
+            User,
             MoneyAccount,
             GoldAccount,
             NobleRank,
@@ -64,17 +66,19 @@ def create_app(config_class=Config):
             GoldTransformation,
             GoldBar,
             GoldAllocation,
-            BonusTransaction  # Dependent tables last
+            BonusTransaction
         )
-        db.metadata.create_all(bind=db.engine)
-        
-    if not app.debug and not app.testing:
-        setup_logging(app)
 
+        # Creazione delle tabelle in ordine corretto
+        db.drop_all()
+        db.create_all()
+        db.session.commit()
+
+    # Gestione degli errori
     from app.utils.errors import register_error_handlers
     register_error_handlers(app)
 
-    # Register blueprints
+    # Registrazione dei Blueprint
     from app.routes import auth_bp, gold_bp, affiliate_bp
     from app.api.v1.transformations import bp as transformations_bp
     from app.api.v1.transfers import bp as transfers_bp
@@ -92,8 +96,5 @@ def create_app(config_class=Config):
     app.register_blueprint(noble_bp, url_prefix='/api/v1/noble')
     app.register_blueprint(validation_bp, url_prefix='/api/v1/validation')
     app.register_blueprint(system_bp, url_prefix='/api/v1/system')
-
-    from app.utils.optimization import setup_optimization
-    app = setup_optimization(app)
 
     return app
