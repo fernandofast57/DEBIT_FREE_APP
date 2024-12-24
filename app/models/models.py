@@ -34,6 +34,22 @@ class GoldAccount(db.Model):
     def __repr__(self):
         return f"<GoldAccount {self.balance}>"
 
+class Transaction(db.Model):
+    __tablename__ = 'transactions'
+    __table_args__ = {'extend_existing': True}
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    amount = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
+    transaction_type = db.Column(db.String(50), nullable=False)
+    status = db.Column(db.String(20), default='pending')
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    user = db.relationship('User', back_populates='transactions')
+
+    def __repr__(self):
+        return f"<Transaction {self.amount}>"
+
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     __table_args__ = {'extend_existing': True}
