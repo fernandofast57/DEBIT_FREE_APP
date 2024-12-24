@@ -1,4 +1,3 @@
-
 import pytest
 from app import create_app, db as _db
 import asyncio
@@ -22,9 +21,12 @@ async def app():
     })
     
     async with app.app_context():
-        # Ensure tables are dropped before creation
+        app = create_app()
+        # Ensure clean database state
         _db.drop_all()
         _db.create_all()
+        # Create tables in correct order
+        from app.models.models import User, BonusTransaction
         yield app
         _db.session.remove()
         _db.drop_all()

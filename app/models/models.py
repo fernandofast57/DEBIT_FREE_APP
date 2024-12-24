@@ -4,6 +4,7 @@ from sqlalchemy import Enum
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import event
 
 db = SQLAlchemy()
 
@@ -17,22 +18,17 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128), nullable=False)
-
-    # Definizione esplicita dell'ordine di creazione
-    __table_args__ = {'extend_existing': True}
-
-    bonus_transactions = db.relationship('BonusTransaction', 
-                                      back_populates='user', 
-                                      lazy=True,
-                                      cascade="all, delete-orphan")
+    password_hash = db.Column(db.String(128))
+    bonus_transactions = relationship('BonusTransaction', back_populates='user')
+    # Add overlaps to fix the backref conflict
+    rewards = relationship('GoldReward', back_populates='user', overlaps="gold_rewards")
+    gold_rewards = relationship('GoldReward', back_populates='user')
 
     # Relazioni uno-a-uno
     money_account = db.relationship('MoneyAccount', back_populates='user', uselist=False)
     gold_account = db.relationship('GoldAccount', back_populates='user', uselist=False)
 
     # Relazioni uno-a-molti
-    gold_rewards = db.relationship('GoldReward', back_populates='user')
     transactions = db.relationship('Transaction', back_populates='user')
     gold_transformations = db.relationship('GoldTransformation', back_populates='user')
     noble_relations = db.relationship('NobleRelation', back_populates='user')
@@ -211,7 +207,7 @@ class GoldReward(db.Model):
     reward_type = db.Column(db.String(50), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
-    user = db.relationship('User', backref=db.backref('rewards', lazy=True))
+    user = db.relationship('User', back_populates='gold_rewards')
 
     def __repr__(self):
         return f"<GoldReward {self.amount}>"
@@ -225,12 +221,9 @@ class BonusTransaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     amount = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
-    transaction_type = db.Column(db.String(50), nullable=False)
+    transaction_type = db.Column(db.String(50))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
-    user = db.relationship('User', 
-                         back_populates='bonus_transactions',
-                         lazy=True,
-                         overlaps="rewards,gold_rewards")
+    user = relationship('User', back_populates='bonus_transactions')
     
     __table_args__ = {'extend_existing': True}
