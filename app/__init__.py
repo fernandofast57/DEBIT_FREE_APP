@@ -2,19 +2,21 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask import jsonify
+from flask_login import LoginManager
 from flask_cors import CORS
 from config import Config
 import logging
-import os
 from logging.handlers import RotatingFileHandler
+import os
 
-# Initialize extensions
 db = SQLAlchemy()
 migrate = Migrate()
 
 def setup_logging(app):
     if not os.path.exists('logs'):
         os.mkdir('logs')
+
     file_handler = RotatingFileHandler('logs/app.log', maxBytes=102400, backupCount=20)
     file_handler.setFormatter(logging.Formatter(
         '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
@@ -34,10 +36,6 @@ def create_app(config_class=Config):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_class())
 
-    db.init_app(app)
-    migrate.init_app(app, db)
-    CORS(app)
-
     from app.config.redis_config import RedisConfig
     app.redis = RedisConfig(app.config.get('REDIS_URL'))
 
@@ -46,42 +44,40 @@ def create_app(config_class=Config):
     except OSError:
         pass
 
+    db.init_app(app)
+    migrate.init_app(app, db)
+
+    from app.admin import admin
+    admin.init_app(app)
+    CORS(app)
+
     with app.app_context():
-        # Import all models
+        # ✅ Creazione esplicita delle tabelle
+        from app.models.models import User
+        db.create_all()
+
         from app.models.models import (
-            User, BonusTransaction, MoneyAccount, GoldAccount,
-            NobleRank, NobleRelation, GoldReward, Transaction,
-            GoldTransformation, GoldBar, GoldAllocation
+            MoneyAccount,
+            GoldAccount,
+            NobleRank,
+            NobleRelation,
+            GoldReward,
+            Transaction,
+            GoldTransformation,
+            GoldBar,
+            GoldAllocation,
+            BonusTransaction
         )
+        db.create_all()
 
-        # Drop all existing tables
-        db.drop_all()
-
-        # Create tables in correct order
-        # 1. Base tables (no foreign keys)
-        User.__table__.create(db.engine)
-        NobleRank.__table__.create(db.engine)
-        GoldBar.__table__.create(db.engine)
-        
-        # 2. Tables with simple foreign keys
-        MoneyAccount.__table__.create(db.engine)
-        GoldAccount.__table__.create(db.engine)
-        BonusTransaction.__table__.create(db.engine)
-        Transaction.__table__.create(db.engine)
-        GoldReward.__table__.create(db.engine)
-        
-        # 3. Tables with complex foreign keys
-        NobleRelation.__table__.create(db.engine)
-        GoldTransformation.__table__.create(db.engine)
-        GoldAllocation.__table__.create(db.engine)
-        
         db.session.commit()
 
-    # Register error handlers
+    if not app.debug and not app.testing:
+        setup_logging(app)
+
     from app.utils.errors import register_error_handlers
     register_error_handlers(app)
 
-    # Register blueprints
     from app.routes import auth_bp, gold_bp, affiliate_bp
     from app.api.v1.transformations import bp as transformations_bp
     from app.api.v1.transfers import bp as transfers_bp
@@ -99,5 +95,8 @@ def create_app(config_class=Config):
     app.register_blueprint(noble_bp, url_prefix='/api/v1/noble')
     app.register_blueprint(validation_bp, url_prefix='/api/v1/validation')
     app.register_blueprint(system_bp, url_prefix='/api/v1/system')
+
+    from app.utils.optimization import setup_optimization
+    app = setup_optimization(app)
 
     return app
