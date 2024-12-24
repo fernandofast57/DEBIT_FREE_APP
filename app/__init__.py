@@ -70,23 +70,9 @@ def create_app(config_class=Config):
         )
 
         # Create tables ensuring correct order
-        tables = [
-            User.__table__,
-            MoneyAccount.__table__,
-            GoldAccount.__table__,
-            NobleRank.__table__,
-            NobleRelation.__table__,
-            GoldReward.__table__,
-            Transaction.__table__,
-            GoldTransformation.__table__, 
-            GoldBar.__table__,
-            GoldAllocation.__table__,
-            BonusTransaction.__table__
-        ]
-        
+        # Creazione delle tabelle in ordine corretto
         db.drop_all()
-        for table in tables:
-            table.create(db.engine, checkfirst=True)
+        db.create_all()
         db.session.commit()
 
     # Gestione degli errori
