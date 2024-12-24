@@ -1,8 +1,8 @@
 
 from app import create_app
-from config import Config  # Assicurati di importare la tua Config
+from config import Config
 
-app = create_app(Config)  # Passa la classe di configurazione qui
+app = create_app(Config)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)  # Usa 0.0.0.0 per l'accessibilità esterna
+    app.run(host='0.0.0.0', port=5000)
