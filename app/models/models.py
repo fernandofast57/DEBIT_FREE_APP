@@ -19,7 +19,13 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
 
-    bonus_transactions = db.relationship('BonusTransaction', back_populates='user', lazy=True)
+    # Definizione esplicita dell'ordine di creazione
+    __table_args__ = {'extend_existing': True}
+
+    bonus_transactions = db.relationship('BonusTransaction', 
+                                      back_populates='user', 
+                                      lazy=True,
+                                      cascade="all, delete-orphan")
 
     # Relazioni uno-a-uno
     money_account = db.relationship('MoneyAccount', back_populates='user', uselist=False)

@@ -56,6 +56,9 @@ def create_app(config_class=Config):
     CORS(app)
     
     with app.app_context():
+        with app.app_context():
+        # Import all models to ensure they are registered
+        from app.models.models import User, BonusTransaction, NobleRelation, GoldAccount, MoneyAccount
         db.create_all()
         
     # Setup logging

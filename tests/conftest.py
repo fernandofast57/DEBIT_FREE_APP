@@ -22,6 +22,10 @@ async def app():
     })
     
     async with app.app_context():
+        # Ensure all models are imported
+        from app.models.models import User, BonusTransaction, NobleRelation, GoldAccount, MoneyAccount
+        # Ricrea le tabelle in ordine corretto
+        await _db.drop_all()
         await _db.create_all()
         yield app
         await _db.drop_all()
