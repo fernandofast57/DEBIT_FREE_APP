@@ -144,3 +144,20 @@ class GoldAllocation(db.Model):
 
     def __repr__(self):
         return f"<GoldAllocation {self.grams_allocated}g>"
+
+class GoldTransformation(db.Model):
+    __tablename__ = 'gold_transformations'
+    __table_args__ = {'extend_existing': True}
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    euro_amount = db.Column(db.Numeric(precision=10, scale=2), nullable=False)
+    gold_grams = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
+    fixing_price = db.Column(db.Numeric(precision=10, scale=2), nullable=False)
+    fee_amount = db.Column(db.Numeric(precision=10, scale=2), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    user = db.relationship('User', back_populates='gold_transformations')
+
+    def __repr__(self):
+        return f"<GoldTransformation {self.euro_amount}€ -> {self.gold_grams}g>"
