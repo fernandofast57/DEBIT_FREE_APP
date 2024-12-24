@@ -85,4 +85,16 @@ class BonusTransaction(db.Model):
     def __repr__(self):
         return f"<BonusTransaction {self.amount}>"
 
-# [Rest of your models remain the same...]
+class NobleRank(db.Model):
+    __tablename__ = 'noble_ranks'
+    __table_args__ = {'extend_existing': True}
+    
+    id = db.Column(db.Integer, primary_key=True)
+    rank_name = db.Column(db.String(50), nullable=False)
+    min_investment = db.Column(db.Numeric(precision=10, scale=2), nullable=False)
+    bonus_rate = db.Column(db.Numeric(precision=5, scale=4), nullable=False)
+    level = db.Column(db.Integer, nullable=False)
+    users = db.relationship('User', backref='noble_rank', lazy=True)
+
+    def __repr__(self):
+        return f"<NobleRank {self.rank_name}>"
