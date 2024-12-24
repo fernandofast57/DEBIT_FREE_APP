@@ -1,0 +1,77 @@
+L'errore principale è:
+
+codice sql
+
+Copia codice
+sqlalchemy.exc.NoReferencedTableError: Foreign key associated with column 'bonus_transactions.user_id' could not find table 'users' with which to generate a foreign key to target column 'id'
+Questo significa che durante l'esecuzione di db.create_all():
+
+SQLAlchemy sta tentando di creare la tabella bonus_transactions, ma la tabella usersnon è ancora stata creata.
+La dipendenza tra le tabelle non è risolta correttamente a causa di un ordine sbagliato di creazione delle tabelle.
+✅ Causa probabile:
+Ordinamento delle Tabelle: La tabella usersdeve essere creata prima della tabella bonus_transactions.
+Riferimenti Errati nei Modelli: Potrebbe esserci un errore nel file models.pydove le relazioni tra userse bonus_transactionssono definite.
+Assenza di db.create_all()Ordinato: L'operazione di creazione delle tabelle non tiene conto delle dipendenze.
+🔄 Soluzione Passo-Passo
+1️⃣ Verifica i modelli di SQLAlchemy
+Apri il file models.pye verifica:
+
+Esempio Corretto per bonus_transactions:
+pitone
+
+Copia codice
+class User(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
+    bonus_transactions = db.relationship('BonusTransaction', back_populates='user')
+
+class BonusTransaction(db.Model):
+    __tablename__ = 'bonus_transactions'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    transaction_amount = db.Column(db.Numeric(precision=10, scale=2), nullable=False)
+    bonus_amount = db.Column(db.Numeric(precision=10, scale=2), nullable=False)
+    rank_id = db.Column(db.Integer, db.ForeignKey('noble_ranks.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+
+    user = db.relationship('User', back_populates='bonus_transactions')
+✅ Assicurati che i modelli siano ordinati ei riferimenti siano coerenti.
+
+2️⃣ Verifica l'Ordine di Creazione delle Tabelle
+Nel file __init__.pynella funzione create_app():
+
+pitone
+
+Copia codice
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object('config.Config')
+    db.init_app(app)
+
+    with app.app_context():
+        # Creare le tabelle in ordine corretto
+        from app.models.models import User, NobleRank, BonusTransaction
+        
+        db.create_all()
+    
+    return app
+✅ Assicurati che i modelli siano importati correttamente prima di eseguire db.create_all().
+
+3️⃣ Rimuovi le Tabelle Esistenti e Ricrea il Database
+Se hai un database esistente con tabelle incomplete o errate:
+
+battere
+
+Copia codice
+flask db downgrade
+flask db upgrade
+Oppure, per un ambiente di sviluppo rapido:
+
+battere
+
+Copia codice
+rm -f app.db
+python main.py
