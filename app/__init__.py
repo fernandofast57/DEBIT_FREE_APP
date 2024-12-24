@@ -13,11 +13,16 @@ import os
 db = SQLAlchemy()
 migrate = Migrate()
 
-
 # ✅ Setup Logging
+import logging
+from logging.handlers import RotatingFileHandler
+import os
+
 def setup_logging(app):
     if not os.path.exists('logs'):
         os.mkdir('logs')
+
+    # File handler per il logging su file
     file_handler = RotatingFileHandler('logs/app.log', maxBytes=102400, backupCount=20)
     file_handler.setFormatter(logging.Formatter(
         '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
@@ -25,6 +30,7 @@ def setup_logging(app):
     file_handler.setLevel(logging.INFO)
     app.logger.addHandler(file_handler)
 
+    # Console handler per il logging su console
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
     console_handler.setLevel(logging.DEBUG)
@@ -32,6 +38,7 @@ def setup_logging(app):
 
     app.logger.setLevel(logging.INFO)
     app.logger.info('Gold Investment startup')
+
 
 
 # ✅ Creazione dell'app Flask
@@ -68,14 +75,8 @@ def create_app(config_class=Config):
             GoldAllocation
         )
 
-        # Create tables in correct dependency order
+        # Ordine corretto per la creazione delle tabelle
         db.drop_all()
-        
-        # Create User table first
-        User.__table__.create(db.engine)
-        db.session.commit()
-        
-        # Then create all other tables
         db.create_all()
         db.session.commit()
 
