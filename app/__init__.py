@@ -52,25 +52,25 @@ def create_app(config_class=Config):
     CORS(app)
 
     with app.app_context():
-        # ✅ Creazione esplicita delle tabelle
-        from app.models.models import User
-        db.create_all()
+      # Drop all existing tables if necessary
+      db.drop_all()
 
-        from app.models.models import (
-            MoneyAccount,
-            GoldAccount,
-            NobleRank,
-            NobleRelation,
-            GoldReward,
-            Transaction,
-            GoldTransformation,
-            GoldBar,
-            GoldAllocation,
-            BonusTransaction
-        )
-        db.create_all()
+      # Create tables in the correct order
+      User.__table__.create(db.engine)
+      NobleRank.__table__.create(db.engine)
+      GoldBar.__table__.create(db.engine)
 
-        db.session.commit()
+      MoneyAccount.__table__.create(db.engine)
+      GoldAccount.__table__.create(db.engine)
+      BonusTransaction.__table__.create(db.engine)
+      Transaction.__table__.create(db.engine)
+      GoldReward.__table__.create(db.engine)
+
+      NobleRelation.__table__.create(db.engine)
+      GoldTransformation.__table__.create(db.engine)
+      GoldAllocation.__table__.create(db.engine)
+
+      db.session.commit()
 
     if not app.debug and not app.testing:
         setup_logging(app)
