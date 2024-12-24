@@ -59,7 +59,7 @@ class Config:
         self.log_config = LogConfig()
         self.logger = self.log_config.setup_logger()
         self.SECRET_KEY = os.getenv('SECRET_KEY', 'dev-key-temporary')
-        self.SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///instance/gold_investment.db')
+        self.SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///instance/gold_investment.db?check_same_thread=False')
         self.SQLALCHEMY_TRACK_MODIFICATIONS = False
         self.CONTRACT_ADDRESS = os.getenv('CONTRACT_ADDRESS')
         self.PRIVATE_KEY = os.getenv('PRIVATE_KEY')
