@@ -38,8 +38,10 @@ def create_app(config_class):
     setup_logging(app)
 
     from app.routes import auth_bp, gold_bp, affiliate_bp
+    from app.routes.main import bp as main_bp
     app.register_blueprint(auth_bp)
     app.register_blueprint(gold_bp)
     app.register_blueprint(affiliate_bp)
+    app.register_blueprint(main_bp)
 
     return app
