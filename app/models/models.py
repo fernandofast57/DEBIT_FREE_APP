@@ -8,6 +8,18 @@ from sqlalchemy.orm import relationship
 
 db = SQLAlchemy()
 
+class MoneyAccount(db.Model):
+    __tablename__ = 'money_accounts'
+    __table_args__ = {'extend_existing': True}
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    balance = db.Column(db.Numeric(precision=10, scale=2), default=0)
+    user = db.relationship('User', back_populates='money_account')
+
+    def __repr__(self):
+        return f"<MoneyAccount {self.balance}>"
+
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     __table_args__ = {'extend_existing': True}

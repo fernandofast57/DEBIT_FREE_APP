@@ -25,7 +25,7 @@ def create_app(config_class):
     app.config.from_object(config_class())
     
     db.init_app(app)
-    migrate.init_app(app, db)
+    migrate = Migrate(app, db)
     CORS(app)
 
     with app.app_context():
