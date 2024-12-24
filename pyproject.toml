@@ -24,6 +24,7 @@ flask-httpauth = "^4.8.0"
 redis = {extras = ["hiredis"], version = "^5.2.1"}
 py-evm = "^0.10.1b2"
 pytest-mock = "^3.14.0"
+flask-cors = "^5.0.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
