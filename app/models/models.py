@@ -114,3 +114,17 @@ class NobleRelation(db.Model):
 
     def __repr__(self):
         return f"<NobleRelation {self.user_id}>"
+
+class GoldBar(db.Model):
+    __tablename__ = 'gold_bars'
+    __table_args__ = {'extend_existing': True}
+    
+    id = db.Column(db.Integer, primary_key=True)
+    serial_number = db.Column(db.String(100), unique=True, nullable=False)
+    weight_grams = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
+    location = db.Column(db.String(100))
+    status = db.Column(db.String(20), default='available')
+    allocations = db.relationship('GoldAllocation', back_populates='gold_bar')
+
+    def __repr__(self):
+        return f"<GoldBar {self.serial_number}>"
