@@ -1,10 +1,9 @@
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask import jsonify
 from flask_login import LoginManager
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 from flask_cors import CORS
 from config import Config
 from app.utils.security import SecurityManager
@@ -23,10 +22,8 @@ def setup_logging(app):
         '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
     ))
     file_handler.setLevel(logging.INFO)
-    # File handler
     app.logger.addHandler(file_handler)
     
-    # Console handler
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
     console_handler.setLevel(logging.DEBUG)
@@ -42,7 +39,6 @@ def create_app(config_class=Config):
     from app.config.redis_config import RedisConfig
     app.redis = RedisConfig(app.config.get('REDIS_URL'))
     
-    # Ensure instance folder exists
     try:
         os.makedirs(app.instance_path)
     except OSError:
@@ -54,34 +50,27 @@ def create_app(config_class=Config):
     from app.admin import admin
     admin.init_app(app)
     CORS(app)
-    
+
     with app.app_context():
         # Import models in correct dependency order
         from app.models.models import (
-            User,  # Base user table must be first
+            User,  # Base tables first
             MoneyAccount,
             GoldAccount,
+            NobleRank,
             NobleRelation,
+            GoldReward,
+            Transaction,
+            GoldTransformation,
+            GoldBar,
+            GoldAllocation,
             BonusTransaction  # Dependent tables last
         )
-        # Create tables in correct order
-        with app.app_context():
-            # Import models in dependency order
-            from app.models.models import (
-                User,  # Base tables first
-                MoneyAccount,
-                GoldAccount,
-                NobleRelation,
-                BonusTransaction  # Dependent tables last
-            )
-            db.create_all()
-            db.session.commit()
+        db.metadata.create_all(bind=db.engine)
         
-    # Setup logging
     if not app.debug and not app.testing:
         setup_logging(app)
 
-    # Register error handlers
     from app.utils.errors import register_error_handlers
     register_error_handlers(app)
 
