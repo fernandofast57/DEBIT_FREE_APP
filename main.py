@@ -1,8 +1,8 @@
-
 import os
+from app.config import Config  # Assicurati di importare la classe Config
 from app import create_app
 
-app = create_app()
+app = create_app(Config)  # Passa la classe di configurazione qui
 
 if __name__ == '__main__':
     app.logger.info('Starting Gold Investment Platform')
