@@ -1,0 +1,32 @@
+~/gold-investment-backend$ rm -f instance/app.db instance/gold_investment.db
+~/gold-investment-backend$ find . -type d -name "__pycache__" -exec rm -r {} +
+~/gold-investment-backend$ rm -rf migrations
+~/gold-investment-backend$ flask db init
+Traceback (most recent call last):
+  File "/home/runner/gold-investment-backend/.pythonlibs/bin/flask", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/flask/cli.py", line 1064, in main
+    cli.main()
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/click/core.py", line 1078, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/click/core.py", line 1682, in invoke
+    cmd_name, cmd, args = self.resolve_command(ctx, args)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/click/core.py", line 1729, in resolve_command
+    cmd = self.get_command(ctx, cmd_name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/flask/cli.py", line 579, in get_command
+    app = info.load_app()
+          ^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/flask/cli.py", line 313, in load_app
+    app = locate_app(import_name, None, raise_if_not_found=False)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/flask/cli.py", line 219, in locate_app
+    __import__(module_name)
+  File "/home/runner/gold-investment-backend/wsgi.py", line 4, in <module>
+    app = create_app()
+          ^^^^^^^^^^^^
+TypeError: create_app() missing 1 required positional argument: 'config_class'
+~/gold-investment-backend$ 

@@ -34,29 +34,20 @@ def create_app(config_class):
     from app.config.redis_config import RedisConfig
     app.redis = RedisConfig(app.config.get('REDIS_URL'))
 
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
-
     db.init_app(app)
     migrate.init_app(app, db)
     CORS(app)
 
     with app.app_context():
-        # Importare i modelli qui per assicurarsi che siano definiti prima di creare il database
+        # Importare i modelli qui per assicurarsi che siano definiti prima della creazione del database
         from app.models.models import User, MoneyAccount, GoldAccount, GoldTransformation, BonusTransaction
-        
-        # Creare solo se non esistono già
-        db.create_all()
-
+        db.create_all()  # Crea le tabelle in modo corretto
         db.session.commit()
 
     setup_logging(app)
 
     from app.utils.errors import register_error_handlers
-
     from app.routes import auth_bp, gold_bp, affiliate_bp
-    # registra i blueprint come hai già fatto
+    # registra i blueprint come già fatto
 
     return app
