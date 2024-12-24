@@ -20,6 +20,20 @@ class MoneyAccount(db.Model):
     def __repr__(self):
         return f"<MoneyAccount {self.balance}>"
 
+class GoldAccount(db.Model):
+    __tablename__ = 'gold_accounts'
+    __table_args__ = {'extend_existing': True}
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    balance = db.Column(db.Numeric(precision=10, scale=4), default=0)
+    last_update = db.Column(db.DateTime, default=datetime.utcnow)
+    user = db.relationship('User', back_populates='gold_account')
+    allocations = db.relationship('GoldAllocation', back_populates='gold_account')
+
+    def __repr__(self):
+        return f"<GoldAccount {self.balance}>"
+
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     __table_args__ = {'extend_existing': True}
