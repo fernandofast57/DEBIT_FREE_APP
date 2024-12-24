@@ -44,16 +44,17 @@ def create_app(config_class):
     CORS(app)
 
     with app.app_context():
-        from app.models.models import User, MoneyAccount, GoldAccount, GoldTransformation
-
-        # Crea solo le tabelle se non esistono già
-        db.create_all()  # Questo creerà solo tabelle che non esistono
+        # Importare i modelli qui per assicurarsi che siano definiti prima di creare il database
+        from app.models.models import User, MoneyAccount, GoldAccount, GoldTransformation, BonusTransaction
+        
+        # Creare solo se non esistono già
+        db.create_all()
 
         db.session.commit()
 
     setup_logging(app)
 
-    from app.utils.errors import register_error_handlers  # Assicurati che questa riga sia presente
+    from app.utils.errors import register_error_handlers
 
     from app.routes import auth_bp, gold_bp, affiliate_bp
     # registra i blueprint come hai già fatto

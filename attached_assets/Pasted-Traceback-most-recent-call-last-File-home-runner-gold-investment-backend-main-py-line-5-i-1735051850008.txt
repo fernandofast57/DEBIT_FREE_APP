@@ -1,0 +1,38 @@
+Traceback (most recent call last):
+  File "/home/runner/gold-investment-backend/main.py", line 5, in <module>
+    app = create_app(Config)  # Passa la classe di configurazione qui
+          ^^^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/app/__init__.py", line 50, in create_app
+    db.create_all()  # Questo creerà solo tabelle che non esistono
+    ^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py", line 900, in create_all
+    self._call_for_binds(bind_key, "create_all")
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py", line 881, in _call_for_binds
+    getattr(metadata, op_name)(bind=engine)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py", line 5828, in create_all
+    bind._run_ddl_visitor(
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 3243, in _run_ddl_visitor
+    conn._run_ddl_visitor(visitorcallable, element, **kwargs)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 2447, in _run_ddl_visitor
+    visitorcallable(self.dialect, self, **kwargs).traverse_single(element)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/visitors.py", line 671, in traverse_single
+    return meth(obj, **kw)
+           ^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py", line 897, in visit_metadata
+    collection = sort_tables_and_constraints(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py", line 1327, in sort_tables_and_constraints
+    dependent_on = fkc.referred_table
+                   ^^^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py", line 4751, in referred_table
+    return self.elements[0].column.table
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py", line 1146, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+                                           ^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py", line 3159, in column
+    return self._resolve_column()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py", line 3182, in _resolve_column
+    raise exc.NoReferencedTableError(
+sqlalchemy.exc.NoReferencedTableError: Foreign key associated with column 'bonus_transactions.user_id' could not find table 'users' with which to generate a foreign key to target column 'id'
