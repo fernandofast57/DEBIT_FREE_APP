@@ -58,8 +58,7 @@ def create_app(config_class):
 
     setup_logging(app)
 
-    from app.utils.errors import register_error_handlers
-    register_error_handlers(app)
+    from app.utils.errors import register_error_handlers  # Questa riga deve essere presente
 
     from app.routes import auth_bp, gold_bp, affiliate_bp
     # registra i blueprint come hai già fatto

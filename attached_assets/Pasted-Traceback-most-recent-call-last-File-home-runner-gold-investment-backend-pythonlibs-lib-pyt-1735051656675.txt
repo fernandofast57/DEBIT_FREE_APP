@@ -1,0 +1,63 @@
+Traceback (most recent call last):
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: table users already exists
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/runner/gold-investment-backend/main.py", line 5, in <module>
+    app = create_app(Config)  # Passa la classe di configurazione qui
+          ^^^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/app/__init__.py", line 53, in create_app
+    User.__table__.create(db.engine)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py", line 1293, in create
+    bind._run_ddl_visitor(ddl.SchemaGenerator, self, checkfirst=checkfirst)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 3243, in _run_ddl_visitor
+    conn._run_ddl_visitor(visitorcallable, element, **kwargs)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 2447, in _run_ddl_visitor
+    visitorcallable(self.dialect, self, **kwargs).traverse_single(element)
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/visitors.py", line 671, in traverse_single
+    return meth(obj, **kw)
+           ^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py", line 957, in visit_table
+    )._invoke_with(self.connection)
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py", line 315, in _invoke_with
+    return bind.execute(self)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py", line 181, in _execute_on_connection
+    return connection._execute_ddl(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1528, in _execute_ddl
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 2343, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) table users already exists
+[SQL: 
+CREATE TABLE users (
+    id INTEGER NOT NULL, 
+    username VARCHAR(50) NOT NULL, 
+    email VARCHAR(120) NOT NULL, 
+    password_hash VARCHAR(128), 
+    PRIMARY KEY (id), 
+    UNIQUE (email)
+)
+
+]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
