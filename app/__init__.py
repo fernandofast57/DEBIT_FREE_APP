@@ -54,7 +54,7 @@ def create_app(config_class=Config):
         pass
 
     with app.app_context():
-        # Importazione dei modelli
+        # Import models in dependency order
         from app.models.models import (
             User,
             MoneyAccount,
@@ -69,9 +69,24 @@ def create_app(config_class=Config):
             BonusTransaction
         )
 
-        # Creazione delle tabelle in ordine corretto
+        # Create tables ensuring correct order
+        tables = [
+            User.__table__,
+            MoneyAccount.__table__,
+            GoldAccount.__table__,
+            NobleRank.__table__,
+            NobleRelation.__table__,
+            GoldReward.__table__,
+            Transaction.__table__,
+            GoldTransformation.__table__, 
+            GoldBar.__table__,
+            GoldAllocation.__table__,
+            BonusTransaction.__table__
+        ]
+        
         db.drop_all()
-        db.create_all()
+        for table in tables:
+            table.create(db.engine, checkfirst=True)
         db.session.commit()
 
     # Gestione degli errori
