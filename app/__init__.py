@@ -9,6 +9,7 @@ from config import Config
 import logging
 from logging.handlers import RotatingFileHandler
 import os
+from app.models.models import User, MoneyAccount, GoldAccount, GoldTransformation, NobleRank, BonusTransaction  # Aggiunta dell'importazione
 
 db = SQLAlchemy()
 migrate = Migrate()
