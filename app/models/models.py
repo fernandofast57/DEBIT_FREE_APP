@@ -19,6 +19,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
 
+    bonus_transactions = db.relationship('BonusTransaction', backref='user', lazy=True)
+
     # Relazioni uno-a-uno
     money_account = db.relationship('MoneyAccount', back_populates='user', uselist=False)
     gold_account = db.relationship('GoldAccount', back_populates='user', uselist=False)
