@@ -66,8 +66,8 @@ def create_app(config_class=Config):
         )
         # Create tables in correct order
         with app.app_context():
-        db.create_all()
-        db.session.commit()
+            db.create_all()
+            db.session.commit()
         
     # Setup logging
     if not app.debug and not app.testing:
