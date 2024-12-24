@@ -1,6 +1,8 @@
+
 import pytest
 from app import create_app, db as _db
 import asyncio
+from app.models.models import User, BonusTransaction
 
 @pytest.fixture(scope='session')
 def event_loop():
@@ -21,12 +23,12 @@ async def app():
     })
     
     async with app.app_context():
-        app = create_app()
-        # Ensure clean database state
+        # Clean state
         _db.drop_all()
-        _db.create_all()
         # Create tables in correct order
-        from app.models.models import User, BonusTransaction
+        _db.create_all()
+        # Ensure session is clean
+        _db.session.remove()
         yield app
         _db.session.remove()
         _db.drop_all()
@@ -36,7 +38,7 @@ async def client(app):
     """Create a test client."""
     return app.test_client()
 
-@pytest.fixture(scope='session')
+@pytest.fixture
 def db(app):
-    """Create a database object."""
+    """Database fixture."""
     return _db

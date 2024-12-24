@@ -14,6 +14,7 @@ db = SQLAlchemy()
 # ---------------------------------------
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
+    __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False)
