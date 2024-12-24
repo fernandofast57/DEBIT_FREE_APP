@@ -128,3 +128,19 @@ class GoldBar(db.Model):
 
     def __repr__(self):
         return f"<GoldBar {self.serial_number}>"
+
+class GoldAllocation(db.Model):
+    __tablename__ = 'gold_allocations'
+    __table_args__ = {'extend_existing': True}
+    
+    id = db.Column(db.Integer, primary_key=True)
+    gold_bar_id = db.Column(db.Integer, db.ForeignKey('gold_bars.id'), nullable=False)
+    gold_account_id = db.Column(db.Integer, db.ForeignKey('gold_accounts.id'), nullable=False)
+    grams_allocated = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
+    allocation_date = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    gold_bar = db.relationship('GoldBar', back_populates='allocations')
+    gold_account = db.relationship('GoldAccount', back_populates='allocations')
+
+    def __repr__(self):
+        return f"<GoldAllocation {self.grams_allocated}g>"
