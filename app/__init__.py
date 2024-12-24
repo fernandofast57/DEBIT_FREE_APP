@@ -44,21 +44,16 @@ def create_app(config_class):
     CORS(app)
 
     with app.app_context():
-        from app.models.models import User, MoneyAccount, GoldAccount, GoldTransformation, NobleRank, BonusTransaction
+        from app.models.models import User, MoneyAccount, GoldAccount, GoldTransformation
 
-        # Drop all existing tables if necessary
-        db.drop_all()
-
-        # Create tables in the correct order
-        User.__table__.create(db.engine)
-        NobleRank.__table__.create(db.engine)
-        # Includi qui le altre tabelle se necessario...
+        # Crea solo le tabelle se non esistono già
+        db.create_all()  # Questo creerà solo tabelle che non esistono
 
         db.session.commit()
 
     setup_logging(app)
 
-    from app.utils.errors import register_error_handlers  # Questa riga deve essere presente
+    from app.utils.errors import register_error_handlers  # Assicurati che questa riga sia presente
 
     from app.routes import auth_bp, gold_bp, affiliate_bp
     # registra i blueprint come hai già fatto
