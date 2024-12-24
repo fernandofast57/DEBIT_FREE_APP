@@ -161,3 +161,22 @@ class GoldTransformation(db.Model):
 
     def __repr__(self):
         return f"<GoldTransformation {self.euro_amount}€ -> {self.gold_grams}g>"
+
+class GoldReward(db.Model):
+    __tablename__ = 'gold_rewards'
+    __table_args__ = {'extend_existing': True}
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    gold_amount = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
+    reward_type = db.Column(db.String(50), nullable=False)  # 'structure', 'achievement'
+    level = db.Column(db.Integer)
+    euro_amount = db.Column(db.Numeric(precision=10, scale=2))
+    fixing_price = db.Column(db.Numeric(precision=10, scale=2))
+    threshold_reached = db.Column(db.Numeric(precision=10, scale=2))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    user = db.relationship('User', back_populates='rewards')
+
+    def __repr__(self):
+        return f"<GoldReward {self.gold_amount}g - {self.reward_type}>"
