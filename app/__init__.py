@@ -66,6 +66,14 @@ def create_app(config_class=Config):
         )
         # Create tables in correct order
         with app.app_context():
+            # Import models in dependency order
+            from app.models.models import (
+                User,  # Base tables first
+                MoneyAccount,
+                GoldAccount,
+                NobleRelation,
+                BonusTransaction  # Dependent tables last
+            )
             db.create_all()
             db.session.commit()
         

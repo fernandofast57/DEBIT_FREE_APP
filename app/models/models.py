@@ -218,7 +218,7 @@ class GoldReward(db.Model):
 # ---------------------------------------
 class BonusTransaction(db.Model):
     __tablename__ = 'bonus_transactions'
-    
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     amount = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
@@ -226,5 +226,3 @@ class BonusTransaction(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     user = relationship('User', back_populates='bonus_transactions')
-    
-    __table_args__ = {'extend_existing': True}
