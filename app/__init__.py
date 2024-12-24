@@ -56,8 +56,15 @@ def create_app(config_class=Config):
     CORS(app)
     
     with app.app_context():
-        # Import all models to ensure they are registered
-        from app.models.models import User, BonusTransaction, NobleRelation, GoldAccount, MoneyAccount
+        # Import models in correct dependency order
+        from app.models.models import (
+            User,  # Base user table must be first
+            MoneyAccount,
+            GoldAccount,
+            NobleRelation,
+            BonusTransaction  # Dependent tables last
+        )
+        # Create tables in correct order
         db.create_all()
         
     # Setup logging

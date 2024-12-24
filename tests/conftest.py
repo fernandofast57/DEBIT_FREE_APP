@@ -22,8 +22,11 @@ async def app():
     })
     
     async with app.app_context():
+        # Ensure tables are dropped before creation
+        _db.drop_all()
         _db.create_all()
         yield app
+        _db.session.remove()
         _db.drop_all()
 
 @pytest.fixture
