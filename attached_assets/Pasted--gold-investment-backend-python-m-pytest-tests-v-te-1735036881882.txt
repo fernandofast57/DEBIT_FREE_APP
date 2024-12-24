@@ -1,0 +1,351 @@
+~/gold-investment-backend$ python -m pytest tests/ -v
+========================================== test session starts ==========================================
+platform linux -- Python 3.11.10, pytest-7.4.3, pluggy-1.5.0 -- /home/runner/gold-investment-backend/.pythonlibs/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/gold-investment-backend/tests
+configfile: pytest.ini
+plugins: mock-3.12.0, asyncio-0.21.1, web3-6.11.3
+asyncio: mode=Mode.AUTO
+collected 6 items                                                                                       
+
+tests/test_blockchain.py::test_blockchain_connection ERROR                                        [ 16%]
+tests/test_blockchain.py::test_noble_rank_update ERROR                                            [ 33%]
+tests/test_noble_system.py::test_noble_rank_creation ERROR                                        [ 50%]
+tests/test_noble_system.py::test_noble_relation_verification ERROR                                [ 66%]
+tests/test_transformation.py::test_gold_transformation ERROR                                      [ 83%]
+tests/test_transformation.py::test_minimum_transformation_amount ERROR                            [100%]
+
+================================================ ERRORS =================================================
+_____________________________ ERROR at setup of test_blockchain_connection ______________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:82: in <module>
+    admin.add_view(ClientView(User, db.session, name='Clients'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:895: in _refresh_cache
+    self._list_columns = self.get_list_columns()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1034: in get_list_columns
+    return self.get_column_names(
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:555: in get_column_names
+    column, path = tools.get_field_with_path(self.model, c)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:170: in get_field_with_path
+    if is_relationship(relation_value):
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:227: in is_relationship
+    return hasattr(attr, 'property') and hasattr(attr.property, 'direction')
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/attributes.py:467: in __getattr__
+    return util.MemoizedSlots.__getattr__(self, key)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py:1315: in __getattr__
+    value = getattr(self, f"_memoized_attr_{key}")()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/attributes.py:489: in _memoized_attr_property
+    return self.comparator.property
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py:1315: in __getattr__
+    value = getattr(self, f"_memoized_attr_{key}")()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:1143: in _memoized_attr_property
+    self.prop.parent._check_configure()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:2386: in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4199: in _configure_registries
+    _do_configure_registries(registries, cascade)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4240: in _do_configure_registries
+    mapper._post_configure_properties()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:2403: in _post_configure_properties
+    prop.init()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/interfaces.py:579: in init
+    self.do_init()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:1640: in do_init
+    self._generate_backref()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:2071: in _generate_backref
+    raise sa_exc.ArgumentError(
+E   sqlalchemy.exc.ArgumentError: Error creating backref 'user' on relationship 'User.bonus_transactions': property of that name exists on mapper 'Mapper[BonusTransaction(bonus_transactions)]'
+_______________________________ ERROR at setup of test_noble_rank_update ________________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:82: in <module>
+    admin.add_view(ClientView(User, db.session, name='Clients'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:895: in _refresh_cache
+    self._list_columns = self.get_list_columns()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1034: in get_list_columns
+    return self.get_column_names(
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:555: in get_column_names
+    column, path = tools.get_field_with_path(self.model, c)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:170: in get_field_with_path
+    if is_relationship(relation_value):
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:227: in is_relationship
+    return hasattr(attr, 'property') and hasattr(attr.property, 'direction')
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/attributes.py:467: in __getattr__
+    return util.MemoizedSlots.__getattr__(self, key)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py:1315: in __getattr__
+    value = getattr(self, f"_memoized_attr_{key}")()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/attributes.py:489: in _memoized_attr_property
+    return self.comparator.property
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py:1315: in __getattr__
+    value = getattr(self, f"_memoized_attr_{key}")()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:1143: in _memoized_attr_property
+    self.prop.parent._check_configure()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:2386: in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4199: in _configure_registries
+    _do_configure_registries(registries, cascade)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4240: in _do_configure_registries
+    mapper._post_configure_properties()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:2403: in _post_configure_properties
+    prop.init()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/interfaces.py:579: in init
+    self.do_init()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:1640: in do_init
+    self._generate_backref()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:2071: in _generate_backref
+    raise sa_exc.ArgumentError(
+E   sqlalchemy.exc.ArgumentError: Error creating backref 'user' on relationship 'User.bonus_transactions': property of that name exists on mapper 'Mapper[BonusTransaction(bonus_transactions)]'
+______________________________ ERROR at setup of test_noble_rank_creation _______________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:82: in <module>
+    admin.add_view(ClientView(User, db.session, name='Clients'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:895: in _refresh_cache
+    self._list_columns = self.get_list_columns()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1034: in get_list_columns
+    return self.get_column_names(
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:555: in get_column_names
+    column, path = tools.get_field_with_path(self.model, c)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:170: in get_field_with_path
+    if is_relationship(relation_value):
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:227: in is_relationship
+    return hasattr(attr, 'property') and hasattr(attr.property, 'direction')
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/attributes.py:467: in __getattr__
+    return util.MemoizedSlots.__getattr__(self, key)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py:1315: in __getattr__
+    value = getattr(self, f"_memoized_attr_{key}")()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/attributes.py:489: in _memoized_attr_property
+    return self.comparator.property
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py:1315: in __getattr__
+    value = getattr(self, f"_memoized_attr_{key}")()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:1143: in _memoized_attr_property
+    self.prop.parent._check_configure()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:2386: in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4199: in _configure_registries
+    _do_configure_registries(registries, cascade)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4240: in _do_configure_registries
+    mapper._post_configure_properties()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:2403: in _post_configure_properties
+    prop.init()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/interfaces.py:579: in init
+    self.do_init()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:1640: in do_init
+    self._generate_backref()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:2071: in _generate_backref
+    raise sa_exc.ArgumentError(
+E   sqlalchemy.exc.ArgumentError: Error creating backref 'user' on relationship 'User.bonus_transactions': property of that name exists on mapper 'Mapper[BonusTransaction(bonus_transactions)]'
+__________________________ ERROR at setup of test_noble_relation_verification ___________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:82: in <module>
+    admin.add_view(ClientView(User, db.session, name='Clients'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:895: in _refresh_cache
+    self._list_columns = self.get_list_columns()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1034: in get_list_columns
+    return self.get_column_names(
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:555: in get_column_names
+    column, path = tools.get_field_with_path(self.model, c)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:170: in get_field_with_path
+    if is_relationship(relation_value):
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:227: in is_relationship
+    return hasattr(attr, 'property') and hasattr(attr.property, 'direction')
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/attributes.py:467: in __getattr__
+    return util.MemoizedSlots.__getattr__(self, key)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py:1315: in __getattr__
+    value = getattr(self, f"_memoized_attr_{key}")()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/attributes.py:489: in _memoized_attr_property
+    return self.comparator.property
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py:1315: in __getattr__
+    value = getattr(self, f"_memoized_attr_{key}")()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:1143: in _memoized_attr_property
+    self.prop.parent._check_configure()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:2386: in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4199: in _configure_registries
+    _do_configure_registries(registries, cascade)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4240: in _do_configure_registries
+    mapper._post_configure_properties()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:2403: in _post_configure_properties
+    prop.init()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/interfaces.py:579: in init
+    self.do_init()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:1640: in do_init
+    self._generate_backref()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:2071: in _generate_backref
+    raise sa_exc.ArgumentError(
+E   sqlalchemy.exc.ArgumentError: Error creating backref 'user' on relationship 'User.bonus_transactions': property of that name exists on mapper 'Mapper[BonusTransaction(bonus_transactions)]'
+______________________________ ERROR at setup of test_gold_transformation _______________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:82: in <module>
+    admin.add_view(ClientView(User, db.session, name='Clients'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:895: in _refresh_cache
+    self._list_columns = self.get_list_columns()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1034: in get_list_columns
+    return self.get_column_names(
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:555: in get_column_names
+    column, path = tools.get_field_with_path(self.model, c)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:170: in get_field_with_path
+    if is_relationship(relation_value):
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:227: in is_relationship
+    return hasattr(attr, 'property') and hasattr(attr.property, 'direction')
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/attributes.py:467: in __getattr__
+    return util.MemoizedSlots.__getattr__(self, key)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py:1315: in __getattr__
+    value = getattr(self, f"_memoized_attr_{key}")()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/attributes.py:489: in _memoized_attr_property
+    return self.comparator.property
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py:1315: in __getattr__
+    value = getattr(self, f"_memoized_attr_{key}")()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:1143: in _memoized_attr_property
+    self.prop.parent._check_configure()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:2386: in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4199: in _configure_registries
+    _do_configure_registries(registries, cascade)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4240: in _do_configure_registries
+    mapper._post_configure_properties()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:2403: in _post_configure_properties
+    prop.init()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/interfaces.py:579: in init
+    self.do_init()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:1640: in do_init
+    self._generate_backref()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:2071: in _generate_backref
+    raise sa_exc.ArgumentError(
+E   sqlalchemy.exc.ArgumentError: Error creating backref 'user' on relationship 'User.bonus_transactions': property of that name exists on mapper 'Mapper[BonusTransaction(bonus_transactions)]'
+_________________________ ERROR at setup of test_minimum_transformation_amount __________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:54: in create_app
+    from app.admin import admin
+app/admin/__init__.py:82: in <module>
+    admin.add_view(ClientView(User, db.session, name='Clients'))
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:342: in __init__
+    super(ModelView, self).__init__(model, name, category, endpoint, url, static_folder,
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:818: in __init__
+    self._refresh_cache()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:895: in _refresh_cache
+    self._list_columns = self.get_list_columns()
+.pythonlibs/lib/python3.11/site-packages/flask_admin/model/base.py:1034: in get_list_columns
+    return self.get_column_names(
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/view.py:555: in get_column_names
+    column, path = tools.get_field_with_path(self.model, c)
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:170: in get_field_with_path
+    if is_relationship(relation_value):
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:227: in is_relationship
+    return hasattr(attr, 'property') and hasattr(attr.property, 'direction')
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/attributes.py:467: in __getattr__
+    return util.MemoizedSlots.__getattr__(self, key)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py:1315: in __getattr__
+    value = getattr(self, f"_memoized_attr_{key}")()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/attributes.py:489: in _memoized_attr_property
+    return self.comparator.property
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py:1315: in __getattr__
+    value = getattr(self, f"_memoized_attr_{key}")()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:1143: in _memoized_attr_property
+    self.prop.parent._check_configure()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:2386: in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4199: in _configure_registries
+    _do_configure_registries(registries, cascade)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4240: in _do_configure_registries
+    mapper._post_configure_properties()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:2403: in _post_configure_properties
+    prop.init()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/interfaces.py:579: in init
+    self.do_init()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:1640: in do_init
+    self._generate_backref()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:2071: in _generate_backref
+    raise sa_exc.ArgumentError(
+E   sqlalchemy.exc.ArgumentError: Error creating backref 'user' on relationship 'User.bonus_transactions': property of that name exists on mapper 'Mapper[BonusTransaction(bonus_transactions)]'
+=========================================== warnings summary ============================================
+test_blockchain.py::test_blockchain_connection
+  /home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/__init__.py:2: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('flask_admin.contrib')`.
+  Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+    __import__('pkg_resources').declare_namespace(__name__)
+
+test_blockchain.py::test_blockchain_connection
+  /home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pkg_resources/__init__.py:2558: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('flask_admin')`.
+  Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+    declare_namespace(parent)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================================== short test summary info ========================================
+ERROR tests/test_blockchain.py::test_blockchain_connection - sqlalchemy.exc.ArgumentError: Error creating backref 'user' on relationship 'User.bonus_transactions...
+ERROR tests/test_blockchain.py::test_noble_rank_update - sqlalchemy.exc.ArgumentError: Error creating backref 'user' on relationship 'User.bonus_transactions...
+ERROR tests/test_noble_system.py::test_noble_rank_creation - sqlalchemy.exc.ArgumentError: Error creating backref 'user' on relationship 'User.bonus_transactions...
+ERROR tests/test_noble_system.py::test_noble_relation_verification - sqlalchemy.exc.ArgumentError: Error creating backref 'user' on relationship 'User.bonus_transactions...
+ERROR tests/test_transformation.py::test_gold_transformation - sqlalchemy.exc.ArgumentError: Error creating backref 'user' on relationship 'User.bonus_transactions...
+ERROR tests/test_transformation.py::test_minimum_transformation_amount - sqlalchemy.exc.ArgumentError: Error creating backref 'user' on relationship 'User.bonus_transactions...
+===================================== 2 warnings, 6 errors in 2.44s =====================================
+~/gold-investment-backend$
