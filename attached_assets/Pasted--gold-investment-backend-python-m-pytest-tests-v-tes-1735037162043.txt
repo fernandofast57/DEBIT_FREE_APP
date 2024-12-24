@@ -1,0 +1,259 @@
+/gold-investment-backend$ python -m pytest tests/ -v
+========================================== test session starts ==========================================
+platform linux -- Python 3.11.10, pytest-7.4.3, pluggy-1.5.0 -- /home/runner/gold-investment-backend/.pythonlibs/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/gold-investment-backend/tests
+configfile: pytest.ini
+plugins: mock-3.12.0, asyncio-0.21.1, web3-6.11.3
+asyncio: mode=Mode.AUTO
+collected 6 items                                                                                       
+
+tests/test_blockchain.py::test_blockchain_connection ERROR                                        [ 16%]
+tests/test_blockchain.py::test_noble_rank_update ERROR                                            [ 33%]
+tests/test_noble_system.py::test_noble_rank_creation ERROR                                        [ 50%]
+tests/test_noble_system.py::test_noble_relation_verification ERROR                                [ 66%]
+tests/test_transformation.py::test_gold_transformation ERROR                                      [ 83%]
+tests/test_transformation.py::test_minimum_transformation_amount ERROR                            [100%]
+
+================================================ ERRORS =================================================
+_____________________________ ERROR at setup of test_blockchain_connection ______________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:59: in create_app
+    db.create_all()
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:900: in create_all
+    self._call_for_binds(bind_key, "create_all")
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:881: in _call_for_binds
+    getattr(metadata, op_name)(bind=engine)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:5828: in create_all
+    bind._run_ddl_visitor(
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py:3243: in _run_ddl_visitor
+    conn._run_ddl_visitor(visitorcallable, element, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2447: in _run_ddl_visitor
+    visitorcallable(self.dialect, self, **kwargs).traverse_single(element)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/visitors.py:671: in traverse_single
+    return meth(obj, **kw)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:897: in visit_metadata
+    collection = sort_tables_and_constraints(
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:1327: in sort_tables_and_constraints
+    dependent_on = fkc.referred_table
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:4751: in referred_table
+    return self.elements[0].column.table
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py:1146: in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:3159: in column
+    return self._resolve_column()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:3182: in _resolve_column
+    raise exc.NoReferencedTableError(
+E   sqlalchemy.exc.NoReferencedTableError: Foreign key associated with column 'bonus_transactions.user_id' could not find table 'users' with which to generate a foreign key to target column 'id'
+_______________________________ ERROR at setup of test_noble_rank_update ________________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:59: in create_app
+    db.create_all()
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:900: in create_all
+    self._call_for_binds(bind_key, "create_all")
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:881: in _call_for_binds
+    getattr(metadata, op_name)(bind=engine)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:5828: in create_all
+    bind._run_ddl_visitor(
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py:3243: in _run_ddl_visitor
+    conn._run_ddl_visitor(visitorcallable, element, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2447: in _run_ddl_visitor
+    visitorcallable(self.dialect, self, **kwargs).traverse_single(element)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/visitors.py:671: in traverse_single
+    return meth(obj, **kw)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:897: in visit_metadata
+    collection = sort_tables_and_constraints(
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:1327: in sort_tables_and_constraints
+    dependent_on = fkc.referred_table
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:4751: in referred_table
+    return self.elements[0].column.table
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py:1146: in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:3159: in column
+    return self._resolve_column()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:3182: in _resolve_column
+    raise exc.NoReferencedTableError(
+E   sqlalchemy.exc.NoReferencedTableError: Foreign key associated with column 'bonus_transactions.user_id' could not find table 'users' with which to generate a foreign key to target column 'id'
+______________________________ ERROR at setup of test_noble_rank_creation _______________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:59: in create_app
+    db.create_all()
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:900: in create_all
+    self._call_for_binds(bind_key, "create_all")
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:881: in _call_for_binds
+    getattr(metadata, op_name)(bind=engine)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:5828: in create_all
+    bind._run_ddl_visitor(
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py:3243: in _run_ddl_visitor
+    conn._run_ddl_visitor(visitorcallable, element, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2447: in _run_ddl_visitor
+    visitorcallable(self.dialect, self, **kwargs).traverse_single(element)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/visitors.py:671: in traverse_single
+    return meth(obj, **kw)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:897: in visit_metadata
+    collection = sort_tables_and_constraints(
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:1327: in sort_tables_and_constraints
+    dependent_on = fkc.referred_table
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:4751: in referred_table
+    return self.elements[0].column.table
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py:1146: in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:3159: in column
+    return self._resolve_column()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:3182: in _resolve_column
+    raise exc.NoReferencedTableError(
+E   sqlalchemy.exc.NoReferencedTableError: Foreign key associated with column 'bonus_transactions.user_id' could not find table 'users' with which to generate a foreign key to target column 'id'
+__________________________ ERROR at setup of test_noble_relation_verification ___________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:59: in create_app
+    db.create_all()
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:900: in create_all
+    self._call_for_binds(bind_key, "create_all")
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:881: in _call_for_binds
+    getattr(metadata, op_name)(bind=engine)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:5828: in create_all
+    bind._run_ddl_visitor(
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py:3243: in _run_ddl_visitor
+    conn._run_ddl_visitor(visitorcallable, element, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2447: in _run_ddl_visitor
+    visitorcallable(self.dialect, self, **kwargs).traverse_single(element)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/visitors.py:671: in traverse_single
+    return meth(obj, **kw)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:897: in visit_metadata
+    collection = sort_tables_and_constraints(
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:1327: in sort_tables_and_constraints
+    dependent_on = fkc.referred_table
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:4751: in referred_table
+    return self.elements[0].column.table
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py:1146: in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:3159: in column
+    return self._resolve_column()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:3182: in _resolve_column
+    raise exc.NoReferencedTableError(
+E   sqlalchemy.exc.NoReferencedTableError: Foreign key associated with column 'bonus_transactions.user_id' could not find table 'users' with which to generate a foreign key to target column 'id'
+______________________________ ERROR at setup of test_gold_transformation _______________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:59: in create_app
+    db.create_all()
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:900: in create_all
+    self._call_for_binds(bind_key, "create_all")
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:881: in _call_for_binds
+    getattr(metadata, op_name)(bind=engine)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:5828: in create_all
+    bind._run_ddl_visitor(
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py:3243: in _run_ddl_visitor
+    conn._run_ddl_visitor(visitorcallable, element, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2447: in _run_ddl_visitor
+    visitorcallable(self.dialect, self, **kwargs).traverse_single(element)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/visitors.py:671: in traverse_single
+    return meth(obj, **kw)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:897: in visit_metadata
+    collection = sort_tables_and_constraints(
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:1327: in sort_tables_and_constraints
+    dependent_on = fkc.referred_table
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:4751: in referred_table
+    return self.elements[0].column.table
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py:1146: in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:3159: in column
+    return self._resolve_column()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:3182: in _resolve_column
+    raise exc.NoReferencedTableError(
+E   sqlalchemy.exc.NoReferencedTableError: Foreign key associated with column 'bonus_transactions.user_id' could not find table 'users' with which to generate a foreign key to target column 'id'
+_________________________ ERROR at setup of test_minimum_transformation_amount __________________________
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:304: in _asyncgen_fixture_wrapper
+    result = event_loop.run_until_complete(setup())
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+.pythonlibs/lib/python3.11/site-packages/pytest_asyncio/plugin.py:286: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:16: in app
+    app = create_app()
+app/__init__.py:59: in create_app
+    db.create_all()
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:900: in create_all
+    self._call_for_binds(bind_key, "create_all")
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:881: in _call_for_binds
+    getattr(metadata, op_name)(bind=engine)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:5828: in create_all
+    bind._run_ddl_visitor(
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py:3243: in _run_ddl_visitor
+    conn._run_ddl_visitor(visitorcallable, element, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2447: in _run_ddl_visitor
+    visitorcallable(self.dialect, self, **kwargs).traverse_single(element)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/visitors.py:671: in traverse_single
+    return meth(obj, **kw)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:897: in visit_metadata
+    collection = sort_tables_and_constraints(
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:1327: in sort_tables_and_constraints
+    dependent_on = fkc.referred_table
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:4751: in referred_table
+    return self.elements[0].column.table
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py:1146: in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:3159: in column
+    return self._resolve_column()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/schema.py:3182: in _resolve_column
+    raise exc.NoReferencedTableError(
+E   sqlalchemy.exc.NoReferencedTableError: Foreign key associated with column 'bonus_transactions.user_id' could not find table 'users' with which to generate a foreign key to target column 'id'
+=========================================== warnings summary ============================================
+test_blockchain.py::test_blockchain_connection
+  /home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/__init__.py:2: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('flask_admin.contrib')`.
+  Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+    __import__('pkg_resources').declare_namespace(__name__)
+
+test_blockchain.py::test_blockchain_connection
+  /home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pkg_resources/__init__.py:2558: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('flask_admin')`.
+  Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+    declare_namespace(parent)
+
+test_blockchain.py::test_blockchain_connection
+  /home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/sqla/tools.py:227: SAWarning: relationship 'User.rewards' will copy column users.id to column gold_rewards.user_id, which conflicts with relationship(s): 'User.gold_rewards' (copies users.id to gold_rewards.user_id). If this is not the intention, consider if these relationships should be linked with back_populates, or if viewonly=True should be applied to one or more if they are read-only. For the less common case that foreign key constraints are partially overlapping, the orm.foreign() annotation can be used to isolate the columns that should be written towards.   To silence this warning, add the parameter 'overlaps="gold_rewards"' to the 'User.rewards' relationship. (Background on this warning at: https://sqlalche.me/e/20/qzyx) (This warning originated from the `configure_mappers()` process, which was invoked automatically in response to a user-initiated operation.)
+    return hasattr(attr, 'property') and hasattr(attr.property, 'direction')
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================================== short test summary info ========================================
+ERROR tests/test_blockchain.py::test_blockchain_connection - sqlalchemy.exc.NoReferencedTableError: Foreign key associated with column 'bonus_transactions.user_i...
+ERROR tests/test_blockchain.py::test_noble_rank_update - sqlalchemy.exc.NoReferencedTableError: Foreign key associated with column 'bonus_transactions.user_i...
+ERROR tests/test_noble_system.py::test_noble_rank_creation - sqlalchemy.exc.NoReferencedTableError: Foreign key associated with column 'bonus_transactions.user_i...
+ERROR tests/test_noble_system.py::test_noble_relation_verification - sqlalchemy.exc.NoReferencedTableError: Foreign key associated with column 'bonus_transactions.user_i...
+ERROR tests/test_transformation.py::test_gold_transformation - sqlalchemy.exc.NoReferencedTableError: Foreign key associated with column 'bonus_transactions.user_i...
+ERROR tests/test_transformation.py::test_minimum_transformation_amount - sqlalchemy.exc.NoReferencedTableError: Foreign key associated with column 'bonus_transactions.user_i...
+===================================== 3 warnings, 6 errors in 1.89s =====================================
+~/gold-investment-backend
