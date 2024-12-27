@@ -1,0 +1,89 @@
+🚀 Step 2: Strengthen Security Measures
+Let’s now focus on security enhancements to ensure your application adheres to the best security practices.
+
+🔒 2.1 Environment Variables Security
+Ensure that sensitive keys are managed securely:
+
+bash
+Copia codice
+export SECRET_KEY=$(openssl rand -hex 32)
+export DATABASE_URL="your_production_db_url"
+Add environment variables to your .env file:
+
+env
+Copia codice
+SECRET_KEY=your_secret_key
+DATABASE_URL=your_db_url
+Ensure .env is added to .gitignore:
+
+bash
+Copia codice
+echo ".env" >> .gitignore
+🔄 2.2 Enable Rate Limiting in SecurityManager
+Open app/utils/security/security_manager.py:
+
+python
+Copia codice
+from flask import request
+from functools import wraps
+import time
+
+RATE_LIMIT = {}
+LIMIT = 5  # Max requests
+WINDOW = 60  # Time in seconds
+
+def require_rate_limit(func):
+    @wraps(func)
+    def decorated(*args, **kwargs):
+        ip = request.remote_addr
+        current_time = time.time()
+        request_log = RATE_LIMIT.get(ip, [])
+
+        # Clean up old requests
+        RATE_LIMIT[ip] = [req for req in request_log if current_time - req < WINDOW]
+
+        if len(RATE_LIMIT[ip]) >= LIMIT:
+            return {"error": "Too many requests, please try again later"}, 429
+
+        RATE_LIMIT[ip].append(current_time)
+        return func(*args, **kwargs)
+    return decorated
+Apply @require_rate_limit to critical endpoints:
+
+python
+Copia codice
+@bp.route('/transform', methods=['POST'])
+@require_rate_limit
+async def transform_gold():
+    ...
+📊 2.3 Improve Logging Configuration
+Ensure logs don’t capture sensitive information:
+
+python
+Copia codice
+import logging
+from logging.handlers import RotatingFileHandler
+
+def setup_logging(app):
+    file_handler = RotatingFileHandler('logs/app.log', maxBytes=102400, backupCount=10)
+    file_handler.setFormatter(logging.Formatter(
+        '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
+    ))
+    file_handler.setLevel(logging.INFO)
+    app.logger.addHandler(file_handler)
+
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+    app.logger.addHandler(console_handler)
+Ensure sensitive data is never logged:
+
+python
+Copia codice
+app.config['PROPAGATE_EXCEPTIONS'] = True
+🛡️ 2.4 Dependency Vulnerability Scan
+Run a security check on dependencies:
+
+bash
+Copia codice
+pip install safety
+safety check
