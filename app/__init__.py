@@ -1,9 +1,8 @@
 from flask import Flask
-from flask_login import LoginManager
-from flask_migrate import Migrate
-from config import Config
-from app.models import db
-from app.admin import admin
+from flask_sqlalchemy import SQLAlchemy
+from flask_caching import Cache
+
+cache = Cache(config={'CACHE_TYPE': 'simple'})
 
 login_manager = LoginManager()
 migrate = Migrate()
@@ -11,6 +10,7 @@ migrate = Migrate()
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
+    cache.init_app(app)
 
     db.init_app(app)
     from app.utils.optimization import optimize_queries, create_indexes
