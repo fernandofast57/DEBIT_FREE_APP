@@ -31,6 +31,9 @@
 - `conftest.py`: Test fixtures and setup
 - `test_*.py`: Test modules for different components
 
+## Security Functions
+- `sanitize_input`: Utility function that cleanses user input by stripping whitespace and handling nested data structures recursively. Used throughout the application for input validation.
+
 ## Status Codes
 - `to_be_verified`: Initial verification status
 - `verified`: Confirmed verification status
