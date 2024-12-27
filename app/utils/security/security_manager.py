@@ -10,6 +10,18 @@ class SecurityManager:
         self.rate_limit: Dict[str, List[float]] = {}
         self.request_limit = 5
         self.time_window = 60
+        self.logger = logging.getLogger('security')
+        
+    def log_security_event(self, event_type: str, event_data: dict):
+        """Log security events while removing sensitive data"""
+        # Remove sensitive fields
+        sanitized_data = event_data.copy()
+        sensitive_fields = ['password', 'api_key', 'secret', 'token']
+        for field in sensitive_fields:
+            if field in sanitized_data:
+                sanitized_data[field] = '[REDACTED]'
+        
+        self.logger.warning(f"Security event {event_type}: {sanitized_data}")
         
     def require_rate_limit(self, func):
         @wraps(func)
