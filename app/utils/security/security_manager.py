@@ -1,65 +1,37 @@
 
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
+from flask import request, current_app
+from functools import wraps
+import time
+from typing import Dict, List
 import logging
-from app.utils.logging_config import APP_NAME
-from .rate_limiter import RobustRateLimiter
 
 class SecurityManager:
-    """Manages security operations and rate limiting"""
-    def __init__(self, app=None, app_name: str = APP_NAME, redis_url: str = None):
-        self.app_name = APP_NAME
-        self.limiter = None
-        if app:
-            self.init_app(app)
-            
-        try:
-            self.rate_limiter = RobustRateLimiter(redis_url)
-        except Exception as e:
-            self.logger = logging.getLogger(APP_NAME)
-            self.logger.warning(f"Failed to initialize rate limiter: {e}. Using local storage.")
-            self.rate_limiter = RobustRateLimiter(None)
+    def __init__(self):
+        self.rate_limit: Dict[str, List[float]] = {}
+        self.request_limit = 5
+        self.time_window = 60
         
-        self.logger = logging.getLogger(APP_NAME)
-        self.setup_logging()
-    
-    def init_app(self, app):
-        """Initialize Flask-Limiter with the application"""
-        self.limiter = Limiter(
-            app=app,
-            key_func=get_remote_address,
-            default_limits=["100 per day", "10 per minute"],
-            storage_uri=app.config.get('REDIS_URL', 'memory://')
-        )
-        return self.limiter
-    
-    def setup_logging(self):
-        handler = logging.FileHandler(f'logs/{self.app_name}_security.log')
-        formatter = logging.Formatter(
-            '%(asctime)s - %(name)s - %(levelname)s - %(message)s - %(statuscode)s'
-        )
-        handler.setFormatter(formatter)
-        self.logger.addHandler(handler)
-        self.logger.setLevel(logging.INFO)
-    
-    def sanitize_log_data(self, data: dict) -> dict:
-        sensitive_fields = {'password', 'token', 'secret', 'key', 'private_key'}
-        return {k: '***' if any(s in k.lower() for s in sensitive_fields) else v 
-                for k, v in data.items()}
-
-    def log_security_event(self, event_type: str, details: dict):
-        valid_statuses = ['to_be_verified', 'verified', 'available', 'reserved', 'distributed']
-        if 'status' in details and details['status'] not in valid_statuses:
-            raise ValueError(f"Invalid status code: {details['status']}")
+    def require_rate_limit(self, func):
+        @wraps(func)
+        def decorated(*args, **kwargs):
+            ip = request.remote_addr
+            current_time = time.time()
             
-        sanitized_details = self.sanitize_log_data(details)
-        self.logger.info(f"Security event: {event_type}", extra={
-            'event_type': event_type,
-            'details': sanitized_details
-        })
+            if ip not in self.rate_limit:
+                self.rate_limit[ip] = []
+            
+            # Clean old requests
+            self.rate_limit[ip] = [
+                req_time for req_time in self.rate_limit[ip]
+                if current_time - req_time < self.time_window
+            ]
+            
+            if len(self.rate_limit[ip]) >= self.request_limit:
+                current_app.logger.warning(f"Rate limit exceeded for IP: {ip}")
+                return {"error": "Too many requests"}, 429
+                
+            self.rate_limit[ip].append(current_time)
+            return func(*args, **kwargs)
+        return decorated
 
-    def get_limiter(self):
-        """Get the Flask-Limiter instance"""
-        if not self.limiter:
-            raise RuntimeError("Limiter not initialized. Call init_app first.")
-        return self.limiter
+security_manager = SecurityManager()
