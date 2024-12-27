@@ -1,0 +1,138 @@
+### 🛠️ **Analisi del Test `test_security_manager_logging`**
+
+Il test `test_security_manager_logging` presenta un problema:
+
+- Il file di log utilizzato nel test è `logs/gold-investment_security.log`.  
+- Tuttavia, il file generato dal logger nel tuo progetto sembra essere `logs/security.log`.
+
+Questa discrepanza causa il fallimento del test o il suo skip. Dobbiamo allineare i percorsi e correggere il test.
+
+---
+
+## 📋 **Passo 1: Correggi il Percorso del File di Log nel Test**
+
+Apri il file `tests/security/test_security.py` e modifica il percorso del file di log nella funzione `test_security_manager_logging`:
+
+### ✅ **Correzione del Test**
+```python
+import pytest
+from app.utils.security.rate_limiter import RobustRateLimiter
+from app.utils.security.security_manager import SecurityManager
+import os
+
+def test_environment_variables():
+    """Test that sensitive environment variables are set"""
+    assert os.getenv('SECRET_KEY') is not None
+    assert os.getenv('DATABASE_URL') is not None
+    assert not os.getenv('SECRET_KEY').startswith('dev-')
+
+def test_rate_limiter():
+    """Test rate limiter functionality"""
+    limiter = RobustRateLimiter()
+    key = "test_user"
+    
+    # Should allow initial requests
+    assert not limiter.is_rate_limited(key)
+    
+    # Simulate multiple requests
+    for _ in range(105):  # More than default limit
+        limiter.is_rate_limited(key)
+    
+    # Should be rate limited after exceeding limit
+    assert limiter.is_rate_limited(key)
+
+def test_security_manager_logging():
+    """Test security logging sanitization"""
+    security_manager = SecurityManager()
+    test_event = {
+        "user_id": "12345",
+        "action": "login",
+        "password": "sensitive_data",
+        "api_key": "secret_key"
+    }
+    
+    # Log should not contain sensitive data
+    security_manager.log_security_event("test", test_event)
+    
+    # Read the last line of the security log
+    log_file_path = "logs/security.log"  # Corretto il percorso
+    
+    try:
+        with open(log_file_path, "r") as f:
+            lines = f.readlines()
+            if lines:
+                last_line = lines[-1]
+                assert "sensitive_data" not in last_line
+                assert "secret_key" not in last_line
+    except FileNotFoundError:
+        pytest.skip("Security log file not found")
+```
+
+---
+
+## 📋 **Passo 2: Forza la Creazione di un Messaggio di Sicurezza nel Log**
+
+Per assicurarti che il log contenga dati validi:
+
+1. Apri `app/utils/security/security_manager.py` e aggiungi questo codice temporaneamente:
+
+```python
+import logging
+
+class SecurityManager:
+    def log_security_event(self, event_type, details):
+        logger = logging.getLogger('security')
+        logger.warning(f"Event: {event_type}, Details: {details}")
+```
+
+2. Esegui l'applicazione per generare il log:
+
+```bash
+python main.py
+```
+
+3. Controlla che il file `logs/security.log` contenga i dati:
+
+```bash
+cat logs/security.log
+```
+
+Dovresti vedere una riga di esempio:
+
+```
+2024-12-27 14:51:32,123 WARNING: Event: test, Details: {'user_id': '12345', 'action': 'login', 'password': 'sensitive_data', 'api_key': 'secret_key'}
+```
+
+---
+
+## 📋 **Passo 3: Riesegui il Test**
+
+Ora esegui di nuovo il test:
+
+```bash
+python -m pytest tests/security/test_security.py -v
+```
+
+Se tutto è corretto, il test `test_security_manager_logging` dovrebbe passare.
+
+---
+
+## 📊 **Possibili Risultati**
+
+1. ✅ **Test Passato**: Il percorso era errato e ora è stato corretto.
+2. ⚠️ **Test Skipped**: Se viene ancora saltato, verifica di nuovo il contenuto di `logs/security.log`.
+3. ❌ **Test Fallito**: Controlla che la funzione `log_security_event` scriva correttamente nel log.
+
+---
+
+## 🔄 **Passo 4: Pulizia Finale (Opzionale)**
+
+Rimuovi qualsiasi modifica temporanea nel codice del logger, se non necessaria, e assicurati che il file di test utilizzi il percorso corretto.
+
+Se ci sono ulteriori problemi, condividi l'output del test:
+
+```bash
+python -m pytest tests/security/test_security.py -v
+``` 
+
+🚀 **Ora il test dovrebbe funzionare correttamente!**
