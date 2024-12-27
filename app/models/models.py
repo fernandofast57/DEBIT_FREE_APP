@@ -202,3 +202,8 @@ class GoldReward(db.Model):
 
     def __repr__(self):
         return f"<GoldReward {self.gold_amount}g - {self.reward_type}>"
+class Parameter(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    transformation_rate = db.Column(db.Float, default=1.0)
+    commission_rate = db.Column(db.Float, default=0.01)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow)

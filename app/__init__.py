@@ -1,4 +1,3 @@
-
 from flask import Flask
 from flask_login import LoginManager
 from config import Config
@@ -16,7 +15,10 @@ def create_app(config_class=Config):
     admin.init_app(app)
 
     from app.routes import auth_bp, main_bp
+    from app.admin.views import admin_bp
+
     app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
+    app.register_blueprint(admin_bp)
 
     return app

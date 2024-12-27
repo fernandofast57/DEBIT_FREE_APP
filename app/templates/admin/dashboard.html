@@ -1,61 +1,36 @@
 
-{% extends 'admin/master.html' %}
-
-{% block body %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading">Total Gold Balance</div>
-                <div class="panel-body">
-                    <h3>{{ "%.4f"|format(total_gold) }}g</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="panel panel-success">
-                <div class="panel-heading">Total Money Balance</div>
-                <div class="panel-body">
-                    <h3>€ {{ "{:,.2f}".format(total_money) }}</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="panel panel-info">
-                <div class="panel-heading">Total Clients</div>
-                <div class="panel-body">
-                    <h3>{{ total_users }}</h3>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
 {% extends "base.html" %}
 {% block content %}
-<div class="dashboard-container">
-  <h1>Gold System Dashboard</h1>
-  
-  <div class="stats-grid">
-    <div class="stat-card">
-      <h3>Total Gold Distributed</h3>
-      <p>{{ total_gold_grams }} g</p>
+<div class="container mt-4">
+    <h1>Admin Dashboard</h1>
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Parameters</h5>
+                    <p class="card-text">Manage system parameters</p>
+                    <a href="{{ url_for('admin.parameters') }}" class="btn btn-primary">View Parameters</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Users</h5>
+                    <p class="card-text">Manage users</p>
+                    <a href="{{ url_for('admin.users') }}" class="btn btn-primary">View Users</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Transactions</h5>
+                    <p class="card-text">View transactions</p>
+                    <a href="{{ url_for('admin.transactions') }}" class="btn btn-primary">View Transactions</a>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    <div class="stat-card">
-      <h3>Weekly Transactions</h3>
-      <p>{{ weekly_transactions }}</p>
-    </div>
-    
-    <div class="stat-card">
-      <h3>Active Networks</h3>
-      <p>{{ active_networks }}</p>
-    </div>
-  </div>
-
-  <div class="actions-panel">
-    <h2>Weekly Processing</h2>
-    <button onclick="processWeeklyGold()">Process Gold Distribution</button>
-  </div>
 </div>
 {% endblock %}
