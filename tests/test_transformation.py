@@ -45,6 +45,19 @@ async def test_missing_required_fields(app, client):
     """Test missing required fields validation"""
     response = await client.post('/api/v1/transformations/transform', json={
         "euro_amount": 150.00
+
+@pytest.mark.asyncio
+async def test_invalid_fee_amount(app, client):
+    """Test invalid fee amount validation"""
+    response = await client.post('/api/v1/transformations/transform', json={
+        "euro_amount": 150.00,
+        "fixing_price": 50.00,
+        "fee_amount": -1.00,
+        "gold_grams": 3.5
+    })
+    assert response.status_code == 400
+    assert "fee_amount" in response.json["errors"]
+
     })
     assert response.status_code == 400
     assert "errors" in response.json
