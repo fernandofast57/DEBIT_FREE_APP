@@ -4,10 +4,9 @@ from decimal import Decimal
 from app.models.models import User, MoneyAccount, GoldAccount, GoldTransformation
 from app.services.transformation_service import TransformationService
 
-@pytest.mark.asyncio
-async def test_valid_transformation(app, client):
+def test_valid_transformation(app, client):
     """Test valid transformation request"""
-    response = await client.post('/api/v1/transformations/transform', json={
+    response = client.post('/api/v1/transformations/transform', json={
         "euro_amount": 150.00,
         "fixing_price": 50.00,
         "fee_amount": 5.00,
