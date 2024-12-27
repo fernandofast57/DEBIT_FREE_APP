@@ -65,9 +65,11 @@ def optimize_queries():
 
 def create_indexes():
     """Create necessary indexes for performance"""
+    from sqlalchemy import text
     with db.engine.connect() as conn:
-        conn.execute("""
+        conn.execute(text("""
             CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id);
             CREATE INDEX IF NOT EXISTS idx_noble_ranks_level ON noble_ranks(level);
             CREATE INDEX IF NOT EXISTS idx_accounting_entries_date ON accounting_entries(entry_date);
-        """)
+        """))
+        conn.commit()
