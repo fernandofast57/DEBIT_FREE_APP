@@ -1,4 +1,5 @@
 from decimal import Decimal
+from app import db
 from .models import User, NobleRank, NobleRelation, BonusTransaction
 
 class NobleSystem:
