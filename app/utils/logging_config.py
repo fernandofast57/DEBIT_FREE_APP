@@ -4,6 +4,11 @@ import logging.handlers
 import os
 from datetime import datetime
 
+APP_NAME = 'gold_investment'
+
+def get_logger(name):
+    return logging.getLogger(name)
+
 def setup_logging():
     log_dir = 'logs'
     if not os.path.exists(log_dir):
