@@ -1,3 +1,10 @@
+run = """
+nix-env --upgrade || echo 'nix-env failed'
+rm -rf ~/.cache/nix
+nix-collect-garbage --delete-old
+replit nix run || echo 'nix run failed'
+python3 main.py
+"""
 
 run = ["python3", "main.py"]
 language = "python3"
