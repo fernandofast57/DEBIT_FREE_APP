@@ -22,23 +22,25 @@ def event_loop():
 def app():
     """Create a Flask application object."""
     from config import TestConfig
-    app = create_app(TestConfig)
+    app = create_app(TestConfig())
     app.config.update({
         'TESTING': True,
         'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:',
         'SQLALCHEMY_TRACK_MODIFICATIONS': False,
-        'WTF_CSRF_ENABLED': False
+        'WTF_CSRF_ENABLED': False,
+        'SECRET_KEY': 'test-key'
     })
     
     ctx = app.app_context()
     ctx.push()
     
-    # Clean state
-    _db.drop_all()
-    # Create tables in correct order
-    _db.create_all()
-    # Ensure session is clean
-    _db.session.remove()
+    with app.app_context():
+        # Clean state
+        _db.drop_all()
+        # Create tables in correct order
+        _db.create_all()
+        # Ensure session is clean
+        _db.session.remove()
     
     yield app
     
