@@ -4,7 +4,9 @@ from typing import Dict, Optional
 from datetime import datetime
 import logging
 from app.models.models import User, GoldReward, db
-from app.utils.logging_config import logger
+from app.utils.logging_config import get_logger
+
+logger = get_logger(__name__)
 from app.services.blockchain_service import BlockchainService
 from app.utils.errors import InvalidRankError, InsufficientBalanceError
 
