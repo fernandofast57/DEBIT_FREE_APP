@@ -12,6 +12,9 @@ def create_app(config_class=Config):
     
     # Register blueprints
     from app.api.v1.transformations import transformations_bp
+    from app.routes.main import bp as main_bp
+    
     app.register_blueprint(transformations_bp, url_prefix='/api/v1/transformations')
+    app.register_blueprint(main_bp)
     
     return app
