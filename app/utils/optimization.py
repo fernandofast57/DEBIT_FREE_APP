@@ -53,16 +53,26 @@ from app import db
 
 def optimize_queries():
     """Optimize database queries"""
-    from sqlalchemy import text
+    from sqlalchemy import text, inspect
     
-    # Add indexes for most frequent queries
+    inspector = inspect(db.engine)
+    tables = inspector.get_table_names()
+    
+    # Only create indexes if tables exist
     with db.engine.connect() as conn:
-        conn.execute(text("""
-            CREATE INDEX IF NOT EXISTS idx_accounting_entries_user ON accounting_entries(user_id);
-            CREATE INDEX IF NOT EXISTS idx_accounting_entries_date ON accounting_entries(entry_date);
-            CREATE INDEX IF NOT EXISTS idx_noble_ranks_level_status ON noble_ranks(level, status);
-            CREATE INDEX IF NOT EXISTS idx_transformations_date ON transformations(transformation_date);
-        """))
+        if 'accounting_entries' in tables:
+            conn.execute(text("""
+                CREATE INDEX IF NOT EXISTS idx_accounting_entries_user ON accounting_entries(user_id);
+                CREATE INDEX IF NOT EXISTS idx_accounting_entries_date ON accounting_entries(entry_date);
+            """))
+        if 'noble_ranks' in tables:
+            conn.execute(text("""
+                CREATE INDEX IF NOT EXISTS idx_noble_ranks_level_status ON noble_ranks(level, status);
+            """))
+        if 'transformations' in tables:
+            conn.execute(text("""
+                CREATE INDEX IF NOT EXISTS idx_transformations_date ON transformations(transformation_date);
+            """))
         conn.commit()
 
 def create_indexes():
