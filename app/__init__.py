@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_caching import Cache
 from flask_login import LoginManager
 from flask_migrate import Migrate
+from config import Config
 
 cache = Cache(config={'CACHE_TYPE': 'simple'})
 
