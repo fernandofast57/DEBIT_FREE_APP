@@ -27,6 +27,7 @@ pytest-mock = "^3.14.0"
 flask-cors = "^5.0.0"
 flask-bcrypt = "^1.0.1"
 flask-limiter = "^3.9.2"
+flasgger = "^0.9.7.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

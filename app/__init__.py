@@ -3,12 +3,14 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
+from flasgger import Swagger
 import logging
 from logging.handlers import RotatingFileHandler
 import os
 
 db = SQLAlchemy()
 migrate = Migrate()
+swagger = Swagger()
 
 def setup_logging(app):
     if not os.path.exists('logs'):
@@ -43,5 +45,7 @@ def create_app(config_class):
     app.register_blueprint(gold_bp)
     app.register_blueprint(affiliate_bp)
     app.register_blueprint(main_bp)
+    
+    swagger.init_app(app)
 
     return app

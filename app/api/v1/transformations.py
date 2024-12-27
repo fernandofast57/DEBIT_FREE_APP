@@ -11,6 +11,43 @@ transformation_service = TransformationService()
 @auth_required
 @rate_limit(max_requests=5, window_size=60)
 async def transform_gold():
+    """
+    Transform money into gold investment
+    ---
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            euro_amount:
+              type: number
+              description: Amount in euros to transform
+              example: 100.0
+            fixing_price:
+              type: number
+              description: Current gold fixing price
+              example: 50.0
+    responses:
+      200:
+        description: Successful transformation
+        schema:
+          type: object
+          properties:
+            status:
+              type: string
+              example: success
+            transaction_id:
+              type: string
+              example: "trans_123456"
+      400:
+        description: Invalid input
+      401:
+        description: Unauthorized
+    tags:
+      - Gold Transformations
+    """
     try:
         data = request.get_json()
         euro_amount = data.get('euro_amount')
