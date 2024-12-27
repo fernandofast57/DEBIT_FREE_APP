@@ -1,4 +1,3 @@
-
 from decimal import Decimal
 from .models import User, NobleRank, NobleRelation, BonusTransaction
 
@@ -11,3 +10,10 @@ class NobleSystem:
         if not user or not user.noble_rank:
             return Decimal('0')
         return transaction_amount * user.noble_rank.bonus_rate
+
+class NobleRelation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    noble_rank_id = db.Column(db.Integer, db.ForeignKey('noble_rank.id'))
+    verification_status = db.Column(db.String(50))
+    status = db.Column(db.String(50))
