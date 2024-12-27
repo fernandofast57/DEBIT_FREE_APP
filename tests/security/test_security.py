@@ -14,16 +14,21 @@ def test_rate_limiter():
     """Test rate limiter functionality"""
     limiter = RobustRateLimiter()
     key = "test_user"
+    second_key = "test_user_2"
     
     # Should allow initial requests
     assert not limiter.is_rate_limited(key)
+    assert not limiter.is_rate_limited(second_key)
     
-    # Simulate multiple requests
+    # Simulate multiple requests for first user
     for _ in range(105):  # More than default limit
         limiter.is_rate_limited(key)
     
     # Should be rate limited after exceeding limit
     assert limiter.is_rate_limited(key)
+    
+    # Second user should not be affected
+    assert not limiter.is_rate_limited(second_key)
 
 def test_security_manager_logging():
     """Test security logging sanitization"""
@@ -61,9 +66,32 @@ def test_input_validation():
     security_manager = SecurityManager()
     malicious_input = {
         "user_id": "1234'; DROP TABLE users;--",
-        "password": "<script>alert('xss')</script>"
+        "password": "<script>alert('xss')</script>",
+        "path": "../../../../etc/passwd",
+        "nested": {
+            "field": "../../secret.txt",
+            "script": "<IMG SRC=javascript:alert('XSS')>",
+            "sql": "UNION SELECT * FROM users--"
+        },
+        "special_chars": "µ§¶†‡°©®™"
     }
     
     sanitized = security_manager.sanitize_input(malicious_input)
+    
+    # Test SQL injection prevention
     assert "DROP TABLE" not in str(sanitized)
+    assert "UNION SELECT" not in str(sanitized)
+    
+    # Test XSS prevention
     assert "<script>" not in str(sanitized)
+    assert "javascript:" not in str(sanitized)
+    
+    # Test path traversal prevention
+    assert "../../../../" not in str(sanitized)
+    assert "../../" not in str(sanitized)
+    
+    # Verify nested structure is preserved
+    assert isinstance(sanitized["nested"], dict)
+    
+    # Verify special characters are handled
+    assert isinstance(sanitized["special_chars"], str)
