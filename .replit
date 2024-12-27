@@ -1,15 +1,27 @@
 
+run = ["python3", "main.py"]
+language = "python3"
 entrypoint = "main.py"
-modules = ["nodejs-20", "python-3.11"]
+hidden = [".pytest_cache", "__pycache__", "*.pyc"]
+
+[env]
+PYTHONPATH = "${PYTHONPATH}:${REPL_HOME}"
 
 [nix]
 channel = "stable-24_05"
 
+[debugger]
+support = true
+
+[languages.python3]
+pattern = "**/*.py"
+syntax = "python"
+
+[languages.python3.languageServer]
+start = ["pylsp"]
+
 [unitTest]
 language = "python3"
-
-[gitHubImport]
-requiredFiles = [".replit", "replit.nix"]
 
 [deployment]
 run = ["python3", "main.py"]
@@ -29,3 +41,4 @@ command = ["python3"]
 
 [commands]
 run = ["python3", "main.py"]
+test = ["python3", "-m", "pytest", "tests/", "--disable-warnings", "-v"]

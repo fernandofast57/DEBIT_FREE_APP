@@ -42,14 +42,20 @@ class SecurityManager:
         self.logger.addHandler(handler)
         self.logger.setLevel(logging.INFO)
     
+    def sanitize_log_data(self, data: dict) -> dict:
+        sensitive_fields = {'password', 'token', 'secret', 'key', 'private_key'}
+        return {k: '***' if any(s in k.lower() for s in sensitive_fields) else v 
+                for k, v in data.items()}
+
     def log_security_event(self, event_type: str, details: dict):
         valid_statuses = ['to_be_verified', 'verified', 'available', 'reserved', 'distributed']
         if 'status' in details and details['status'] not in valid_statuses:
             raise ValueError(f"Invalid status code: {details['status']}")
             
+        sanitized_details = self.sanitize_log_data(details)
         self.logger.info(f"Security event: {event_type}", extra={
             'event_type': event_type,
-            'details': details
+            'details': sanitized_details
         })
 
     def get_limiter(self):

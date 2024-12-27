@@ -10,7 +10,35 @@ import os
 
 db = SQLAlchemy()
 migrate = Migrate()
-swagger = Swagger()
+swagger_config = {
+        "headers": [],
+        "specs": [
+            {
+                "endpoint": 'apispec',
+                "route": '/apispec.json',
+                "rule_filter": lambda rule: True,
+                "model_filter": lambda tag: True,
+            }
+        ],
+        "static_url_path": "/flasgger_static",
+        "swagger_ui": True,
+        "specs_route": "/apidocs/"
+    }
+    swagger = Swagger(template={
+        "swagger": "2.0",
+        "info": {
+            "title": "Gold Investment API",
+            "description": "API for Gold Investment Platform",
+            "version": "1.0.0"
+        },
+        "securityDefinitions": {
+            "Bearer": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    })
 
 def setup_logging(app):
     if not os.path.exists('logs'):

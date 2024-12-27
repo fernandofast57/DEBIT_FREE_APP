@@ -11,7 +11,7 @@ class RobustRateLimiter:
         self.local_storage: Dict[str, Dict[str, Tuple[int, float]]] = defaultdict(dict)
         # Stricter rate limiting defaults
         self.window_size = 60  # 1 minute window
-        self.max_requests = 100  # 100 requests per minute
+        self.max_requests = 50  # 50 requests per minute - more restrictive
         
     def is_rate_limited(self, key: str, max_requests: int = None, window_size: int = None) -> bool:
         """Check if request should be rate limited"""
