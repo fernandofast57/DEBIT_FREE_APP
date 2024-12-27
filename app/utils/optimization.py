@@ -66,22 +66,26 @@ def optimize_queries():
         conn.commit()
 
 def create_indexes():
-    """Create necessary indexes for performance"""
-    from sqlalchemy import text, inspect
-    inspector = inspect(db.engine)
-    
+    """Create indexes for better query performance"""
     with db.engine.connect() as conn:
-        if 'transactions' in inspector.get_table_names():
-            conn.execute(text("CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id)"))
-            conn.commit()
+        # Check if tables exist before creating indexes
+        tables = db.engine.table_names()
         
-        if 'noble_ranks' in inspector.get_table_names():
-            conn.execute(text("CREATE INDEX IF NOT EXISTS idx_noble_ranks_level ON noble_ranks(level)"))
-            conn.commit()
-            
-        if 'accounting_entries' in inspector.get_table_names():
-            conn.execute(text("CREATE INDEX IF NOT EXISTS idx_accounting_entries_date ON accounting_entries(entry_date)"))
-            conn.commit()
+        if 'accounting_entries' in tables:
+            conn.execute(text("""
+                CREATE INDEX IF NOT EXISTS idx_accounting_entries_user ON accounting_entries(user_id);
+                CREATE INDEX IF NOT EXISTS idx_accounting_entries_date ON accounting_entries(entry_date);
+            """))
+        
+        if 'noble_ranks' in tables:
+            conn.execute(text("""
+                CREATE INDEX IF NOT EXISTS idx_noble_ranks_level_status ON noble_ranks(level, status);
+            """))
+        
+        if 'transformations' in tables:
+            conn.execute(text("""
+                CREATE INDEX IF NOT EXISTS idx_transformations_date ON transformations(transformation_date);
+            """))
 
     @event.listens_for(Engine, "before_cursor_execute")
     def before_cursor_execute(conn, cursor, statement, parameters, context, executemany):
