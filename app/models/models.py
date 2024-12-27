@@ -116,9 +116,13 @@ class NobleRelation(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    referral_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    verification_status = db.Column(db.String(20), default='pending')
+    noble_rank_id = db.Column(db.Integer, db.ForeignKey('noble_ranks.id'))
+    verification_status = db.Column(db.String(20), default='to_be_verified')
+    status = db.Column(db.String(20), default='pending')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    user = db.relationship('User', foreign_keys=[user_id], back_populates='noble_relations')
+    noble_rank = db.relationship('NobleRank', back_populates='relations')
     
     user = db.relationship('User', foreign_keys=[user_id], back_populates='noble_relations')
     referral = db.relationship('User', foreign_keys=[referral_id])
@@ -166,7 +170,11 @@ class GoldTransformation(db.Model):
     gold_grams = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
     fixing_price = db.Column(db.Numeric(precision=10, scale=2), nullable=False)
     fee_amount = db.Column(db.Numeric(precision=10, scale=2), nullable=False)
+    status = db.Column(db.String(20), default='pending')
+    transaction_type = db.Column(db.String(20), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    user = db.relationship('User', back_populates='gold_transformations')
     
     user = db.relationship('User', back_populates='gold_transformations')
 
@@ -180,7 +188,11 @@ class GoldReward(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     gold_amount = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
-    reward_type = db.Column(db.String(50), nullable=False)  # 'structure', 'achievement'
+    reward_type = db.Column(db.Enum('structure', 'achievement', name='reward_types'), nullable=False)
+    status = db.Column(db.String(20), default='pending')
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    user = db.relationship('User', back_populates='rewards')  # 'structure', 'achievement'
     level = db.Column(db.Integer)
     euro_amount = db.Column(db.Numeric(precision=10, scale=2))
     fixing_price = db.Column(db.Numeric(precision=10, scale=2))
