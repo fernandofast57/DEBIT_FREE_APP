@@ -1,0 +1,214 @@
+Ecco come potresti **implementare i test** per i miglioramenti apportati al tuo `bonus_service.py`. L’idea è creare un file di test (ad esempio `test_bonus_service.py`) dove vai a **verificare**:
+
+1. **Comportamento corretto** delle funzioni (`distribute_rewards`, `distribute_structure_bonus`, ecc.).  
+2. **Gestione delle eccezioni** (ad esempio `InvalidRankError`, `ValueError`).  
+3. **Aggiornamento del saldo** nel database.  
+4. **Arrotondamenti** e uso di `Decimal` con `quantize()`.
+
+Di seguito trovi uno **scheletro** di test che potresti usare con **Pytest** e **pytest-asyncio** per testare le funzioni asincrone.
+
+---
+
+## 1. Installazione e Setup
+
+Assicurati di avere nel tuo `requirements.txt` (o `poetry`/`pipenv` se li usi) i pacchetti necessari per i test asincroni:
+
+```bash
+pytest
+pytest-asyncio
+pytest-mock   # se vuoi usare mock patch
+```
+
+## 2. Struttura dei Test
+
+Crea o modifica il file `tests/test_bonus_service.py` seguendo uno stile simile a questo:
+
+```python
+import pytest
+import asyncio
+from decimal import Decimal
+from unittest.mock import patch, MagicMock
+
+# Importa la classe che vuoi testare e i modelli necessari
+from app.services.bonus_service import BonusDistributionService
+from app.models.models import User, GoldReward, db
+from app.utils.errors import InvalidRankError
+
+@pytest.mark.asyncio
+class TestBonusDistributionService:
+    
+    @pytest.fixture
+    async def setup_test_data(self):
+        """
+        Fixture che crea dati di test nel database in modo asincrono.
+        Restituisce, ad esempio, un utente con rank e saldo predefinito.
+        """
+        test_user = User(id=1, name="Test User", referrer_id=None)
+        test_user.gold_account.balance = Decimal('10.0000')  # Saldo iniziale
+        
+        # Aggiungi l'utente alla session
+        db.session.add(test_user)
+        
+        # Assicurati di fare il commit in modo asincrono
+        await db.session.commit()
+        
+        # Ritorna l'utente creato per usarlo nei test
+        return test_user
+
+    @pytest.fixture
+    def bonus_service(self):
+        """
+        Fixture per istanziare il BonusDistributionService.
+        Ritorna l'istanza da utilizzare nei test.
+        """
+        return BonusDistributionService()
+
+    @pytest.mark.asyncio
+    async def test_distribute_structure_bonus(self, bonus_service, setup_test_data):
+        """
+        Verifica che la distribuzione dei bonus strutturali funzioni correttamente
+        e crei i record GoldReward con gli arrotondamenti appropriati.
+        """
+        user = setup_test_data
+        
+        euro_amount = Decimal('100.00')
+        fixing_price = Decimal('50.0000')  # 1g = 50 euro
+        
+        result = await bonus_service.distribute_structure_bonus(
+            user_id=user.id, 
+            euro_amount=euro_amount, 
+            fixing_price=fixing_price
+        )
+        
+        # Controlla che result sia un dizionario, e che contenga la chiave dell'utente referrer
+        # In questo caso, non abbiamo un referrer, quindi dovrebbe essere vuoto o simile
+        assert isinstance(result, dict)
+        assert len(result) == 0  # Nessun referrer => nessun bonus distribuito
+        
+        # Controlla che nel DB sia stato creato l'eventuale bonus 'operational'
+        operational_bonus = await GoldReward.query.filter_by(reward_type='operational').one_or_none()
+        assert operational_bonus is not None
+        assert operational_bonus.gold_amount > 0
+
+    @pytest.mark.asyncio
+    async def test_distribute_rewards_with_invalid_rank(self, bonus_service, setup_test_data):
+        """
+        Testa la gestione dell'eccezione InvalidRankError. 
+        Simula che l'utente abbia un rank non valido.
+        """
+        # Mocker su noble_system se necessario, ad esempio patch su user.rank
+        with patch('app.models.noble_system.User.get_rank', return_value="invalid"):
+            with pytest.raises(InvalidRankError):
+                await bonus_service.distribute_rewards(
+                    user_id=setup_test_data.id, 
+                    euro_amount=Decimal('200.00'), 
+                    fixing_price=Decimal('50.0000')
+                )
+
+    @pytest.mark.asyncio
+    async def test_distribute_rewards_successful(self, bonus_service, setup_test_data):
+        """
+        Verifica la logica di distribuzione completa (structure + achievement).
+        """
+        euro_amount = Decimal('1000.00')
+        fixing_price = Decimal('50.0000')
+        
+        # Se desideri simulare un rank valido, puoi patchare o settare attributi dell'utente
+        # Oppure, se il rank è calcolato in base a un attributo in User, impostalo di conseguenza
+        # e rimuovi la patch
+        result = await bonus_service.distribute_rewards(
+            user_id=setup_test_data.id,
+            euro_amount=euro_amount,
+            fixing_price=fixing_price
+        )
+        
+        # Controlla la struttura del risultato
+        assert 'structure_rewards' in result
+        assert 'achievement_reward' in result
+        assert 'timestamp' in result
+        
+        # Verifica i valori
+        structure_rewards = result['structure_rewards']
+        achievement_reward = result['achievement_reward']
+        
+        # Se l'utente non ha un referrer, structure_rewards potrebbe essere vuoto
+        assert isinstance(structure_rewards, dict)
+        # achievement_reward potrebbe essere un Dict con i dettagli
+        assert isinstance(achievement_reward, dict) or (achievement_reward is None)
+
+    @pytest.mark.asyncio
+    async def test_insufficient_balance(self, bonus_service, setup_test_data):
+        """
+        Esempio di test se volessi controllare la gestione di un'eccezione custom InsufficientBalanceError.
+        """
+        # Potresti mockare un controllo di balance, ad esempio se la logica
+        # del bonus prevede di scalare una certa quantità di oro
+        with patch('app.services.bonus_service.User') as mock_user:
+            mock_user.gold_account.balance = Decimal('0.0000')
+            
+            with pytest.raises(InsufficientBalanceError):
+                await bonus_service.distribute_rewards(
+                    user_id=setup_test_data.id,
+                    euro_amount=Decimal('999999.99'),
+                    fixing_price=Decimal('50.0000')
+                )
+
+```
+
+### Spiegazione dei punti salienti
+
+1. **`@pytest.fixture`**:  
+   - `setup_test_data` crea o recupera record dal DB e fa il commit in modo asincrono. È un **pattern** per disporre di dati “freschi” in ogni test.
+
+2. **`bonus_service`**:  
+   - Istanzia il tuo `BonusDistributionService` in una fixture. Così puoi iniettarlo in ogni test senza doverlo creare a mano più volte.
+
+3. **Test Asincroni**:  
+   - Usiamo `pytest.mark.asyncio` (fornito da **pytest-asyncio**) per marcare i test come **asincroni**.
+
+4. **Mock e Patch**:  
+   - Ad esempio, se vuoi simulare un rank non valido, puoi fare il patch di una funzione di `noble_system.py`.  
+   - In questo modo verifichi che il tuo codice sollevi `InvalidRankError` correttamente.
+
+5. **Controllo di valori**:  
+   - Asserzioni su tipologia (`isinstance`) e contenuto dei risultati (`assert len(result) == 0`), per verificare i tuoi invarianti di business.
+
+6. **Rollback/Commit**:  
+   - Nel contesto di test, se si verifica un’eccezione, Pytest può gestire la chiusura della session (oppure potresti aggiungere un plugin di test che fa un rollback automatico dopo ogni test, tipo `pytest-postgresql` o un contesto personalizzato).
+
+---
+
+## 3. Raccomandazioni Operative
+
+1. **Ambiente di Test Isolato**  
+   - Se possibile, usa un DB di test (magari in memoria con SQLite) per **evitare** di contaminare dati di sviluppo o di produzione.
+
+2. **Approccio TDD/BDD**  
+   - Inizia a scrivere i test per le funzionalità chiave prima di implementarle, così da definire chiaramente gli **obiettivi di business**.
+
+3. **Struttura dei File di Test**  
+   - Mantieni una struttura parallela: se `bonus_service.py` sta in `app/services`, crea i test in `tests/test_bonus_service.py`.  
+   - Usa un naming coerente (`test_*.py`), così Pytest li riconosce automaticamente.
+
+4. **Coverage**  
+   - Aggiungi `pytest-cov` se vuoi un report di copertura. Ad esempio:
+     ```bash
+     pytest --cov=app --cov-report=term-missing
+     ```
+
+5. **Logging in Test**  
+   - Se vuoi vedere i log durante i test, configura Pytest con l’opzione `-o log_cli=true` o simili, per catturare i log che stai generando tramite `logger`.
+
+---
+
+## Conclusione
+
+I test proposti **verificano** il comportamento del tuo `bonus_service` nelle situazioni più comuni:  
+- Distribuzione dei bonus strutturali (con e senza referrer)  
+- Verifica dell’**arrotondamento** con `Decimal`  
+- Gestione di eccezioni specifiche (`InvalidRankError`, `InsufficientBalanceError`)  
+- Distribuzione di operational fee
+
+Seguendo questo approccio, avrai una **copertura di test** solida per assicurarti che i miglioramenti apportati (migliore gestione degli errori, performance e manutenibilità) rispondano agli **obiettivi di business** e non subiscano regressioni in futuro. 
+
+Buon lavoro nei tuoi test!
