@@ -1,0 +1,185 @@
+### **Improved Test Suite for Transformation Validation**
+
+Let’s refine and complete the test cases to ensure all validation scenarios are covered properly.
+
+---
+
+## **1. Final Complete Test File**
+
+**File:** `tests/test_transformation.py`
+
+```python
+import pytest
+from decimal import Decimal
+from app.models.models import User, MoneyAccount, GoldAccount, GoldTransformation
+from app.services.transformation_service import TransformationService
+
+# ✅ Test Valid Transformation
+@pytest.mark.asyncio
+async def test_valid_transformation(app, client):
+    """Test valid transformation request"""
+    response = await client.post('/api/v1/transformations/transform', json={
+        "euro_amount": 150.00,
+        "fixing_price": 50.00,
+        "fee_amount": 5.00,
+        "gold_grams": 3.5
+    })
+    assert response.status_code == 200
+    assert "Gold transformed successfully" in response.json["message"]
+
+# ✅ Test Invalid Euro Amount
+@pytest.mark.asyncio
+async def test_invalid_euro_amount(app, client):
+    """Test invalid euro amount validation"""
+    response = await client.post('/api/v1/transformations/transform', json={
+        "euro_amount": 50.00,  # Invalid: Less than 100.00
+        "fixing_price": 50.00,
+        "fee_amount": 5.00,
+        "gold_grams": 3.5
+    })
+    assert response.status_code == 400
+    assert "euro_amount" in response.json["errors"]
+
+# ✅ Test Invalid Fixing Price
+@pytest.mark.asyncio
+async def test_invalid_fixing_price(app, client):
+    """Test invalid fixing price validation"""
+    response = await client.post('/api/v1/transformations/transform', json={
+        "euro_amount": 150.00,
+        "fixing_price": 0.00,  # Invalid: Cannot be zero or negative
+        "fee_amount": 5.00,
+        "gold_grams": 3.5
+    })
+    assert response.status_code == 400
+    assert "fixing_price" in response.json["errors"]
+
+# ✅ Test Invalid Fee Amount
+@pytest.mark.asyncio
+async def test_invalid_fee_amount(app, client):
+    """Test invalid fee amount validation"""
+    response = await client.post('/api/v1/transformations/transform', json={
+        "euro_amount": 150.00,
+        "fixing_price": 50.00,
+        "fee_amount": -1.00,  # Invalid: Negative fee
+        "gold_grams": 3.5
+    })
+    assert response.status_code == 400
+    assert "fee_amount" in response.json["errors"]
+
+# ✅ Test Invalid Gold Grams
+@pytest.mark.asyncio
+async def test_invalid_gold_grams(app, client):
+    """Test invalid gold grams validation"""
+    response = await client.post('/api/v1/transformations/transform', json={
+        "euro_amount": 150.00,
+        "fixing_price": 50.00,
+        "fee_amount": 5.00,
+        "gold_grams": 0.00  # Invalid: Cannot be zero
+    })
+    assert response.status_code == 400
+    assert "gold_grams" in response.json["errors"]
+
+# ✅ Test Missing Required Fields
+@pytest.mark.asyncio
+async def test_missing_required_fields(app, client):
+    """Test missing required fields validation"""
+    response = await client.post('/api/v1/transformations/transform', json={
+        "euro_amount": 150.00
+        # Missing fixing_price, fee_amount, and gold_grams
+    })
+    assert response.status_code == 400
+    assert "fixing_price" in response.json["errors"]
+    assert "fee_amount" in response.json["errors"]
+    assert "gold_grams" in response.json["errors"]
+
+# ✅ Test Extra Fields
+@pytest.mark.asyncio
+async def test_extra_fields(app, client):
+    """Test request with extra unexpected fields"""
+    response = await client.post('/api/v1/transformations/transform', json={
+        "euro_amount": 150.00,
+        "fixing_price": 50.00,
+        "fee_amount": 5.00,
+        "gold_grams": 3.5,
+        "unexpected_field": "extra_data"
+    })
+    assert response.status_code == 400
+    assert "unexpected_field" in response.json["errors"]
+
+# ✅ Test Empty Payload
+@pytest.mark.asyncio
+async def test_empty_payload(app, client):
+    """Test empty payload validation"""
+    response = await client.post('/api/v1/transformations/transform', json={})
+    assert response.status_code == 400
+    assert "euro_amount" in response.json["errors"]
+    assert "fixing_price" in response.json["errors"]
+    assert "fee_amount" in response.json["errors"]
+    assert "gold_grams" in response.json["errors"]
+```
+
+---
+
+## **2. Explanation of Test Cases**
+
+1. **Valid Transformation Test:**  
+   - Verifies successful transformation with correct input.
+
+2. **Invalid Euro Amount Test:**  
+   - Validates that the `euro_amount` cannot be less than `100.00`.
+
+3. **Invalid Fixing Price Test:**  
+   - Ensures `fixing_price` is positive.
+
+4. **Invalid Fee Amount Test:**  
+   - Checks `fee_amount` is positive and non-zero.
+
+5. **Invalid Gold Grams Test:**  
+   - Ensures `gold_grams` is positive and non-zero.
+
+6. **Missing Required Fields Test:**  
+   - Validates that all required fields are provided.
+
+7. **Extra Fields Test:**  
+   - Ensures no unexpected fields are allowed in the payload.
+
+8. **Empty Payload Test:**  
+   - Checks that an empty payload triggers validation errors for all fields.
+
+---
+
+## **3. Run the Tests**
+
+Execute the following command in your shell to run the tests:
+
+```bash
+pytest tests/test_transformation.py --disable-warnings -v
+```
+
+---
+
+## **4. Expected Output**
+
+All tests should return appropriate error messages and status codes:
+- Valid test → `200 OK`
+- Invalid tests → `400 Bad Request` with detailed error messages.
+
+---
+
+## **5. Improvements Summary**
+
+✅ **Added Tests for:**  
+- `gold_grams` validation  
+- Extra fields validation  
+- Empty payload validation  
+
+✅ **Improved Error Coverage:**  
+- Clear and specific error messages for each invalid input.
+
+✅ **Best Practices Followed:**  
+- Clear test descriptions.  
+- Comprehensive coverage of all edge cases.
+
+---
+
+If you encounter any issues or have specific edge cases to test further, feel free to share them! 🚀
