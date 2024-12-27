@@ -1,11 +1,14 @@
 
 { pkgs }: {
   deps = [
-    pkgs.python311
-    pkgs.python311Packages.pip
-    pkgs.python311Packages.flask
-    pkgs.python311Packages.sqlalchemy
-    pkgs.nodejs-18_x
+    pkgs.python39
+    pkgs.python39Packages.flask
+    pkgs.python39Packages.flask-sqlalchemy
+    pkgs.python39Packages.sqlalchemy
+    pkgs.python39Packages.werkzeug
+    pkgs.python39Packages.pip
+    pkgs.python39Packages.setuptools
+    pkgs.nodejs-16_x
     pkgs.openssl
     pkgs.postgresql
     pkgs.redis
