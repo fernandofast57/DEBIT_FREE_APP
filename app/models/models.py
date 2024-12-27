@@ -76,7 +76,9 @@ class User(db.Model, UserMixin):
     gold_account = db.relationship('GoldAccount', back_populates='user', uselist=False)
     transactions = db.relationship('Transaction', back_populates='user')
     gold_transformations = db.relationship('GoldTransformation', back_populates='user')
-    noble_relations = db.relationship('NobleRelation', back_populates='user')
+    noble_relations = db.relationship('NobleRelation', 
+                                    back_populates='user',
+                                    foreign_keys='NobleRelation.user_id')
 
     def __repr__(self):
         return f"<User {self.username}>"
