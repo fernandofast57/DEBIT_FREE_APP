@@ -4,7 +4,7 @@ import asyncio
 from decimal import Decimal
 from unittest.mock import patch, MagicMock
 
-from app.services.bonus_service import BonusDistributionService
+from app.services.bonus_distribution_service import BonusDistributionService
 from app.models.models import User, GoldReward, db
 from app.utils.errors import InvalidRankError, InsufficientBalanceError
 
