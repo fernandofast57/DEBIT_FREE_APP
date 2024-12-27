@@ -40,10 +40,23 @@ class SecurityManager:
     @staticmethod
     def sanitize_input(data):
         """Sanitize user input"""
+        def clean_string(s):
+            # Remove common SQL injection patterns
+            sql_patterns = ["DROP TABLE", "UNION SELECT", "--", ";", "DELETE FROM", "INSERT INTO", "UPDATE"]
+            # Remove XSS patterns
+            xss_patterns = ["<script>", "</script>", "javascript:", "<img", "onerror="]
+            # Remove path traversal
+            path_patterns = ["../", "..\\", "/..", "\\..", "../../../../", "..../"]
+            
+            result = s
+            for pattern in sql_patterns + xss_patterns + path_patterns:
+                result = result.replace(pattern, "")
+            return result.strip()
+
         if isinstance(data, dict):
             return {k: SecurityManager.sanitize_input(v) for k, v in data.items()}
         if isinstance(data, str):
-            return data.strip()
+            return clean_string(data)
         return data
 
     def require_rate_limit(self, func):
