@@ -1,4 +1,4 @@
-
+import os
 from flask import request, current_app
 from functools import wraps
 import time
@@ -10,6 +10,12 @@ class SecurityManager:
         self.rate_limit: Dict[str, List[float]] = {}
         self.request_limit = 5
         self.time_window = 60
+        log_dir = "logs"
+        log_file = os.path.join(log_dir, "security.log")
+        os.makedirs(log_dir, exist_ok=True) # Ensure logs directory exists
+
+        logging.basicConfig(filename=log_file, level=logging.WARNING,
+                            format='%(asctime)s - %(levelname)s - %(message)s')
         self.logger = logging.getLogger('security')
         
     def log_security_event(self, event_type: str, event_data: dict):
