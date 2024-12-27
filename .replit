@@ -3,6 +3,7 @@ run = ["python3", "main.py"]
 language = "python3"
 entrypoint = "main.py"
 hidden = [".pytest_cache", "__pycache__", "*.pyc"]
+modules = ["python-3.11"]
 
 [env]
 PYTHONPATH = "${PYTHONPATH}:${REPL_HOME}"
