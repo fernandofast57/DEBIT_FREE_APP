@@ -3,7 +3,7 @@ import os
 from config import Config
 from app import create_app
 
-app = create_app(Config())
+app = create_app(Config)
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 3000))
