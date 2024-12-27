@@ -5,7 +5,7 @@ from functools import wraps
 from app.models import db, User, Transaction
 from app.models.models import Parameter
 
-admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
+admin_bp = Blueprint('custom_admin', __name__, url_prefix='/admin')
 
 def admin_required(f):
     @wraps(f)
