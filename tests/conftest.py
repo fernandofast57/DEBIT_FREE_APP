@@ -55,3 +55,15 @@ def client(app):
 def db(app):
     """Database fixture."""
     return _db
+import pytest
+from unittest.mock import Mock
+from app.services.blockchain_service import BlockchainService
+
+@pytest.fixture
+def mock_blockchain_service(monkeypatch):
+    mock_service = Mock(spec=BlockchainService)
+    mock_service.w3 = Mock()
+    mock_service.contract = Mock()
+    mock_service.account = Mock()
+    monkeypatch.setattr('app.services.noble_rank_service.BlockchainService', lambda: mock_service)
+    return mock_service

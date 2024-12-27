@@ -4,7 +4,7 @@ from decimal import Decimal
 from app.models.models import User, NobleRank, NobleRelation
 from app.config.constants import STATUS_VERIFIED
 
-def test_noble_rank_creation(app, client):
+def test_noble_rank_creation(app, mock_blockchain_service):
     """Test noble rank creation and verification"""
     with app.app_context():
         noble_rank = NobleRank(
@@ -16,7 +16,7 @@ def test_noble_rank_creation(app, client):
         assert noble_rank.rank_name == 'bronze'
         assert noble_rank.level == 1
 
-def test_noble_relation_verification(app, client):
+def test_noble_relation_verification(app, mock_blockchain_service):
     """Test noble relation verification process"""
     with app.app_context():
         user = User(
