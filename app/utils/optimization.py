@@ -66,11 +66,18 @@ def optimize_queries():
 
 def create_indexes():
     """Create necessary indexes for performance"""
-    from sqlalchemy import text
+    from sqlalchemy import text, inspect
+    inspector = inspect(db.engine)
+    
     with db.engine.connect() as conn:
-        conn.execute(text("""
-            CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id);
-            CREATE INDEX IF NOT EXISTS idx_noble_ranks_level ON noble_ranks(level);
-            CREATE INDEX IF NOT EXISTS idx_accounting_entries_date ON accounting_entries(entry_date);
-        """))
-        conn.commit()
+        if 'transactions' in inspector.get_table_names():
+            conn.execute(text("CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id)"))
+            conn.commit()
+        
+        if 'noble_ranks' in inspector.get_table_names():
+            conn.execute(text("CREATE INDEX IF NOT EXISTS idx_noble_ranks_level ON noble_ranks(level)"))
+            conn.commit()
+            
+        if 'accounting_entries' in inspector.get_table_names():
+            conn.execute(text("CREATE INDEX IF NOT EXISTS idx_accounting_entries_date ON accounting_entries(entry_date)"))
+            conn.commit()
