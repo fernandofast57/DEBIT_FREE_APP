@@ -1,5 +1,7 @@
 
-from app import db
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy()
+
 from .models import User, MoneyAccount, GoldAccount, Transaction, NobleRank, NobleRelation, GoldBar, GoldAllocation
 from .noble_system import NobleSystem, BonusTransaction
 
