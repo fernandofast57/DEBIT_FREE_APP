@@ -1,12 +1,10 @@
+
 run = ["python3", "main.py"]
 language = "python3"
 entrypoint = "main.py"
 hidden = [".pytest_cache", "__pycache__", "*.pyc"]
+modules = ["python-3.11"]
 
-[env]
-PYTHONPATH = "${PYTHONPATH}:${REPL_HOME}"
-
-[commands]
+[deployment]
 run = ["python3", "main.py"]
-test = ["python3", "-m", "pytest", "tests/", "--disable-warnings", "-v"]
-deploy = ["python3", "scripts/deploy.py"]
+deploymentTarget = "cloudrun"

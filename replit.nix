@@ -1,13 +1,15 @@
 
 { pkgs }: {
   deps = [
-    pkgs.python39
-    pkgs.python39Packages.flask
-    pkgs.python39Packages.flask_sqlalchemy
-    pkgs.python39Packages.sqlalchemy
-    pkgs.python39Packages.werkzeug
-    pkgs.python39Packages.pip
-    pkgs.python39Packages.setuptools
+    pkgs.python3
+    pkgs.python3Packages.pip
+    pkgs.python3Packages.flask
+    pkgs.python3Packages.sqlalchemy
+    pkgs.python3Packages.flask_sqlalchemy
+    pkgs.python3Packages.flask_login
+    pkgs.python3Packages.flask_migrate
+    pkgs.python3Packages.bcrypt
+    pkgs.python3Packages.marshmallow
     pkgs.nodejs-16_x
     pkgs.openssl
     pkgs.postgresql
