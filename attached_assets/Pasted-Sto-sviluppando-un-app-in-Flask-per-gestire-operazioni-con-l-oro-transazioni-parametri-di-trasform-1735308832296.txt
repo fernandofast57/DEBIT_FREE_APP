@@ -1,0 +1,29 @@
+Sto sviluppando un’app in Flask per gestire operazioni con l’oro (transazioni, parametri di trasformazione, ecc.). Voglio creare un pannello di amministrazione per gestire tutto in modo semplice, con un blueprint /admin.
+
+Richiesta:
+
+Crea una cartella app/admin (o qualcosa di simile) con un file routes.py che contenga:
+Un Blueprint chiamato admin_bp con url_prefix='/admin'.
+Una rotta GET /admin/ (dashboard) che mostri un semplice “Benvenuto nell’area admin”.
+Una rotta GET/POST /admin/parameters per modificare parametri come tassi di trasformazione, commissioni, ecc. Usa un form HTML o Flask-WTF.
+Una rotta GET /admin/users che elenchi gli utenti presenti nel database (User) con possibili azioni (visualizzare info, modificare ruoli).
+Una rotta GET /admin/transactions per mostrare le transazioni, con eventuali filtri (data, utente).
+Implementa il login e un check dei ruoli (se possibile) per consentire l’accesso all’area admin soltanto agli utenti con is_admin = True. Se non disponibile, basterà un controllo semplice (es. un decoratore che verifichi un current_user.is_admin e in caso contrario faccia un redirect).
+Scrivi il codice completo (o uno scheletro funzionante) per il blueprint admin_bp, incluso:
+L’import di Flask e dei moduli necessari (render_template, request, redirect, url_for, ecc.).
+L’integrazione con SQLAlchemy per estrarre utenti e transazioni dal DB.
+Il salvataggio e l’aggiornamento dei parametri (se li gestiamo via DB, crea un modello fittizio Parameter; se preferisci, simula i parametri in un dizionario).
+Mostra come registrare il blueprint nell’app (in app/__init__.py o in main.py) così da poter accedere all’URL /admin.
+Fornisci alcuni template HTML base (per esempio in templates/admin/) con struttura semplice in Jinja2:
+admin/dashboard.html per la home dell’admin,
+admin/parameters.html per la pagina di modifica dei parametri,
+admin/users.html e admin/transactions.html per elencare dati in tabelle.
+Prevedi un minimo di stile e layout (puoi usare Bootstrap, o un semplice <table> con intestazioni di colonna) per rendere la UI un po’ più leggibile.
+Facoltativo: se hai tempo, includi un esempio di test con Pytest per verificare che un utente normale (non admin) non possa accedere alle rotte /admin.
+Output desiderato:
+
+Codice Python pronto all’uso per admin_bp, con commenti che spieghino i passaggi principali.
+Esempi di template HTML minimi in templates/admin/*.
+Istruzioni su come registrare e far funzionare tutto in Flask (incluso un esempio di create_app()).
+Se possibile, un breve file README.md o un commento che descriva i passaggi di setup.
+Grazie! Assicurati che, alla fine, io possa avviare l’app, andare su http://localhost:5000/admin (o /<nome-repl>.repl.co/admin su Replit) ed esplorare l’area di amministrazione funzionante. Se qualcosa non fosse definito (ad es. modelli User o Transaction), crea dei placeholder per far vedere come collegarli.
