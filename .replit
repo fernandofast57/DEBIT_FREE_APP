@@ -1,54 +1,12 @@
-
 run = ["python3", "main.py"]
 language = "python3"
 entrypoint = "main.py"
 hidden = [".pytest_cache", "__pycache__", "*.pyc"]
-modules = ["python-3.11"]
 
 [env]
 PYTHONPATH = "${PYTHONPATH}:${REPL_HOME}"
 
-[nix]
-channel = "stable-24_05"
-
-[debugger]
-support = true
-
-[languages.python3]
-pattern = "**/*.py"
-syntax = "python"
-
-[languages.python3.languageServer]
-start = ["pylsp"]
-
-[unitTest]
-language = "python3"
-
-[deployment]
-run = ["python3", "main.py"]
-deploymentTarget = "cloudrun"
-
-[[ports]]
-localPort = 3000
-externalPort = 3000
-
-[[ports]]
-localPort = 5000
-externalPort = 80
-
-[interpreters]
-[interpreters.python]
-command = ["python3"]
-
 [commands]
 run = ["python3", "main.py"]
 test = ["python3", "-m", "pytest", "tests/", "--disable-warnings", "-v"]
-run = "python main.py"
-modules = ["python-3.11:v20-20230802-322e88b"]
-
-[nix]
-channel = "stable-23_05"
-
-[deployment]
-run = ["python", "main.py"]
-deploymentTarget = "cloudrun"
+deploy = ["python3", "scripts/deploy.py"]
