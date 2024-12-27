@@ -1,7 +1,12 @@
-
+import sys
+import os
 import pytest
-from app import create_app, db as _db
 import asyncio
+
+# Add the app directory to the Python path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
+
+from app import create_app, db as _db
 from app.models.models import User, BonusTransaction
 
 @pytest.fixture(scope='session')
@@ -14,7 +19,8 @@ def event_loop():
 @pytest.fixture(scope='session')
 async def app():
     """Create a Flask application object."""
-    app = create_app()
+    from config import TestConfig
+    app = create_app(TestConfig)
     app.config.update({
         'TESTING': True,
         'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:',
