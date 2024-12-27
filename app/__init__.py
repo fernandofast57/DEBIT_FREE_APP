@@ -4,6 +4,7 @@ from flask_caching import Cache
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from config import Config
+from app.database import db
 
 cache = Cache(config={'CACHE_TYPE': 'simple'})
 
