@@ -63,7 +63,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
     bonus_transactions = relationship('BonusTransaction', back_populates='user', cascade='all, delete-orphan')
-    rewards = relationship('GoldReward', back_populates='user', overlaps="gold_rewards")
+    gold_rewards = relationship('GoldReward', back_populates='user')
 
     @staticmethod
     def hash_password(password):
@@ -71,7 +71,6 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
         return bcrypt.check_password_hash(self.password_hash, password)
-    gold_rewards = relationship('GoldReward', back_populates='user')
     money_account = db.relationship('MoneyAccount', back_populates='user', uselist=False)
     gold_account = db.relationship('GoldAccount', back_populates='user', uselist=False)
     transactions = db.relationship('Transaction', back_populates='user')
