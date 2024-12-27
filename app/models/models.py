@@ -50,6 +50,10 @@ class Transaction(db.Model):
     def __repr__(self):
         return f"<Transaction {self.amount}>"
 
+from flask_bcrypt import Bcrypt
+
+bcrypt = Bcrypt()
+
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     __table_args__ = {'extend_existing': True}
@@ -60,6 +64,13 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128))
     bonus_transactions = relationship('BonusTransaction', back_populates='user', cascade='all, delete-orphan')
     rewards = relationship('GoldReward', back_populates='user', overlaps="gold_rewards")
+
+    @staticmethod
+    def hash_password(password):
+        return bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password_hash, password)
     gold_rewards = relationship('GoldReward', back_populates='user')
     money_account = db.relationship('MoneyAccount', back_populates='user', uselist=False)
     gold_account = db.relationship('GoldAccount', back_populates='user', uselist=False)
