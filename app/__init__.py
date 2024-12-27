@@ -5,6 +5,7 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 from config import Config
 from app.database import db
+from app.admin import admin
 
 cache = Cache(config={'CACHE_TYPE': 'simple'})
 
