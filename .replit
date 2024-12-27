@@ -43,3 +43,12 @@ command = ["python3"]
 [commands]
 run = ["python3", "main.py"]
 test = ["python3", "-m", "pytest", "tests/", "--disable-warnings", "-v"]
+run = "python main.py"
+modules = ["python-3.11:v20-20230802-322e88b"]
+
+[nix]
+channel = "stable-23_05"
+
+[deployment]
+run = ["python", "main.py"]
+deploymentTarget = "cloudrun"
