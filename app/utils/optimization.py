@@ -47,3 +47,27 @@ def optimize_query(model, filters=None):
     if filters:
         query = query.filter_by(**filters)
     return query
+from sqlalchemy import create_engine, event
+from sqlalchemy.engine import Engine
+from app import db
+
+def optimize_queries():
+    """Optimize database queries"""
+    @event.listens_for(Engine, "before_cursor_execute")
+    def before_cursor_execute(conn, cursor, statement, parameters, context, executemany):
+        conn.info.setdefault('query_start_time', []).append(time.time())
+
+    @event.listens_for(Engine, "after_cursor_execute")
+    def after_cursor_execute(conn, cursor, statement, parameters, context, executemany):
+        total = time.time() - conn.info['query_start_time'].pop()
+        if total > 0.2:  # Log slow queries (>200ms)
+            logger.warning(f"Slow query detected: {statement[:100]}... ({total:.2f}s)")
+
+def create_indexes():
+    """Create necessary indexes for performance"""
+    with db.engine.connect() as conn:
+        conn.execute("""
+            CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id);
+            CREATE INDEX IF NOT EXISTS idx_noble_ranks_level ON noble_ranks(level);
+            CREATE INDEX IF NOT EXISTS idx_accounting_entries_date ON accounting_entries(entry_date);
+        """)

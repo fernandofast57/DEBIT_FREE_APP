@@ -13,6 +13,10 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     db.init_app(app)
+    from app.utils.optimization import optimize_queries, create_indexes
+    with app.app_context():
+        optimize_queries()
+        create_indexes()
     migrate.init_app(app, db)
     login_manager.init_app(app)
     admin.init_app(app)
