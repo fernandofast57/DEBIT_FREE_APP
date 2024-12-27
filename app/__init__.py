@@ -43,14 +43,40 @@ swagger = Swagger(template={
 def setup_logging(app):
     if not os.path.exists('logs'):
         os.mkdir('logs')
-    file_handler = RotatingFileHandler('logs/app.log', maxBytes=102400, backupCount=20)
-    file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+        
+    formatter = logging.Formatter(
+        '[%(asctime)s] %(levelname)s in %(module)s: %(message)s'
+        '\nPath: %(pathname)s:%(lineno)d'
+        '\nRequest ID: %(request_id)s'
+    )
+    
+    # Main application log
+    file_handler = RotatingFileHandler('logs/app.log', maxBytes=1024000, backupCount=20)
+    file_handler.setFormatter(formatter)
     file_handler.setLevel(logging.INFO)
+    
+    # Error log
+    error_handler = RotatingFileHandler('logs/error.log', maxBytes=1024000, backupCount=10)
+    error_handler.setFormatter(formatter)
+    error_handler.setLevel(logging.ERROR)
+    
     app.logger.addHandler(file_handler)
+    app.logger.addHandler(error_handler)
     app.logger.setLevel(logging.INFO)
     app.logger.info('Gold Investment startup')
 
 def create_app(config_class):
+    import sentry_sdk
+    from sentry_sdk.integrations.flask import FlaskIntegration
+    
+    if os.getenv('SENTRY_DSN'):
+        sentry_sdk.init(
+            dsn=os.getenv('SENTRY_DSN'),
+            integrations=[FlaskIntegration()],
+            traces_sample_rate=1.0,
+            environment='production' if not os.getenv('FLASK_DEBUG') else 'development'
+        )
+    
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_class())
     
