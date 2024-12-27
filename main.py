@@ -1,8 +1,9 @@
+
 import os
-from config import Config  # Importa direttamente il Config dalla radice del progetto
+from config import Config
 from app import create_app
 
-app = create_app(Config)  # Passa la classe di configurazione qui
+app = create_app(Config)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 3000)))  # Esegui l'app su tutte le interfacce
+    app.run(host='0.0.0.0', port=3000)
