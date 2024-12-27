@@ -53,3 +53,17 @@ def test_security_manager_logging():
                 assert "secret_key" not in last_line
     except FileNotFoundError:
         pytest.skip(f"Security log file not found: {log_file_path}")
+
+
+
+def test_input_validation():
+    """Test input validation and sanitization"""
+    security_manager = SecurityManager()
+    malicious_input = {
+        "user_id": "1234'; DROP TABLE users;--",
+        "password": "<script>alert('xss')</script>"
+    }
+    
+    sanitized = security_manager.sanitize_input(malicious_input)
+    assert "DROP TABLE" not in str(sanitized)
+    assert "<script>" not in str(sanitized)
