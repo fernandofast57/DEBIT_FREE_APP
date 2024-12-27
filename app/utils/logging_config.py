@@ -3,6 +3,8 @@ import logging
 from logging.handlers import RotatingFileHandler
 import os
 
+APP_NAME = 'gold-investment'
+
 def setup_logging(app):
     if not os.path.exists('logs'):
         os.makedirs('logs')
