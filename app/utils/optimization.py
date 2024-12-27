@@ -77,9 +77,11 @@ def optimize_queries():
 
 def create_indexes():
     """Create indexes for better query performance"""
+    from sqlalchemy import inspect
     with db.engine.connect() as conn:
         # Check if tables exist before creating indexes
-        tables = db.engine.table_names()
+        inspector = inspect(db.engine)
+        tables = inspector.get_table_names()
         
         if 'accounting_entries' in tables:
             conn.execute(text("""
