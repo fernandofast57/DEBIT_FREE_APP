@@ -1,4 +1,3 @@
-
 import os
 import logging
 from logging.handlers import RotatingFileHandler
@@ -54,15 +53,17 @@ from app import db
 
 def optimize_queries():
     """Optimize database queries"""
-    @event.listens_for(Engine, "before_cursor_execute")
-    def before_cursor_execute(conn, cursor, statement, parameters, context, executemany):
-        conn.info.setdefault('query_start_time', []).append(time.time())
-
-    @event.listens_for(Engine, "after_cursor_execute")
-    def after_cursor_execute(conn, cursor, statement, parameters, context, executemany):
-        total = time.time() - conn.info['query_start_time'].pop()
-        if total > 0.2:  # Log slow queries (>200ms)
-            logger.warning(f"Slow query detected: {statement[:100]}... ({total:.2f}s)")
+    from sqlalchemy import text
+    
+    # Add indexes for most frequent queries
+    with db.engine.connect() as conn:
+        conn.execute(text("""
+            CREATE INDEX IF NOT EXISTS idx_accounting_entries_user ON accounting_entries(user_id);
+            CREATE INDEX IF NOT EXISTS idx_accounting_entries_date ON accounting_entries(entry_date);
+            CREATE INDEX IF NOT EXISTS idx_noble_ranks_level_status ON noble_ranks(level, status);
+            CREATE INDEX IF NOT EXISTS idx_transformations_date ON transformations(transformation_date);
+        """))
+        conn.commit()
 
 def create_indexes():
     """Create necessary indexes for performance"""
@@ -81,3 +82,13 @@ def create_indexes():
         if 'accounting_entries' in inspector.get_table_names():
             conn.execute(text("CREATE INDEX IF NOT EXISTS idx_accounting_entries_date ON accounting_entries(entry_date)"))
             conn.commit()
+
+    @event.listens_for(Engine, "before_cursor_execute")
+    def before_cursor_execute(conn, cursor, statement, parameters, context, executemany):
+        conn.info.setdefault('query_start_time', []).append(time.time())
+
+    @event.listens_for(Engine, "after_cursor_execute")
+    def after_cursor_execute(conn, cursor, statement, parameters, context, executemany):
+        total = time.time() - conn.info['query_start_time'].pop()
+        if total > 0.2:  # Log slow queries (>200ms)
+            logger.warning(f"Slow query detected: {statement[:100]}... ({total:.2f}s)")
