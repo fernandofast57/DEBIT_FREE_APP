@@ -109,6 +109,7 @@ class NobleRank(db.Model):
     level = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
     user = db.relationship('User', back_populates='noble_ranks')
+    relations = db.relationship('NobleRelation', back_populates='noble_rank', lazy='dynamic')
 
     def __repr__(self):
         return f"<NobleRank {self.rank_name}>"
