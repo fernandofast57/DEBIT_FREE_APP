@@ -40,21 +40,15 @@ class PerformanceMonitor:
                 return result
             return wrapper
         return decorator
-    
-    def get_metrics(self, category: str) -> Dict:
-        if category not in self.metrics:
-            return {}
-        
-        times = self.metrics[category]
-        return {
-            'count': len(times),
-            'average': mean(times),
-            'median': median(times),
-            'min': min(times),
-            'max': max(times)
-        }
-    
-    def reset_metrics(self):
-        self.metrics.clear()
 
 performance_monitor = PerformanceMonitor()
+
+def monitor_performance(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        duration = (time.time() - start_time) * 1000
+        performance_monitor.track_time('api_response')(lambda: None)()
+        return result
+    return wrapper
