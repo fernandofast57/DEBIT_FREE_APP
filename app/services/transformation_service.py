@@ -5,6 +5,7 @@ from app.database import db
 from app.models.models import User, MoneyAccount, GoldAccount, Transaction, GoldTransformation
 from app.services.blockchain_service import BlockchainService
 from app.services.validators.transaction_validator import TransactionValidator
+from app.utils.performance_monitor import performance_monitor
 
 class TransformationService:
     def __init__(self):
