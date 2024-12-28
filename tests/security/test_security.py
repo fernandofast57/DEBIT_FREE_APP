@@ -51,6 +51,13 @@ def test_security_manager_logging():
     
     try:
         with open(log_file_path, "r") as f:
+            lines = f.readlines()
+            if lines:
+                last_line = lines[-1]
+                assert "sensitive_data" not in last_line
+                assert "secret_key" not in last_line
+    except FileNotFoundError:
+        pytest.skip(f"Security log file not found: {log_file_path}")
 
 def test_permission_checking():
     """Test permission checking functionality"""
@@ -72,16 +79,6 @@ def test_role_permission_validation():
     assert security_manager._role_has_permission("admin", "users", "write")
     assert security_manager._role_has_permission("manager", "transactions", "read")
     assert not security_manager._role_has_permission("user", "users", "write")
-
-            lines = f.readlines()
-            if lines:
-                last_line = lines[-1]
-                assert "sensitive_data" not in last_line
-                assert "secret_key" not in last_line
-    except FileNotFoundError:
-        pytest.skip(f"Security log file not found: {log_file_path}")
-
-
 
 def test_input_validation():
     """Test input validation and sanitization"""
