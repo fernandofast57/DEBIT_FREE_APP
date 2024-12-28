@@ -41,7 +41,7 @@ def setup_optimization(app):
 
 def optimize_query(model, filters=None):
     """Optimize database queries using joins and eager loading"""
-    query = db.session.query(model)
+    query = model.query
     if hasattr(model, 'user'):
         query = query.join(model.user)
     if filters:
