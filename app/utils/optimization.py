@@ -11,6 +11,13 @@ def optimize_queries():
     db.session.execute('PRAGMA cache_size=10000')
     db.session.commit()
 
+def create_indexes():
+    """Create database indexes for better query performance"""
+    db.session.execute('CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)')
+    db.session.execute('CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id)')
+    db.session.execute('CREATE INDEX IF NOT EXISTS idx_noble_relations_user_id ON noble_relations(user_id)')
+    db.session.commit()
+
 def optimize_query(model, filters=None, limit=100):
     """Optimize database queries using SQLAlchemy"""
     query = db.session.query(model)
