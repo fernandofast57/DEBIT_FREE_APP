@@ -76,9 +76,16 @@ class BlockchainService:
             if self.w3.is_connected():
                 logger.info(f"Connected to blockchain node: {endpoint}")
                 self._setup_contract()
-                self._setup_account() # Added to setup account after connection
+                self._setup_account()
                 return True
             return False
+        except Exception as e:
+            logger.error(f"Failed to connect to blockchain: {str(e)}")
+            return False
+
+    def is_connected(self) -> bool:
+        """Check if blockchain connection is established and account is initialized"""
+        return bool(self.w3 and self.w3.is_connected() and self.account and self.contract)
         except Exception as e:
             logger.error(f"Failed to connect to {endpoint}: {str(e)}")
             return self._try_next_rpc()
