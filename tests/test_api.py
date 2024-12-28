@@ -1,4 +1,3 @@
-
 import pytest
 from app import create_app
 from flask import json
@@ -55,10 +54,9 @@ def test_invalid_transformation(client):
     data = json.loads(response.data)
     assert 'error' in data
 
-@pytest.mark.asyncio
-async def test_async_endpoints(async_client):
+def test_async_endpoints(client): #Corrected async test
     """Test endpoints that require async client"""
-    response = await async_client.get('/api/v1/status')
+    response = client.get('/api/v1/status')
     assert response.status_code == 200
-    data = await response.json()
+    data = response.json()
     assert 'status' in data

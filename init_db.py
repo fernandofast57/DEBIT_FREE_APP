@@ -1,6 +1,6 @@
 
-from app import create_app, db
-from app.models.models import User, MoneyAccount, GoldAccount
+from app import create_app
+from app.models.models import db, User, MoneyAccount, GoldAccount, NobleRank
 
 def init_db():
     app = create_app()
