@@ -75,6 +75,10 @@ def get_system_metrics():
 def health_check():
     """Basic health check endpoint"""
     return jsonify({'status': 'healthy'})
+
+async def status():
+    """Async status check endpoint"""
+    return jsonify({"status": "ok"})
 from flask import Blueprint, jsonify
 from app.utils.security import admin_required
 

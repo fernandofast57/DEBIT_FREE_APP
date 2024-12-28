@@ -1,6 +1,6 @@
 
 # Core Framework
-Flask[async]>=2.3.1
+Flask[async]==3.0.3
 Flask-SQLAlchemy>=3.0.2
 SQLAlchemy>=2.0.23
 Flask-Migrate>=4.0.5
