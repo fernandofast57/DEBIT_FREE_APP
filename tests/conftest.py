@@ -2,6 +2,7 @@
 import sys
 import os
 import pytest
+from unittest.mock import Mock
 from flask import appcontext_pushed
 
 # Add the app directory to the Python path
