@@ -43,7 +43,9 @@ class Transaction(db.Model):
     amount = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
     transaction_type = db.Column(db.String(50), nullable=False)
     status = db.Column(db.String(20), default='pending')
+    date = db.Column(db.DateTime, default=datetime.utcnow)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    description = db.Column(db.String(200))
     
     user = db.relationship('User', back_populates='transactions')
 
