@@ -19,9 +19,9 @@ class BonusDistributionService:
     def _init_bonus_rates(self):
         """Initialize bonus rates with proper decimal precision"""
         self.bonus_rates = {
-            'level_1': Decimal('0.007').quantize(Decimal('0.0001')),
-            'level_2': Decimal('0.005').quantize(Decimal('0.0001')),
-            'level_3': Decimal('0.005').quantize(Decimal('0.0001')),
+            'count': Decimal('0.007').quantize(Decimal('0.0001')),   # Level 1
+            'duke': Decimal('0.005').quantize(Decimal('0.0001')),    # Level 2
+            'prince': Decimal('0.005').quantize(Decimal('0.0001')),  # Level 3
             'operational': Decimal('0.05').quantize(Decimal('0.0001'))
         }
         
