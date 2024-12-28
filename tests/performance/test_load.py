@@ -1,10 +1,11 @@
 
 import pytest
 from app import create_app
-from app.utils.optimization import optimize_query
+from app.utils.optimization import OptimizationService
 from app.models.models import User, GoldAccount
 from time import time
 import concurrent.futures
+from flask import url_for
 
 def test_concurrent_requests(client):
     """Test handling of multiple concurrent requests"""
@@ -19,8 +20,9 @@ def test_concurrent_requests(client):
 
 def test_query_optimization():
     """Test database query optimization"""
+    optimizer = OptimizationService()
     start_time = time()
-    users = optimize_query(User, limit=10).all()
+    users = optimizer.optimize_query(User).limit(10).all()
     query_time = time() - start_time
     
     assert query_time < 1.0  # Query should complete within 1 second
@@ -60,9 +62,9 @@ def test_api_response_time(client):
 
 def test_database_query_performance(client):
     """Test database query performance"""
-    start_time = time.time()
-    response = client.get('/api/v1/transformations/status')
-    end_time = time.time()
+    start_time = time()
+    response = client.get('/api/v1/transformations')
+    end_time = time()
     
     assert response.status_code == 200
     assert (end_time - start_time) < 0.3  # Query should complete under 300ms
