@@ -1,0 +1,79 @@
+## Documento di Progetto: Piattaforma di Investimento in Oro
+
+Questo documento elenca i requisiti e le specifiche tecniche per ogni componente dell'app da realizzare con Replit.
+
+**1. Panoramica del Sistema**
+
+*   **Obiettivo:** Creare una piattaforma che permetta agli utenti di investire in oro tramite bonifici ricorrenti, trasformati automaticamente in grammi d'oro ogni martedì al fixing delle 15:00.
+*   **Modello di Business:** Il sistema gestirà uno spread del 6,7% su ogni investimento, di cui il 5% andrà all'organizzazione e l'1,7% alla rete di affiliazione.
+*   **Blockchain:**  **Polygon** verrà utilizzata per garantire la trasparenza e la tracciabilità delle transazioni, con un sistema ibrido per ottimizzare i costi.
+
+**2. Componenti Principali**
+
+*   **Backend (Flask):**
+    *   **Gestione Autenticazione:** Registrazione, login, 2FA, KYC, verifica documenti.
+    *   **Gestione Bonifici:** Ricezione bonifici ricorrenti, validazione IBAN, tracking pagamenti.
+    *   **Gestione Trasformazioni:**  **Processo automatico ogni martedì alle 15:00**, calcolo del fixing, conversione euro-oro, applicazione spread, distribuzione commissioni.
+    *   **Gestione Affiliati:** Tracking rete, calcolo commissioni multilivello, gestione status e titoli nobiliari.
+    *   **Sistema Notifiche:** Avvisi per trasformazioni, bonifici, upgrade di status, alert prezzi, comunicazioni di sistema.
+    *   **Endpoint API:** Definiti in base alle funzionalità.
+*   **Frontend (React):**
+    *   **Interfaccia Utente:** Design intuitivo e reattivo, basato su **TailwindUI** e componenti **shadcn/ui**.
+    *   **Integrazione API:**  **Axios** per le chiamate al backend.
+    *   **Componenti Principali:** 
+        *   Registrazione e Login
+        *   Dashboard utente con visualizzazione saldo, oro, affiliati
+        *   Gestione Bonifici
+        *   Sezione Notizie
+        *   Risorse Didattiche
+*   **Blockchain (Polygon):**
+    *   **Smart Contracts:**  **Solidity** per la gestione delle trasformazioni e del sistema di affiliazione.
+    *   **Interfaccia Backend:**  **Web3.py** per l'interazione con la blockchain.
+    *   **Ottimizzazione Costi:**  **Elaborazione in batch** (50 transazioni per batch), storage ibrido on/off-chain, ottimizzazione del gas.
+*   **Database:**
+    *   **PostgreSQL:** Database principale per la gestione dei dati.
+    *   **Redis:** Cache per migliorare le performance.
+    *   **MongoDB Atlas:** Soluzione cloud per backup e sicurezza (opzionale).
+
+**3. Specifiche Tecniche**
+
+*   **Linguaggi di Programmazione:** Python (backend), JavaScript (frontend), Solidity (smart contracts).
+*   **Framework:** Flask (backend), React (frontend).
+*   **Librerie:** Web3.py, Web3.js, Axios, TailwindUI, shadcn/ui.
+*   **Strumenti di Sviluppo:** Replit, Git.
+*   **Testing:** Unit testing, integration testing, performance testing.
+*   **Sicurezza:** HTTPS, JWT, crittografia dei dati, 2FA.
+*   **Compliance:** GDPR.
+
+**4. Fasi di Sviluppo**
+
+*   **Fase 1: Setup (2-3 settimane):** Configurazione ambienti, struttura base, prime API.
+*   **Fase 2: Core (6-8 settimane):** Sistema di autenticazione, dashboard, gestione bonifici, trasformazioni.
+*   **Fase 3: Avanzate (6-8 settimane):** Sistema di affiliazione, integrazione blockchain, sistema di notifiche.
+*   **Fase 4: Rifinitura (4-6 settimane):** UI/UX, performance, audit di sicurezza, testing completo.
+*   **Fase 5: Deployment (3-4 settimane):** Configurazione server, deploy su Replit, testing finale.
+
+**5. Strumenti e Risorse**
+
+*   **Replit Pro:** Ambiente di sviluppo e hosting.
+*   **TailwindUI:** Template per l'interfaccia utente.
+*   **MongoDB Atlas:** Database cloud (opzionale).
+*   **Sentry:** Monitoraggio errori e performance.
+*   **Postman:** Testing API.
+*   **GitHub:** Versionamento del codice.
+
+**6. Considerazioni Aggiuntive**
+
+*   **Due diligence e onboarding:** Definire un processo chiaro per la verifica dei clienti.
+*   **Documentazione:** Creare una guida completa per lo sviluppo, l'utilizzo e la manutenzione del sistema.
+*   **Formazione:**  **Sessioni giornaliere di apprendimento** per acquisire le competenze necessarie.
+*   **Costi:**  **Budget iniziale e costi operativi** da considerare.
+
+**7. Prossimi Passi**
+
+*   **Setup Immediato:** Creare account Replit Pro, configurare repository Git, installare strumenti.
+*   **Sviluppo MVP:** Iniziare con un sistema di autenticazione base, una dashboard semplice e una prima integrazione blockchain.
+*   **Validazione:**  **Effettuare test di sicurezza, review delle performance e raccogliere feedback iniziale.**
+*   **Pianificazione Dettagliata:** Definire sprint, allocare risorse e creare una timeline dettagliata.
+
+**Questo documento di progetto fornirà una solida base per lo sviluppo della tua piattaforma di investimento in oro. Ricorda di adattarlo alle tue esigenze specifiche e di iterare durante il processo di sviluppo.**
