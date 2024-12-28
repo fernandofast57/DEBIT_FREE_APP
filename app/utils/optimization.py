@@ -4,6 +4,13 @@ from app import db
 import logging
 from time import time
 
+def optimize_queries():
+    """Apply database query optimizations"""
+    db.session.execute('PRAGMA journal_mode=WAL')
+    db.session.execute('PRAGMA synchronous=NORMAL')
+    db.session.execute('PRAGMA cache_size=10000')
+    db.session.commit()
+
 def optimize_query(model, filters=None, limit=100):
     """Optimize database queries using SQLAlchemy"""
     query = db.session.query(model)
