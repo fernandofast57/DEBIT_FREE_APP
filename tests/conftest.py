@@ -1,7 +1,7 @@
+
 import sys
 import os
 import pytest
-import asyncio
 from flask import appcontext_pushed
 
 # Add the app directory to the Python path
@@ -9,15 +9,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../'
 
 from app import create_app, db as _db
 from app.models.models import User, BonusTransaction
-
-@pytest.fixture(scope="function")
-
-@pytest.fixture
-async def async_client(app):
-    """Create an async test client"""
-    return app.test_client()
-
-# event_loop fixture is provided by pytest-asyncio
 
 @pytest.fixture(scope='session')
 def app():
@@ -58,9 +49,11 @@ def client(app):
 def db(app):
     """Database fixture."""
     return _db
-import pytest
-from unittest.mock import Mock
-from app.services.blockchain_service import BlockchainService
+
+@pytest.fixture
+async def async_client(app):
+    """Create an async test client"""
+    return app.test_client()
 
 @pytest.fixture
 def mock_blockchain_service(monkeypatch):
