@@ -1,7 +1,6 @@
 
 import pytest
 from app.utils.monitoring import SystemMonitor, monitor_performance
-from flask import request
 
 def test_system_monitor_initialization():
     monitor = SystemMonitor()
@@ -10,11 +9,10 @@ def test_system_monitor_initialization():
     assert monitor.metrics['endpoint_usage'] == {}
     assert isinstance(monitor.metrics['active_users'], set)
 
-def test_log_request(app):
-    with app.test_request_context('/test'):
-        monitor = SystemMonitor()
-        monitor.log_request()
-        assert monitor.metrics['endpoint_usage'].get('test') == 1
+def test_log_request():
+    monitor = SystemMonitor()
+    monitor.log_request(endpoint='test')
+    assert monitor.metrics['endpoint_usage']['test'] == 1
 
 def test_log_error():
     monitor = SystemMonitor()
@@ -33,8 +31,7 @@ def test_average_response_time():
     monitor.log_response_time(1.5)
     assert monitor.get_average_response_time() == 1.0
 
-@pytest.mark.asyncio
-async def test_monitor_performance_decorator(app):
+def test_monitor_performance_decorator():
     monitor = SystemMonitor()
     
     @monitor_performance

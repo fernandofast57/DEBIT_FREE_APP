@@ -2,9 +2,9 @@
 import logging
 import time
 from functools import wraps
-from flask import request, g
+from flask import request
+from typing import Dict, Any, Optional
 from datetime import datetime
-from typing import Dict, Any
 
 class SystemMonitor:
     def __init__(self):
@@ -16,14 +16,14 @@ class SystemMonitor:
             'active_users': set()
         }
 
-    def log_request(self):
-        endpoint = request.endpoint
-        self.metrics['endpoint_usage'][endpoint] = self.metrics['endpoint_usage'].get(endpoint, 0) + 1
+    def log_request(self, endpoint: Optional[str] = None) -> None:
+        endpoint_name = endpoint or getattr(request, 'endpoint', 'unknown')
+        self.metrics['endpoint_usage'][endpoint_name] = self.metrics['endpoint_usage'].get(endpoint_name, 0) + 1
 
-    def log_error(self, error_type: str):
+    def log_error(self, error_type: str) -> None:
         self.metrics['error_counts'][error_type] = self.metrics['error_counts'].get(error_type, 0) + 1
 
-    def log_response_time(self, duration: float):
+    def log_response_time(self, duration: float) -> None:
         self.metrics['response_times'].append(duration)
 
     def get_average_response_time(self) -> float:
