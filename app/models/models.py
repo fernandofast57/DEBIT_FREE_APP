@@ -64,7 +64,7 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128))
     noble_ranks = relationship('NobleRank', back_populates='user', cascade='all, delete-orphan')
     bonus_transactions = relationship('BonusTransaction', back_populates='user', cascade='all, delete-orphan')
-    gold_rewards = relationship('GoldReward', back_populates='user')
+    rewards = relationship('GoldReward', back_populates='user', cascade='all, delete-orphan')
 
     @staticmethod
     def hash_password(password):
@@ -195,14 +195,12 @@ class GoldReward(db.Model):
     status = db.Column(db.String(20), default='pending')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
-    user = db.relationship('User', back_populates='rewards')  # 'structure', 'achievement'
+    user = db.relationship('User', back_populates='rewards')
     level = db.Column(db.Integer)
     euro_amount = db.Column(db.Numeric(precision=10, scale=2))
     fixing_price = db.Column(db.Numeric(precision=10, scale=2))
     threshold_reached = db.Column(db.Numeric(precision=10, scale=2))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    
-    user = db.relationship('User', back_populates='rewards')
 
     def __repr__(self):
         return f"<GoldReward {self.gold_amount}g - {self.reward_type}>"
