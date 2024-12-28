@@ -31,7 +31,6 @@ def create_app(config_class=Config):
                 print("Tables created successfully.")
                 optimize_queries()
                 create_indexes()
-                create_indexes()
 
     login_manager.init_app(app)
     admin.init_app(app)
