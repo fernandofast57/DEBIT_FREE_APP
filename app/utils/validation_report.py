@@ -1,9 +1,10 @@
+
 import logging
 from datetime import datetime
 from app.utils.structure_validator import StructureValidator
 from app.services.blockchain_service import BlockchainService
 from app.services.batch_collection_service import BatchCollectionService
-from app.config.logging_config import GlossaryComplianceLogger
+from app.utils.logging_config import GlossaryComplianceLogger
 
 class ValidationReport:
     def __init__(self):

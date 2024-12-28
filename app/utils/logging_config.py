@@ -5,15 +5,6 @@ import os
 
 APP_NAME = "gold_investment"
 
-class GlossaryComplianceLogger:
-    def __init__(self):
-        self.logger = logging.getLogger('glossary_compliance')
-        
-    def log_validation(self, component: str, results: dict):
-        """Log validation results for glossary compliance"""
-        for key, value in results.items():
-            self.logger.info(f"{component}.{key}: {'✓' if value else '✗'}")
-
 def setup_logging():
     if not os.path.exists('logs'):
         os.makedirs('logs')
