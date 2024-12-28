@@ -27,3 +27,26 @@ class NotificationService:
         except Exception as e:
             logger.error(f"Error sending notification: {str(e)}")
             return {'status': 'error', 'message': str(e)}
+            
+    @performance_monitor.track_time('notification')
+    async def get_user_notifications(self, user_id: int) -> list:
+        """Recupera le notifiche dell'utente."""
+        try:
+            notifications = []
+            transformations = await GoldTransformation.query.filter_by(user_id=user_id).order_by(GoldTransformation.created_at.desc()).limit(10).all()
+            
+            for transformation in transformations:
+                notifications.append({
+                    'type': 'transformation',
+                    'data': {
+                        'euro_amount': float(transformation.euro_amount),
+                        'gold_grams': float(transformation.gold_grams),
+                        'status': transformation.status,
+                        'timestamp': transformation.created_at.isoformat()
+                    }
+                })
+            
+            return notifications
+        except Exception as e:
+            logger.error(f"Error fetching notifications: {str(e)}")
+            return []
