@@ -68,8 +68,18 @@ class BatchCollectionService:
                 )
                 transactions.append(transaction)
             
-            db.session.add_all(transactions)
-            db.session.commit()
+            # Process transactions in optimized batches
+            batch_size = 50 #Added batch size
+            for i in range(0, len(transactions), batch_size):
+                batch = transactions[i:i + batch_size]
+                try:
+                    db.session.add_all(batch)
+                    db.session.commit()
+                except Exception as e:
+                    logging.error(f"Batch processing error: {e}")
+                    db.session.rollback()
+                    continue
+
 
             # Prepara dati per blockchain
             blockchain_batch = [{

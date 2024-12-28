@@ -60,3 +60,15 @@ class NobleRankService:
             await db.session.rollback()
             logger.error(f"Failed to update user rank: {str(e)}")
             return {'status': 'rejected', 'message': str(e)}
+def generate_network_report(self, noble_id: int):
+    """Generate detailed network performance report"""
+    affiliates = self.get_network_affiliates(noble_id)
+    total_volume = sum(a.transaction_volume for a in affiliates)
+    network_growth = len([a for a in affiliates if a.created_at.month == datetime.now().month])
+    
+    return {
+        "total_affiliates": len(affiliates),
+        "monthly_growth": network_growth,
+        "total_volume": total_volume,
+        "performance_score": calculate_performance_score(total_volume, network_growth)
+    }

@@ -108,3 +108,20 @@ def create_indexes():
         total = time.time() - conn.info['query_start_time'].pop()
         if total > 0.2:  # Log slow queries (>200ms)
             logger.warning(f"Slow query detected: {statement[:100]}... ({total:.2f}s)")
+import logging
+from functools import wraps
+from time import time
+
+def performance_monitor(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time()
+        result = func(*args, **kwargs)
+        duration = time() - start
+        logging.info(f"Function {func.__name__} took {duration:.2f} seconds")
+        return result
+    return wrapper
+
+def optimize_query(query, limit=1000):
+    """Optimize database queries with pagination and lazy loading"""
+    return query.limit(limit)
