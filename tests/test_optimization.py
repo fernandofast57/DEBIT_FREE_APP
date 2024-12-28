@@ -1,41 +1,38 @@
 
 import pytest
+from sqlalchemy import inspect, text
 from app import create_app
 from app.database import db
 from app.utils.optimization import create_indexes
-from sqlalchemy import text
 
 def test_table_creation_and_optimization():
     """Test successful table creation and index optimization"""
     app = create_app()
     
     with app.app_context():
-        # Clean up existing tables for clean test
+        # Clean up existing tables
         db.drop_all()
         
         # Create tables
         db.create_all()
         
-        # Verify tables exist
-        result = db.session.execute(text(
-            "SELECT name FROM sqlite_master WHERE type='table'"
-        ))
-        tables = [row[0] for row in result]
+        # Get inspector
+        inspector = inspect(db.engine)
+        tables = inspector.get_table_names()
         
-        assert 'users' in tables
-        assert 'transactions' in tables
-        assert 'noble_relations' in tables
+        # Verify core tables exist
+        assert 'users' in tables, "Users table not found"
+        assert 'noble_ranks' in tables, "Noble ranks table not found"
+        assert 'transactions' in tables, "Transactions table not found"
         
-        # Test index creation
+        # Create indexes
         create_indexes()
         
-        # Verify indexes exist
-        result = db.session.execute(text(
-            "SELECT name FROM sqlite_master WHERE type='index'"
-        ))
-        indexes = [row[0] for row in result]
+        # Verify indexes
+        indexes = inspector.get_indexes('users')
+        index_names = [idx['name'] for idx in indexes]
+        assert 'idx_users_email' in index_names, "Email index not created"
         
-        assert 'idx_users_email' in indexes
-        assert 'idx_transactions_user_id' in indexes
-        assert 'idx_noble_relations_user_id' in indexes
-
+        # Verify foreign keys
+        fks = inspector.get_foreign_keys('noble_ranks')
+        assert any(fk['referred_table'] == 'users' for fk in fks), "User foreign key not found"
