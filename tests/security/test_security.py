@@ -51,6 +51,28 @@ def test_security_manager_logging():
     
     try:
         with open(log_file_path, "r") as f:
+
+def test_permission_checking():
+    """Test permission checking functionality"""
+    security_manager = SecurityManager()
+    
+    # Test basic user permissions
+    assert security_manager.check_permission("user123", "profile", "read")
+    assert security_manager.check_permission("user123", "profile", "write")
+    assert not security_manager.check_permission("user123", "users", "write")
+    
+    # Test permission caching
+    assert "user123:profile:read" in security_manager.permission_cache
+
+def test_role_permission_validation():
+    """Test role-based permission validation"""
+    security_manager = SecurityManager()
+    
+    # Test role permission checks
+    assert security_manager._role_has_permission("admin", "users", "write")
+    assert security_manager._role_has_permission("manager", "transactions", "read")
+    assert not security_manager._role_has_permission("user", "users", "write")
+
             lines = f.readlines()
             if lines:
                 last_line = lines[-1]
