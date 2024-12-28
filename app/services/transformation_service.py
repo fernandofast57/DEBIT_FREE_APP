@@ -19,6 +19,8 @@ class TransformationService:
 
     @performance_monitor.track_time('transformation') # Assumes performance_monitor object exists.  Add import if needed.
     async def transform_to_gold(self, user_id: int, fixing_price: Decimal) -> Dict[str, Any]:
+        from app.services.notification_service import NotificationService
+        notification_service = NotificationService()
         async with db.session.begin_nested(): # This already provides transaction management; assumes atomicity
             try:
                 user = await User.query.get(user_id)
@@ -64,6 +66,9 @@ class TransformationService:
                 
                 db.session.add(transformation)
                 await db.session.commit()
+                
+                # Send notification
+                await notification_service.notify_transformation(user, transformation)
                 
                 return {
                     'status': 'verified',
