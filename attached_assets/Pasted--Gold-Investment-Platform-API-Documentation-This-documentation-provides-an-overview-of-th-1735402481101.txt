@@ -1,0 +1,294 @@
+# 📚 **Gold Investment Platform API Documentation**
+
+This documentation provides an overview of the core endpoints, their expected behavior, response formats, and error codes for the **Gold Investment Platform** API.
+
+---
+
+## 🚀 **Core Endpoints**
+
+### 🛡️ **Authentication**
+
+Endpoints related to user authentication and security.
+
+#### **1. Register User**  
+- **`POST /api/v1/auth/register`**  
+- **Description:** Creates a new user account with required credentials and personal details.  
+- **Request Body:**  
+   ```json
+   {
+       "username": "john_doe",
+       "email": "john@example.com",
+       "password": "securePassword123"
+   }
+   ```
+- **Response Example:**  
+   ```json
+   {
+       "success": true,
+       "data": {
+           "user_id": 123,
+           "status": "pending_verification"
+       },
+       "message": "User registered successfully."
+   }
+   ```
+
+---
+
+#### **2. Login User**  
+- **`POST /api/v1/auth/login`**  
+- **Description:** Authenticates a user and returns a JWT token.  
+- **Request Body:**  
+   ```json
+   {
+       "email": "john@example.com",
+       "password": "securePassword123"
+   }
+   ```
+- **Response Example:**  
+   ```json
+   {
+       "success": true,
+       "data": {
+           "token": "eyJhbGciOiJIUzI1..."
+       },
+       "message": "Login successful."
+   }
+   ```
+
+---
+
+#### **3. Verify 2FA**  
+- **`POST /api/v1/auth/verify-2fa`**  
+- **Description:** Verifies the user's two-factor authentication (2FA) code.  
+- **Request Body:**  
+   ```json
+   {
+       "user_id": 123,
+       "code": "123456"
+   }
+   ```
+- **Response Example:**  
+   ```json
+   {
+       "success": true,
+       "data": null,
+       "message": "2FA verification successful."
+   }
+   ```
+
+---
+
+### 💰 **Transformations**
+
+Endpoints related to gold transformation processes.
+
+#### **4. Weekly Gold Transformation**  
+- **`POST /api/v1/transformations/transform`**  
+- **Description:** Executes a weekly transformation of user funds into gold.  
+- **Request Body:**  
+   ```json
+   {
+       "user_id": 123,
+       "amount": 500.0
+   }
+   ```
+- **Response Example:**  
+   ```json
+   {
+       "success": true,
+       "data": {
+           "transformation_id": "trans_001",
+           "grams_of_gold": 10.5,
+           "rate_per_gram": 47.62,
+           "timestamp": "2024-06-01T15:00:00Z"
+       },
+       "message": "Transformation completed successfully."
+   }
+   ```
+
+---
+
+### 👑 **Noble System**
+
+Endpoints related to the noble ranking and bonus distribution system.
+
+#### **5. Get Current Noble Rank**  
+- **`GET /api/v1/noble/rank`**  
+- **Description:** Retrieves the current noble rank of the user.  
+- **Request Query Params:**  
+   ```
+   user_id: 123
+   ```
+- **Response Example:**  
+   ```json
+   {
+       "success": true,
+       "data": {
+           "rank": "Duke",
+           "points": 1500,
+           "next_rank": "Prince"
+       },
+       "message": "Noble rank retrieved successfully."
+   }
+   ```
+
+---
+
+#### **6. Get Bonus Distribution History**  
+- **`GET /api/v1/noble/bonuses`**  
+- **Description:** Retrieves the bonus distribution history for the user.  
+- **Request Query Params:**  
+   ```
+   user_id: 123
+   ```
+- **Response Example:**  
+   ```json
+   {
+       "success": true,
+       "data": [
+           {
+               "bonus_id": "bonus_001",
+               "amount": 50.0,
+               "timestamp": "2024-05-28T12:00:00Z"
+           },
+           {
+               "bonus_id": "bonus_002",
+               "amount": 70.0,
+               "timestamp": "2024-06-01T12:00:00Z"
+           }
+       ],
+       "message": "Bonus history retrieved successfully."
+   }
+   ```
+
+---
+
+### 🧾 **Accounting**
+
+Endpoints related to user account balances and transactions.
+
+#### **7. Get Current Balance**  
+- **`GET /api/v1/accounting/balance`**  
+- **Description:** Retrieves the user's current balance in gold and fiat currency.  
+- **Request Query Params:**  
+   ```
+   user_id: 123
+   ```
+- **Response Example:**  
+   ```json
+   {
+       "success": true,
+       "data": {
+           "gold_balance": 15.0,
+           "fiat_balance": 200.0
+       },
+       "message": "Balance retrieved successfully."
+   }
+   ```
+
+---
+
+#### **8. Get Transaction History**  
+- **`GET /api/v1/accounting/transactions`**  
+- **Description:** Retrieves the transaction history for the user.  
+- **Request Query Params:**  
+   ```
+   user_id: 123
+   ```
+- **Response Example:**  
+   ```json
+   {
+       "success": true,
+       "data": [
+           {
+               "transaction_id": "txn_001",
+               "type": "purchase",
+               "amount": 500.0,
+               "status": "completed",
+               "timestamp": "2024-06-01T12:00:00Z"
+           },
+           {
+               "transaction_id": "txn_002",
+               "type": "bonus",
+               "amount": 50.0,
+               "status": "completed",
+               "timestamp": "2024-06-02T12:00:00Z"
+           }
+       ],
+       "message": "Transactions retrieved successfully."
+   }
+   ```
+
+---
+
+## 📄 **Response Formats**
+
+All API responses follow the standard format below:
+
+```json
+{
+    "success": true,
+    "data": {...},
+    "message": "Description of the response"
+}
+```
+
+- **`success`**: A boolean indicating whether the API request was successful.  
+- **`data`**: The actual data returned by the API. Can be an object or an array.  
+- **`message`**: A human-readable description of the response.
+
+### **Error Example**
+```json
+{
+    "success": false,
+    "data": null,
+    "message": "Invalid authentication token."
+}
+```
+
+---
+
+## ⚠️ **Error Codes**
+
+| **Code** | **Description**         |
+|---------:|--------------------------|
+| **400**  | Bad Request              |
+| **401**  | Unauthorized             |
+| **403**  | Forbidden                |
+| **404**  | Not Found                |
+| **429**  | Too Many Requests        |
+| **500**  | Internal Server Error    |
+
+### **Error Example: 400 Bad Request**
+```json
+{
+    "success": false,
+    "data": null,
+    "message": "Missing required field: amount"
+}
+```
+
+---
+
+## 📈 **Best Practices**
+
+1. **Authentication:** Use the JWT token provided after login in the `Authorization` header.
+   ```
+   Authorization: Bearer <token>
+   ```
+2. **Rate Limiting:** Respect API rate limits to avoid being throttled (HTTP 429).
+3. **Error Handling:** Always check for `success: false` in the API response.
+4. **Secure Connections:** Always use HTTPS for API communication.
+
+---
+
+## 🔗 **Additional Resources**
+
+- [API Terms of Use](#)
+- [API Versioning Guide](#)
+- [Contact Support](#)
+
+---
+
+This documentation provides all necessary details for developers to effectively interact with the **Gold Investment Platform API**. For further questions, feel free to reach out to the development team. 🚀✨
