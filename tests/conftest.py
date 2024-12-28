@@ -10,6 +10,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../'
 
 from app import create_app, db as _db
 from app.models.models import User, BonusTransaction
+from app.services.blockchain_service import BlockchainService
 
 @pytest.fixture(scope='session')
 def app():
@@ -28,11 +29,8 @@ def app():
     ctx.push()
     
     with app.app_context():
-        # Clean state
         _db.drop_all()
-        # Create tables in correct order
         _db.create_all()
-        # Ensure session is clean
         _db.session.remove()
     
     yield app
@@ -57,10 +55,12 @@ async def async_client(app):
     return app.test_client()
 
 @pytest.fixture
-def mock_blockchain_service(monkeypatch):
+def mock_blockchain_service():
+    """Create a mocked blockchain service."""
     mock_service = Mock(spec=BlockchainService)
     mock_service.w3 = Mock()
     mock_service.contract = Mock()
     mock_service.account = Mock()
-    monkeypatch.setattr('app.services.noble_rank_service.BlockchainService', lambda: mock_service)
+    mock_service.is_connected.return_value = True
+    mock_service.update_noble_rank.return_value = {'status': 'verified', 'transaction_hash': '0x123', 'block_number': 1}
     return mock_service
