@@ -37,9 +37,11 @@ def create_app(config_class=Config):
 
     from app.routes import auth_bp, main_bp
     from app.admin.views import admin_bp
+    from app.api.v1.transformations import transformations_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(transformations_bp, url_prefix='/api/v1/transformations')
 
     return app
