@@ -27,9 +27,12 @@ export default function Dashboard() {
       <h1 className="text-2xl font-bold mb-4">Gold Investment Dashboard</h1>
       <TransformationForm />
       
-      <div className="bg-white rounded-lg shadow p-4 mb-6">
-        <h2 className="text-xl mb-2">Current Balance</h2>
-        <p className="text-3xl font-bold">{balance?.balance || 0} g</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white rounded-lg shadow p-4">
+          <h2 className="text-xl mb-2">Current Balance</h2>
+          <p className="text-3xl font-bold">{balance?.balance || 0} g</p>
+        </div>
+        <NotificationList />
       </div>
 
       <div className="bg-white rounded-lg shadow p-4">
