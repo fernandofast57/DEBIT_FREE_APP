@@ -59,3 +59,19 @@ async def validate_system():
             if isinstance(component, dict)
         )
     })
+from flask import Blueprint, jsonify
+from app.utils.monitoring import system_monitor
+from flask_login import login_required
+
+bp = Blueprint('system', __name__)
+
+@bp.route('/metrics', methods=['GET'])
+@login_required
+def get_system_metrics():
+    """Get system performance metrics"""
+    return jsonify(system_monitor.get_metrics())
+
+@bp.route('/health', methods=['GET'])
+def health_check():
+    """Basic health check endpoint"""
+    return jsonify({'status': 'healthy'})
