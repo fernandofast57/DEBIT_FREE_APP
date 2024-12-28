@@ -25,6 +25,7 @@ export default function Dashboard() {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Gold Investment Dashboard</h1>
+      <TransformationForm />
       
       <div className="bg-white rounded-lg shadow p-4 mb-6">
         <h2 className="text-xl mb-2">Current Balance</h2>
