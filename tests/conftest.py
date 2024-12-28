@@ -1,4 +1,3 @@
-
 import sys
 import os
 import pytest
@@ -18,12 +17,7 @@ async def async_client(app):
     """Create an async test client"""
     return app.test_client()
 
-async def event_loop():
-    """Create an instance of the default event loop for each test case."""
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    yield loop
-    loop.close()
+# event_loop fixture is provided by pytest-asyncio
 
 @pytest.fixture(scope='session')
 def app():
