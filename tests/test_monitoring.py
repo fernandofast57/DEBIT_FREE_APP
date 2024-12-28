@@ -1,5 +1,6 @@
 
 import pytest
+from flask import Flask
 from app.utils.monitoring import SystemMonitor, monitor_performance
 
 def test_system_monitor_initialization():
@@ -32,12 +33,15 @@ def test_average_response_time():
     assert monitor.get_average_response_time() == 1.0
 
 def test_monitor_performance_decorator():
+    app = Flask(__name__)
     monitor = SystemMonitor()
     
+    @app.route('/test')
     @monitor_performance
     def test_function():
-        return "test"
+        return "Test Success"
     
-    result = test_function()
-    assert result == "test"
-    assert len(monitor.metrics['response_times']) > 0
+    with app.test_request_context('/test'):
+        result = test_function()
+        assert result == "Test Success"
+        assert len(monitor.metrics['response_times']) > 0
