@@ -39,9 +39,11 @@ def test_monitor_performance_decorator():
     @app.route('/test')
     @monitor_performance
     def test_function():
+        time.sleep(0.1)  # Simulate some work
         return "Test Success"
     
-    with app.test_request_context('/test'):
-        result = test_function()
-        assert result == "Test Success"
+    with app.test_client() as client:
+        response = client.get('/test')
+        assert response.data.decode() == "Test Success"
         assert len(monitor.metrics['response_times']) > 0
+        assert monitor.metrics['response_times'][-1] > 0

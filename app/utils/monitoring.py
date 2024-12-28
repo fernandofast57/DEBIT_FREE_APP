@@ -48,7 +48,7 @@ def monitor_performance(f):
             result = f(*args, **kwargs)
             duration = time.time() - start_time
             system_monitor.log_response_time(duration)
-            system_monitor.log_request()
+            system_monitor.log_request(request.endpoint)
             return result
         except Exception as e:
             system_monitor.log_error(type(e).__name__)
