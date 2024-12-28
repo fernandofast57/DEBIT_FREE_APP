@@ -14,5 +14,6 @@
     pkgs.openssl
     pkgs.postgresql
     pkgs.redis
+    pkgs.lsof
   ];
 }
