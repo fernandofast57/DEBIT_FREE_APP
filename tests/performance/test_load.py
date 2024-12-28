@@ -35,3 +35,34 @@ def test_response_time(client):
     
     assert response_time < 0.5  # Response should be under 500ms
     assert response.status_code == 200
+import pytest
+from app import create_app
+from config import Config
+import time
+
+@pytest.fixture
+def app():
+    app = create_app(Config())
+    return app
+
+@pytest.fixture
+def client(app):
+    return app.test_client()
+
+def test_api_response_time(client):
+    """Test API endpoint response times"""
+    start_time = time.time()
+    response = client.get('/')
+    end_time = time.time()
+    
+    assert response.status_code == 200
+    assert (end_time - start_time) < 0.2  # Response should be under 200ms
+
+def test_database_query_performance(client):
+    """Test database query performance"""
+    start_time = time.time()
+    response = client.get('/api/v1/transformations/status')
+    end_time = time.time()
+    
+    assert response.status_code == 200
+    assert (end_time - start_time) < 0.3  # Query should complete under 300ms
