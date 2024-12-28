@@ -5,6 +5,24 @@ import logging
 from time import time
 from sqlalchemy import text
 
+class OptimizationService:
+    def __init__(self):
+        self.db = db
+
+    def optimize_query(self, model, filters=None):
+        query = self.db.session.query(model)
+        if filters:
+            query = query.filter_by(**filters)
+        return query
+
+    def bulk_insert(self, objects):
+        try:
+            self.db.session.bulk_save_objects(objects)
+            self.db.session.commit()
+        except Exception as e:
+            self.db.session.rollback()
+            raise e
+
 def optimize_queries():
     """Apply database query optimizations"""
     db.session.execute(text('PRAGMA journal_mode=WAL'))
@@ -43,21 +61,3 @@ def create_indexes():
     except Exception as e:
         print(f"Error creating indexes: {e}")
         db.session.rollback()
-
-def optimize_query(model, filters=None, limit=100):
-    """Optimize database queries using SQLAlchemy"""
-    query = db.session.query(model)
-    if hasattr(model, 'user'):
-        query = query.join(model.user)
-    if filters:
-        query = query.filter_by(**filters)
-    return query.limit(limit)
-
-def performance_monitor(func):
-    def wrapper(*args, **kwargs):
-        start_time = time()
-        result = func(*args, **kwargs)
-        duration = time() - start_time
-        logging.info(f"{func.__name__} took {duration:.2f} seconds")
-        return result
-    return wrapper
