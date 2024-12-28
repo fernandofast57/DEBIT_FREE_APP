@@ -85,27 +85,49 @@ class SecurityManager:
             return False
         return True
 
-    @staticmethod
-    def sanitize_input(data):
-        """Sanitize user input"""
-        def clean_string(s):
-            # Remove common SQL injection patterns
-            sql_patterns = ["DROP TABLE", "UNION SELECT", "--", ";", "DELETE FROM", "INSERT INTO", "UPDATE"]
-            # Remove XSS patterns
-            xss_patterns = ["<script>", "</script>", "javascript:", "<img", "onerror="]
-            # Remove path traversal
-            path_patterns = ["../", "..\\", "/..", "\\..", "../../../../", "..../"]
-            
-            result = s
-            for pattern in sql_patterns + xss_patterns + path_patterns:
-                result = result.replace(pattern, "")
-            return result.strip()
-
+    def sanitize_input(self, data):
         if isinstance(data, dict):
-            return {k: SecurityManager.sanitize_input(v) for k, v in data.items()}
-        if isinstance(data, str):
-            return clean_string(data)
+            return {k: self.sanitize_input(v) for k, v in data.items()}
+        elif isinstance(data, list):
+            return [self.sanitize_input(x) for x in data]
+        elif isinstance(data, str):
+            # Sanitize string
+            sanitized = self._remove_sql_injection(data)
+            sanitized = self._remove_xss(sanitized)
+            sanitized = self._remove_path_traversal(sanitized)
+            sanitized = self._validate_special_chars(sanitized)
+            sanitized = self._check_length_limits(sanitized)
+            sanitized = self._validate_encoding(sanitized)
+            return sanitized
         return data
+
+    def _remove_sql_injection(self, data: str) -> str:
+        #This is a placeholder, needs robust implementation.
+        return data
+
+    def _remove_xss(self, data: str) -> str:
+        #This is a placeholder, needs robust implementation.
+        return data
+
+    def _remove_path_traversal(self, data: str) -> str:
+        #This is a placeholder, needs robust implementation.
+        return data
+
+    def _validate_special_chars(self, data: str) -> str:
+        allowed_chars = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.,@() ")
+        if not all(c in allowed_chars for c in data):
+            return ''.join(c for c in data if c in allowed_chars)
+        return data
+
+    def _check_length_limits(self, data: str) -> str:
+        MAX_LENGTH = 1000
+        return data[:MAX_LENGTH] if len(data) > MAX_LENGTH else data
+
+    def _validate_encoding(self, data: str) -> str:
+        try:
+            return data.encode('utf-8').decode('utf-8')
+        except UnicodeError:
+            return ''
 
     def require_rate_limit(self, func):
         @wraps(func)
