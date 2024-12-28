@@ -16,6 +16,7 @@ class TransformationService:
         """Async initialization"""
         self.blockchain_service = await self.blockchain_service.initialize()
 
+    @performance_monitor.track_time('transformation') # Assumes performance_monitor object exists.  Add import if needed.
     async def transform_to_gold(self, user_id: int, fixing_price: Decimal) -> Dict[str, Any]:
         async with db.session.begin_nested(): # This already provides transaction management; assumes atomicity
             try:

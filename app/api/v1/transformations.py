@@ -1,11 +1,15 @@
-
 from flask import Blueprint, jsonify, request
 from app.services.transformation_service import TransformationService
 from app.schemas.transformation_schema import TransformationSchema
 from marshmallow import ValidationError
 
 transformations_bp = Blueprint('transformations', __name__)
+performance_bp = Blueprint('performance', __name__) # New Blueprint for performance endpoint
+
 transformation_service = TransformationService()
+
+# Assuming performance_monitor is defined elsewhere
+# Example:  performance_monitor = PerformanceMonitor()
 
 @transformations_bp.route('/transform', methods=['POST'])
 async def transform_gold():
@@ -22,3 +26,11 @@ async def transform_gold():
         return jsonify({"errors": err.messages}), 400
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+@performance_bp.route('/performance', methods=['GET']) # New endpoint
+def get_performance_metrics():
+    return jsonify({
+        'transformation': performance_monitor.get_metrics('transformation'),
+        'api_response': performance_monitor.get_metrics('api_response'),
+        'database_query': performance_monitor.get_metrics('database_query')
+    })
