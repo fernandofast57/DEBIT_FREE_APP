@@ -2,7 +2,7 @@
 import pytest
 from app import create_app
 from app.utils.optimization import OptimizationService
-from app.models.models import User, GoldAccount
+from app.models.models import User, GoldAccount, Transaction
 from time import time
 import concurrent.futures
 from flask import url_for
@@ -35,8 +35,8 @@ def test_query_optimization():
     query_time = time() - start_time
     
     assert query_time < 1.0  # Query should complete within 1 second
-    assert len(users) <= 10  # Verify limit is applied
-    assert isinstance(users, list)  # Verify we get a list back
+    assert len(users) <= 10
+    assert isinstance(users, list)
 
 def test_response_time(client):
     """Test API endpoint response times"""
@@ -46,3 +46,25 @@ def test_response_time(client):
     
     assert response_time < 0.5  # Response should be under 500ms
     assert response.status_code == 200
+
+def test_transformation_performance(client):
+    """Test transformation endpoint performance"""
+    start_time = time()
+    response = client.post('/api/v1/transformations/transform',
+        json={"euro_amount": 100.00, "fixing_price": 50.00})
+    transform_time = time() - start_time
+    
+    assert transform_time < 2.0  # Transformation should complete within 2 seconds
+    assert response.status_code in [200, 201]
+
+def test_database_bulk_operations():
+    """Test bulk database operations performance"""
+    optimizer = OptimizationService()
+    start_time = time()
+    
+    # Test bulk insert performance
+    test_transactions = [Transaction(amount=100, type="TEST") for _ in range(1000)]
+    optimizer.bulk_insert(test_transactions)
+    
+    bulk_time = time() - start_time
+    assert bulk_time < 5.0  # Bulk operations should complete within 5 seconds
