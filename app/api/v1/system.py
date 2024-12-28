@@ -75,3 +75,16 @@ def get_system_metrics():
 def health_check():
     """Basic health check endpoint"""
     return jsonify({'status': 'healthy'})
+from flask import Blueprint, jsonify
+from app.utils.security import admin_required
+
+mobile_admin = Blueprint('mobile_admin', __name__)
+
+@mobile_admin.route('/admin/dashboard/mobile', methods=['GET'])
+@admin_required
+def mobile_dashboard():
+    return jsonify({
+        'active_users': get_active_users_count(),
+        'daily_transactions': get_daily_transactions(),
+        'system_health': get_system_health()
+    })
