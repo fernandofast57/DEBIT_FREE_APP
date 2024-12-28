@@ -1,4 +1,5 @@
 from flask import Blueprint, send_file, jsonify
+from app.utils.performance_monitor import monitor_performance
 import os
 
 bp = Blueprint('main', __name__)
