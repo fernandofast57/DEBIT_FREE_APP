@@ -16,10 +16,14 @@ def after_request(response):
 
 if __name__ == '__main__':
     with app.app_context():
-        port = int(os.getenv('PORT', 8080))
-        try:
-            app.run(host='0.0.0.0', port=port, debug=True)
-        except OSError as e:
-            print(f"Errore nell'avvio del server: {e}")
-            print("Provo una porta alternativa...")
-            app.run(host='0.0.0.0', port=8081, debug=True)
+        ports = [8080, 8081, 8082]  # Multiple port options
+        for port in ports:
+            try:
+                print(f"Starting server on port {port}...")
+                app.run(host='0.0.0.0', port=port, debug=True)
+                break
+            except OSError as e:
+                print(f"Port {port} is in use, trying next port...")
+                if port == ports[-1]:
+                    print("No available ports found. Please free up a port and try again.")
+                    exit(1)
