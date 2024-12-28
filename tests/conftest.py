@@ -12,6 +12,12 @@ from app import create_app, db as _db
 from app.models.models import User, BonusTransaction
 
 @pytest.fixture(scope="function")
+
+@pytest.fixture
+async def async_client(app):
+    """Create an async test client"""
+    return app.test_client()
+
 async def event_loop():
     """Create an instance of the default event loop for each test case."""
     loop = asyncio.new_event_loop()
