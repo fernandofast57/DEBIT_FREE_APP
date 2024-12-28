@@ -1,6 +1,9 @@
+
 import logging
 from logging.handlers import RotatingFileHandler
 import os
+
+APP_NAME = "gold_investment"
 
 def setup_logging():
     if not os.path.exists('logs'):
@@ -30,5 +33,8 @@ def setup_logging():
     root_logger.addHandler(error_handler)
 
     return root_logger
+
+def get_logger(name):
+    return logging.getLogger(name)
 
 logger = setup_logging()
