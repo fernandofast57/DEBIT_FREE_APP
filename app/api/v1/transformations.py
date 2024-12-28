@@ -21,7 +21,7 @@ async def transform_gold():
     try:
         data = schema.load(request.json)
         result = await transformation_service.transform_to_gold(
-            user_id=request.headers.get('X-User-Id'),
+            user_id=int(request.headers.get('X-User-Id')),
             fixing_price=data['fixing_price'],
             euro_amount=data['euro_amount'],
             fee_amount=data['fee_amount'],
