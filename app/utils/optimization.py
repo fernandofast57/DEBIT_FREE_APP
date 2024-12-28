@@ -14,10 +14,15 @@ def optimize_queries():
 
 def create_indexes():
     """Create database indexes for better query performance"""
-    db.session.execute(text('CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)'))
-    db.session.execute(text('CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id)'))
-    db.session.execute(text('CREATE INDEX IF NOT EXISTS idx_noble_relations_user_id ON noble_relations(user_id)'))
-    db.session.commit()
+    try:
+        db.session.execute(text('CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)'))
+        db.session.execute(text('CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id)'))
+        db.session.execute(text('CREATE INDEX IF NOT EXISTS idx_noble_relations_user_id ON noble_relations(user_id)'))
+        db.session.commit()
+        print("Database indexes created successfully")
+    except Exception as e:
+        print(f"Error creating indexes: {e}")
+        db.session.rollback()
 
 def optimize_query(model, filters=None, limit=100):
     """Optimize database queries using SQLAlchemy"""

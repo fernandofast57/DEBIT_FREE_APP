@@ -18,11 +18,13 @@ def create_app(config_class=Config):
     cache.init_app(app)
 
     db.init_app(app)
-    from app.utils.optimization import optimize_queries, create_indexes
+    migrate.init_app(app, db)
+    
     with app.app_context():
+        db.create_all()  # Create tables first
+        from app.utils.optimization import optimize_queries, create_indexes
         optimize_queries()
         create_indexes()
-    migrate.init_app(app, db)
     login_manager.init_app(app)
     admin.init_app(app)
 
