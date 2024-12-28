@@ -33,11 +33,10 @@ def log_blockchain_transaction(func):
             logger.info('Blockchain Transaction', extra={'audit': log_entry})
             return result
         except Exception as e:
-        logger.error(f"Blockchain transaction error: {str(e)}")
-        return {'status': 'error', 'message': str(e)}
+            logger.error(f"Blockchain transaction error: {str(e)}")
             logger.error(f'Blockchain Transaction Error: {str(e)}', 
                         extra={'error': str(e), 'function': func.__name__})
-            raise
+            return {'status': 'error', 'message': str(e)}
     return wrapper
 
 class BlockchainMonitor:  # Added BlockchainMonitor class
