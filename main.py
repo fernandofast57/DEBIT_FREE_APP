@@ -4,6 +4,11 @@ from flask import Flask
 from flask_cors import CORS
 from app import create_app
 from app.config.constants import Config
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = create_app(Config())
 CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -16,5 +21,10 @@ def after_request(response):
 
 if __name__ == '__main__':
     with app.app_context():
-        port = int(os.getenv('PORT', 5000))
-        app.run(host='0.0.0.0', port=port, debug=True)
+        try:
+            port = int(os.getenv('PORT', 8080))
+            logger.info(f"Starting application on port {port}")
+            app.run(host='0.0.0.0', port=port, debug=True)
+        except Exception as e:
+            logger.error(f"Failed to start application: {e}")
+            raise
