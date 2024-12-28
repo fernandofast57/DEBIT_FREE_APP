@@ -1,33 +1,74 @@
 
-# Gold Investment Platform API Documentation
+# 📚 Gold Investment Platform API Documentation
 
-## Core Endpoints
+## 🚀 Core Endpoints
 
-### Authentication
+### 🛡️ Authentication
+
+#### 1. Register User
 - `POST /api/v1/auth/register`
+- Request:
+```json
+{
+    "username": "john_doe",
+    "email": "john@example.com",
+    "password": "securePassword123"
+}
+```
+
+#### 2. Login User
 - `POST /api/v1/auth/login`
+- Request:
+```json
+{
+    "email": "john@example.com",
+    "password": "securePassword123"
+}
+```
+
+#### 3. Verify 2FA
 - `POST /api/v1/auth/verify-2fa`
+- Request:
+```json
+{
+    "user_id": 123,
+    "code": "123456"
+}
+```
 
-### Transformations
+### 💰 Transformations
+
+#### Weekly Gold Transformation
 - `POST /api/v1/transformations/transform`
-  - Weekly gold transformation
-  - Requires: amount, user_id
-  - Returns: transformation details
+- Request:
+```json
+{
+    "user_id": 123,
+    "amount": 500.0
+}
+```
 
-### Noble System
+### 👑 Noble System
+
+#### Get Current Rank
 - `GET /api/v1/noble/rank`
-  - Get current noble rank
+- Query: `user_id=123`
+
+#### Get Bonus History
 - `GET /api/v1/noble/bonuses`
-  - Get bonus distribution history
+- Query: `user_id=123`
 
-### Accounting
+### 🧾 Accounting
+
+#### Get Balance
 - `GET /api/v1/accounting/balance`
-  - Get current gold and money balance
-- `GET /api/v1/accounting/transactions`
-  - Get transaction history
+- Query: `user_id=123`
 
-## Response Formats
-All responses follow the format:
+#### Get Transactions
+- `GET /api/v1/accounting/transactions`
+- Query: `user_id=123`
+
+## Response Format
 ```json
 {
     "success": boolean,
@@ -43,3 +84,9 @@ All responses follow the format:
 - 404: Not Found
 - 429: Too Many Requests
 - 500: Internal Server Error
+
+## Best Practices
+1. Use JWT token in Authorization header
+2. Respect rate limits
+3. Handle errors appropriately
+4. Use HTTPS for all requests
