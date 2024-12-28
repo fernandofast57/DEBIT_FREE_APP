@@ -22,14 +22,13 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
     
     with app.app_context():
-        # Create tables first
-        db.create_all()
-        print("Tables created successfully.")
-
-        # Run optimizations and create indexes after tables
-        from app.utils.optimization import optimize_queries, create_indexes
-        optimize_queries()
-        create_indexes()
+        if not app.config.get('TESTING'):
+            from app.utils.optimization import optimize_queries, create_indexes
+            if not db.engine.dialect.has_table(db.engine, 'users'):  # Check if tables exist
+                db.create_all()
+                print("Tables created successfully.")
+                optimize_queries()
+                create_indexes()
 
     login_manager.init_app(app)
     admin.init_app(app)
