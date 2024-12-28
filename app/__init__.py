@@ -25,11 +25,12 @@ def create_app(config_class=Config):
         if not app.config.get('TESTING'):
             from app.utils.optimization import optimize_queries, create_indexes
             from sqlalchemy import inspect
-    inspector = inspect(db.engine)
-    if not inspector.has_table('users'):  # Check if tables exist
+            inspector = inspect(db.engine)
+            if not inspector.has_table('users'):  # Check if tables exist
                 db.create_all()
                 print("Tables created successfully.")
                 optimize_queries()
+                create_indexes()
                 create_indexes()
 
     login_manager.init_app(app)
