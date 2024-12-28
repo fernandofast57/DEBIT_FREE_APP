@@ -20,11 +20,11 @@ def test_concurrent_requests(client):
 def test_query_optimization():
     """Test database query optimization"""
     start_time = time()
-    query = optimize_query(User)
-    users = query.all()[:10]  # Get first 10 users after query
+    users = optimize_query(User, limit=10).all()
     query_time = time() - start_time
     
     assert query_time < 1.0  # Query should complete within 1 second
+    assert len(users) <= 10  # Verify limit is applied
     assert isinstance(users, list)  # Verify we get a list back
 
 def test_response_time(client):
