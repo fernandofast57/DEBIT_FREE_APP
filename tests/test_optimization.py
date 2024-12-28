@@ -1,21 +1,25 @@
 
 import pytest
 from sqlalchemy import inspect, text
-from app import create_app
-from app.database import db
+from app import create_app, db
 from app.utils.optimization import create_indexes
+from app.models.models import User, NobleRank, Transaction
 
-def test_table_creation_and_optimization():
-    """Test successful table creation and index optimization"""
+@pytest.fixture(scope='function')
+def test_app():
     app = create_app()
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+    app.config['TESTING'] = True
     
     with app.app_context():
-        # Clean up existing tables
+        db.create_all()  # Create all tables before testing
+        yield app
+        db.session.remove()
         db.drop_all()
-        
-        # Create tables
-        db.create_all()
-        
+
+def test_table_creation_and_optimization(test_app):
+    """Test successful table creation and index optimization"""
+    with test_app.app_context():
         # Get inspector
         inspector = inspect(db.engine)
         tables = inspector.get_table_names()
