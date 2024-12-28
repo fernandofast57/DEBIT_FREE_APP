@@ -24,7 +24,9 @@ def create_app(config_class=Config):
     with app.app_context():
         if not app.config.get('TESTING'):
             from app.utils.optimization import optimize_queries, create_indexes
-            if not db.engine.dialect.has_table(db.engine, 'users'):  # Check if tables exist
+            from sqlalchemy import inspect
+    inspector = inspect(db.engine)
+    if not inspector.has_table('users'):  # Check if tables exist
                 db.create_all()
                 print("Tables created successfully.")
                 optimize_queries()
