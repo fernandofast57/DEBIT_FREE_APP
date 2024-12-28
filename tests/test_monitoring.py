@@ -32,6 +32,8 @@ def test_average_response_time():
     monitor.log_response_time(1.5)
     assert monitor.get_average_response_time() == 1.0
 
+import time
+
 def test_monitor_performance_decorator():
     app = Flask(__name__)
     monitor = SystemMonitor()
