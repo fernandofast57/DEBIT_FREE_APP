@@ -62,6 +62,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
+    noble_ranks = relationship('NobleRank', back_populates='user', cascade='all, delete-orphan')
     bonus_transactions = relationship('BonusTransaction', back_populates='user', cascade='all, delete-orphan')
     gold_rewards = relationship('GoldReward', back_populates='user')
 
@@ -106,7 +107,8 @@ class NobleRank(db.Model):
     min_investment = db.Column(db.Numeric(precision=10, scale=2), nullable=False)
     bonus_rate = db.Column(db.Numeric(precision=5, scale=4), nullable=False)
     level = db.Column(db.Integer, nullable=False)
-    users = db.relationship('User', backref='noble_rank', lazy=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+    user = db.relationship('User', back_populates='noble_ranks')
 
     def __repr__(self):
         return f"<NobleRank {self.rank_name}>"
