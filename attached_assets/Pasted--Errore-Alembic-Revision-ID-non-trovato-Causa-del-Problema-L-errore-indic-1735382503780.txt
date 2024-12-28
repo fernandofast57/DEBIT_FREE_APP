@@ -1,0 +1,94 @@
+## 🛠️ **Errore Alembic: Revision ID non trovato**
+
+### **🔍 Causa del Problema:**
+L'errore indica che nel file di migrazione `001_initial_schema.py` manca la variabile `revision`. Alembic richiede che ogni script di migrazione abbia:
+1. **`revision`**: Identificativo univoco della revisione.
+2. **`down_revision`**: Collegamento alla revisione precedente.
+
+Queste variabili sono fondamentali per il corretto funzionamento delle migrazioni.
+
+---
+
+## ✅ **1. Controllo del file di migrazione**
+
+Apri il file `001_initial_schema.py` nella cartella `migrations/versions` e assicurati che contenga:
+
+```python
+"""Initial schema creation"""
+
+revision = '001_initial_schema'
+down_revision = None  # Se è la prima migrazione
+branch_labels = None
+depends_on = None
+
+from alembic import op
+import sqlalchemy as sa
+
+def upgrade():
+    # Aggiungi qui le istruzioni per creare le tabelle
+    op.create_table(
+        'users',
+        sa.Column('id', sa.Integer(), primary_key=True),
+        sa.Column('email', sa.String(100), nullable=False, unique=True),
+        sa.Column('password', sa.String(100), nullable=False),
+    )
+
+def downgrade():
+    # Aggiungi qui le istruzioni per eliminare le tabelle
+    op.drop_table('users')
+```
+
+- **`revision`**: deve essere un identificativo univoco (es. `'001_initial_schema'`).
+- **`down_revision`**: deve essere `None` se è la prima migrazione.
+
+---
+
+## ✅ **2. Rigenera il File di Migrazione (se necessario)**
+
+Se il file è corrotto o mancano i dettagli chiave, puoi rigenerarlo:
+
+```bash
+flask db revision --autogenerate -m "Initial schema creation"
+```
+
+Questo comando:
+- Crea un nuovo file di migrazione nella cartella `migrations/versions`.
+- Include automaticamente la struttura delle tabelle.
+
+---
+
+## ✅ **3. Applica le Migrazioni**
+
+Esegui nuovamente le migrazioni:
+
+```bash
+flask db upgrade
+```
+
+Se riscontri ancora errori, puoi provare a eliminare tutte le tabelle (⚠️ Attenzione: cancellerà tutti i dati nel database!):
+
+```bash
+flask db downgrade base
+flask db upgrade
+```
+
+---
+
+## ✅ **4. Verifica lo Stato delle Migrazioni**
+
+Controlla lo stato delle migrazioni con:
+
+```bash
+flask db history
+flask db current
+```
+
+---
+
+## 🚀 **Riepilogo dei Passaggi:**
+1. ✅ Correggi il file `001_initial_schema.py` assicurandoti che contenga `revision` e `down_revision`.
+2. ✅ Rigenera il file di migrazione se necessario.
+3. ✅ Applica le migrazioni con `flask db upgrade`.
+4. ✅ Controlla lo stato delle migrazioni.
+
+Dopo aver eseguito questi passaggi, il problema dovrebbe essere risolto. Se incontri altri errori, condividili! 🚀
