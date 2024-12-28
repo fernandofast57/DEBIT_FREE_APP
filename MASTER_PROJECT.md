@@ -3,13 +3,20 @@
 
 ## 🎯 Progress Dashboard
 
-### Core Infrastructure: 90% Complete
+### Core Infrastructure: In Progress
 - ✅ Basic Flask application setup
-- ✅ Database models and relationships
-- ✅ Security middleware implementation
-- ✅ Test infrastructure
-- ✅ Performance optimization
+- ⏳ Database models and relationships
+- ⏳ Security middleware implementation (KYC/AML)
+- ⏳ Test infrastructure
+- ⏳ Performance optimization
 - ⏳ Load balancing configuration
+
+### Bonus Distribution System
+- Organization fee: 5%
+- Affiliate rewards: 1.7% total
+  - Count level: 0.7%
+  - Duke level: 0.5%
+  - Prince level: 0.5%
 
 ### Blockchain Integration: 85% Complete
 - ✅ Smart contract deployment
