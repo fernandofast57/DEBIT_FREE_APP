@@ -33,6 +33,8 @@ def log_blockchain_transaction(func):
             logger.info('Blockchain Transaction', extra={'audit': log_entry})
             return result
         except Exception as e:
+        logger.error(f"Blockchain transaction error: {str(e)}")
+        return {'status': 'error', 'message': str(e)}
             logger.error(f'Blockchain Transaction Error: {str(e)}', 
                         extra={'error': str(e), 'function': func.__name__})
             raise
@@ -80,6 +82,8 @@ class BlockchainService:
                 return True
             return False
         except Exception as e:
+        logger.error(f"Blockchain transaction error: {str(e)}")
+        return {'status': 'error', 'message': str(e)}
             logger.error(f"Failed to connect to blockchain: {str(e)}")
             return False
 
@@ -87,6 +91,8 @@ class BlockchainService:
         """Check if blockchain connection is established and account is initialized"""
         return bool(self.w3 and self.w3.is_connected() and self.account and self.contract)
         except Exception as e:
+        logger.error(f"Blockchain transaction error: {str(e)}")
+        return {'status': 'error', 'message': str(e)}
             logger.error(f"Failed to connect to {endpoint}: {str(e)}")
             return self._try_next_rpc()
             
@@ -107,6 +113,8 @@ class BlockchainService:
                 abi=contract_json['abi']
             )
         except Exception as e:
+        logger.error(f"Blockchain transaction error: {str(e)}")
+        return {'status': 'error', 'message': str(e)}
             logger.error(f"Failed to setup contract: {str(e)}")
             raise
 
@@ -117,6 +125,8 @@ class BlockchainService:
         try:
             self.account = self.w3.eth.account.from_key(private_key)
         except Exception as e:
+        logger.error(f"Blockchain transaction error: {str(e)}")
+        return {'status': 'error', 'message': str(e)}
             logger.error(f"Failed to setup account: {str(e)}")
             raise
 
@@ -164,6 +174,8 @@ class BlockchainService:
                 return {'status': 'rejected', 'message': 'Transaction failed'}
                 
         except Exception as e:
+        logger.error(f"Blockchain transaction error: {str(e)}")
+        return {'status': 'error', 'message': str(e)}
             logger.error(f"Error in update_noble_rank: {str(e)}")
             self.monitor.send_alert(f"Error in update_noble_rank: {str(e)}") #Added alert call
             return {'status': 'rejected', 'message': str(e)}
@@ -209,6 +221,8 @@ class BlockchainService:
             return receipt
             
         except Exception as e:
+        logger.error(f"Blockchain transaction error: {str(e)}")
+        return {'status': 'error', 'message': str(e)}
             logger.error(f"Blockchain batch processing error: {str(e)}")
             self.monitor.send_alert(f"Blockchain batch processing error: {str(e)}") #Added alert call
             raise
@@ -240,5 +254,7 @@ class BlockchainService:
             }
             return {'status': 'verified', 'stats': stats}
         except Exception as e:
+        logger.error(f"Blockchain transaction error: {str(e)}")
+        return {'status': 'error', 'message': str(e)}
             logger.error(f"Error getting transaction stats: {str(e)}")
             return {'status': 'error', 'message': str(e)}
