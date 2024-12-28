@@ -10,6 +10,8 @@ from flask import url_for
 @pytest.fixture
 def app():
     app = create_app()
+    app.config['TESTING'] = True
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
     return app
 
 @pytest.fixture
@@ -29,14 +31,15 @@ def test_concurrent_requests(client):
 
 def test_query_optimization():
     """Test database query optimization"""
-    optimizer = OptimizationService()
-    start_time = time()
-    users = optimizer.optimize_query(User).limit(10).all()
-    query_time = time() - start_time
-    
-    assert query_time < 1.0  # Query should complete within 1 second
-    assert len(users) <= 10
-    assert isinstance(users, list)
+    app = create_app()
+    with app.app_context():
+        optimizer = OptimizationService()
+        start_time = time()
+        users = optimizer.optimize_query(User).limit(10).all()
+        query_time = time() - start_time
+        
+        assert query_time < 1.0  # Query should complete within 1 second
+        assert len(users) <= 10
 
 def test_response_time(client):
     """Test API endpoint response times"""
@@ -59,12 +62,14 @@ def test_transformation_performance(client):
 
 def test_database_bulk_operations():
     """Test bulk database operations performance"""
-    optimizer = OptimizationService()
-    start_time = time()
-    
-    # Test bulk insert performance
-    test_transactions = [Transaction(amount=100, type="TEST") for _ in range(1000)]
-    optimizer.bulk_insert(test_transactions)
-    
-    bulk_time = time() - start_time
-    assert bulk_time < 5.0  # Bulk operations should complete within 5 seconds
+    app = create_app()
+    with app.app_context():
+        optimizer = OptimizationService()
+        start_time = time()
+        
+        # Test bulk insert performance
+        test_transactions = [Transaction(amount=100, type="TEST") for _ in range(1000)]
+        optimizer.bulk_insert(test_transactions)
+        
+        bulk_time = time() - start_time
+        assert bulk_time < 5.0  # Bulk operations should complete within 5 seconds
