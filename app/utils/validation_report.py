@@ -1,4 +1,3 @@
-
 import logging
 from datetime import datetime
 from app.utils.structure_validator import StructureValidator
