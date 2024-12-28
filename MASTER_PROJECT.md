@@ -190,12 +190,12 @@
 1. **Baron**: Entry level
 2. **Count**: Mid-tier
 3. **Duke**: High-tier
-4. **Prince**: Top-tier
+4. **Prince**: Top-tier 
 
 ### Bonus Distribution
-- Level 1: 0.7%
-- Level 2: 0.5%
-- Level 3: 0.5%
+- Level 1: 0.7% **Count**
+- Level 2: 0.5% **Duke**
+- Level 3: 0.5% **Prince**
 
 ## 🔒 Security Requirements
 
