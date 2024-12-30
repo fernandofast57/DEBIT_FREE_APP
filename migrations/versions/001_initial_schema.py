@@ -64,3 +64,45 @@ def downgrade():
     op.drop_table('money_accounts')
     op.drop_table('noble_ranks')
     op.drop_table('users')
+"""Initial database schema
+
+Revision ID: 001
+"""
+from alembic import op
+import sqlalchemy as sa
+from sqlalchemy import Enum
+
+def upgrade():
+    # Create users table first
+    op.create_table('users',
+        sa.Column('id', sa.Integer(), nullable=False),
+        sa.Column('username', sa.String(length=50), nullable=False),
+        sa.Column('email', sa.String(length=120), unique=True, nullable=False),
+        sa.Column('password_hash', sa.String(length=128)),
+        sa.Column('referrer_id', sa.Integer()),
+        sa.ForeignKeyConstraint(['referrer_id'], ['users.id']),
+        sa.PrimaryKeyConstraint('id')
+    )
+
+    # Create money_accounts table
+    op.create_table('money_accounts',
+        sa.Column('id', sa.Integer(), nullable=False),
+        sa.Column('user_id', sa.Integer(), nullable=False),
+        sa.Column('balance', sa.Numeric(precision=10, scale=2), default=0),
+        sa.ForeignKeyConstraint(['user_id'], ['users.id']),
+        sa.PrimaryKeyConstraint('id')
+    )
+
+    # Create gold_accounts table
+    op.create_table('gold_accounts',
+        sa.Column('id', sa.Integer(), nullable=False),
+        sa.Column('user_id', sa.Integer(), nullable=False),
+        sa.Column('balance', sa.Numeric(precision=10, scale=4), default=0),
+        sa.ForeignKeyConstraint(['user_id'], ['users.id']),
+        sa.PrimaryKeyConstraint('id')
+    )
+
+def downgrade():
+    op.drop_table('gold_accounts')
+    op.drop_table('money_accounts')
+    op.drop_table('users')
