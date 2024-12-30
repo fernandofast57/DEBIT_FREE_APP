@@ -50,16 +50,17 @@ async def test_weekly_processing_multiple_users(app, db):
         service = WeeklyProcessingService()
         users = []
         
-        for i in range(3):
-            user = User(username=f"test_user_{i}", email=f"test{i}@example.com")
-            money_account = MoneyAccount(balance=Decimal('1000.00'))
-            gold_account = GoldAccount(balance=Decimal('0.00'))
-            user.money_account = money_account
-            user.gold_account = gold_account
-            users.append(user)
-            db.session.add(user)
-        
-        await db.session.commit()
+        try:
+            for i in range(3):
+                user = User(username=f"test_user_{i}", email=f"test{i}@example.com")
+                money_account = MoneyAccount(balance=Decimal('1000.00'))
+                gold_account = GoldAccount(balance=Decimal('0.00'))
+                user.money_account = money_account
+                user.gold_account = gold_account
+                users.append(user)
+                db.session.add(user)
+            
+            await db.session.commit()
         result = await service.process_weekly_transformations(Decimal('50.00'))
         assert result['processed_users'] == 3
         assert Decimal(str(result['total_gold_grams'])) == Decimal('57.0')  # (3000 * 0.95) / 50

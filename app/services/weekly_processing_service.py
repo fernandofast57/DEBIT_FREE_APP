@@ -65,5 +65,7 @@ class WeeklyProcessingService:
                 await db.session.rollback()
             return {
                 'status': 'error',
-                'message': str(e)
+                'message': str(e),
+                'processed_users': 0,
+                'total_gold_grams': 0
             }
