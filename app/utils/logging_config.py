@@ -6,8 +6,8 @@ from datetime import datetime
 APP_NAME = 'gold_investment'
 logger = logging.getLogger(APP_NAME)
 
-def get_logger():
-    return logger
+def get_logger(module_name=None):
+    return logging.getLogger(module_name if module_name else APP_NAME)
 
 def setup_logging():
     log_dir = 'logs'
