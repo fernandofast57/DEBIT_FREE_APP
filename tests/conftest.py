@@ -1,3 +1,4 @@
+
 import pytest
 from decimal import Decimal
 from app import create_app, db
@@ -6,7 +7,7 @@ from flask_migrate import upgrade, downgrade
 
 @pytest.fixture(scope='session')
 def app():
-    """Create a Flask application object for testing."""
+    """Create Flask application for testing."""
     from config import TestConfig
     app = create_app(TestConfig())
     
@@ -20,10 +21,12 @@ def app():
 
 @pytest.fixture
 def client(app):
+    """Create test client."""
     return app.test_client()
 
 @pytest.fixture
 def test_user(app):
+    """Create test user with accounts."""
     with app.app_context():
         user = User(username="testuser", email="test@example.com")
         user.money_account = MoneyAccount(balance=Decimal('2000.00'))
@@ -36,10 +39,12 @@ def test_user(app):
 
 @pytest.fixture
 def auth_headers(test_user):
+    """Generate authentication headers."""
     return {'Authorization': f'Bearer test_token_{test_user.id}'}
 
 @pytest.fixture(autouse=True)
 def db_session(app):
+    """Provide database session for tests."""
     with app.app_context():
         connection = db.engine.connect()
         transaction = connection.begin()
