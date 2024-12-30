@@ -23,8 +23,19 @@ def test_log_error():
 def test_response_time_logging():
     monitor = SystemMonitor()
     monitor.log_response_time(0.5)
-    assert len(monitor.metrics['response_times']) == 1
-    assert monitor.metrics['response_times'][0] == 0.5
+    monitor.log_response_time(1.0)
+    assert len(monitor.metrics['response_times']) > 0
+    assert isinstance(monitor.metrics['response_times'], list)
+    assert monitor.metrics['response_times'][-1] == 1.0
+    
+def test_endpoint_response_monitoring():
+    monitor = SystemMonitor()
+    test_endpoints = ['/api/v1/test', '/api/v1/users']
+    for endpoint in test_endpoints:
+        monitor.log_request(endpoint)
+        monitor.log_response_time(0.2)
+    assert len(monitor.metrics['response_times']) == len(test_endpoints)
+    assert all(t > 0 for t in monitor.metrics['response_times'])
 
 def test_average_response_time():
     monitor = SystemMonitor()
