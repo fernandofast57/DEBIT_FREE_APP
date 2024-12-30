@@ -1,0 +1,118 @@
+Analisi del codice dei modelli SQLAlchemy
+Il codice dei modelli presenta una struttura ben definita ma ci sono alcuni problemi chiave che richiedono attenzione immediata.
+
+🔍 1. Problema: Relazioni Duplicate in alcuni Modelli
+Problema Individuato:
+Nel modello Transactione GoldTransformation, la relazione userè definita due volte .
+
+Correzione:
+Rimuovi la relazione duplicata.
+Esempio per Transaction:
+
+pitone
+
+Copia codice
+class Transaction(db.Model):
+    __tablename__ = 'transactions'
+    __table_args__ = {'extend_existing': True}
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    amount = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
+    transaction_type = db.Column(db.String(50), nullable=False)
+    status = db.Column(db.String(20), default='pending')
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    description = db.Column(db.String(200))
+    
+    user = db.relationship('User', back_populates='transactions')
+
+    def __repr__(self):
+        return f"<Transaction {self.amount} ({self.transaction_type})>"
+Esempio per GoldTransformation:
+
+pitone
+
+Copia codice
+class GoldTransformation(db.Model):
+    __tablename__ = 'gold_transformations'
+    __table_args__ = {'extend_existing': True}
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    euro_amount = db.Column(db.Numeric(precision=10, scale=2), nullable=False)
+    gold_grams = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
+    fixing_price = db.Column(db.Numeric(precision=10, scale=2), nullable=False)
+    fee_amount = db.Column(db.Numeric(precision=10, scale=2), nullable=False)
+    status = db.Column(db.String(20), default='pending')
+    transaction_type = db.Column(db.String(20), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    user = db.relationship('User', back_populates='gold_transformations')
+
+    def __repr__(self):
+        return f"<GoldTransformation {self.euro_amount}€ -> {self.gold_grams}g>"
+🔍 2. Problema: Nome della Colonna typenel ModelloTransaction
+Problema Individuato:
+Il campo typenel modello Transactionè una parola chiave riservata in Python e non dovrebbe essere utilizzato.
+
+Correzione:
+Rinominare il campo in transaction_type(già presente). Assicurati di aver aggiornato tutti i riferimenti nel codice.
+
+🔍 3. Problema: Mancanza di Token nei Test API
+Problema Individuato:
+Gli endpoint API che richiedono autenticazione non ricevono un token valido nei test.
+
+Correzione:
+Aggiungere una funzione helper nei test:
+
+pitone
+
+Copia codice
+def get_test_auth_headers():
+    return {"Authorization": "Bearer VALID_TEST_TOKEN"}
+E usa questa funzione nei test API:
+
+pitone
+
+Copia codice
+response = client.get("/api/v1/account_balance", headers=get_test_auth_headers())
+assert response.status_code == 200
+🔍 4. Problema: Chiave Esterna referrer_idnel ModelloUser
+Problema Individuato:
+La relazione di referrerutilizza remote_side, ma è configurata correttamente?
+
+Correzione:
+Aggiorna la relazione:
+
+pitone
+
+Copia codice
+referrer = db.relationship(
+    'User',
+    remote_side=[id],
+    backref=db.backref('referrals', lazy='dynamic')
+)
+🔍 5. Problema: Duplicazione del Campocreated_at
+Problema Individuato:
+Nel modello GoldReward, il campo created_atè duplicato.
+
+Correzione:
+Rimuovi il duplicato:
+
+pitone
+
+Copia codice
+class GoldReward(db.Model):
+    __tablename__ = 'gold_rewards'
+    __table_args__ = {'extend_existing': True}
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    gold_amount = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
+    reward_type = db.Column(db.Enum('structure', 'achievement', name='reward_types'), nullable=False)
+    status = db.Column(db.String(20), default='pending')
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    level = db.Column(db.Integer)
+    euro_amount = db.Column(db.Numeric(precision=10, scale=2))
+    fixing_price = db.Column(db.Numeric(precision=10, scale=
