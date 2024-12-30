@@ -30,7 +30,7 @@ if __name__ == '__main__':
             server = load_balancer.get_next_server()
             
             logger.info(f"Starting application on {server['host']}:{server['port']} in {env} mode")
-            app.run(host=server['host'], port=server['port'], debug=debug)
+            app.run(host='0.0.0.0', port=server['port'], debug=debug)
         except Exception as e:
             logger.error(f"Failed to start application: {e}")
             raise
