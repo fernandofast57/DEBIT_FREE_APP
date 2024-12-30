@@ -27,3 +27,63 @@ class TransformationService:
             }
         except Exception as e:
             return {"status": "error", "message": str(e)}
+from decimal import Decimal
+from typing import Dict, Any
+from datetime import datetime
+from app.models.models import User, MoneyAccount, GoldAccount, Transaction
+from app.utils.blockchain_monitor import BlockchainMonitor
+from app.database import db
+from sqlalchemy.exc import SQLAlchemyError
+import logging
+
+logger = logging.getLogger(__name__)
+
+class TransformationService:
+    FEE_PERCENTAGE = Decimal('0.05')  # 5% commissione
+
+    @staticmethod
+    async def process_transformation(user_id: int, euro_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
+        try:
+            user = User.query.get(user_id)
+            if not user or not user.money_account or not user.gold_account:
+                raise ValueError("User or accounts not found")
+
+            fee_amount = euro_amount * TransformationService.FEE_PERCENTAGE
+            net_amount = euro_amount - fee_amount
+            gold_grams = net_amount / fixing_price
+
+            async with db.session.begin_nested():
+                # Aggiorna i conti
+                user.money_account.balance -= euro_amount
+                user.gold_account.balance += gold_grams
+
+                # Registra la transazione
+                transaction = Transaction(
+                    user_id=user_id,
+                    type='transformation',
+                    euro_amount=euro_amount,
+                    gold_amount=gold_grams,
+                    fee_amount=fee_amount,
+                    fixing_price=fixing_price,
+                    timestamp=datetime.utcnow()
+                )
+                db.session.add(transaction)
+                await db.session.flush()
+
+                # Registra sulla blockchain
+                await BlockchainMonitor.record_transaction(transaction.id, euro_amount, gold_grams)
+
+            await db.session.commit()
+            return {
+                "status": "success",
+                "gold_grams": float(gold_grams),
+                "transaction_id": transaction.id
+            }
+
+        except SQLAlchemyError as e:
+            await db.session.rollback()
+            logger.error(f"Database error during transformation: {str(e)}")
+            raise
+        except Exception as e:
+            logger.error(f"Error during transformation: {str(e)}")
+            raise
