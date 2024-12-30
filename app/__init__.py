@@ -21,8 +21,12 @@ def create_app(config_class=Config):
 
     db.init_app(app)
     migrate.init_app(app, db)
-    migration_manager.init_app(app, db) # Added this line
-
+    
+    # Initialize load balancer
+    from app.utils.load_balancer import load_balancer
+    load_balancer.register_server('0.0.0.0', 8080)
+    load_balancer.register_server('0.0.0.0', 8081)
+    
     with app.app_context():
         if not app.config.get('TESTING'):
             from app.utils.optimization import optimize_queries, create_indexes
