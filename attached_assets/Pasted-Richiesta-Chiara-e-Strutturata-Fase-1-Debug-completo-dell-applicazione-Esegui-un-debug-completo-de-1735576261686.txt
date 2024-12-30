@@ -1,0 +1,56 @@
+Richiesta Chiara e Strutturata
+Fase 1: Debug completo dell'applicazione
+
+Esegui un debug completo dell'app
+Identifica eventuali errori, malfunzionamenti o problemi strutturali .
+Documenta ogni errore individuato, includendo log dettagliati .
+Fase 2: Correzione degli Errori Identificati
+
+Correggi ogni errore individuato n
+Assicurati che la correzione sia funzionale e **non inclusanon presentare nuovi problemi .
+Se possibile, includi test automatizzati pe
+Fase 3: Relazione sulla Correzione
+Scrrelazione dettagliata c
+
+Teoria della Correzione:Per
+Logica di implementazione: Vieni
+Vantaggi: Quali miglioramenti
+Vantaggi (Se Presenti):Eventuali c
+Fase 4: Analisi sull'Organicità dell'Applicazione
+
+Valutare l' impatto complessivo della
+Spiega se la correzione ha migliorato o complicato la manutenibilità , lscalabilità e lachiarezza del codice .
+Fase 5: Conclusioni e Raccomandazioni
+
+Fornisci delle raccomandazioni future per
+Suggerisci le migliori praticheper
+🛠️ Esempio di Relazione Finale Attesa
+La relazione attesa dovrebbe ave
+
+📊 Titolo: Relazione sul Debug e Correzione dell'Applicazione
+✅ Errore Identificato:
+Descrizione chiara dell'errore.
+Accedi
+🔄 Soluzione Applicata:
+Spiegazione della soluzione con codice (se n
+Modificare
+📚 Teoria della Correzione:
+Spiegazione teorica del perché la correzione
+⚙️ Logica di implementazione:
+Passaggi chiave per im
+🟢 Vantaggi:
+Benefici apportati dalla correzi
+🔴 Vantaggi:
+Eventuali svantaggi introdotti.
+🧠 Impatto sull'Organicità dell'Applicazione:
+Valutazione complessiva dell'impatto della c
+🚦 Conclusioni e Raccomandazioni:
+Considerazioni per
+Buone pratiche c
+🎯 Perché Questo Approccio è Efficace?
+✅ Chiarezza: Ogni fase è definita
+✅ Struttura: Debug, cor
+✅ Documentazione Completa: Ogni correzione è
+✅ Scalabilità: Facilm
+📢 Prompt Finale per Replit AI
+"Esegui un debug completo dell'applicazione, correggi gli errori trovati, e produci una relazione dettagliata che include la teoria della correzione, la logica di implementazione, i vantaggi e svantaggi della soluzione, e l'impatto sull'organicità complessiva dell'applicazione. Concludi con raccomandazioni chiare per migliorare la stabilità futura."
