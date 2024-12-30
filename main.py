@@ -3,7 +3,7 @@ import os
 from flask import Flask
 from flask_cors import CORS
 from app import create_app
-from app.config.constants import Config
+from app.config.settings import Config
 import logging
 
 # Configure logging
