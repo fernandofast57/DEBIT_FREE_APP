@@ -1,0 +1,95 @@
+~/gold-investment-backend$ python -m pytest tests/test_transformation.py -v
+========================================== test session starts ===========================================
+platform linux -- Python 3.11.10, pytest-8.1.1, pluggy-1.4.0 -- /home/runner/gold-investment-backend/.pythonlibs/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/gold-investment-backend/tests
+configfile: pytest.ini
+plugins: asyncio-0.23.6, mock-3.14.0, cov-4.1.0, web3-6.11.3
+asyncio: mode=Mode.AUTO
+collected 1 item                                                                                         
+
+tests/test_transformation.py::test_valid_transformation ERROR                                      [100%]
+
+================================================= ERRORS =================================================
+______________________________ ERROR at setup of test_valid_transformation _______________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/test_transformation.py:31: in test_user
+    db.session.commit()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py:597: in commit
+    return self._proxied.commit()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/session.py:2017: in commit
+    trans.commit(_to_root=True)
+<string>:2: in commit
+    ???
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/session.py:1302: in commit
+    self._prepare_impl()
+<string>:2: in _prepare_impl
+    ???
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/state_changes.py:139: in _go
+    ret_value = fn(self, *arg, **kw)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/session.py:1277: in _prepare_impl
+    self.session.flush()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/session.py:4341: in flush
+    self._flush(objects)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/session.py:4476: in _flush
+    with util.safe_reraise():
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/util/langhelpers.py:146: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/session.py:4437: in _flush
+    flush_context.execute()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/unitofwork.py:466: in execute
+    rec.execute(self)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/unitofwork.py:642: in execute
+    util.preloaded.orm_persistence.save_obj(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/persistence.py:93: in save_obj
+    _emit_insert_statements(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/persistence.py:1233: in _emit_insert_statements
+    result = connection.execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/elements.py:515: in _execute_on_connection
+    return connection._execute_clauseelement(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1640: in _execute_clauseelement
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: INSERT INTO users (username, email, password_hash, referrer_id) VALUES (?, ?, ?, ?)]
+E   [parameters: ('testuser', 'test@example.com', None, None)]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+============================================ warnings summary ============================================
+.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/__init__.py:2
+  /home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/flask_admin/contrib/__init__.py:2: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('flask_admin.contrib')`.
+  Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+    __import__('pkg_resources').declare_namespace(__name__)
+
+.pythonlibs/lib/python3.11/site-packages/pkg_resources/__init__.py:2558
+  /home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/pkg_resources/__init__.py:2558: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('flask_admin')`.
+  Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+    declare_namespace(parent)
+
+test_transformation.py::test_valid_transformation
+  /home/runner/gold-investment-backend/.pythonlibs/lib/python3.11/site-packages/flask_caching/__init__.py:237: DeprecationWarning: Using the initialization functions in flask_caching.backend is deprecated.  Use the a full path to backend classes directly.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================================== short test summary info =========================================
+ERROR tests/test_transformation.py::test_valid_transformation - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+====================================== 3 warnings, 1 error in 1.87s ======================================
+~/gold-investment-backend$ 
