@@ -1,5 +1,6 @@
 import pytest
 from decimal import Decimal
+from app import create_app
 from app.models.models import User, MoneyAccount, GoldAccount, GoldTransformation
 from tests.helpers import get_test_auth_headers
 import concurrent.futures
