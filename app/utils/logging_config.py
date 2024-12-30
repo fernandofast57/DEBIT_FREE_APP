@@ -4,6 +4,8 @@ import os
 from logging.handlers import RotatingFileHandler
 from datetime import datetime
 
+logger = logging.getLogger(__name__)
+
 def setup_logging():
     log_dir = 'logs'
     if not os.path.exists(log_dir):
@@ -13,7 +15,7 @@ def setup_logging():
         '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
 
-    # File handler per errori critici
+    # File handler for critical errors
     error_handler = RotatingFileHandler(
         'logs/error.log',
         maxBytes=10485760,  # 10MB
@@ -22,7 +24,7 @@ def setup_logging():
     error_handler.setLevel(logging.ERROR)
     error_handler.setFormatter(formatter)
 
-    # File handler per info generali
+    # File handler for general info
     info_handler = RotatingFileHandler(
         'logs/app.log',
         maxBytes=10485760,
@@ -36,3 +38,5 @@ def setup_logging():
     root_logger.setLevel(logging.INFO)
     root_logger.addHandler(error_handler)
     root_logger.addHandler(info_handler)
+
+    return logger
