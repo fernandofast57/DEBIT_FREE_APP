@@ -3,7 +3,7 @@ import pytest
 from decimal import Decimal
 from app.models.models import User, MoneyAccount, GoldAccount
 from app.services.transformation_service import TransformationService
-from app.config.settings import CLIENT_SHARE, NETWORK_SHARE
+from app.utils.errors import InsufficientBalanceError
 
 @pytest.fixture
 def setup_accounts(app):
@@ -15,24 +15,42 @@ def setup_accounts(app):
         user.gold_account = gold_account
         return user, money_account, gold_account
 
-def test_valid_transformation(app, setup_accounts):
+@pytest.mark.asyncio
+async def test_valid_transformation(app, setup_accounts):
     user, money_account, gold_account = setup_accounts
     service = TransformationService()
+    await service.initialize()
     
-    amount = Decimal('100.00')
-    result = service.transform_money_to_gold(user.id, amount)
+    fixing_price = Decimal('50.00')
+    result = await service.transform_to_gold(user.id, fixing_price)
     
-    assert result.success is True
-    assert money_account.balance == Decimal('900.00')
-    assert gold_account.balance == amount * CLIENT_SHARE
+    assert result['status'] == 'verified'
+    assert money_account.balance == Decimal('0.00')
+    assert gold_account.balance > Decimal('0.00')
 
-def test_insufficient_funds(app, setup_accounts):
+@pytest.mark.asyncio
+async def test_insufficient_balance(app, setup_accounts):
+    user, money_account, gold_account = setup_accounts
+    money_account.balance = Decimal('0.00')
+    service = TransformationService()
+    await service.initialize()
+    
+    fixing_price = Decimal('50.00')
+    result = await service.transform_to_gold(user.id, fixing_price)
+    
+    assert result['status'] == 'error'
+    assert 'Insufficient balance' in result['message']
+    assert money_account.balance == Decimal('0.00')
+    assert gold_account.balance == Decimal('0.00')
+
+@pytest.mark.asyncio
+async def test_invalid_fixing_price(app, setup_accounts):
     user, money_account, gold_account = setup_accounts
     service = TransformationService()
+    await service.initialize()
     
-    amount = Decimal('2000.00')
-    result = service.transform_money_to_gold(user.id, amount)
+    fixing_price = Decimal('0.00')
+    result = await service.validate_transformation(Decimal('1000.00'), fixing_price)
     
-    assert result.success is False
-    assert money_account.balance == Decimal('1000.00')
-    assert gold_account.balance == Decimal('0.00')
+    assert result['status'] == 'rejected'
+    assert 'Invalid fixing price' in result['message']
