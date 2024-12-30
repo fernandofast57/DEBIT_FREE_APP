@@ -48,8 +48,8 @@ class TransformationService:
             if not user or not user.money_account or not user.gold_account:
                 raise ValueError("User or accounts not found")
 
-            fee_amount = euro_amount * TransformationService.FEE_PERCENTAGE
-            net_amount = euro_amount - fee_amount
+            # Calcolo secondo il test: (100 - 5% fee) / 50 = 1.90
+            net_amount = euro_amount * (1 - TransformationService.FEE_PERCENTAGE)
             gold_grams = net_amount / fixing_price
 
             async with db.session.begin_nested():
