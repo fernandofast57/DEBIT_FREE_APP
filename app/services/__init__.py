@@ -1,5 +1,5 @@
 
-from .accounting import AccountingService
+from .accounting_service import AccountingService
 from .batch_collection import BatchCollectionService
 from .blockchain_service import BlockchainService
 from .bonus_distribution_service import BonusDistributionService
