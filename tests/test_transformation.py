@@ -15,6 +15,9 @@ def app():
     
     with app.app_context():
         db.create_all()
+        from app.models.models import User, MoneyAccount, GoldAccount
+        # Ensure all models are imported before creating tables
+        db.create_all()  # Create tables again to ensure all models are included
         yield app
         db.session.remove()
         db.drop_all()
