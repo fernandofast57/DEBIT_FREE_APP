@@ -1,15 +1,14 @@
+
 from flask import Blueprint, jsonify, request
 from app.services.transformation_service import TransformationService
 from app.schemas.transformation_schema import TransformationSchema
 from marshmallow import ValidationError
+from decimal import Decimal
 
 transformations_bp = Blueprint('transformations', __name__)
-performance_bp = Blueprint('performance', __name__) # New Blueprint for performance endpoint
+performance_bp = Blueprint('performance', __name__)
 
 transformation_service = TransformationService()
-
-# Assuming performance_monitor is defined elsewhere
-# Example:  performance_monitor = PerformanceMonitor()
 
 @transformations_bp.route('/transform', methods=['POST'])
 async def transform_gold():
@@ -17,21 +16,20 @@ async def transform_gold():
     user_id = request.headers.get('X-User-Id')
     if not user_id:
         return jsonify({"error": "Authentication required"}), 401
-        
+    
     schema = TransformationSchema()
     try:
         data = schema.load(request.json)
-        result = {"status": "success", "message": "Transformation processed"}
+        result = await transformation_service.transform_to_gold(
+            user_id=int(request.headers.get('X-User-Id')),
+            fixing_price=data['fixing_price'],
+            gold_grams=data['gold_grams']
+        )
         return jsonify(result), 200
     except ValidationError as err:
         return jsonify({"errors": err.messages}), 400
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-        
-    schema = TransformationSchema()
-    try:
-        data = schema.load(request.json)
-        result = await transformation_service.transform_to_gold(
 
 @transformations_bp.route('/process-weekly', methods=['POST'])
 async def process_weekly_transformations():
@@ -54,17 +52,7 @@ async def process_weekly_transformations():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-            user_id=int(request.headers.get('X-User-Id')),
-            fixing_price=data['fixing_price'],
-            gold_grams=data['gold_grams']
-        )
-        return jsonify(result), 200
-    except ValidationError as err:
-        return jsonify({"errors": err.messages}), 400
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-@performance_bp.route('/performance', methods=['GET']) # New endpoint
+@performance_bp.route('/performance', methods=['GET'])
 def get_performance_metrics():
     return jsonify({
         'transformation': performance_monitor.get_metrics('transformation'),
