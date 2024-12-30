@@ -32,6 +32,28 @@ async def transform_gold():
     try:
         data = schema.load(request.json)
         result = await transformation_service.transform_to_gold(
+
+@transformations_bp.route('/process-weekly', methods=['POST'])
+async def process_weekly_transformations():
+    """Process weekly transformations with current fixing price"""
+    try:
+        if not request.is_json:
+            return jsonify({'error': 'Content-Type must be application/json'}), 400
+            
+        data = request.get_json()
+        fixing_price = Decimal(str(data.get('fixing_price', 0)))
+        
+        if fixing_price <= 0:
+            return jsonify({'error': 'Invalid fixing price'}), 400
+            
+        weekly_service = WeeklyProcessingService()
+        result = await weekly_service.process_weekly_transformations(fixing_price)
+        
+        return jsonify(result), 200 if result['status'] == 'success' else 500
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
             user_id=int(request.headers.get('X-User-Id')),
             fixing_price=data['fixing_price'],
             gold_grams=data['gold_grams']

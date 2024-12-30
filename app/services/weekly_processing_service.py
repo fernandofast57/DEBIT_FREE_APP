@@ -1,91 +1,57 @@
 
 from decimal import Decimal
+import logging
 from datetime import datetime
-from app.models.accounting import AccountingEntry
-from app.models.models import User, GoldAccount
-from app import db
+from typing import List
+from app.database import db
+from app.models.models import User, MoneyAccount, GoldAccount, GoldTransformation
+from app.services.transformation_service import TransformationService
+from app.utils.performance_monitor import performance_monitor
+
+logger = logging.getLogger(__name__)
 
 class WeeklyProcessingService:
-    STRUCTURE_FEE = Decimal('0.05')  # 5%
-    AFFILIATE_BONUS = {
-        'level_1': Decimal('0.007'),  # 0.7%
-        'level_2': Decimal('0.005'),  # 0.5%
-        'level_3': Decimal('0.005')   # 0.5%
-    }
+    def __init__(self):
+        self.structure_fee = Decimal('0.05')  # 5%
+        self.transformation_service = TransformationService()
     
-    def process_weekly_transactions(self, fixing_price: Decimal):
-        logger = logging.getLogger('gold-investment')
-        logger.info("Starting weekly gold distribution process")
-        
-        # Raccoglie tutte le transazioni della settimana
-        weekly_deposits = AccountingEntry.query.filter_by(
-            entry_type='deposit',
-            processed=False
-        ).all()
-        
-        logger.info(f"Found {len(weekly_deposits)} deposits to process")
-        
-        total_amount = sum(d.amount_eur for d in weekly_deposits)
-        
-        # Calcola importi
-        structure_amount = total_amount * self.STRUCTURE_FEE
-        gold_amount = total_amount - structure_amount
-        
-        # Registra fee struttura
-        self._record_structure_fee(structure_amount)
-        
-        # Calcola e distribuisci oro
-        total_gold_grams = gold_amount / fixing_price
-        self._distribute_gold(weekly_deposits, total_gold_grams, fixing_price)
-        
-        # Marca transazioni come processate
-        for deposit in weekly_deposits:
-            deposit.processed = True
-        
-        db.session.commit()
-    
-    def _distribute_gold(self, deposits, total_gold_grams, fixing_price):
+    @performance_monitor.track_time('weekly_processing')
+    async def process_weekly_transformations(self, fixing_price: Decimal) -> dict:
+        """Process all pending weekly transformations"""
         try:
-            available_bars = GoldBar.query.filter_by(status='in_stock').all()
-            if not available_bars:
-                raise ValueError("No gold bars available for allocation")
+            async with db.session.begin():
+                # Get all users with positive money account balance
+                users_to_process = await User.query.join(MoneyAccount).filter(
+                    MoneyAccount.balance > 0
+                ).all()
                 
-            for deposit in deposits:
-                # Calcola oro cliente
-                client_gold = (deposit.amount_eur * (1 - self.STRUCTURE_FEE)) / fixing_price
+                processed_count = 0
+                total_gold = Decimal('0')
                 
-                # Aggiorna conto oro cliente
-                gold_account = GoldAccount.query.filter_by(user_id=deposit.user_id).first()
-                if not gold_account:
-                    raise ValueError(f"Gold account not found for user {deposit.user_id}")
+                for user in users_to_process:
+                    result = await self.transformation_service.transform_to_gold(
+                        user.id,
+                        fixing_price
+                    )
+                    
+                    if result['status'] == 'verified':
+                        processed_count += 1
+                        total_gold += Decimal(str(result['transaction']['gold_grams']))
                 
-                remaining_gold = client_gold
-                for bar in available_bars:
-                    allocated_grams = min(remaining_gold, bar.weight_grams)
-                    if allocated_grams > 0:
-                        allocation = GoldAllocation(
-                            grams_allocated=allocated_grams,
-                            gold_bar=bar,
-                            gold_account=gold_account
-                        )
-                        db.session.add(allocation)
-                        remaining_gold -= allocated_grams
-                        
-                        if bar.weight_grams <= allocated_grams:
-                            bar.status = 'allocated'
-                            
-                        if remaining_gold <= 0:
-                            break
+                await db.session.commit()
                 
-                gold_account.balance += client_gold
-                
-                # Distribuisci bonus affiliazione
-                self._distribute_affiliate_bonus(deposit.user_id, client_gold)
-                
-                # Registra transazione
-                self._record_gold_distribution(deposit.user_id, client_gold, fixing_price)
+                return {
+                    'status': 'success',
+                    'processed_users': processed_count,
+                    'total_gold_grams': float(total_gold),
+                    'fixing_price': float(fixing_price),
+                    'timestamp': datetime.utcnow().isoformat()
+                }
                 
         except Exception as e:
-            db.session.rollback()
-            logging.error(f"Error in gold distribution: {str(e)}")
-            raise
+            logger.error(f"Weekly transformation processing failed: {str(e)}")
+            await db.session.rollback()
+            return {
+                'status': 'error',
+                'message': str(e)
+            }
