@@ -1,26 +1,22 @@
-
 import pytest
 from decimal import Decimal
 from app import create_app, db
 from app.models.models import User, MoneyAccount, GoldAccount
+from flask_migrate import upgrade, downgrade
 
 @pytest.fixture(scope='session')
 def app():
     """Create a Flask application object for testing."""
     from config import TestConfig
+    
     app = create_app(TestConfig())
     
     with app.app_context():
+        # Reset database state
+        downgrade(revision='base')
+        upgrade()
         db.create_all()
-        
-        # Ensure tables are empty
-        for table in reversed(db.metadata.sorted_tables):
-            db.session.execute(table.delete())
-        db.session.commit()
-        
         yield app
-        
-        # Cleanup after all tests
         db.session.remove()
         db.drop_all()
 
