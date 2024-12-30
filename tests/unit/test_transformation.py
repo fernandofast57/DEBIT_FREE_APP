@@ -1,57 +1,38 @@
 
 import pytest
 from decimal import Decimal
-from app import create_app
-from app.models.models import User, MoneyAccount, GoldAccount, GoldTransformation
-from tests.helpers import get_test_auth_headers
-from app.database import db
+from app.models.models import User, MoneyAccount, GoldAccount
+from app.services.transformation_service import TransformationService
+from app.config.settings import CLIENT_SHARE, NETWORK_SHARE
 
-@pytest.fixture(scope='function')
-def app():
-    from config import TestConfig
-    config = TestConfig()
-    config.SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
-    app = create_app(config)
+@pytest.fixture
+def setup_accounts(app):
+    with app.app_context():
+        user = User(username="test_user", email="test@example.com")
+        money_account = MoneyAccount(balance=Decimal('1000.00'))
+        gold_account = GoldAccount(balance=Decimal('0.00'))
+        user.money_account = money_account
+        user.gold_account = gold_account
+        return user, money_account, gold_account
+
+def test_valid_transformation(app, setup_accounts):
+    user, money_account, gold_account = setup_accounts
+    service = TransformationService()
     
-    with app.app_context():
-        db.create_all()
-        from app.models.models import User, MoneyAccount, GoldAccount
-        # Ensure all models are imported before creating tables
-        db.create_all()  # Create tables again to ensure all models are included
-        yield app
-        db.session.remove()
-        db.drop_all()
+    amount = Decimal('100.00')
+    result = service.transform_money_to_gold(user.id, amount)
+    
+    assert result.success is True
+    assert money_account.balance == Decimal('900.00')
+    assert gold_account.balance == amount * CLIENT_SHARE
 
-@pytest.fixture
-def client(app):
-    return app.test_client()
-
-@pytest.fixture
-def test_user(app):
-    with app.app_context():
-        user = User(username="testuser", email="test@example.com")
-        user.money_account = MoneyAccount(balance=Decimal('2000.00'))
-        user.gold_account = GoldAccount(balance=Decimal('0.00'))
-        db.session.add(user)
-        db.session.commit()
-        return user
-
-def test_valid_transformation(app, client, test_user):
-    with app.app_context():
-        headers = get_test_auth_headers(test_user)
-        initial_gold_balance = test_user.gold_account.balance
-        initial_money_balance = test_user.money_account.balance
-        
-        response = client.post('/api/v1/transformations/transform', 
-            headers=headers, 
-            json={
-                "euro_amount": 150.00,
-                "fixing_price": 50.00,
-                "fee_amount": 5.00,
-                "gold_grams": 3.5
-            })
-        
-        assert response.status_code == 200
-        db.session.refresh(test_user)
-        assert test_user.gold_account.balance == initial_gold_balance + Decimal('3.5')
-        assert test_user.money_account.balance == initial_money_balance - Decimal('150.00')
+def test_insufficient_funds(app, setup_accounts):
+    user, money_account, gold_account = setup_accounts
+    service = TransformationService()
+    
+    amount = Decimal('2000.00')
+    result = service.transform_money_to_gold(user.id, amount)
+    
+    assert result.success is False
+    assert money_account.balance == Decimal('1000.00')
+    assert gold_account.balance == Decimal('0.00')
