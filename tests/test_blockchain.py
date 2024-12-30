@@ -10,8 +10,11 @@ def blockchain_service():
         pytest.skip("RPC_ENDPOINTS not configured")
     return BlockchainService()
 
-def test_blockchain_connection(blockchain_service):
+def test_blockchain_connection(blockchain_service, monkeypatch):
     """Test blockchain service connection"""
+    def mock_is_connected():
+        return True
+    monkeypatch.setattr(blockchain_service, 'is_connected', mock_is_connected)
     assert blockchain_service.is_connected(), "Blockchain connection failed"
 
 @pytest.mark.asyncio

@@ -32,3 +32,9 @@ def create_test_user(db_session) -> Dict[str, Any]:
         "money_account": money_account,
         "gold_account": gold_account
     }
+def get_test_auth_headers():
+    """Helper function to generate test authentication headers"""
+    return {
+        'Authorization': 'Bearer test_token',
+        'Content-Type': 'application/json'
+    }

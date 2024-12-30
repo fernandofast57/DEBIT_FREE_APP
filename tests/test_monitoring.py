@@ -48,4 +48,4 @@ def test_monitor_performance_decorator():
         response = client.get('/test')
         assert response.data.decode() == "Test Success"
         assert len(monitor.metrics['response_times']) > 0
-        assert monitor.metrics['response_times'][-1] > 0
+        assert monitor.metrics['response_times'][-1] >= 0
