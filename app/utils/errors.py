@@ -1,30 +1,21 @@
 
+from typing import Dict, Any
 from flask import jsonify
 
-class ValidationError(Exception):
-    """Custom exception for validation errors"""
-    def __init__(self, message: str = "Validation failed"):
+class APIError(Exception):
+    def __init__(self, message: str, status_code: int = 400, payload: Dict[str, Any] = None):
+        super().__init__()
         self.message = message
-        super().__init__(self.message)
+        self.status_code = status_code
+        self.payload = payload
 
-class InvalidRankError(Exception):
-    """Custom exception for invalid noble rank operations"""
-    def __init__(self, message: str = "Invalid noble rank"):
-        self.message = message
-        super().__init__(self.message)
+    def to_dict(self) -> Dict[str, Any]:
+        rv = dict(self.payload or {})
+        rv['message'] = self.message
+        rv['status'] = 'error'
+        return rv
 
-class InsufficientBalanceError(Exception):
-    """Custom exception for insufficient balance operations"""
-    def __init__(self, message: str = "Insufficient balance"):
-        self.message = message
-        super().__init__(self.message)
-
-def register_error_handlers(app):
-    """Register error handlers for the application."""
-    @app.errorhandler(404)
-    def not_found_error(error):
-        return {'error': 'Not Found'}, 404
-
-    @app.errorhandler(500)
-    def internal_error(error):
-        return {'error': 'Internal Server Error'}, 500
+def handle_api_error(error: APIError):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response

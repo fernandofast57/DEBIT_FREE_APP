@@ -2,55 +2,32 @@
 import logging
 import time
 from functools import wraps
-from flask import request
-from typing import Dict, Any, Optional
-from datetime import datetime
+from typing import Callable, Any
 
-class SystemMonitor:
-    def __init__(self):
-        self.logger = logging.getLogger('system_monitor')
-        self.metrics: Dict[str, Any] = {
-            'response_times': [],
-            'error_counts': {},
-            'endpoint_usage': {},
-            'active_users': set()
-        }
+logger = logging.getLogger(__name__)
 
-    def log_request(self, endpoint: Optional[str] = None) -> None:
-        endpoint_name = endpoint or getattr(request, 'endpoint', 'unknown')
-        self.metrics['endpoint_usage'][endpoint_name] = self.metrics['endpoint_usage'].get(endpoint_name, 0) + 1
-
-    def log_error(self, error_type: str) -> None:
-        self.metrics['error_counts'][error_type] = self.metrics['error_counts'].get(error_type, 0) + 1
-
-    def log_response_time(self, duration: float) -> None:
-        self.metrics['response_times'].append(duration)
-
-    def get_average_response_time(self) -> float:
-        times = self.metrics['response_times']
-        return sum(times) / len(times) if times else 0.0
-
-    def get_metrics(self) -> Dict[str, Any]:
-        return {
-            'avg_response_time': self.get_average_response_time(),
-            'error_counts': self.metrics['error_counts'],
-            'endpoint_usage': self.metrics['endpoint_usage'],
-            'active_users_count': len(self.metrics['active_users'])
-        }
-
-system_monitor = SystemMonitor()
-
-def monitor_performance(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
+def monitor_performance(func: Callable) -> Callable:
+    @wraps(func)
+    def wrapper(*args, **kwargs) -> Any:
         start_time = time.time()
         try:
-            result = f(*args, **kwargs)
-            duration = time.time() - start_time
-            system_monitor.log_response_time(duration)
-            system_monitor.log_request(request.endpoint)
+            result = func(*args, **kwargs)
+            execution_time = time.time() - start_time
+            logger.info(f"Function {func.__name__} executed in {execution_time:.2f} seconds")
             return result
         except Exception as e:
-            system_monitor.log_error(type(e).__name__)
+            logger.error(f"Error in {func.__name__}: {str(e)}")
             raise
-    return decorated_function
+    return wrapper
+
+class PerformanceMonitor:
+    def __init__(self):
+        self.metrics = {}
+    
+    def record_metric(self, name: str, value: float):
+        if name not in self.metrics:
+            self.metrics[name] = []
+        self.metrics[name].append(value)
+    
+    def get_average(self, name: str) -> float:
+        return sum(self.metrics[name]) / len(self.metrics[name]) if self.metrics.get(name) else 0
