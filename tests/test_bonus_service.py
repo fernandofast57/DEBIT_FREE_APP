@@ -1,11 +1,10 @@
-
 import pytest
 import asyncio
 from decimal import Decimal
 from unittest.mock import patch, MagicMock
 
 from app.services.bonus_distribution_service import BonusDistributionService
-from app.models.models import User, GoldReward, db
+from app.models.models import User, GoldReward, GoldAccount, db
 from app.utils.errors import InvalidRankError, InsufficientBalanceError
 
 @pytest.mark.asyncio
