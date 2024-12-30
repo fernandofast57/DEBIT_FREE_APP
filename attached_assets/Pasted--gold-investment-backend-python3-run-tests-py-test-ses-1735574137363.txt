@@ -1,0 +1,1814 @@
+~/gold-investment-backend$ python3 run_tests.py
+========================================== test session starts ===========================================
+platform linux -- Python 3.11.10, pytest-8.1.1, pluggy-1.4.0 -- /home/runner/gold-investment-backend/.pythonlibs/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/runner/gold-investment-backend/tests
+configfile: pytest.ini
+plugins: asyncio-0.23.6, mock-3.14.0, cov-4.1.0, web3-6.11.3
+asyncio: mode=Mode.AUTO
+collected 33 items                                                                                       
+
+tests/performance/test_load.py::test_concurrent_requests ERROR                                     [  3%]
+tests/performance/test_load.py::test_query_optimization ERROR                                      [  6%]
+tests/performance/test_load.py::test_response_time ERROR                                           [  9%]
+tests/performance/test_load.py::test_transformation_performance ERROR                              [ 12%]
+tests/performance/test_load.py::test_database_bulk_operations ERROR                                [ 15%]
+tests/security/test_security.py::test_environment_variables ERROR                                  [ 18%]
+tests/security/test_security.py::test_rate_limiter ERROR                                           [ 21%]
+tests/security/test_security.py::test_security_manager_logging ERROR                               [ 24%]
+tests/security/test_security.py::test_permission_checking ERROR                                    [ 27%]
+tests/security/test_security.py::test_role_permission_validation ERROR                             [ 30%]
+tests/security/test_security.py::test_input_validation ERROR                                       [ 33%]
+tests/test_api.py::test_transformation_endpoint ERROR                                              [ 36%]
+tests/test_api.py::test_account_balance ERROR                                                      [ 39%]
+tests/test_api.py::test_index ERROR                                                                [ 42%]
+tests/test_api.py::test_invalid_transformation ERROR                                               [ 45%]
+tests/test_api.py::test_async_endpoints ERROR                                                      [ 48%]
+tests/test_blockchain.py::test_blockchain_connection ERROR                                         [ 51%]
+tests/test_blockchain.py::test_noble_rank_update ERROR                                             [ 54%]
+tests/test_bonus_service.py::TestBonusDistributionService::test_distribute_structure_bonus ERROR   [ 57%]
+tests/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_successful ERROR [ 60%]
+tests/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_invalid_rank ERROR [ 63%]
+tests/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_insufficient_balance ERROR [ 66%]
+tests/test_monitoring.py::test_system_monitor_initialization ERROR                                 [ 69%]
+tests/test_monitoring.py::test_log_request ERROR                                                   [ 72%]
+tests/test_monitoring.py::test_log_error ERROR                                                     [ 75%]
+tests/test_monitoring.py::test_response_time_logging ERROR                                         [ 78%]
+tests/test_monitoring.py::test_endpoint_response_monitoring ERROR                                  [ 81%]
+tests/test_monitoring.py::test_average_response_time ERROR                                         [ 84%]
+tests/test_monitoring.py::test_monitor_performance_decorator ERROR                                 [ 87%]
+tests/test_noble_system.py::test_noble_rank_creation ERROR                                         [ 90%]
+tests/test_noble_system.py::test_noble_relation_verification ERROR                                 [ 93%]
+tests/test_optimization.py::test_table_creation_and_optimization ERROR                             [ 96%]
+tests/test_transformation.py::test_valid_transformation ERROR                                      [100%]
+
+================================================= ERRORS =================================================
+_______________________________ ERROR at setup of test_concurrent_requests _______________________________
+tests/conftest.py:40: in db_session
+    session = db.create_scoped_session(options=options)
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:988: in __getattr__
+    raise AttributeError(name)
+E   AttributeError: create_scoped_session
+----------------------------------------- Captured stdout setup ------------------------------------------
+Tables created successfully.
+Database optimization completed successfully
+_______________________________ ERROR at setup of test_query_optimization ________________________________
+tests/conftest.py:40: in db_session
+    session = db.create_scoped_session(options=options)
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:988: in __getattr__
+    raise AttributeError(name)
+E   AttributeError: create_scoped_session
+----------------------------------------- Captured stdout setup ------------------------------------------
+Tables created successfully.
+Database optimization completed successfully
+__________________________________ ERROR at setup of test_response_time __________________________________
+tests/conftest.py:40: in db_session
+    session = db.create_scoped_session(options=options)
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:988: in __getattr__
+    raise AttributeError(name)
+E   AttributeError: create_scoped_session
+----------------------------------------- Captured stdout setup ------------------------------------------
+Tables created successfully.
+Database optimization completed successfully
+___________________________ ERROR at setup of test_transformation_performance ____________________________
+tests/conftest.py:40: in db_session
+    session = db.create_scoped_session(options=options)
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:988: in __getattr__
+    raise AttributeError(name)
+E   AttributeError: create_scoped_session
+----------------------------------------- Captured stdout setup ------------------------------------------
+Tables created successfully.
+Database optimization completed successfully
+____________________________ ERROR at setup of test_database_bulk_operations _____________________________
+tests/conftest.py:40: in db_session
+    session = db.create_scoped_session(options=options)
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:988: in __getattr__
+    raise AttributeError(name)
+E   AttributeError: create_scoped_session
+----------------------------------------- Captured stdout setup ------------------------------------------
+Tables created successfully.
+Database optimization completed successfully
+______________________________ ERROR at setup of test_environment_variables ______________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+----------------------------------------- Captured stderr setup ------------------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 001_initial_schema, Initial schema creation
+INFO  [alembic.runtime.migration] Running upgrade 001_initial_schema -> 05cb0a0a7ce1, Fix rewards relationship
+INFO  [alembic.runtime.migration] Running upgrade 05cb0a0a7ce1 -> 95540031f70c, Update user model and add relationships
+__________________________________ ERROR at setup of test_rate_limiter ___________________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+____________________________ ERROR at setup of test_security_manager_logging _____________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+_______________________________ ERROR at setup of test_permission_checking _______________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+___________________________ ERROR at setup of test_role_permission_validation ____________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+________________________________ ERROR at setup of test_input_validation _________________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+_____________________________ ERROR at setup of test_transformation_endpoint _____________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+_________________________________ ERROR at setup of test_account_balance _________________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+______________________________________ ERROR at setup of test_index ______________________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+_____________________________ ERROR at setup of test_invalid_transformation ______________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+_________________________________ ERROR at setup of test_async_endpoints _________________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+______________________________ ERROR at setup of test_blockchain_connection ______________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+________________________________ ERROR at setup of test_noble_rank_update ________________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+_____________ ERROR at setup of TestBonusDistributionService.test_distribute_structure_bonus _____________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+___________ ERROR at setup of TestBonusDistributionService.test_distribute_rewards_successful ____________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+__________ ERROR at setup of TestBonusDistributionService.test_distribute_rewards_invalid_rank ___________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+______ ERROR at setup of TestBonusDistributionService.test_distribute_rewards_insufficient_balance _______
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+__________________________ ERROR at setup of test_system_monitor_initialization __________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+___________________________________ ERROR at setup of test_log_request ___________________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+____________________________________ ERROR at setup of test_log_error ____________________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+______________________________ ERROR at setup of test_response_time_logging ______________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+__________________________ ERROR at setup of test_endpoint_response_monitoring ___________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+______________________________ ERROR at setup of test_average_response_time ______________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+__________________________ ERROR at setup of test_monitor_performance_decorator __________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+_______________________________ ERROR at setup of test_noble_rank_creation _______________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+___________________________ ERROR at setup of test_noble_relation_verification ___________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+_________________________ ERROR at setup of test_table_creation_and_optimization _________________________
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests/conftest.py:17: in app
+    upgrade()
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:111: in wrapped
+    f(*args, **kwargs)
+.pythonlibs/lib/python3.11/site-packages/flask_migrate/__init__.py:200: in upgrade
+    command.upgrade(config, revision, sql=sql, tag=tag)
+.pythonlibs/lib/python3.11/site-packages/alembic/command.py:403: in upgrade
+    script.run_env()
+.pythonlibs/lib/python3.11/site-packages/alembic/script/base.py:583: in run_env
+    util.load_python_file(self.dir, "env.py")
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:95: in load_python_file
+    module = load_module_py(module_id, path)
+.pythonlibs/lib/python3.11/site-packages/alembic/util/pyfiles.py:113: in load_module_py
+    spec.loader.exec_module(module)  # type: ignore
+migrations/env.py:113: in <module>
+    run_migrations_online()
+migrations/env.py:107: in run_migrations_online
+    context.run_migrations()
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/environment.py:948: in run_migrations
+    self.get_context().run_migrations(**kw)
+.pythonlibs/lib/python3.11/site-packages/alembic/runtime/migration.py:627: in run_migrations
+    step.migration_fn(**kw)
+migrations/versions/95540031f70c_update_user_model_and_add_relationships.py:22: in upgrade
+    op.drop_table('users')
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/ops.py:1408: in drop_table
+    operations.invoke(op)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/base.py:445: in invoke
+    return fn(self, operation)
+.pythonlibs/lib/python3.11/site-packages/alembic/operations/toimpl.py:82: in drop_table
+    operations.impl.drop_table(
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:389: in drop_table
+    self._exec(schema.DropTable(table))
+.pythonlibs/lib/python3.11/site-packages/alembic/ddl/impl.py:207: in _exec
+    return conn.execute(construct, multiparams)
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1418: in execute
+    return meth(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/sql/ddl.py:180: in _execute_on_connection
+    return connection._execute_ddl(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1529: in _execute_ddl
+    ret = self._execute_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1846: in _execute_context
+    return self._exec_single_context(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:2353: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/engine/default.py:924: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: 
+E   DROP TABLE users]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+______________________________ ERROR at setup of test_valid_transformation _______________________________
+tests/conftest.py:40: in db_session
+    session = db.create_scoped_session(options=options)
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:988: in __getattr__
+    raise AttributeError(name)
+E   AttributeError: create_scoped_session
+======================================== short test summary info =========================================
+ERROR tests/performance/test_load.py::test_concurrent_requests - AttributeError: create_scoped_session
+ERROR tests/performance/test_load.py::test_query_optimization - AttributeError: create_scoped_session
+ERROR tests/performance/test_load.py::test_response_time - AttributeError: create_scoped_session
+ERROR tests/performance/test_load.py::test_transformation_performance - AttributeError: create_scoped_session
+ERROR tests/performance/test_load.py::test_database_bulk_operations - AttributeError: create_scoped_session
+ERROR tests/security/test_security.py::test_environment_variables - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/security/test_security.py::test_rate_limiter - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/security/test_security.py::test_security_manager_logging - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/security/test_security.py::test_permission_checking - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/security/test_security.py::test_role_permission_validation - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/security/test_security.py::test_input_validation - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_api.py::test_transformation_endpoint - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_api.py::test_account_balance - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_api.py::test_index - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_api.py::test_invalid_transformation - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_api.py::test_async_endpoints - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_blockchain.py::test_blockchain_connection - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_blockchain.py::test_noble_rank_update - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_bonus_service.py::TestBonusDistributionService::test_distribute_structure_bonus - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_successful - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_invalid_rank - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_insufficient_balance - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_monitoring.py::test_system_monitor_initialization - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_monitoring.py::test_log_request - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_monitoring.py::test_log_error - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_monitoring.py::test_response_time_logging - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_monitoring.py::test_endpoint_response_monitoring - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_monitoring.py::test_average_response_time - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_monitoring.py::test_monitor_performance_decorator - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_noble_system.py::test_noble_rank_creation - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_noble_system.py::test_noble_relation_verification - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_optimization.py::test_table_creation_and_optimization - sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+ERROR tests/test_transformation.py::test_valid_transformation - AttributeError: create_scoped_session
+========================================== 33 errors in 28.87s ===========================================
+~/gold-investment-backend$ 
