@@ -25,6 +25,15 @@ def app():
         db.drop_all()
 
 @pytest.fixture(autouse=True)
+def cleanup_after_test(app):
+    """Clean up after each test."""
+    yield
+    with app.app_context():
+        for table in reversed(db.metadata.sorted_tables):
+            db.session.execute(table.delete())
+        db.session.commit()
+
+@pytest.fixture(autouse=True)
 def db_session(app):
     """Create a new database session for each test."""
     with app.app_context():
