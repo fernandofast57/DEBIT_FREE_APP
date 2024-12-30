@@ -9,11 +9,38 @@ def app():
     """Create a Flask application object for testing."""
     from config import TestConfig
     app = create_app(TestConfig())
+    
     with app.app_context():
-        db.create_all()  # Create all tables in test database
+        db.create_all()
+        
+        # Ensure tables are empty
+        for table in reversed(db.metadata.sorted_tables):
+            db.session.execute(table.delete())
+        db.session.commit()
+        
         yield app
+        
+        # Cleanup after all tests
         db.session.remove()
-        db.drop_all()  # Clean up after tests
+        db.drop_all()
+
+@pytest.fixture(autouse=True)
+def db_session(app):
+    """Create a new database session for each test."""
+    with app.app_context():
+        connection = db.engine.connect()
+        transaction = connection.begin()
+        
+        options = dict(bind=connection, binds={})
+        session = db.create_scoped_session(options=options)
+        
+        db.session = session
+        
+        yield session
+        
+        transaction.rollback()
+        connection.close()
+        session.remove()
 
 @pytest.fixture
 def client(app):
