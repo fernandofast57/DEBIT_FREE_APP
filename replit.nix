@@ -15,5 +15,7 @@
     pkgs.postgresql
     pkgs.redis
     pkgs.lsof
+    pkgs.pkg-config
+    pkgs.python3Packages.psutil
   ];
 }
