@@ -23,8 +23,11 @@ if __name__ == '__main__':
     with app.app_context():
         try:
             port = int(os.getenv('PORT', 8080))
-            logger.info(f"Starting application on port {port}")
-            app.run(host='0.0.0.0', port=port, debug=True)
+            env = os.getenv('FLASK_ENV', 'development')
+            debug = env == 'development'
+            
+            logger.info(f"Starting application on port {port} in {env} mode")
+            app.run(host='0.0.0.0', port=port, debug=debug)
         except Exception as e:
             logger.error(f"Failed to start application: {e}")
             raise
