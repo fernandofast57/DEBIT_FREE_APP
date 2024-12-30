@@ -1,17 +1,12 @@
 
-import sys
-import os
 import pytest
-from unittest.mock import Mock
-from flask import appcontext_pushed
-
+from decimal import Decimal
 from app import create_app, db as _db
-from app.models.models import User, BonusTransaction
-from app.services.blockchain_service import BlockchainService
+from app.models.models import User, MoneyAccount, GoldAccount
 
 @pytest.fixture(scope='session')
 def app():
-    """Create a Flask application object."""
+    """Create a Flask application object for testing."""
     from config import TestConfig
     app = create_app(TestConfig())
     
@@ -35,9 +30,6 @@ def db(app):
 def test_user(app, db):
     """Create a test user with associated accounts."""
     with app.app_context():
-        from app.models.models import User, MoneyAccount, GoldAccount
-        from decimal import Decimal
-        
         user = User(username="testuser", email="test@example.com")
         user.money_account = MoneyAccount(balance=Decimal('2000.00'))
         user.gold_account = GoldAccount(balance=Decimal('0.00'))
