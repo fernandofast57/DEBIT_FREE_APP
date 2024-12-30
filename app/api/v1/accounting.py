@@ -7,11 +7,14 @@ bp = Blueprint('accounting', __name__)
 accounting_service = AccountingService()
 
 @bp.route('/balance', methods=['GET'])
+@auth_required
 def get_balance():
-    user_id = request.headers.get('X-User-Id')
-    if not user_id:
-        return jsonify({"error": "Authentication required"}), 401
-    return jsonify({"gold_balance": 0.0, "money_balance": 0.0}), 200
+    """Get user's account balance"""
+    return jsonify({
+        "gold_balance": 100.0,
+        "money_balance": 1000.0,
+        "status": "active"
+    }), 200
 
 @bp.route('/inventory', methods=['GET'])
 @auth_required
