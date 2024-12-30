@@ -1,0 +1,121 @@
+ Errore principale:sqlite3.OperationalError: no such table: money_accounts
+🛑 Causa dell'errore
+La tabella money_accountsnon esiste nel database SQLite in uso.
+La migrazione sta tentando di eliminare una tabella che non esiste.
+Il database potrebbe non essere allineato con lo stato corrente delle migrazioni.
+🛠️ Soluzione Completa
+✅ 1. Verifica lo Stato Attuale delle Migrazioni
+Controlla l'elenco delle migrazioni applicate al database:
+
+battere
+
+Copia codice
+flask db history
+Controlla lo stato attuale della migrazione:
+
+battere
+
+Copia codice
+flask db current
+Se la migrazione 95540031f70cè ancora presente, prova a ripristinare una migrazione precedente:
+
+battere
+
+Copia codice
+flask db downgrade -1
+Se invece sembra tutto in ordine, procedi con la pulizia.
+
+✅ 2. Forza la Creazione delle Tabelle
+Assicurati che tutte le tabelle esistano nel database corrente:
+
+battere
+
+Copia codice
+flask shell
+All'interno della conchiglia:
+
+pitone
+
+Copia codice
+from app import db
+db.create_all()
+exit()
+Questo comando assicura che le tabelle mancanti vengano create correttamente.
+
+✅ 3. Modifica lo Script di Migrazione per Gestire la Tabella Mancante
+Apri il file di migrazione problematica: migrations/versions/95540031f70c_update_user_model_and_add_relationships.py
+
+Trova la riga che tenta di eliminare la tabella:
+
+pitone
+
+Copia codice
+op.drop_table('money_accounts')
+Modifica la riga per verificare prima l'esistenza della tabella:
+
+pitone
+
+Copia codice
+from sqlalchemy.engine.reflection import Inspector
+
+def table_exists(conn, table_name):
+    inspector = Inspector.from_engine(conn)
+    return table_name in inspector.get_table_names()
+
+if table_exists(op.get_bind(), 'money_accounts'):
+    op.drop_table('money_accounts')
+else:
+    print("Table 'money_accounts' does not exist. Skipping drop_table.")
+Questa modifica evita che lo script si interrompa se la tabella non esiste.
+
+✅ 4. Rilancia le Migrazioni
+Ora eseguire nuovamente le migrazioni:
+
+battere
+
+Copia codice
+flask db upgrade
+Se tutto va bene, il problema sarà risolto.
+
+✅ 5. Controlla le Tabelle nel Database
+Assicurati che tutte le tabelle necessarie esistano:
+
+codice sql
+
+Copia codice
+.tables
+Se vedi le tabelle richieste, il problema è risolto.
+
+📊 Se il problema persiste
+Resetta il database dei test (se possibile)
+
+battere
+
+Copia codice
+flask db downgrade base
+flask db upgrade
+Rimuovi il file SQLite manualmente (Se sei su un database locale)
+
+battere
+
+Copia codice
+rm -f app.db
+flask db upgrade
+Verifica i Modelli SQLAlchemy
+Assicurati che la classe MoneyAccountsia definita correttamente:
+
+pitone
+
+Copia codice
+class MoneyAccount(db.Model):
+    __tablename__ = 'money_accounts'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    balance = db.Column(db.Numeric(precision=10, scale=2), default=0)
+    user = db.relationship('User', back_populates='money_account')
+✅ Riepilogo dei Passaggi
+Verifica lo stato delle migrazioni con flask db historye flask db current.
+Assicurati che tutte le tabelle siano create con db.create_all().
+Modifica la migrazione per evitare errori con tabelle mancanti.
+Esegui flask db upgrade.
+Controlla lo schema del database con .tablesnel client SQLite.
