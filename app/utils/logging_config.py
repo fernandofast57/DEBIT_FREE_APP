@@ -1,40 +1,38 @@
 
 import logging
-from logging.handlers import RotatingFileHandler
 import os
-
-APP_NAME = "gold_investment"
+from logging.handlers import RotatingFileHandler
+from datetime import datetime
 
 def setup_logging():
-    if not os.path.exists('logs'):
-        os.makedirs('logs')
+    log_dir = 'logs'
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
 
     formatter = logging.Formatter(
         '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
 
-    # File handler for all logs
-    file_handler = RotatingFileHandler(
-        'logs/app.log', maxBytes=10485760, backupCount=10
-    )
-    file_handler.setFormatter(formatter)
-
-    # Error file handler
+    # File handler per errori critici
     error_handler = RotatingFileHandler(
-        'logs/error.log', maxBytes=10485760, backupCount=10
+        'logs/error.log',
+        maxBytes=10485760,  # 10MB
+        backupCount=5
     )
     error_handler.setLevel(logging.ERROR)
     error_handler.setFormatter(formatter)
 
+    # File handler per info generali
+    info_handler = RotatingFileHandler(
+        'logs/app.log',
+        maxBytes=10485760,
+        backupCount=5
+    )
+    info_handler.setLevel(logging.INFO)
+    info_handler.setFormatter(formatter)
+
     # Root logger configuration
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.INFO)
-    root_logger.addHandler(file_handler)
     root_logger.addHandler(error_handler)
-
-    return root_logger
-
-def get_logger(name):
-    return logging.getLogger(name)
-
-logger = setup_logging()
+    root_logger.addHandler(info_handler)
