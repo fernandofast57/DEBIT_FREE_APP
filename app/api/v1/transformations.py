@@ -22,7 +22,7 @@ async def transform_gold():
         data = schema.load(request.json)
         result = await transformation_service.transform_to_gold(
             user_id=int(request.headers.get('X-User-Id')),
-            fixing_price=data['fixing_price']
+            fixing_price=data['fixing_price'],
             gold_grams=data['gold_grams']
         )
         return jsonify(result), 200
