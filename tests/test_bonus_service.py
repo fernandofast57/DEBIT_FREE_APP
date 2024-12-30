@@ -40,11 +40,11 @@ class TestBonusDistributionService:
             )
             
             assert isinstance(result, dict)
-            assert len(result) == 0
+            assert 'structure_bonus' in result
             
-            operational_bonus = await GoldReward.query.filter_by(reward_type='operational').one_or_none()
-            assert operational_bonus is not None
-            assert operational_bonus.gold_amount > 0
+            structure_bonus = await GoldReward.query.filter_by(reward_type='structure').one_or_none()
+            assert structure_bonus is not None
+            assert structure_bonus.gold_amount > 0
 
     @pytest.mark.asyncio
     async def test_distribute_rewards_successful(self, app, bonus_service, setup_test_data):
@@ -64,3 +64,23 @@ class TestBonusDistributionService:
             
             assert isinstance(result['structure_rewards'], dict)
             assert isinstance(result['achievement_reward'], dict) or result['achievement_reward'] is None
+
+    @pytest.mark.asyncio
+    async def test_distribute_rewards_invalid_rank(self, app, bonus_service, setup_test_data):
+        async with app.app_context():
+            with pytest.raises(InvalidRankError):
+                await bonus_service.distribute_rewards(
+                    user_id=999999,  # Invalid user id
+                    euro_amount=Decimal('1000.00'),
+                    fixing_price=Decimal('50.0000')
+                )
+
+    @pytest.mark.asyncio
+    async def test_distribute_rewards_insufficient_balance(self, app, bonus_service, setup_test_data):
+        async with app.app_context():
+            with pytest.raises(InsufficientBalanceError):
+                await bonus_service.distribute_rewards(
+                    user_id=setup_test_data.id,
+                    euro_amount=Decimal('0.00'),  # Invalid amount
+                    fixing_price=Decimal('50.0000')
+                )
