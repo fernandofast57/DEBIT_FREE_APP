@@ -49,6 +49,11 @@ class Transaction(db.Model):
     user = db.relationship('User', back_populates='transactions')
 
     def __repr__(self):
+        return f"<Transaction {self.amount} ({self.transaction_type})>"
+    
+    user = db.relationship('User', back_populates='transactions')
+
+    def __repr__(self):
         return f"<Transaction {self.amount}>"
 
 from flask_bcrypt import Bcrypt
