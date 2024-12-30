@@ -9,6 +9,8 @@ import concurrent.futures
 def app():
     """Create a Flask application object."""
     from config import TestConfig
+    from app.database import db
+    
     app = create_app(TestConfig())
     app.config.update({
         'TESTING': True,
@@ -18,11 +20,11 @@ def app():
         'SECRET_KEY': 'test-key'
     })
     
-    ctx = app.app_context()
-    ctx.push()
-    
-    from app.database import db
-    app.db = db
+    with app.app_context():
+        db.create_all()
+        yield app
+        db.session.remove()
+        db.drop_all()
     
     with app.app_context():
         db.drop_all()
