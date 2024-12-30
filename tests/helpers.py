@@ -38,3 +38,9 @@ def get_test_auth_headers():
         'Authorization': 'Bearer test_token',
         'Content-Type': 'application/json'
     }
+def get_test_auth_headers():
+    """Generate test authentication headers"""
+    return {
+        'Authorization': 'Bearer TEST_TOKEN',
+        'Content-Type': 'application/json'
+    }

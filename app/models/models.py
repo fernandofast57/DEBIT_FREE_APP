@@ -1,4 +1,3 @@
-
 from datetime import datetime
 from decimal import Decimal
 from sqlalchemy import Enum
@@ -60,13 +59,12 @@ class User(db.Model, UserMixin):
     __tablename__ = 'users'
     __table_args__ = {'extend_existing': True}
     
-    referrer_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
-    referrals = db.relationship('User', backref=db.backref('referrer', remote_side=[id]))
-
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
+    referrer_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    referrer = db.relationship('User', backref=db.backref('referrals', lazy='dynamic'), remote_side=[id])
     noble_ranks = relationship('NobleRank', back_populates='user', cascade='all, delete-orphan')
     bonus_transactions = relationship('BonusTransaction', back_populates='user', cascade='all, delete-orphan')
     rewards = relationship('GoldReward', back_populates='user', cascade='all, delete-orphan')
