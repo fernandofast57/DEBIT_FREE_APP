@@ -1,9 +1,38 @@
-
 import pytest
 from decimal import Decimal
 from app.models.models import User, MoneyAccount, GoldAccount, GoldTransformation
 from tests.helpers import get_test_auth_headers
 import concurrent.futures
+
+@pytest.fixture
+def app():
+    """Create a Flask application object."""
+    from config import TestConfig
+    app = create_app(TestConfig())
+    app.config.update({
+        'TESTING': True,
+        'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:',
+        'SQLALCHEMY_TRACK_MODIFICATIONS': False,
+        'WTF_CSRF_ENABLED': False,
+        'SECRET_KEY': 'test-key'
+    })
+    
+    ctx = app.app_context()
+    ctx.push()
+    
+    from app.database import db
+    app.db = db
+    
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
+        db.session.remove()
+    
+    yield app
+    
+    db.session.remove()
+    db.drop_all()
+    ctx.pop()
 
 @pytest.fixture
 def test_user(app):
