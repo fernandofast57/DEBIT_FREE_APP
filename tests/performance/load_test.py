@@ -6,6 +6,8 @@ import os
 if os.getenv('REPL_ID'):
     import gevent.monkey
     gevent.monkey.patch_all()
+    import os
+    os.environ['LOCUST_HOST'] = 'http://0.0.0.0:8080'
 
 class GoldInvestmentUser(HttpUser):
     wait_time = between(1, 3)  # Random wait between requests
