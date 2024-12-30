@@ -1,0 +1,118 @@
+Errore principale:sqlite3.OperationalError: no such table: users
+🛑 Causa dell'errore
+Il database di test non è inizializzato correttamente.
+Le migrazioni non sono state applicate al database di test.
+La tabella usersnon è stata creata nel contesto del database utilizzato nei test.
+🛠️ Soluzione Completa
+✅ 1. Assicurati che il Database di Test sia Inizializzato Correttamente
+Modifica o crea una fixture di test nel file conftest.py:
+
+pitone
+
+Copia codice
+import pytest
+from app import create_app, db
+
+@pytest.fixture(scope='session')
+def app():
+    """Crea un'applicazione Flask per i test."""
+    app = create_app('testing')
+    with app.app_context():
+        db.create_all()  # Crea tutte le tabelle nel database di test
+        yield app
+        db.session.remove()
+        db.drop_all()
+Questa installazione:
+
+Crea il contesto dell'app Flask.
+Inizializza tutte le tabelle utilizzando db.create_all().
+Pulisci il database alla fine dei test con db.drop_all().
+✅ 2. Configura la Modalità Testing nel Database
+Nel file config.pyassicurativo di avere:
+
+pitone
+
+Copia codice
+class TestingConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+Se stai utilizzando un database SQLite in memoria, assicurati che il contesto sia correttamente impostato.
+
+✅ 3. Controlla le Migrazioni
+Se utilizzi Alambicco per le migrazioni, assicurazioni che tutte le migrazioni siano state applicate:
+
+battere
+
+Copia codice
+flask db upgrade
+Se utilizzi un database in memoria, le migrazioni potrebbero non essere rilevanti. In tal caso, utilizza direttamente:
+
+pitone
+
+Copia codice
+with app.app_context():
+    db.create_all()
+✅ 4. Usa una Fixture Specifica per i Dati di Test
+Aggiungi un apparecchio per popolare i dati di test nel database:
+
+pitone
+
+Copia codice
+@pytest.fixture
+def test_user(app):
+    """Crea un utente di test con conto associato."""
+    from app.models.models import User, GoldAccount, MoneyAccount
+
+    with app.app_context():
+        user = User(username='testuser', email='test@example.com')
+        user.password_hash = User.hash_password('testpassword')
+        
+        user.gold_account = GoldAccount(balance=0)
+        user.money_account = MoneyAccount(balance=1000)
+        
+        db.session.add(user)
+        db.session.commit()
+        return user
+✅ 5. Modificare il Test per Utilizzare le Fixture
+Aggiorna il tuo test test_valid_transformation:
+
+pitone
+
+Copia codice
+def test_valid_transformation(app, client, test_user):
+    """Test valid transformation request with database verification."""
+    headers = {"Authorization": "Bearer VALID_TEST_TOKEN"}
+    
+    user = test_user
+    initial_gold_balance = user.gold_account.balance
+    initial_money_balance = user.money_account.balance
+    
+    response = client.post('/api/v1/transformations/transform', headers=headers, json={
+        "euro_amount": 150.00,
+        "fixing_price": 50.00,
+        "fee_amount": 5.00,
+        "gold_grams": 3.5
+    })
+    
+    assert response.status_code == 200
+    assert "Gold transformed successfully" in response.get_json()["message"]
+    
+    db.session.refresh(user)
+    assert user.gold_account.balance == initial_gold_balance + Decimal('3.5')
+    assert user.money_account.balance == initial_money_balance - Decimal('150.00')
+✅ 6. Assicurati che il Database Venga Resettato Prima dei Test
+Eseguire manualmente:
+
+battere
+
+Copia codice
+flask db downgrade
+flask db upgrade
+Se stai utilizzando SQLite in memoria:
+
+pitone
+
+Copia codice
+with app.app_context():
+    db.create_all()
