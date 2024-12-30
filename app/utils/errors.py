@@ -15,6 +15,14 @@ class APIError(Exception):
         rv['status'] = 'error'
         return rv
 
+class InvalidRankError(APIError):
+    def __init__(self, message: str = "Invalid noble rank", payload: Dict[str, Any] = None):
+        super().__init__(message, status_code=400, payload=payload)
+
+class InsufficientBalanceError(APIError):
+    def __init__(self, message: str = "Insufficient balance", payload: Dict[str, Any] = None):
+        super().__init__(message, status_code=400, payload=payload)
+
 def handle_api_error(error: APIError):
     response = jsonify(error.to_dict())
     response.status_code = error.status_code
