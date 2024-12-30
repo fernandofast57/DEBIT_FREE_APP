@@ -17,50 +17,51 @@ class TransformationService:
         """Async initialization"""
         self.blockchain_service = await self.blockchain_service.initialize()
 
-    @performance_monitor.track_time('transformation') # Assumes performance_monitor object exists.  Add import if needed.
-    async def transform_to_gold(self, user_id: int, fixing_price: Decimal, euro_amount: Decimal = None, fee_amount: Decimal = None, gold_grams: Decimal = None) -> Dict[str, Any]:
+    @performance_monitor.track_time('transformation')
+    async def transform_to_gold(self, user_id: int, fixing_price: Decimal) -> Dict[str, Any]:
         from app.services.notification_service import NotificationService
         notification_service = NotificationService()
-        async with db.session.begin_nested(): # This already provides transaction management; assumes atomicity
+        async with db.session.begin_nested():
             try:
                 user = await User.query.get(user_id)
                 if not user:
                     return {'status': 'error', 'message': 'User not found'}
                     
                 money_account = await MoneyAccount.query.filter_by(user_id=user_id).first()
-                if not money_account:
-                    return {'status': 'error', 'message': 'Money account not found'}
-                
-                if not money_account.balance > 0:
+                if not money_account or money_account.balance <= 0:
                     return {'status': 'error', 'message': 'Insufficient balance'}
-
-                from app.config.constants import CLIENT_SHARE, NETWORK_SHARE, STRUCTURE_FEE
                 
-                # Calculate amounts according to glossary
+                # Calculate amounts
                 euro_amount = money_account.balance
-                structure_fee = euro_amount * STRUCTURE_FEE
-                net_amount = euro_amount - structure_fee
-                gold_grams = (net_amount * CLIENT_SHARE) / fixing_price
-                network_gold = (net_amount * NETWORK_SHARE) / fixing_price
+                org_fee = euro_amount * Decimal('0.05')  # 5% organizational fee
+                net_amount = euro_amount - org_fee
                 
+                # Convert to gold
+                total_gold_grams = net_amount / fixing_price
+                customer_gold = total_gold_grams * Decimal('0.983')  # 98.3% to customer
+                reward_gold = total_gold_grams * Decimal('0.017')    # 1.7% to rewards
+
                 # Create transformation
                 transformation = GoldTransformation(
                     user_id=user_id,
                     euro_amount=euro_amount,
-                    gold_grams=gold_grams,
+                    gold_grams=customer_gold, #Only customer gold is recorded in transformation
                     fixing_price=fixing_price,
-                    fee_amount=euro_amount * self.structure_fee
+                    fee_amount=org_fee
                 )
                 
                 # Update balances
                 money_account.balance = Decimal('0')
                 gold_account = await GoldAccount.query.filter_by(user_id=user_id).first()
-                gold_account.balance += gold_grams
+                if gold_account:
+                    gold_account.balance += customer_gold
+                else:
+                    return {'status': 'error', 'message': 'Gold account not found'} #Handle missing gold account
                 
-                # Record on blockchain
+                # Record on blockchain -  Consider updating to reflect reward distribution if needed.
                 await self.blockchain_service.record_transformation(
                     user.blockchain_address,
-                    float(gold_grams),
+                    float(customer_gold),
                     float(fixing_price)
                 )
                 
@@ -74,9 +75,9 @@ class TransformationService:
                     'status': 'verified',
                     'transaction': {
                         'original_amount': float(euro_amount),
-                        'gold_grams': float(gold_grams),
+                        'gold_grams': float(customer_gold),
                         'fixing_price': float(fixing_price),
-                        'fee': float(euro_amount * self.structure_fee)
+                        'fee': float(org_fee)
                     }
                 }
             except Exception as e:
