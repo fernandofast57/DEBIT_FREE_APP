@@ -14,13 +14,6 @@ def async_test(f):
         return asyncio.run(wrapped())
     return wrapper
 
-@pytest.fixture(scope="session")
-def event_loop():
-    """Create an instance of the default event loop for the test session."""
-    loop = asyncio.get_event_loop_policy().new_event_loop()
-    yield loop
-    loop.close()
-
 @pytest.fixture(scope='session')
 def app():
     app = create_app(TestConfig())
@@ -28,6 +21,7 @@ def app():
 
 @pytest.fixture(scope='session')
 def db(app):
+    """Session-wide test database"""
     with app.app_context():
         _db.create_all()
         yield _db
@@ -35,6 +29,7 @@ def db(app):
 
 @pytest.fixture(scope='function')
 def session(db):
+    """Creates a new database session for each test"""
     connection = db.engine.connect()
     transaction = connection.begin()
     session = db.create_scoped_session()
@@ -44,3 +39,13 @@ def session(db):
     session.close()
     transaction.rollback()
     connection.close()
+
+@pytest.fixture(scope='function')
+def client(app):
+    """Test client for the Flask application"""
+    return app.test_client()
+
+@pytest.fixture(scope='function')
+def runner(app):
+    """Test CLI runner for the Flask application"""
+    return app.test_cli_runner()
