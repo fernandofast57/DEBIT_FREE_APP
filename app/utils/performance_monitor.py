@@ -47,3 +47,13 @@ class PerformanceMonitor:
         return self.metrics
 
 performance_monitor = PerformanceMonitor()
+
+def monitor_performance(func: Callable) -> Callable:
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        execution_time = time.time() - start_time
+        logger.info(f"Function {func.__name__} executed in {execution_time:.2f} seconds")
+        return result
+    return wrapper
