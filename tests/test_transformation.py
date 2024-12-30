@@ -9,7 +9,9 @@ from app.database import db
 @pytest.fixture(scope='function')
 def app():
     from config import TestConfig
-    app = create_app(TestConfig())
+    config = TestConfig()
+    config.SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    app = create_app(config)
     
     with app.app_context():
         db.create_all()
