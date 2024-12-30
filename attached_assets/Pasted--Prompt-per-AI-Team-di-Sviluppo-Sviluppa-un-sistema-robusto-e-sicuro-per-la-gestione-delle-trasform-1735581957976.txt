@@ -1,0 +1,65 @@
+ Prompt per AI/Team di Sviluppo
+"Sviluppa un sistema robusto e sicuro per la gestione delle trasformazioni settimanali da euro a oro, con caratteristiche di solidità bancaria, mantenendo alta l'efficienza operativa e l'affidabilità complessiva del codice."
+
+✅ Obiettivo Generale
+Progettare e implementare un Servizio di Trasformazione Settimanale che:
+
+Gestisca in modo sicuro la conversione da euro a oro .
+Applichi una commissione del 5% sulla struttura .
+Registra tutte le transazioni nel database e sulla blockchain .
+Distribuisca automaticamente i bonus agli affiliati .
+Offre API stabili e sicure per la gestione delle richieste.
+🛠️ 1. Servizio di Trasformazione Settimanale
+🔑 Obiettivo: Garantire un'elaborazione periodica sicura ed efficiente delle trasformazioni.
+
+✅ Automazione Settimanale: Implementa un sistema schedulato che processa automaticamente le trasformazioni settimanali.
+✅ Commissione Automatica: Applica una commissione del 5% su ogni transazione.
+✅ Integrazione Blockchain: Registra ogni transazione sulla blockchain per garantire trasparenza e immutabilità.
+✅ Distribuzione Bonus: Calcola e assegna automaticamente i bonus agli affiliati.
+🔄 Criteri di Attuazione:
+
+Usa transazioni SQLAlchemy per garantire l'integrità dei dati.
+Implementa un meccanismo di rollback automatico in caso di errori.
+Utilizza un sistema di retry per operazioni fallite sulla blockchain.
+💻 Tecnologie consigliate:
+
+Python + Flask
+SQLAlchimia
+Web3.py per interfacciarsi con la blockchain
+Sedano per programma di attività
+🌐 2. Endpoint API
+🔑 Obiettivo: Fornire API chiare, documentate e sicure per la gestione delle trasformazioni.
+
+Punto finale	Metodo	Descrizione
+/api/v1/transformations/transform	POST	Gestisce le richieste individuali di trasformazione.
+/api/v1/transformations/process-weekly	POST	Avviare il processo di trasformazione settimanale.
+🔒 Requisiti di sicurezza:
+
+Autenticazione con Bearer Token .
+Validazione degli input (euro_amount,fixing_price, ecc.).
+Registrazione dettagliata di ogni richiesta e risposta.
+📊 Esempio di Payload per /transform:
+
+JSON-IT
+
+Copia codice
+{
+  "user_id": 123,
+  "euro_amount": 1000.00,
+  "fixing_price": 50.00,
+  "fee_amount": 5.00
+}
+📊 Esempio di risposta:
+
+JSON-IT
+
+Copia codice
+{
+  "status": "success",
+  "gold_grams": 18.18,
+  "transaction_id": "abc123"
+}
+🛡️ Consigliere Tecnologie:
+
+Flask-RESTful
+Flask-JWT-esteso
