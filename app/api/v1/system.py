@@ -26,3 +26,22 @@ async def get_system_metrics():
             'status': 'error',
             'message': str(e)
         }), 500
+
+@system_bp.route('/backup', methods=['POST'])
+async def create_system_backup():
+    """Create system backup"""
+    try:
+        backup_info = backup_manager.create_backup(
+            'instance/gold_investment.db',
+            metadata={'type': 'scheduled', 'version': '1.0'}
+        )
+        return jsonify({
+            'status': 'success',
+            'backup': backup_info
+        }), 201
+    except Exception as e:
+        logger.error(f"Backup creation failed: {str(e)}")
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
