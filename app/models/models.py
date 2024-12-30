@@ -50,11 +50,6 @@ class Transaction(db.Model):
 
     def __repr__(self):
         return f"<Transaction {self.amount} ({self.transaction_type})>"
-    
-    user = db.relationship('User', back_populates='transactions')
-
-    def __repr__(self):
-        return f"<Transaction {self.amount}>"
 
 from flask_bcrypt import Bcrypt
 
@@ -186,8 +181,6 @@ class GoldTransformation(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     user = db.relationship('User', back_populates='gold_transformations')
-    
-    user = db.relationship('User', back_populates='gold_transformations')
 
     def __repr__(self):
         return f"<GoldTransformation {self.euro_amount}€ -> {self.gold_grams}g>"
@@ -208,7 +201,6 @@ class GoldReward(db.Model):
     euro_amount = db.Column(db.Numeric(precision=10, scale=2))
     fixing_price = db.Column(db.Numeric(precision=10, scale=2))
     threshold_reached = db.Column(db.Numeric(precision=10, scale=2))
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
         return f"<GoldReward {self.gold_amount}g - {self.reward_type}>"
