@@ -1,59 +1,60 @@
 
-import logging
+import asyncio
 from datetime import datetime
 from typing import Dict, Any
-from app.utils.logging_config import get_logger
+import logging
+from web3 import Web3
+from web3.exceptions import BlockNotFound
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 class BlockchainMonitor:
-    def __init__(self):
-        self.error_thresholds = {
-            'gas_price_max': 100_000_000_000,  # 100 gwei
-            'failed_tx_limit': 3,
-            'block_delay_limit': 10
+    def __init__(self, w3: Web3):
+        self.w3 = w3
+        self.metrics = {
+            'latest_block': 0,
+            'gas_price': 0,
+            'pending_transactions': 0,
+            'network_status': 'unknown'
         }
-        self.failed_transactions = 0
-        self.last_block = 0
-        
-    async def check_network_health(self, w3) -> Dict[str, Any]:
+        self.thresholds = {
+            'max_gas_price': 100_000_000_000,  # 100 gwei
+            'block_delay': 5,  # blocks
+            'min_peers': 2
+        }
+
+    async def monitor_network(self) -> Dict[str, Any]:
         try:
-            current_block = await w3.eth.block_number
-            gas_price = await w3.eth.gas_price
-            peers = await w3.net.peer_count
-            
-            health_status = {
-                'status': 'healthy',
+            latest_block = await self.w3.eth.block_number
+            gas_price = await self.w3.eth.gas_price
+            peers = await self.w3.net.peer_count
+
+            self.metrics.update({
+                'latest_block': latest_block,
                 'gas_price': gas_price,
-                'block_number': current_block,
-                'peer_count': peers,
+                'network_status': 'healthy' if peers >= self.thresholds['min_peers'] else 'warning',
                 'timestamp': datetime.utcnow().isoformat()
-            }
-            
-            if gas_price > self.error_thresholds['gas_price_max']:
-                health_status['status'] = 'warning'
-                health_status['warning'] = 'High gas price detected'
-                
-            if peers < 2:
-                health_status['status'] = 'warning'
-                health_status['warning'] = 'Low peer count'
-                
-            return health_status
-            
+            })
+
+            # Alert on high gas prices
+            if gas_price > self.thresholds['max_gas_price']:
+                logger.warning(f"High gas price detected: {gas_price}")
+
+            return self.metrics
+
         except Exception as e:
-            logger.error(f"Network health check failed: {str(e)}")
+            logger.error(f"Blockchain monitoring error: {str(e)}")
             return {
                 'status': 'error',
                 'error': str(e),
                 'timestamp': datetime.utcnow().isoformat()
             }
-            
-    def track_transaction_failure(self):
-        self.failed_transactions += 1
-        if self.failed_transactions >= self.error_thresholds['failed_tx_limit']:
-            logger.critical("Transaction failure threshold exceeded")
+
+    async def verify_transaction(self, tx_hash: str) -> bool:
+        try:
+            tx = await self.w3.eth.get_transaction(tx_hash)
+            if tx is None:
+                return False
+            return tx.blockNumber is not None
+        except Exception:
             return False
-        return True
-        
-    def reset_failure_count(self):
-        self.failed_transactions = 0
