@@ -1,3 +1,4 @@
+
 run = """
 nix-env --upgrade || echo 'nix-env failed'
 rm -rf ~/.cache/nix
@@ -17,12 +18,8 @@ run = ["python3", "main.py"]
 deploymentTarget = "cloudrun"
 
 [[ports]]
-localPort = 3000
+localPort = 8080
 externalPort = 80
-
-[[ports]]
-localPort = 5000
-externalPort = 5000
 
 [nix]
 channel = "stable-24_05"

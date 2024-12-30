@@ -22,7 +22,7 @@ def after_request(response):
 if __name__ == '__main__':
     with app.app_context():
         try:
-            port = int(os.getenv('PORT', 8080))
+            port = 8080
             env = os.getenv('FLASK_ENV', 'development')
             debug = env == 'development'
             
