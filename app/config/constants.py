@@ -9,3 +9,15 @@ STATUS_SUSPENDED = 'suspended'
 STATUS_AVAILABLE = 'available'
 STATUS_RESERVED = 'reserved'
 STATUS_DISTRIBUTED = 'distributed'
+
+# Transaction types
+TRANSACTION_TYPE_DEPOSIT = 'deposit'
+TRANSACTION_TYPE_WITHDRAWAL = 'withdrawal'
+TRANSACTION_TYPE_TRANSFER = 'transfer'
+TRANSACTION_TYPE_TRANSFORMATION = 'transformation'
+
+# Noble ranks
+NOBLE_RANK_BRONZE = 'bronze'
+NOBLE_RANK_SILVER = 'silver'
+NOBLE_RANK_GOLD = 'gold'
+NOBLE_RANK_PLATINUM = 'platinum'

@@ -1,6 +1,5 @@
 
 import logging
-import os
 from logging.handlers import RotatingFileHandler
 from datetime import datetime
 
@@ -12,9 +11,6 @@ def get_logger():
 
 def setup_logging():
     log_dir = 'logs'
-    if not os.path.exists(log_dir):
-        os.makedirs(log_dir)
-
     formatter = logging.Formatter(
         '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
@@ -40,4 +36,4 @@ def setup_logging():
     root_logger.addHandler(error_handler)
     root_logger.addHandler(info_handler)
 
-    return logger
+    return root_logger
