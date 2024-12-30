@@ -80,10 +80,15 @@ async def setup_test_data(app, db):
         return users
 @pytest.mark.asyncio
 async def test_validate_weekly_transformation_process(app, db):
+    service = WeeklyProcessingService()
+    users = []
+    
+    def run_test():
+        return service.process_weekly_transformations(Decimal('50.00'))
+    
     with app.app_context():
-        # Setup
-        service = WeeklyProcessingService()
-        users = []
+        result = await run_test()
+        assert result['status'] == 'success'
         initial_balance = Decimal('1000.00')
         gold_price = Decimal('50.00')
         
