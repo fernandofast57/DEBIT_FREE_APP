@@ -44,3 +44,8 @@ def get_test_auth_headers():
         'Authorization': 'Bearer TEST_TOKEN',
         'Content-Type': 'application/json'
     }
+def get_test_auth_headers():
+    return {
+        'X-User-Id': '123',
+        'Authorization': 'Bearer test-token'
+    }

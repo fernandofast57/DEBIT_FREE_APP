@@ -3,6 +3,7 @@ import pytest
 from decimal import Decimal
 from app.models.models import User, MoneyAccount, GoldAccount, GoldTransformation
 from app.services.transformation_service import TransformationService
+from tests.helpers import get_test_auth_headers
 
 def test_valid_transformation(app, client):
     """Test valid transformation request"""
