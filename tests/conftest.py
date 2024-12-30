@@ -1,9 +1,18 @@
 
 import pytest
 import asyncio
+from functools import wraps
 from app import create_app
 from app.database import db as _db
 from config import TestConfig
+
+def async_test(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        async def wrapped():
+            return await f(*args, **kwargs)
+        return asyncio.run(wrapped())
+    return wrapper
 
 @pytest.fixture(scope="session")
 def event_loop():
