@@ -61,7 +61,7 @@ def get_performance_metrics():
     })
 from flask import Blueprint, request, jsonify
 from app.services.transformation_service import TransformationService
-from app.utils.auth import require_auth
+from app.utils.auth import auth_required
 from decimal import Decimal
 import logging
 
