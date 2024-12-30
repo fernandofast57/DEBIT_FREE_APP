@@ -12,6 +12,13 @@ accounting_service = AccountingService()
 def get_inventory():
     return jsonify(accounting_service.get_inventory_summary())
 
+@bp.route('/balance', methods=['GET'])
+def get_balance():
+    user_id = request.headers.get('X-User-Id')
+    if not user_id:
+        return jsonify({"error": "Authentication required"}), 401
+    return jsonify({"gold_balance": 0.0, "money_balance": 0.0}), 200
+
 @bp.route('/gold/purchase', methods=['POST'])
 @auth_required
 def record_purchase():

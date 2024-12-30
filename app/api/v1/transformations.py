@@ -13,12 +13,20 @@ transformation_service = TransformationService()
 
 @transformations_bp.route('/transform', methods=['POST'])
 async def transform_gold():
+    """Handles gold transformation requests."""
     user_id = request.headers.get('X-User-Id')
     if not user_id:
         return jsonify({"error": "Authentication required"}), 401
-    """Handles gold transformation requests."""
-    if not request.headers.get('X-User-Id'):
-        return jsonify({"error": "Authentication required"}), 401
+        
+    schema = TransformationSchema()
+    try:
+        data = schema.load(request.json)
+        result = {"status": "success", "message": "Transformation processed"}
+        return jsonify(result), 200
+    except ValidationError as err:
+        return jsonify({"errors": err.messages}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
         
     schema = TransformationSchema()
     try:

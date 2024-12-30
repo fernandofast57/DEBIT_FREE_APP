@@ -92,3 +92,10 @@ def mobile_dashboard():
         'daily_transactions': get_daily_transactions(),
         'system_health': get_system_health()
     })
+from flask import Blueprint, jsonify
+
+system_bp = Blueprint('system', __name__)
+
+@system_bp.route('/status', methods=['GET'])
+def get_status():
+    return jsonify({"status": "operational"}), 200
