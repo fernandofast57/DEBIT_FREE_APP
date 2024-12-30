@@ -25,6 +25,9 @@ def upgrade():
         sa.Column('created_at', sa.DateTime(), server_default=sa.text('CURRENT_TIMESTAMP')),
         sa.PrimaryKeyConstraint('id')
     )
+    
+    # Create email index
+    op.create_index('idx_users_email', 'users', ['email'], unique=True)
 
     # Create money_accounts table
     op.create_table(
