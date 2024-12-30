@@ -8,6 +8,7 @@ from app.database import db
 from app.admin import admin
 from app.models.models import User, NobleRank, Transaction
 from sqlalchemy import text
+from app.utils.database.migrations import migration_manager # Added this line
 
 cache = Cache(config={'CACHE_TYPE': 'simple'})
 login_manager = LoginManager()
@@ -20,7 +21,8 @@ def create_app(config_class=Config):
 
     db.init_app(app)
     migrate.init_app(app, db)
-    
+    migration_manager.init_app(app, db) # Added this line
+
     with app.app_context():
         if not app.config.get('TESTING'):
             from app.utils.optimization import optimize_queries, create_indexes
