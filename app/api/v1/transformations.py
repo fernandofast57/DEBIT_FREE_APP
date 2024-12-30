@@ -61,11 +61,13 @@ def get_performance_metrics():
     })
 from flask import Blueprint, request, jsonify
 from app.services.transformation_service import TransformationService
-from app.utils.auth import auth_required
+from app.middleware.security import SecurityMiddleware
 from decimal import Decimal
 import logging
 
 transformations_bp = Blueprint('transformations', __name__)
+security = SecurityMiddleware()
+require_auth = security.require_auth
 logger = logging.getLogger(__name__)
 
 @transformations_bp.route('/transform', methods=['POST'])
