@@ -21,3 +21,10 @@ NOBLE_RANK_BRONZE = 'bronze'
 NOBLE_RANK_SILVER = 'silver'
 NOBLE_RANK_GOLD = 'gold'
 NOBLE_RANK_PLATINUM = 'platinum'
+
+class TestConfig:
+    """Test configuration class"""
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    SECRET_KEY = 'test_secret_key'
+    WTF_CSRF_ENABLED = False
