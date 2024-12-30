@@ -7,7 +7,8 @@ from app.services.transformation_service import TransformationService
 def test_valid_transformation(app, client):
     """Test valid transformation request"""
     with app.test_client() as client:
-        response = client.post('/api/v1/transformations/transform', json={
+        headers = get_test_auth_headers()
+        response = client.post('/api/v1/transformations/transform', headers=headers, json={
             "euro_amount": 150.00,
             "fixing_price": 50.00,
             "fee_amount": 5.00,

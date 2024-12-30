@@ -1,4 +1,3 @@
-
 import pytest
 from sqlalchemy import inspect, text
 from app import create_app, db
@@ -20,6 +19,7 @@ def test_app():
 def test_table_creation_and_optimization(test_app):
     """Test successful table creation and index optimization"""
     with test_app.app_context():
+        db.create_all()  # Ensure tables are created
         # Get inspector
         inspector = inspect(db.engine)
         tables = inspector.get_table_names()

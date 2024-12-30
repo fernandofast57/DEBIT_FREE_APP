@@ -3,6 +3,12 @@ from typing import Any, Dict
 from decimal import Decimal
 import pytest
 
+def get_test_auth_headers():
+    return {
+        'X-User-Id': '123',
+        'Authorization': 'Bearer test-token'
+    }
+
 def create_test_user(db_session) -> Dict[str, Any]:
     """Helper to create a test user with accounts"""
     from app.models.models import User, MoneyAccount, GoldAccount

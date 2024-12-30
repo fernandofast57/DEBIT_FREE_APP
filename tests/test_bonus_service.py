@@ -13,7 +13,7 @@ class TestBonusDistributionService:
     
     @pytest.fixture
     async def setup_test_data(self):
-        test_user = User(id=1, name="Test User", referrer_id=None)
+        test_user = User(id=1, username="Test User", email="test@example.com", referrer_id=None)
         test_user.gold_account.balance = Decimal('10.0000')
         db.session.add(test_user)
         await db.session.commit()
