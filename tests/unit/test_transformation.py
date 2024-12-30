@@ -80,7 +80,7 @@ async def setup_test_data(app, db):
         return users
 @pytest.mark.asyncio
 async def test_validate_weekly_transformation_process(app, db):
-    async with app.app_context():
+    with app.app_context():
         # Setup
         service = WeeklyProcessingService()
         users = []
