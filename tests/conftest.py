@@ -4,7 +4,9 @@ import asyncio
 from functools import wraps
 from app import create_app
 from app.database import db as _db
-from config import TestConfig
+from app.config.constants import TestConfig
+from app.models.models import User, MoneyAccount, GoldAccount
+from decimal import Decimal
 
 def async_test(f):
     @wraps(f)
@@ -16,6 +18,7 @@ def async_test(f):
 
 @pytest.fixture(scope='session')
 def app():
+    """Create and configure a test application instance"""
     app = create_app(TestConfig())
     return app
 
@@ -49,3 +52,25 @@ def client(app):
 def runner(app):
     """Test CLI runner for the Flask application"""
     return app.test_cli_runner()
+
+@pytest.fixture(scope='function')
+def test_user(session):
+    """Create a test user with associated accounts"""
+    user = User(
+        email="test@example.com",
+        username="test_user",
+        blockchain_address="0x123test456"
+    )
+    money_account = MoneyAccount(balance=Decimal('1000.00'))
+    gold_account = GoldAccount(balance=Decimal('0'))
+    
+    user.money_account = money_account
+    user.gold_account = gold_account
+    
+    session.add(user)
+    session.commit()
+    
+    yield user
+    
+    session.delete(user)
+    session.commit()
