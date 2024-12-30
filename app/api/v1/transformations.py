@@ -13,6 +13,9 @@ transformation_service = TransformationService()
 
 @transformations_bp.route('/transform', methods=['POST'])
 async def transform_gold():
+    user_id = request.headers.get('X-User-Id')
+    if not user_id:
+        return jsonify({"error": "Authentication required"}), 401
     """Handles gold transformation requests."""
     if not request.headers.get('X-User-Id'):
         return jsonify({"error": "Authentication required"}), 401
