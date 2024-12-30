@@ -65,9 +65,9 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128))
     referrer_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     referrer = db.relationship('User', backref=db.backref('referrals', lazy='dynamic'), remote_side=[id])
-    noble_ranks = relationship('NobleRank', back_populates='user', cascade='all, delete-orphan')
-    bonus_transactions = relationship('BonusTransaction', back_populates='user', cascade='all, delete-orphan')
-    rewards = relationship('GoldReward', back_populates='user', cascade='all, delete-orphan')
+    noble_ranks = relationship('NobleRank', back_populates='user', cascade='all, delete')
+    bonus_transactions = relationship('BonusTransaction', back_populates='user', cascade='all, delete')
+    rewards = relationship('GoldReward', back_populates='user', overlaps="bonus_transactions", cascade='all, delete')
 
     @staticmethod
     def hash_password(password):
