@@ -234,6 +234,9 @@ class BlockchainService:
     async def get_transaction_stats(self) -> Dict[str, Any]:
         """Get statistics about blockchain transactions"""
         try:
+            if not self.w3:
+                return {'status': 'error', 'message': 'Web3 not initialized'}
+            
             stats = {
                 'gas_price': self.w3.eth.gas_price,
                 'block_number': self.w3.eth.block_number,
@@ -244,6 +247,5 @@ class BlockchainService:
             }
             return {'status': 'verified', 'stats': stats}
         except Exception as e:
-            logger.error(f"Blockchain transaction error: {str(e)}")
             logger.error(f"Error getting transaction stats: {str(e)}")
             return {'status': 'error', 'message': str(e)}
