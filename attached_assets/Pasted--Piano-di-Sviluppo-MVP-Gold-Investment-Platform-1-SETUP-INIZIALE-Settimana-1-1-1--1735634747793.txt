@@ -1,0 +1,100 @@
+# Piano di Sviluppo MVP - Gold Investment Platform
+
+## 1. SETUP INIZIALE (Settimana 1)
+
+### 1.1 Configurazione Replit
+- Replit 1: Backend Flask
+- Replit 2: Frontend React
+- Replit 3: Smart Contract Polygon
+
+### 1.2 Struttura Base
+```
+/backend-repl/
+├── app/
+│   ├── models/         # Modelli database
+│   ├── routes/         # API endpoints
+│   ├── services/       # Business logic
+│   └── utils/          # Utilities
+└── tests/             # Test suite
+
+/frontend-repl/
+├── src/
+│   ├── components/     # Componenti React
+│   ├── hooks/         # Custom hooks
+│   ├── services/      # API integration
+│   └── utils/         # Utilities
+└── public/
+
+/blockchain-repl/
+├── contracts/         # Smart contracts
+└── scripts/          # Deploy scripts
+```
+
+## 2. SVILUPPO INCREMENTALE
+
+### Sprint 1: Core Auth & Database (Settimana 2)
+- Sistema autenticazione base
+- Setup database MoneyAccount/GoldAccount
+- Test unitari base
+
+### Sprint 2: Bonifici e Trasformazioni (Settimana 3)
+- Sistema bonifici ricorrenti
+- Logica trasformazione euro->oro
+- Calcolo automatico spread
+
+### Sprint 3: Blockchain Integration (Settimana 4)
+- Deploy smart contract Polygon Mumbai
+- Batch processing setup
+- Test integrazione blockchain
+
+### Sprint 4: Frontend Base (Settimana 5)
+- Dashboard principale
+- Sistema autenticazione frontend
+- Visualizzazione saldi e transazioni
+
+## 3. REVIEW POINTS
+
+### 3.1 Fine Sprint Review
+- Code review completa
+- Test coverage check
+- Performance review
+- Security check
+
+### 3.2 Documentazione
+- Aggiornamento development journal
+- API documentation
+- Frontend components doc
+- Smart contract documentation
+
+## 4. DELIVERABLES MVP
+
+### 4.1 Backend
+- Sistema auth completo
+- API bonifici e trasformazioni
+- Integrazione blockchain
+- Test suite
+
+### 4.2 Frontend
+- Dashboard funzionante
+- Form bonifici ricorrenti
+- Visualizzazione transazioni
+- UI/UX base
+
+### 4.3 Blockchain
+- Smart contract deployed
+- Batch processing funzionante
+- Gas optimization implementata
+
+## 5. PROSSIMI PASSI
+
+### 5.1 Immediate Actions
+1. Setup Replit workspaces
+2. Configurazione Git repositories
+3. Setup database iniziale
+4. Prima connessione frontend-backend
+
+### 5.2 First Sprint Goals
+1. Sistema auth base funzionante
+2. Database schema iniziale
+3. Prime API endpoints
+4. Test environment configurato
