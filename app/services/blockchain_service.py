@@ -237,11 +237,14 @@ class BlockchainService:
             if not self.w3:
                 return {'status': 'error', 'message': 'Web3 not initialized'}
             
+            if not self.w3.is_connected():
+                return {'status': 'error', 'message': 'Not connected to blockchain'}
+
             stats = {
                 'gas_price': self.w3.eth.gas_price,
                 'block_number': self.w3.eth.block_number,
                 'network_id': self.w3.eth.chain_id,
-                'connected': self.w3.is_connected(),
+                'connected': True,
                 'syncing': self.w3.eth.syncing,
                 'peer_count': self.w3.net.peer_count
             }
