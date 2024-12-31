@@ -235,12 +235,12 @@ class BlockchainService:
         """Get statistics about blockchain transactions"""
         try:
             stats = {
-                'gas_price': await self.w3.eth.gas_price,
-                'block_number': await self.w3.eth.block_number,
-                'network_id': await self.w3.eth.chain_id,
+                'gas_price': self.w3.eth.gas_price,
+                'block_number': self.w3.eth.block_number,
+                'network_id': self.w3.eth.chain_id,
                 'connected': self.w3.is_connected(),
-                'syncing': await self.w3.eth.syncing,
-                'peer_count': await self.w3.net.peer_count
+                'syncing': self.w3.eth.syncing,
+                'peer_count': self.w3.net.peer_count
             }
             return {'status': 'verified', 'stats': stats}
         except Exception as e:
