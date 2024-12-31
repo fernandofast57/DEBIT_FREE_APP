@@ -1,0 +1,489 @@
+/gold-investment-backend$ python -m pytest tests/ -v --disable-warnings
+================================= test session starts ==================================
+platform linux -- Python 3.11.10, pytest-8.1.1, pluggy-1.4.0 -- /home/runner/gold-investment-backend/.pythonlibs/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/gold-investment-backend/tests
+configfile: pytest.ini
+plugins: asyncio-0.23.6, mock-3.14.0, cov-4.1.0, web3-6.11.3
+asyncio: mode=Mode.AUTO
+collected 33 items                                                                     
+
+tests/functional/test_api.py::test_transformation_endpoint FAILED                [  3%]
+tests/functional/test_api.py::test_account_balance FAILED                        [  6%]
+tests/functional/test_api.py::test_index PASSED                                  [  9%]
+tests/functional/test_api.py::test_invalid_transformation FAILED                 [ 12%]
+tests/functional/test_api.py::test_async_endpoints PASSED                        [ 15%]
+tests/integration/test_blockchain.py::test_batch_transformation_process ERROR    [ 18%]
+tests/integration/test_blockchain.py::test_noble_rank_update ERROR               [ 21%]
+tests/integration/test_blockchain.py::test_blockchain_stats ERROR                [ 24%]
+tests/performance/test_load.py::test_system_under_load FAILED                    [ 27%]
+tests/performance/test_monitoring.py::test_system_monitoring FAILED              [ 30%]
+tests/performance/test_monitoring.py::test_performance_decorator PASSED          [ 33%]
+tests/performance/test_optimization.py::test_table_creation_and_optimization FAILED [ 36%]
+tests/security/test_security.py::test_environment_variables PASSED               [ 39%]
+tests/security/test_security.py::test_rate_limiter PASSED                        [ 42%]
+tests/security/test_security.py::test_security_manager_logging PASSED            [ 45%]
+tests/security/test_security.py::test_permission_checking PASSED                 [ 48%]
+tests/security/test_security.py::test_role_permission_validation PASSED          [ 51%]
+tests/security/test_security.py::test_input_validation FAILED                    [ 54%]
+tests/unit/test_blockchain_monitor.py::test_monitor_transaction_success ERROR    [ 57%]
+tests/unit/test_blockchain_monitor.py::test_monitor_high_gas_alert ERROR         [ 60%]
+tests/unit/test_blockchain_monitor.py::test_metrics_limit ERROR                  [ 63%]
+tests/unit/test_blockchain_monitor.py::test_monitor_network ERROR                [ 66%]
+tests/unit/test_blockchain_monitor.py::test_monitor_block_time ERROR             [ 69%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_structure_bonus ERROR [ 72%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_successful ERROR [ 75%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_invalid_rank ERROR [ 78%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_insufficient_balance ERROR [ 81%]
+tests/unit/test_constants.py::test_status_constants PASSED                       [ 84%]
+tests/unit/test_logging.py::test_logger_initialization PASSED                    [ 87%]
+tests/unit/test_logging.py::test_setup_logging FAILED                            [ 90%]
+tests/unit/test_noble_system.py::test_noble_rank_creation ERROR                  [ 93%]
+tests/unit/test_noble_system.py::test_noble_relation_verification ERROR          [ 96%]
+tests/unit/test_transformation.py::test_transformation_calculates_correct_gold_amount FAILED [100%]
+
+======================================== ERRORS ========================================
+_________________ ERROR at setup of test_batch_transformation_process __________________
+
+    @pytest.fixture
+    async def blockchain_service():
+>       service = BlockchainService()
+
+tests/integration/test_blockchain.py:10: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <app.services.blockchain_service.BlockchainService object at 0x7f974f1d7510>
+
+    def __init__(self):
+        self.w3 = None
+        self.contract = None
+        self.account = None
+        self.monitor = None
+        self.setup_web3()
+        if self.w3:
+>           self.monitor = BlockchainMonitor(self.w3)
+E           TypeError: BlockchainMonitor.__init__() takes 1 positional argument but 2 were given
+
+app/services/blockchain_service.py:64: TypeError
+_______________________ ERROR at setup of test_noble_rank_update _______________________
+
+    @pytest.fixture
+    async def blockchain_service():
+>       service = BlockchainService()
+
+tests/integration/test_blockchain.py:10: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <app.services.blockchain_service.BlockchainService object at 0x7f974f1a8bd0>
+
+    def __init__(self):
+        self.w3 = None
+        self.contract = None
+        self.account = None
+        self.monitor = None
+        self.setup_web3()
+        if self.w3:
+>           self.monitor = BlockchainMonitor(self.w3)
+E           TypeError: BlockchainMonitor.__init__() takes 1 positional argument but 2 were given
+
+app/services/blockchain_service.py:64: TypeError
+_______________________ ERROR at setup of test_blockchain_stats ________________________
+
+    @pytest.fixture
+    async def blockchain_service():
+>       service = BlockchainService()
+
+tests/integration/test_blockchain.py:10: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <app.services.blockchain_service.BlockchainService object at 0x7f974f0b8550>
+
+    def __init__(self):
+        self.w3 = None
+        self.contract = None
+        self.account = None
+        self.monitor = None
+        self.setup_web3()
+        if self.w3:
+>           self.monitor = BlockchainMonitor(self.w3)
+E           TypeError: BlockchainMonitor.__init__() takes 1 positional argument but 2 were given
+
+app/services/blockchain_service.py:64: TypeError
+__________________ ERROR at setup of test_monitor_transaction_success __________________
+
+    @pytest.fixture
+    def web3_mock():
+        w3 = Web3()
+>       w3.eth.gas_price = 50_000_000_000  # 50 gwei
+E       AttributeError: property 'gas_price' of 'Eth' object has no setter
+
+tests/unit/test_blockchain_monitor.py:10: AttributeError
+____________________ ERROR at setup of test_monitor_high_gas_alert _____________________
+
+    @pytest.fixture
+    def web3_mock():
+        w3 = Web3()
+>       w3.eth.gas_price = 50_000_000_000  # 50 gwei
+E       AttributeError: property 'gas_price' of 'Eth' object has no setter
+
+tests/unit/test_blockchain_monitor.py:10: AttributeError
+_________________________ ERROR at setup of test_metrics_limit _________________________
+
+    @pytest.fixture
+    def web3_mock():
+        w3 = Web3()
+>       w3.eth.gas_price = 50_000_000_000  # 50 gwei
+E       AttributeError: property 'gas_price' of 'Eth' object has no setter
+
+tests/unit/test_blockchain_monitor.py:10: AttributeError
+________________________ ERROR at setup of test_monitor_network ________________________
+
+    @pytest.fixture
+    def web3_mock():
+        w3 = Web3()
+>       w3.eth.gas_price = 50_000_000_000  # 50 gwei
+E       AttributeError: property 'gas_price' of 'Eth' object has no setter
+
+tests/unit/test_blockchain_monitor.py:10: AttributeError
+______________________ ERROR at setup of test_monitor_block_time _______________________
+
+    @pytest.fixture
+    def web3_mock():
+        w3 = Web3()
+>       w3.eth.gas_price = 50_000_000_000  # 50 gwei
+E       AttributeError: property 'gas_price' of 'Eth' object has no setter
+
+tests/unit/test_blockchain_monitor.py:10: AttributeError
+____ ERROR at setup of TestBonusDistributionService.test_distribute_structure_bonus ____
+
+self = <test_bonus_service.TestBonusDistributionService object at 0x7f9750008850>
+
+    @pytest.fixture
+    def bonus_service(self):
+>       return BonusDistributionService()
+
+tests/unit/test_bonus_service.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/services/bonus_distribution_service.py:15: in __init__
+    self.blockchain_service = BlockchainService()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <app.services.blockchain_service.BlockchainService object at 0x7f974e62d750>
+
+    def __init__(self):
+        self.w3 = None
+        self.contract = None
+        self.account = None
+        self.monitor = None
+        self.setup_web3()
+        if self.w3:
+>           self.monitor = BlockchainMonitor(self.w3)
+E           TypeError: BlockchainMonitor.__init__() takes 1 positional argument but 2 were given
+
+app/services/blockchain_service.py:64: TypeError
+__ ERROR at setup of TestBonusDistributionService.test_distribute_rewards_successful ___
+
+self = <test_bonus_service.TestBonusDistributionService object at 0x7f9750009250>
+
+    @pytest.fixture
+    def bonus_service(self):
+>       return BonusDistributionService()
+
+tests/unit/test_bonus_service.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/services/bonus_distribution_service.py:15: in __init__
+    self.blockchain_service = BlockchainService()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <app.services.blockchain_service.BlockchainService object at 0x7f974e7565d0>
+
+    def __init__(self):
+        self.w3 = None
+        self.contract = None
+        self.account = None
+        self.monitor = None
+        self.setup_web3()
+        if self.w3:
+>           self.monitor = BlockchainMonitor(self.w3)
+E           TypeError: BlockchainMonitor.__init__() takes 1 positional argument but 2 were given
+
+app/services/blockchain_service.py:64: TypeError
+_ ERROR at setup of TestBonusDistributionService.test_distribute_rewards_invalid_rank __
+
+self = <test_bonus_service.TestBonusDistributionService object at 0x7f9750009b90>
+
+    @pytest.fixture
+    def bonus_service(self):
+>       return BonusDistributionService()
+
+tests/unit/test_bonus_service.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/services/bonus_distribution_service.py:15: in __init__
+    self.blockchain_service = BlockchainService()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <app.services.blockchain_service.BlockchainService object at 0x7f974e762590>
+
+    def __init__(self):
+        self.w3 = None
+        self.contract = None
+        self.account = None
+        self.monitor = None
+        self.setup_web3()
+        if self.w3:
+>           self.monitor = BlockchainMonitor(self.w3)
+E           TypeError: BlockchainMonitor.__init__() takes 1 positional argument but 2 were given
+
+app/services/blockchain_service.py:64: TypeError
+_ ERROR at setup of TestBonusDistributionService.test_distribute_rewards_insufficient_balance _
+
+self = <test_bonus_service.TestBonusDistributionService object at 0x7f975000a850>
+
+    @pytest.fixture
+    def bonus_service(self):
+>       return BonusDistributionService()
+
+tests/unit/test_bonus_service.py:27: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/services/bonus_distribution_service.py:15: in __init__
+    self.blockchain_service = BlockchainService()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <app.services.blockchain_service.BlockchainService object at 0x7f974e786590>
+
+    def __init__(self):
+        self.w3 = None
+        self.contract = None
+        self.account = None
+        self.monitor = None
+        self.setup_web3()
+        if self.w3:
+>           self.monitor = BlockchainMonitor(self.w3)
+E           TypeError: BlockchainMonitor.__init__() takes 1 positional argument but 2 were given
+
+app/services/blockchain_service.py:64: TypeError
+______________________ ERROR at setup of test_noble_rank_creation ______________________
+file /home/runner/gold-investment-backend/tests/unit/test_noble_system.py, line 7
+  def test_noble_rank_creation(app, mock_blockchain_service):
+E       fixture 'mock_blockchain_service' not found
+>       available fixtures: _session_event_loop, app, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, client, cov, db, deployer, doctest_namespace, event_loop, event_loop_policy, mocker, module_mocker, monkeypatch, no_cover, package_mocker, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, runner, session, session_mocker, test_user, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unit/test_noble_system.py::<event_loop>, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/gold-investment-backend/tests/unit/test_noble_system.py:7
+__________________ ERROR at setup of test_noble_relation_verification __________________
+file /home/runner/gold-investment-backend/tests/unit/test_noble_system.py, line 19
+  def test_noble_relation_verification(app, mock_blockchain_service):
+E       fixture 'mock_blockchain_service' not found
+>       available fixtures: _session_event_loop, app, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, client, cov, db, deployer, doctest_namespace, event_loop, event_loop_policy, mocker, module_mocker, monkeypatch, no_cover, package_mocker, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, runner, session, session_mocker, test_user, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unit/test_noble_system.py::<event_loop>, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/gold-investment-backend/tests/unit/test_noble_system.py:19
+======================================= FAILURES =======================================
+_____________________________ test_transformation_endpoint _____________________________
+
+client = <FlaskClient <Flask 'app'>>
+auth_headers = {'Authorization': 'Bearer test-token', 'X-User-Id': '123'}
+
+    def test_transformation_endpoint(client, auth_headers):
+        """Test transformation endpoint"""
+        response = client.post('/api/v1/transformations/transform',
+            json={
+                "fixing_price": 50.00,
+                "gold_grams": 2.0
+            },
+            headers=auth_headers
+        )
+>       assert response.status_code == 200
+E       assert 401 == 200
+E        +  where 401 = <WrapperTestResponse streamed [401 UNAUTHORIZED]>.status_code
+
+tests/functional/test_api.py:26: AssertionError
+-------------------------------- Captured stdout setup ---------------------------------
+Tables created successfully.
+Database optimization completed successfully
+_________________________________ test_account_balance _________________________________
+
+client = <FlaskClient <Flask 'app'>>
+auth_headers = {'Authorization': 'Bearer test-token', 'X-User-Id': '123'}
+
+    def test_account_balance(client, auth_headers):
+        """Test account balance endpoint"""
+        response = client.get('/api/v1/accounts/balance',
+            headers=auth_headers
+        )
+>       assert response.status_code == 200
+E       assert 401 == 200
+E        +  where 401 = <WrapperTestResponse streamed [401 UNAUTHORIZED]>.status_code
+
+tests/functional/test_api.py:35: AssertionError
+-------------------------------- Captured stdout setup ---------------------------------
+Tables created successfully.
+Database optimization completed successfully
+_____________________________ test_invalid_transformation ______________________________
+
+client = <FlaskClient <Flask 'app'>>
+auth_headers = {'Authorization': 'Bearer test-token', 'X-User-Id': '123'}
+
+    def test_invalid_transformation(client, auth_headers):
+        """Test transformation with invalid input"""
+        response = client.post('/api/v1/transformations/transform',
+            json={
+                "fixing_price": -50.00,
+                "gold_grams": 0
+            },
+            headers=auth_headers
+        )
+>       assert response.status_code == 400
+E       assert 401 == 400
+E        +  where 401 = <WrapperTestResponse streamed [401 UNAUTHORIZED]>.status_code
+
+tests/functional/test_api.py:55: AssertionError
+-------------------------------- Captured stdout setup ---------------------------------
+Tables created successfully.
+Database optimization completed successfully
+________________________________ test_system_under_load ________________________________
+
+    def test_system_under_load():
+        """Test system performance under load"""
+        monitor = PerformanceMonitor()
+    
+        # Simulate load
+        for _ in range(100):
+>           monitor.record_metric('response_time', 0.1)
+E           AttributeError: 'PerformanceMonitor' object has no attribute 'record_metric'
+
+tests/performance/test_load.py:12: AttributeError
+________________________________ test_system_monitoring ________________________________
+
+    def test_system_monitoring():
+        """Test system monitoring capabilities"""
+        monitor = SystemMonitor()
+    
+        # Test monitoring functions
+>       monitor.log_request('/api/test')
+E       AttributeError: 'SystemMonitor' object has no attribute 'log_request'
+
+tests/performance/test_monitoring.py:11: AttributeError
+_________________________ test_table_creation_and_optimization _________________________
+
+test_app = <Flask 'app'>
+
+    def test_table_creation_and_optimization(test_app):
+        """Test successful table creation and index optimization"""
+        with test_app.app_context():
+            db.create_all()
+            db.session.commit()  # Ensure tables are created and committed
+            # Get inspector
+            inspector = inspect(db.engine)
+            tables = inspector.get_table_names()
+    
+            # Verify core tables exist
+>           assert 'users' in tables, "Users table not found"
+E           AssertionError: Users table not found
+E           assert 'users' in ['alembic_version']
+
+tests/performance/test_optimization.py:29: AssertionError
+-------------------------------- Captured stdout setup ---------------------------------
+Tables created successfully.
+Database optimization completed successfully
+________________________________ test_input_validation _________________________________
+
+    def test_input_validation():
+        """Test input validation and sanitization"""
+        security_manager = SecurityManager()
+        malicious_input = {
+            "user_id": "1234'; DROP TABLE users;--",
+            "password": "<script>alert('xss')</script>",
+            "path": "../../../../etc/passwd",
+            "nested": {
+                "field": "../../secret.txt",
+                "script": "<IMG SRC=javascript:alert('XSS')>",
+                "sql": "UNION SELECT * FROM users--"
+            },
+            "special_chars": "µ§¶†‡°©®™"
+        }
+    
+        sanitized = security_manager.sanitize_input(malicious_input)
+    
+        # Test SQL injection prevention
+>       assert "DROP TABLE" not in str(sanitized)
+E       assert 'DROP TABLE' not in "{'user_id':..._chars': ''}"
+E         
+E         'DROP TABLE' is contained here:
+E           {'user_id': '1234 DROP TABLE users--', 'password': 'scriptalert(xss)script', 'path': '........etcpasswd', 'nested': {'field': '....secret.txt', 'script': 'IMG SRCjavascriptalert(XSS)', 'sql': 'UNION SELECT  FROM users--'}, 'special_chars': ''}
+E         ?                   ++++++++++
+
+tests/security/test_security.py:101: AssertionError
+__________________________________ test_setup_logging __________________________________
+
+    def test_setup_logging():
+        setup_logging()
+        logger = get_logger()
+>       assert len(logger.handlers) > 0
+E       assert 0 > 0
+E        +  where 0 = len([])
+E        +    where [] = <Logger gold_investment (INFO)>.handlers
+
+tests/unit/test_logging.py:12: AssertionError
+__________________ test_transformation_calculates_correct_gold_amount __________________
+
+app = <Flask 'app'>
+
+    @pytest.mark.asyncio
+    async def test_transformation_calculates_correct_gold_amount(app):
+        # Arrange
+        with app.app_context():
+            service = TransformationService()
+            euro_amount = Decimal('100.00')
+            fixing_price = Decimal('50.00')
+            expected_gold = Decimal('1.90')  # (100 - 5% fee) / 50
+    
+            # Create test user with required accounts
+            test_user = User(id=1)
+            test_user.money_account = MoneyAccount()
+            test_user.gold_account = GoldAccount()
+    
+            # Mock the user query
+            async def mock_get(user_id):
+                return test_user
+            User.query.get = mock_get
+    
+            # Act
+            result = await service.process_transformation(1, euro_amount, fixing_price)
+    
+            # Assert
+>           assert result['status'] == 'success'
+E           AssertionError: assert 'error' == 'success'
+E             
+E             - success
+E             + error
+
+tests/unit/test_transformation.py:30: AssertionError
+---------------------------------- Captured log call -----------------------------------
+ERROR    app.services.transformation_service:transformation_service.py:30 Error during transformation: <weakref at 0x7f974e747e70; to 'Flask' at 0x7f974e772ed0>
+=============================== short test summary info ================================
+ERROR tests/integration/test_blockchain.py::test_batch_transformation_process - TypeError: BlockchainMonitor.__init__() takes 1 positional argument but 2 were given
+ERROR tests/integration/test_blockchain.py::test_noble_rank_update - TypeError: BlockchainMonitor.__init__() takes 1 positional argument but 2 were given
+ERROR tests/integration/test_blockchain.py::test_blockchain_stats - TypeError: BlockchainMonitor.__init__() takes 1 positional argument but 2 were given
+ERROR tests/unit/test_blockchain_monitor.py::test_monitor_transaction_success - AttributeError: property 'gas_price' of 'Eth' object has no setter
+ERROR tests/unit/test_blockchain_monitor.py::test_monitor_high_gas_alert - AttributeError: property 'gas_price' of 'Eth' object has no setter
+ERROR tests/unit/test_blockchain_monitor.py::test_metrics_limit - AttributeError: property 'gas_price' of 'Eth' object has no setter
+ERROR tests/unit/test_blockchain_monitor.py::test_monitor_network - AttributeError: property 'gas_price' of 'Eth' object has no setter
+ERROR tests/unit/test_blockchain_monitor.py::test_monitor_block_time - AttributeError: property 'gas_price' of 'Eth' object has no setter
+ERROR tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_structure_bonus - TypeError: BlockchainMonitor.__init__() takes 1 positional argument but 2 were given
+ERROR tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_successful - TypeError: BlockchainMonitor.__init__() takes 1 positional argument but 2 were given
+ERROR tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_invalid_rank - TypeError: BlockchainMonitor.__init__() takes 1 positional argument but 2 were given
+ERROR tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_insufficient_balance - TypeError: BlockchainMonitor.__init__() takes 1 positional argument but 2 were given
+ERROR tests/unit/test_noble_system.py::test_noble_rank_creation
+ERROR tests/unit/test_noble_system.py::test_noble_relation_verification
+FAILED tests/functional/test_api.py::test_transformation_endpoint - assert 401 == 200
+FAILED tests/functional/test_api.py::test_account_balance - assert 401 == 200
+FAILED tests/functional/test_api.py::test_invalid_transformation - assert 401 == 400
+FAILED tests/performance/test_load.py::test_system_under_load - AttributeError: 'PerformanceMonitor' object has no attribute 'record_metric'
+FAILED tests/performance/test_monitoring.py::test_system_monitoring - AttributeError: 'SystemMonitor' object has no attribute 'log_request'
+FAILED tests/performance/test_optimization.py::test_table_creation_and_optimization - AssertionError: Users table not found
+FAILED tests/security/test_security.py::test_input_validation - assert 'DROP TABLE' not in "{'user_id':..._chars': ''}"
+FAILED tests/unit/test_logging.py::test_setup_logging - assert 0 > 0
+FAILED tests/unit/test_transformation.py::test_transformation_calculates_correct_gold_amount - AssertionError: assert 'error' == 'success'
+================= 9 failed, 10 passed, 10 warnings, 14 errors in 0.87s =================
+~/gold-investment-backend$ 
