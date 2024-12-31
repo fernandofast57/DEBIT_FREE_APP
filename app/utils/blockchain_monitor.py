@@ -31,7 +31,7 @@ class BlockchainMonitor:
         }
         self.last_refresh = datetime.utcnow()
         
-    async def monitor_transactions(self, transaction_data: Dict[str, Any]) -> None:
+    def monitor_transactions(self, transaction_data: Dict[str, Any]) -> None:
         """Monitor transaction metrics and trigger alerts if needed."""
         try:
             timestamp = datetime.utcnow().isoformat()
@@ -83,14 +83,14 @@ class BlockchainMonitor:
         except Exception as e:
             self._handle_error(f"Block time monitoring error: {str(e)}")
 
-    async def monitor_network(self) -> None:
+    def monitor_network(self) -> None:
         """Monitor network health and connectivity."""
         try:
             network_stats = {
-                'peer_count': await self.w3.net.peer_count,
-                'is_listening': await self.w3.net.listening,
-                'network_id': await self.w3.eth.chain_id,
-                'latest_block': await self.w3.eth.block_number,
+                'peer_count': self.w3.net.peer_count,
+                'is_listening': self.w3.net.listening,
+                'network_id': self.w3.eth.chain_id,
+                'latest_block': self.w3.eth.block_number,
                 'timestamp': datetime.utcnow().isoformat()
             }
             

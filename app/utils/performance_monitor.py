@@ -45,6 +45,11 @@ class PerformanceMonitor:
 
     def get_metrics(self) -> Dict[str, Any]:
         return self.metrics
+        
+    def record_metric(self, category: str, value: float) -> None:
+        if category not in self.metrics:
+            self.metrics[category] = []
+        self.metrics[category].append(value)
 
 performance_monitor = PerformanceMonitor()
 
