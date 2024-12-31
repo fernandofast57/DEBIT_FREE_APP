@@ -50,3 +50,34 @@ class ValidationReport:
         except Exception as e:
             self.logger.error(f"Batch system validation error: {str(e)}")
             return {'error': str(e)}
+import json
+from datetime import datetime
+from typing import Dict, Any
+
+class ValidationReport:
+    def __init__(self):
+        self.validations = []
+        self.timestamp = datetime.utcnow()
+        
+    def add_validation(self, feature: str, result: bool, details: Dict[str, Any]):
+        self.validations.append({
+            "feature": feature,
+            "passed": result,
+            "details": details,
+            "timestamp": datetime.utcnow().isoformat()
+        })
+        
+    def generate_report(self) -> Dict[str, Any]:
+        return {
+            "report_id": str(self.timestamp.timestamp()),
+            "validations": self.validations,
+            "summary": {
+                "total": len(self.validations),
+                "passed": len([v for v in self.validations if v["passed"]]),
+                "failed": len([v for v in self.validations if not v["passed"]])
+            }
+        }
+        
+    def save_report(self, filepath: str):
+        with open(filepath, 'w') as f:
+            json.dump(self.generate_report(), f, indent=2)
