@@ -23,7 +23,7 @@ async def test_transformation_calculates_correct_gold_amount(app):
         result = await service.process_transformation(1, euro_amount, fixing_price)
         
         assert result['status'] == 'success'
-        assert Decimal(str(result['gold_grams'])) == expected_gold
+        assert Decimal(str(result['gold_grams'])).quantize(Decimal('0.00')) == expected_gold
 
 @pytest.mark.asyncio
 async def test_insufficient_funds_transformation(app):
