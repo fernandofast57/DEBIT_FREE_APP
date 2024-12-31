@@ -42,6 +42,21 @@ def test_monitor_high_gas_alert(monitor, caplog):
 
 def test_metrics_limit(monitor):
     for i in range(150):
+
+async def test_monitor_block_time(monitor, web3_mock):
+    web3_mock.eth.block_number = 100
+    web3_mock.eth.get_block.side_effect = [
+        {'timestamp': 1600000000},  # Current block
+        {'timestamp': 1599999970}   # Previous block
+    ]
+    
+    await monitor.monitor_block_time()
+    metrics = monitor.get_metrics()
+    
+    assert len(metrics['block_times']) == 1
+    assert metrics['block_times'][0]['block_time'] == 30
+    assert metrics['block_times'][0]['block_number'] == 100
+
         monitor.monitor_transactions({
             'type': 'test',
             'status': 'success',

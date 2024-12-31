@@ -22,6 +22,30 @@ class BlockchainMonitor:
             'error_threshold': 5  # max errors before alert
         }
 
+    async def monitor_block_time(self) -> None:
+        try:
+            current_block = await self.w3.eth.block_number
+            block = await self.w3.eth.get_block(current_block)
+            prev_block = await self.w3.eth.get_block(current_block - 1)
+            
+            block_time = block.timestamp - prev_block.timestamp
+            
+            self.metrics['block_times'].append({
+                'block_number': current_block,
+                'block_time': block_time,
+                'timestamp': datetime.utcnow().isoformat()
+            })
+            
+            if block_time > self.alerts['block_time_threshold']:
+                self.send_alert(f"High block time detected: {block_time} seconds")
+                
+            # Keep only last 100 block times
+            if len(self.metrics['block_times']) > 100:
+                self.metrics['block_times'] = self.metrics['block_times'][-100:]
+                
+        except Exception as e:
+            logger.error(f"Error monitoring block time: {str(e)}")
+            
     def monitor_transactions(self, transaction_data: Dict[str, Any]) -> None:
         try:
             timestamp = datetime.utcnow().isoformat()
