@@ -1,60 +1,57 @@
 
-import asyncio
+import logging
 from datetime import datetime
 from typing import Dict, Any
-import logging
 from web3 import Web3
-from web3.exceptions import BlockNotFound
+from app.utils.logging_config import get_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 class BlockchainMonitor:
     def __init__(self, w3: Web3):
         self.w3 = w3
         self.metrics = {
-            'latest_block': 0,
-            'gas_price': 0,
-            'pending_transactions': 0,
-            'network_status': 'unknown'
+            'transactions': [],
+            'gas_prices': [],
+            'block_times': [],
+            'errors': []
         }
-        self.thresholds = {
-            'max_gas_price': 100_000_000_000,  # 100 gwei
-            'block_delay': 5,  # blocks
-            'min_peers': 2
+        self.alerts = {
+            'gas_price_threshold': 100,  # in gwei
+            'block_time_threshold': 30,  # in seconds
+            'error_threshold': 5  # max errors before alert
         }
 
-    async def monitor_network(self) -> Dict[str, Any]:
+    def monitor_transactions(self, transaction_data: Dict[str, Any]) -> None:
         try:
-            latest_block = await self.w3.eth.block_number
-            gas_price = await self.w3.eth.gas_price
-            peers = await self.w3.net.peer_count
-
-            self.metrics.update({
-                'latest_block': latest_block,
-                'gas_price': gas_price,
-                'network_status': 'healthy' if peers >= self.thresholds['min_peers'] else 'warning',
-                'timestamp': datetime.utcnow().isoformat()
+            timestamp = datetime.utcnow().isoformat()
+            gas_price = self.w3.eth.gas_price
+            
+            self.metrics['transactions'].append({
+                'timestamp': timestamp,
+                'type': transaction_data.get('type', 'unknown'),
+                'status': transaction_data.get('status', 'unknown'),
+                'tx_hash': transaction_data.get('tx_hash', ''),
+                'gas_price': gas_price
             })
 
-            # Alert on high gas prices
-            if gas_price > self.thresholds['max_gas_price']:
-                logger.warning(f"High gas price detected: {gas_price}")
+            if gas_price > self.w3.to_wei(self.alerts['gas_price_threshold'], 'gwei'):
+                self.send_alert(f"High gas price detected: {self.w3.from_wei(gas_price, 'gwei')} gwei")
 
-            return self.metrics
+            # Keep only last 100 transactions
+            if len(self.metrics['transactions']) > 100:
+                self.metrics['transactions'] = self.metrics['transactions'][-100:]
 
         except Exception as e:
-            logger.error(f"Blockchain monitoring error: {str(e)}")
-            return {
-                'status': 'error',
-                'error': str(e),
-                'timestamp': datetime.utcnow().isoformat()
-            }
+            logger.error(f"Error monitoring transaction: {str(e)}")
+            self.metrics['errors'].append({
+                'timestamp': timestamp,
+                'error': str(e)
+            })
 
-    async def verify_transaction(self, tx_hash: str) -> bool:
-        try:
-            tx = await self.w3.eth.get_transaction(tx_hash)
-            if tx is None:
-                return False
-            return tx.blockNumber is not None
-        except Exception:
-            return False
+    def send_alert(self, message: str) -> None:
+        logger.warning(f"Blockchain Alert: {message}")
+        # Additional alert channels can be added here (email, Slack, etc.)
+
+    def get_metrics(self) -> Dict[str, Any]:
+        return self.metrics

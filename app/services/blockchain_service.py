@@ -58,8 +58,10 @@ class BlockchainService:
         self.w3 = None
         self.contract = None
         self.account = None
-        self.monitor = BlockchainMonitor()
+        self.monitor = None
         self.setup_web3()
+        if self.w3:
+            self.monitor = BlockchainMonitor(self.w3)
         
     def setup_web3(self):
         self.rpc_endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
