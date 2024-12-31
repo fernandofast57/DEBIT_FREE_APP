@@ -42,7 +42,15 @@ def test_monitor_high_gas_alert(monitor, caplog):
 
 def test_metrics_limit(monitor):
     for i in range(150):
+        monitor.monitor_transactions({
+            'type': 'test',
+            'status': 'success',
+            'tx_hash': f'0x{i}'
+        })
+    metrics = monitor.get_metrics()
+    assert len(metrics['transactions']) == 100
 
+@pytest.mark.asyncio
 async def test_monitor_network(monitor, web3_mock):
     web3_mock.net.peer_count = 3
     web3_mock.net.listening = True
@@ -56,6 +64,7 @@ async def test_monitor_network(monitor, web3_mock):
     assert metrics['network_stats']['is_listening'] == True
     assert metrics['network_stats']['network_id'] == 1
 
+@pytest.mark.asyncio
 async def test_monitor_block_time(monitor, web3_mock):
     web3_mock.eth.block_number = 100
     web3_mock.eth.get_block.side_effect = [
@@ -69,12 +78,3 @@ async def test_monitor_block_time(monitor, web3_mock):
     assert len(metrics['block_times']) == 1
     assert metrics['block_times'][0]['block_time'] == 30
     assert metrics['block_times'][0]['block_number'] == 100
-
-        monitor.monitor_transactions({
-            'type': 'test',
-            'status': 'success',
-            'tx_hash': f'0x{i}'
-        })
-    
-    metrics = monitor.get_metrics()
-    assert len(metrics['transactions']) == 100  # Verifica che mantenga solo gli ultimi 100
