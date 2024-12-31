@@ -1,0 +1,40 @@
+/gold-investment-backend$ python -m pytest tests/ -v --disable-warnings
+================================= test session starts ==================================
+platform linux -- Python 3.11.10, pytest-8.1.1, pluggy-1.4.0 -- /home/runner/gold-investment-backend/.pythonlibs/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/gold-investment-backend/tests
+configfile: pytest.ini
+plugins: asyncio-0.23.6, mock-3.14.0, cov-4.1.0, web3-6.11.3
+asyncio: mode=Mode.AUTO
+collected 28 items / 1 error                                                           
+
+======================================== ERRORS ========================================
+___________________ ERROR collecting unit/test_blockchain_monitor.py ___________________
+/nix/store/59clyj18mvjxbkig5z76m0b40pxkxkfq-python3.11-pytest-8.1.1/lib/python3.11/site-packages/_pytest/python.py:520: in importtestmodule
+    mod = import_path(
+/nix/store/59clyj18mvjxbkig5z76m0b40pxkxkfq-python3.11-pytest-8.1.1/lib/python3.11/site-packages/_pytest/pathlib.py:584: in import_path
+    importlib.import_module(module_name)
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+<frozen importlib._bootstrap>:1204: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1176: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1147: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:690: in _load_unlocked
+    ???
+/nix/store/59clyj18mvjxbkig5z76m0b40pxkxkfq-python3.11-pytest-8.1.1/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:169: in exec_module
+    source_stat, co = _rewrite_test(fn, self.config)
+/nix/store/59clyj18mvjxbkig5z76m0b40pxkxkfq-python3.11-pytest-8.1.1/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:351: in _rewrite_test
+    tree = ast.parse(source, filename=strfn)
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/ast.py:50: in parse
+    return compile(source, filename, mode, flags,
+E     File "/home/runner/gold-investment-backend/tests/unit/test_blockchain_monitor.py", line 46
+E       async def test_monitor_network(monitor, web3_mock):
+E   IndentationError: expected an indented block after 'for' statement on line 44
+=============================== short test summary info ================================
+ERROR tests/unit/test_blockchain_monitor.py
+!!!!!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!!!!!
+============================= 2 warnings, 1 error in 0.34s =============================
+~/gold-investment-backend$ 
