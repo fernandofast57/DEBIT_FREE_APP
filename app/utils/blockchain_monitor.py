@@ -77,5 +77,22 @@ class BlockchainMonitor:
         logger.warning(f"Blockchain Alert: {message}")
         # Additional alert channels can be added here (email, Slack, etc.)
 
+    async def monitor_network(self) -> None:
+        try:
+            network_stats = {
+                'peer_count': await self.w3.net.peer_count,
+                'is_listening': await self.w3.net.listening,
+                'network_id': await self.w3.eth.chain_id,
+                'timestamp': datetime.utcnow().isoformat()
+            }
+            
+            self.metrics['network_stats'] = network_stats
+            
+            if network_stats['peer_count'] < 2:
+                self.send_alert("Low peer count detected")
+                
+        except Exception as e:
+            logger.error(f"Error monitoring network: {str(e)}")
+            
     def get_metrics(self) -> Dict[str, Any]:
         return self.metrics

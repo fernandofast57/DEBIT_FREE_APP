@@ -43,6 +43,19 @@ def test_monitor_high_gas_alert(monitor, caplog):
 def test_metrics_limit(monitor):
     for i in range(150):
 
+async def test_monitor_network(monitor, web3_mock):
+    web3_mock.net.peer_count = 3
+    web3_mock.net.listening = True
+    web3_mock.eth.chain_id = 1
+    
+    await monitor.monitor_network()
+    metrics = monitor.get_metrics()
+    
+    assert 'network_stats' in metrics
+    assert metrics['network_stats']['peer_count'] == 3
+    assert metrics['network_stats']['is_listening'] == True
+    assert metrics['network_stats']['network_id'] == 1
+
 async def test_monitor_block_time(monitor, web3_mock):
     web3_mock.eth.block_number = 100
     web3_mock.eth.get_block.side_effect = [
