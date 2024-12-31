@@ -13,8 +13,8 @@ async def test_transformation_calculates_correct_gold_amount(app):
         fixing_price = Decimal('50.00')
         expected_gold = Decimal('1.90')  # (100 - 5% fee) / 50
     
-    # Act
-    result = await service.process_transformation(1, euro_amount, fixing_price)
+        # Act
+        result = await service.process_transformation(1, euro_amount, fixing_price)
     
     # Assert
     assert result['status'] == 'success'
