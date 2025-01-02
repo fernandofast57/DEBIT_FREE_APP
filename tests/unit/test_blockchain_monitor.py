@@ -69,3 +69,15 @@ def test_metrics_limit(monitor):
         })
     metrics = monitor.get_metrics()
     assert len(metrics['transactions']) == 100  # Verifica limite di ritenzione
+@pytest.mark.asyncio
+async def test_reconnection_system(blockchain_service):
+    """Test automatic reconnection system"""
+    # Simulate connection drop
+    blockchain_service.w3.is_connected.return_value = False
+    
+    # Force reconnection attempt
+    await blockchain_service._connect_to_rpc()
+    
+    # Verify multiple connection attempts were made
+    assert blockchain_service.w3.is_connected.call_count > 1
+    assert blockchain_service.current_rpc_index == 0  # Should reset to first endpoint
