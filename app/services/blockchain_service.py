@@ -68,18 +68,21 @@ class BlockchainService:
         self.current_rpc_index = 0
         self._connect_to_rpc()
         
-    @retry_with_backoff(max_retries=3, initial_delay=1, max_delay=10)
+    @retry_with_backoff(max_retries=5, initial_delay=1, max_delay=30)
     def _connect_to_rpc(self):
         """Connessione a RPC con retry automatico e rotazione endpoint"""
         if not self.rpc_endpoints:
             raise ValueError("No RPC endpoints configured")
         
-        attempts = 0
-        while attempts < len(self.rpc_endpoints):
+        for _ in range(len(self.rpc_endpoints)):
             endpoint = self.rpc_endpoints[self.current_rpc_index].strip()
             try:
                 logger.info(f"Tentativo connessione a: {endpoint}")
-                self.w3 = Web3(Web3.HTTPProvider(endpoint, request_kwargs={'timeout': 10}))
+                self.w3 = Web3(Web3.HTTPProvider(endpoint, request_kwargs={
+                    'timeout': 10,
+                    'backoff_factor': 0.5,
+                    'retry_count': 3
+                }))
                 self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
                 
                 if self.w3.is_connected():
@@ -91,8 +94,8 @@ class BlockchainService:
             except Exception as e:
                 logger.warning(f"Connessione fallita a {endpoint}: {str(e)}")
                 self.current_rpc_index = (self.current_rpc_index + 1) % len(self.rpc_endpoints)
-                attempts += 1
                 
+        logger.error("Tutti i tentativi di connessione falliti, riavvio del ciclo di retry")
         raise ConnectionError("Impossibile connettersi a nessun endpoint RPC")
             
 
