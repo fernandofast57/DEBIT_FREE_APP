@@ -33,14 +33,22 @@ def create_indexes():
     """Create optimized database indexes"""
     try:
         with db.engine.connect() as conn:
+            # Indici per le query più frequenti
             conn.execute(text("""
-                CREATE INDEX IF NOT EXISTS idx_transactions_user ON transactions(user_id);
-                CREATE INDEX IF NOT EXISTS idx_transformations_date ON transformations(created_at);
-                CREATE INDEX IF NOT EXISTS idx_noble_ranks_level ON noble_ranks(level);
-                CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
-                CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id);
-                CREATE INDEX IF NOT EXISTS idx_noble_relations_user_id ON noble_relations(user_id);
+                CREATE INDEX IF NOT EXISTS idx_transactions_user ON transactions(user_id, created_at);
+                CREATE INDEX IF NOT EXISTS idx_transformations_date ON transformations(created_at, status);
+                CREATE INDEX IF NOT EXISTS idx_noble_ranks_level ON noble_ranks(level, updated_at);
+                CREATE INDEX IF NOT EXISTS idx_users_email ON users(email, status);
+                CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank);
+                CREATE INDEX IF NOT EXISTS idx_transactions_status ON transactions(status, created_at);
+                CREATE INDEX IF NOT EXISTS idx_transformations_user ON transformations(user_id, status);
             """))
+            
+            # Ottimizzazione SQLite
+            conn.execute(text("PRAGMA journal_mode=WAL"))
+            conn.execute(text("PRAGMA synchronous=NORMAL"))
+            conn.execute(text("PRAGMA cache_size=10000"))
+            conn.execute(text("PRAGMA temp_store=MEMORY"))
         db.session.commit()
         print("Database optimization completed successfully")
     except Exception as e:
