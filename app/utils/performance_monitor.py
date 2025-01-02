@@ -1,4 +1,3 @@
-
 import time
 import logging
 from functools import wraps
@@ -14,6 +13,12 @@ class PerformanceMonitor:
             'database_query_times': {},
             'blockchain_operation_times': {},
             'transformation': {}
+        }
+        self.thresholds = {  # Add thresholds (example values)
+            'api_response_times': 0.5,
+            'database_query_times': 0.2,
+            'blockchain_operation_times': 10,
+            'transformation': 30
         }
 
     def track_time(self, category: str) -> Callable:
@@ -46,10 +51,12 @@ class PerformanceMonitor:
     def get_metrics(self) -> Dict[str, Any]:
         return self.metrics
         
-    def record_metric(self, category: str, value: float) -> None:
+    def record_metric(self, category: str, value: float):
+        """Record and analyze performance metrics"""
         if category not in self.metrics:
             self.metrics[category] = []
-        self.metrics[category].append(value)
+        if value > self.thresholds.get(category, float('inf')):
+            logging.warning(f"Performance threshold exceeded for {category}: {value}")
 
 performance_monitor = PerformanceMonitor()
 

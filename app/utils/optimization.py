@@ -1,4 +1,3 @@
-
 from flask_sqlalchemy import SQLAlchemy
 from app import db
 import logging
@@ -31,31 +30,17 @@ def optimize_queries():
     db.session.commit()
 
 def create_indexes():
-    """Create database indexes for better query performance"""
+    """Create optimized database indexes"""
     try:
-        # Check if required tables exist
-        tables = ['users', 'transactions', 'noble_relations']
-        existing_tables = {}
-        
-        for table in tables:
-            result = db.session.execute(text(
-                f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table}'"
-            ))
-            existing_tables[table] = bool(result.fetchone())
-        
-        # Create indexes only for existing tables
-        if existing_tables['users']:
-            db.session.execute(text('CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)'))
-            print("Created index on users.email")
-            
-        if existing_tables['transactions']:
-            db.session.execute(text('CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id)'))
-            print("Created index on transactions.user_id")
-            
-        if existing_tables['noble_relations']:
-            db.session.execute(text('CREATE INDEX IF NOT EXISTS idx_noble_relations_user_id ON noble_relations(user_id)'))
-            print("Created index on noble_relations.user_id")
-            
+        with db.engine.connect() as conn:
+            conn.execute(text("""
+                CREATE INDEX IF NOT EXISTS idx_transactions_user ON transactions(user_id);
+                CREATE INDEX IF NOT EXISTS idx_transformations_date ON transformations(created_at);
+                CREATE INDEX IF NOT EXISTS idx_noble_ranks_level ON noble_ranks(level);
+                CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+                CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id);
+                CREATE INDEX IF NOT EXISTS idx_noble_relations_user_id ON noble_relations(user_id);
+            """))
         db.session.commit()
         print("Database optimization completed successfully")
     except Exception as e:
