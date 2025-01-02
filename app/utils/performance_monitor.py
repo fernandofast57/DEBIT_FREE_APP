@@ -10,7 +10,6 @@ def monitor_performance(func: Callable) -> Callable:
         start_time = time.time()
         result = func(*args, **kwargs)
         execution_time = time.time() - start_time
-        
         return result
     return wrapper
 
@@ -42,3 +41,18 @@ class PerformanceMonitor:
             }
             for category, values in self.metrics.items()
         }
+
+    def track_time(self, category: str):
+        def decorator(func):
+            @functools.wraps(func)
+            async def wrapper(*args, **kwargs):
+                start_time = time.time()
+                result = await func(*args, **kwargs)
+                execution_time = time.time() - start_time
+                self.record_metric(category, execution_time)
+                return result
+            return wrapper
+        return decorator
+
+# Create the singleton instance
+performance_monitor = PerformanceMonitor()
