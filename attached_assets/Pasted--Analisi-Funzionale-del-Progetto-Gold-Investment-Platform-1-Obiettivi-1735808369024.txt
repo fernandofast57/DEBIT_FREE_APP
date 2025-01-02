@@ -1,0 +1,176 @@
+### 🚀 **Analisi Funzionale del Progetto "Gold Investment Platform"**
+
+---
+
+## 📊 **1. Obiettivi Principali**
+
+Il progetto **Gold Investment Platform** è una piattaforma avanzata progettata per gestire investimenti in oro attraverso strumenti digitali, con un'attenzione particolare a:
+
+1. **Sistema di Autenticazione Sicuro:**  
+   - Registrazione e login utente con verifica KYC/AML.  
+   - Autenticazione a due fattori (**2FA**) per una maggiore sicurezza.
+
+2. **Gestione delle Trasformazioni Euro-Oro:**  
+   - Trasformazione periodica (settimanale) di valuta in oro.  
+   - Calcolo automatico delle tariffe di cambio settimanali.
+
+3. **Sistema di Ranks Nobiliari:**  
+   - Struttura multilivello che assegna titoli nobiliari (Count, Duke, Prince).  
+   - Distribuzione automatica dei bonus in base al volume delle transazioni.
+
+4. **Integrazione Blockchain:**  
+   - Rete **Polygon** per la trasparenza delle transazioni.  
+   - Registrazione delle operazioni su smart contract.
+
+5. **Dashboard di Controllo Utente:**  
+   - Visualizzazione dei bilanci (oro, valuta).  
+   - Storico delle transazioni e report dettagliati.
+
+---
+
+## 🛠️ **2. Architettura del Sistema**
+
+### **Backend:**  
+- **Tecnologia:** Python con **Flask**.  
+- **Funzionalità:** Gestione API, autenticazione, trasformazioni settimanali, logica di business.  
+- **ORM:** SQLAlchemy per la gestione del database.
+
+### **Frontend:**  
+- **Tecnologia Prevista:** React.js.  
+- **Funzionalità:** Interfaccia utente intuitiva per monitoraggio degli investimenti e interazione con le API.
+
+### **Database:**  
+- **Tecnologia:** SQLite (in sviluppo) con possibilità di scalare su MongoDB o PostgreSQL.  
+- **Struttura Dati:**  
+   - Utenti (`users`)  
+   - Transazioni (`transactions`)  
+   - Bonus (`bonuses`)  
+   - Ranghi Nobiliari (`noble_ranks`)
+
+### **Blockchain:**  
+- **Rete Blockchain:** Polygon.  
+- **Smart Contract:** Implementazioni per la registrazione delle transazioni.  
+- **Sicurezza:** Meccanismi di validazione delle transazioni.
+
+---
+
+## 🔑 **3. Funzionalità Chiave**
+
+1. **Autenticazione e Sicurezza:**  
+   - Autenticazione JWT per API.  
+   - Implementazione 2FA tramite SMS/App Authenticator.  
+
+2. **Trasformazioni Euro-Oro:**  
+   - Conversione settimanale con spread automatico (6.7%).  
+   - Calcolo ottimizzato dei grammi di oro.
+
+3. **Dashboard Utente:**  
+   - Visualizzazione grafica del bilancio.  
+   - Andamento storico degli investimenti.
+
+4. **Sistema Nobiltà e Bonus:**  
+   - Struttura multilivello (Count, Duke, Prince).  
+   - Calcolo automatico delle commissioni.
+
+5. **API Documentate:**  
+   - `/api/v1/auth/register` – Registrazione utente.  
+   - `/api/v1/auth/login` – Autenticazione utente.  
+   - `/api/v1/transformations/transform` – Trasformazione euro-oro.  
+   - `/api/v1/accounting/balance` – Stato del bilancio.
+
+---
+
+## 📑 **4. Stato Attuale del Progetto**
+
+### ✅ **Funzionalità Completamente Implementate:**  
+- API di autenticazione (register/login).  
+- Endpoint per trasformazioni (`/api/v1/transformations/transform`).  
+- Implementazione di base dei ranghi nobiliari.  
+- Modelli di database principali.
+
+### ⚠️ **Funzionalità Parzialmente Completate:**  
+- **Integrazione Blockchain:** Problemi di connessione al nodo Polygon.  
+- **Trasformazioni Settimanali:** Necessita ulteriori test e ottimizzazione.  
+- **Sistema Nobiltà:** Calcolo bonus necessita miglioramenti.
+
+### ❌ **Funzionalità Mancanti o Incomplete:**  
+- **Dashboard Frontend:** Non è ancora stata implementata.  
+- **Monitoraggio delle Prestazioni:** Incompleto.  
+- **Test di Sicurezza:** Parzialmente sviluppati.  
+- **Pipeline CI/CD:** Assente.  
+
+---
+
+## 🐞 **5. Problemi Riscontrati**
+
+1. **Errore SQLAlchemy:**  
+   - Tabelle mancanti (`users`, `transactions`).  
+   - Problemi di migrazione database non completati correttamente.
+
+2. **Integrazione Blockchain:**  
+   - Connessione fallita al nodo Polygon.  
+   - Smart contract non testati correttamente.
+
+3. **Test Automatizzati:**  
+   - Diversi test falliscono a causa di configurazioni errate.  
+   - Assenza di test per scenari critici.
+
+4. **Sicurezza:**  
+   - Rate limiting parzialmente configurato.  
+   - Mancanza di audit per le vulnerabilità OWASP.
+
+---
+
+## 📈 **6. Suggerimenti di Miglioramento**
+
+1. **Correggere i Problemi di Database:**  
+   - Rieseguire le migrazioni utilizzando `flask db migrate` e `flask db upgrade`.  
+   - Verificare l'integrità delle tabelle.
+
+2. **Blockchain:**  
+   - Verificare la connessione al nodo Polygon.  
+   - Testare gli smart contract localmente (Hardhat/Truffle).
+
+3. **Test Automatizzati:**  
+   - Implementare test unitari per le API critiche.  
+   - Aggiungere test di integrazione per il flusso di trasformazione euro-oro.
+
+4. **Sicurezza:**  
+   - Completare la configurazione del rate limiting.  
+   - Eseguire uno **scan di vulnerabilità OWASP**.
+
+5. **Frontend:**  
+   - Iniziare lo sviluppo del frontend React per la Dashboard.  
+   - Collegare correttamente le API backend.
+
+---
+
+## 📅 **7. Piano d'Azione Prioritario**
+
+| **Fase** | **Attività** | **Responsabile** | **Tempo Stimato** |
+|----------|-------------|------------------|-------------------|
+| 1        | Correzione database e migrazioni | Backend Dev | 2 giorni |
+| 2        | Risoluzione problemi Blockchain | Blockchain Dev | 3 giorni |
+| 3        | Completamento test API | QA Engineer | 3 giorni |
+| 4        | Implementazione Dashboard | Frontend Dev | 5 giorni |
+| 5        | Audit di Sicurezza | Security Specialist | 2 giorni |
+| 6        | Test di integrazione completa | QA Engineer | 2 giorni |
+| 7        | Deployment CI/CD | DevOps Engineer | 2 giorni |
+
+**Tempo Totale Stimato:** ~19 giorni
+
+---
+
+## 📝 **8. Conclusioni Finali**
+
+Il progetto **Gold Investment Platform** presenta una solida architettura di base e funzionalità avanzate per il trading di oro. Tuttavia, richiede una rifinitura in alcune aree critiche:
+
+1. Correzione dei problemi del database.  
+2. Risoluzione delle integrazioni blockchain.  
+3. Implementazione completa dei test automatizzati.  
+4. Sviluppo frontend React per la Dashboard utente.  
+5. Completamento delle funzionalità di sicurezza.
+
+Seguendo il piano d'azione proposto e assegnando risorse dedicate a ciascuna fase, il progetto può essere completato con successo entro il tempo stimato. 🚀
+
+Se hai bisogno di ulteriori chiarimenti o supporto su un'area specifica, sono qui per aiutarti! 😊
