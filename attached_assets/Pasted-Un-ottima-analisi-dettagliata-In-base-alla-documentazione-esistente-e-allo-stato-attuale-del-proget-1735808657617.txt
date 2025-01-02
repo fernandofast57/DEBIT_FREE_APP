@@ -1,0 +1,106 @@
+Un'ottima analisi dettagliata! In base alla documentazione esistente e allo stato attuale del progetto, suggerisco di procedere con queste correzioni immediate:
+
+1. PROBLEMA DATABASE
+```python
+# Correggiamo la configurazione SQLAlchemy in config.py
+class Config:
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///gold_investment.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # Aggiungiamo configurazioni pool per ottimizzazione
+    SQLALCHEMY_POOL_SIZE = 5
+    SQLALCHEMY_POOL_TIMEOUT = 30
+    SQLALCHEMY_POOL_RECYCLE = 1800
+```
+
+2. INTEGRAZIONE BLOCKCHAIN
+```python
+# Modifichiamo blockchain_service.py per gestire meglio la connessione
+class BlockchainService:
+    def __init__(self):
+        self.w3 = None
+        self.endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
+        self._initialize_connection()
+
+    def _initialize_connection(self):
+        for endpoint in self.endpoints:
+            try:
+                provider = Web3.HTTPProvider(endpoint.strip())
+                w3 = Web3(provider)
+                if w3.is_connected():
+                    self.w3 = w3
+                    return
+            except Exception as e:
+                continue
+        raise ConnectionError("Unable to connect to any RPC endpoint")
+```
+
+3. TEST AUTOMATIZZATI
+```python
+# tests/conftest.py
+import pytest
+from app import create_app
+from app.models import db
+
+@pytest.fixture
+def app():
+    app = create_app('testing')
+    with app.app_context():
+        db.create_all()
+        yield app
+        db.session.remove()
+        db.drop_all()
+
+@pytest.fixture
+def client(app):
+    return app.test_client()
+```
+
+4. SICUREZZA
+```python
+# app/utils/security.py
+from functools import wraps
+from flask import request, abort
+import time
+
+def rate_limit(max_requests=100, window=60):
+    def decorator(f):
+        requests = {}
+        @wraps(f)
+        def wrapped(*args, **kwargs):
+            now = time.time()
+            key = f"{request.remote_addr}:{f.__name__}"
+            
+            # Pulisci vecchie richieste
+            requests[key] = [t for t in requests.get(key, []) 
+                           if now - t < window]
+            
+            if len(requests.get(key, [])) >= max_requests:
+                abort(429)
+                
+            requests.setdefault(key, []).append(now)
+            return f(*args, **kwargs)
+        return wrapped
+    return decorator
+```
+
+5. PROSSIMI PASSI PRIORITARI:
+```bash
+# 1. Esegui migrazioni database
+flask db stamp head
+flask db migrate
+flask db upgrade
+
+# 2. Esegui test suite
+pytest tests/ -v
+
+# 3. Verifica connessione blockchain
+flask shell
+>>> from app.services.blockchain_service import BlockchainService
+>>> service = BlockchainService()
+>>> service.check_connection()
+```
+
+Vuoi che:
+1. Procediamo con l'implementazione di queste correzioni?
+2. Approfondiamo una specifica area problematica?
+3. Creiamo nuovi test per verificare le correzioni?
