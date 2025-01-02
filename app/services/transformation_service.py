@@ -75,15 +75,38 @@ class TransformationService:
             raise
 
     @staticmethod
+    async def validate_transformation_input(user_id: int, euro_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
+        """Validazione approfondita dei parametri di trasformazione"""
+        if not isinstance(user_id, int) or user_id <= 0:
+            logger.error(f"ID utente non valido: {user_id}")
+            return {"valid": False, "message": "ID utente non valido"}
+            
+        if not isinstance(euro_amount, Decimal):
+            logger.error(f"Importo non è un Decimal: {type(euro_amount)}")
+            return {"valid": False, "message": "Formato importo non valido"}
+            
+        if euro_amount <= 0 or euro_amount > Decimal('1000000'):
+            logger.error(f"Importo fuori range: {euro_amount}")
+            return {"valid": False, "message": "Importo fuori dai limiti consentiti"}
+            
+        if not isinstance(fixing_price, Decimal) or fixing_price <= 0:
+            logger.error(f"Fixing price non valido: {fixing_price}")
+            return {"valid": False, "message": "Fixing price non valido"}
+            
+        return {"valid": True}
+
+    @staticmethod
     async def process_transformation(user_id: int, euro_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
         """Process complete money to gold transformation"""
         logger.info(f"Avvio trasformazione per utente {user_id} - Importo: {euro_amount}€")
         
         try:
-            # Validazione input
-            if not isinstance(user_id, int) or user_id <= 0:
-                logger.error(f"ID utente non valido: {user_id}")
-                return {"status": "error", "message": "ID utente non valido"}
+            # Validazione input avanzata
+            validation_result = await TransformationService.validate_transformation_input(
+                user_id, euro_amount, fixing_price
+            )
+            if not validation_result["valid"]:
+                return {"status": "error", "message": validation_result["message"]}
                 
             if not isinstance(euro_amount, Decimal) or euro_amount <= 0:
                 logger.error(f"Importo euro non valido: {euro_amount}")
