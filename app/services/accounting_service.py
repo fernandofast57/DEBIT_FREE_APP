@@ -1,4 +1,3 @@
-
 from decimal import Decimal
 from datetime import datetime
 from app.models.accounting import GoldInventory, AccountingEntry
@@ -16,9 +15,14 @@ class AccountingService:
             amount_gold=grams,
             gold_price=price_per_gram
         )
-        db.session.add_all([inventory, entry])
-        db.session.commit()
-        return inventory
+        try:
+            db.session.add_all([inventory, entry])
+            db.session.commit()
+            return inventory
+        except Exception as e:
+            db.session.rollback()
+            raise  # Re-raise the exception after rollback
+
 
     def record_gold_distribution(self, grams: Decimal, user_id: int) -> None:
         inventory = GoldInventory.query.filter_by(
@@ -28,17 +32,21 @@ class AccountingService:
         if inventory.grams < grams:
             raise ValueError("Insufficient gold in inventory")
             
-        inventory.grams -= grams
-        if inventory.grams == 0:
-            inventory.status = 'distributed'
+        try:
+            inventory.grams -= grams
+            if inventory.grams == 0:
+                inventory.status = 'distributed'
             
-        entry = AccountingEntry(
-            entry_type='distribution',
-            amount_gold=grams,
-            reference_id=f'USER-{user_id}'
-        )
-        db.session.add(entry)
-        db.session.commit()
+            entry = AccountingEntry(
+                entry_type='distribution',
+                amount_gold=grams,
+                reference_id=f'USER-{user_id}'
+            )
+            db.session.add(entry)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            raise
 
     def get_inventory_summary(self) -> dict:
         total_gold = db.session.query(

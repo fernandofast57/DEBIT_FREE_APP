@@ -1,4 +1,3 @@
-
 from decimal import Decimal
 from typing import Dict, Any, List
 from datetime import datetime
@@ -25,10 +24,10 @@ class TransformationService:
                 return {"valid": False, "reason": "User not found"}
             if not user.money_account:
                 return {"valid": False, "reason": "No money account found"}
-            if user.money_account.balance < transfer_amount:
-                return {"valid": False, "reason": "Insufficient funds"}
             if transfer_amount <= 0:
                 return {"valid": False, "reason": "Invalid amount"}
+            if user.money_account.balance < transfer_amount:
+                return {"valid": False, "reason": "Insufficient funds"}
             return {"valid": True, "user": user}
         except Exception as e:
             logger.error(f"Transfer verification error: {str(e)}")
@@ -51,7 +50,7 @@ class TransformationService:
         if euro_amount <= 0:
             logger.error(f"Invalid euro amount: {euro_amount}")
             raise ValueError("Invalid euro amount")
-            
+
         logger.info(f"Calculating gold amount - Euro: {euro_amount}€, Fixing price: {fixing_price}")
         return euro_amount / fixing_price
 
@@ -63,20 +62,20 @@ class TransformationService:
             for level in range(1, 4):
                 if not current_user.referrer_id:
                     break
-                    
+
                 referrer = await User.query.get(current_user.referrer_id)
                 if not referrer:
                     break
-                    
+
                 bonus_percentage = TransformationService.AFFILIATE_BONUS[level]
                 bonus_amount = gold_amount * bonus_percentage
-                
+
                 if not referrer.gold_account:
                     continue
-                    
+
                 referrer.gold_account.balance += bonus_amount
                 current_user = referrer
-                
+
             await db.session.commit()
         except Exception as e:
             logger.error(f"Bonus distribution error: {str(e)}")
@@ -86,16 +85,22 @@ class TransformationService:
     @staticmethod
     async def process_transformation(user_id: int, euro_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
         """Process complete money to gold transformation"""
-        logger.info(f"Inizio trasformazione - Utente: {user_id} - Importo: {euro_amount}€ - Fixing: {fixing_price}")
-        
+        logger.info(f"Inizio trasformazione - Utente: {user_id} - Importo: {euro_amount}€ - Fixing: {fixing_price}", 
+                    extra={'audit_type': 'TRANSFORMATION_START',
+                           'user_id': user_id,
+                           'amount': str(euro_amount),
+                           'fixing_price': str(fixing_price),
+                           'timestamp': datetime.utcnow().isoformat()})
+
         try:
             # 1. Verifica del trasferimento
             logger.info(f"Controllo disponibilità fondi per utente {user_id}")
-            if not await TransformationService.verify_transfer(user_id, euro_amount):
-                logger.warning(f"Transfer verification failed for user {user_id} - Insufficient funds")
+            verification_result = await TransformationService.verify_transfer(user_id, euro_amount)
+            if not verification_result["valid"]:
+                logger.warning(f"Transfer verification failed for user {user_id} - {verification_result['reason']}")
                 return {
                     "status": "error",
-                    "message": "Invalid transfer or insufficient funds"
+                    "message": verification_result["reason"]
                 }
 
             # 2. Process organization fee
@@ -111,7 +116,7 @@ class TransformationService:
             # 4. Process transformation
             async with db.session.begin():
                 user = await User.query.get(user_id)
-                
+
                 # Update money and gold accounts
                 user.money_account.balance -= euro_amount
                 user.gold_account.balance += gold_amount
@@ -119,7 +124,7 @@ class TransformationService:
 
                 # Distribute affiliate bonuses
                 await TransformationService.distribute_affiliate_bonuses(user, gold_amount)
-                
+
                 await db.session.commit()
 
             return {

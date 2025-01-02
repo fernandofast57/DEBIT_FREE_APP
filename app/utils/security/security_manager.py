@@ -91,13 +91,10 @@ class SecurityManager:
         elif isinstance(data, list):
             return [self.sanitize_input(x) for x in data]
         elif isinstance(data, str):
-            # Sanitize string
             sanitized = self._remove_sql_injection(data)
-            sanitized = self._remove_xss(sanitized)
-            sanitized = self._remove_path_traversal(sanitized)
-            sanitized = self._validate_special_chars(sanitized)
-            sanitized = self._check_length_limits(sanitized)
-            sanitized = self._validate_encoding(sanitized)
+            sanitized = self._validate_numeric_format(sanitized)
+            sanitized = self._validate_currency_format(sanitized)
+            sanitized = self._check_special_chars(sanitized)
             return sanitized
         return data
 
@@ -128,6 +125,25 @@ class SecurityManager:
             return data.encode('utf-8').decode('utf-8')
         except UnicodeError:
             return ''
+
+    def _validate_numeric_format(self, data: str) -> str:
+        try:
+            float(data)
+            return data
+        except ValueError:
+            return ""
+
+    def _validate_currency_format(self, data: str) -> str:
+        # Add more robust currency validation if needed.  This is a basic example.
+        if re.match(r"^\d+(\.\d{2})?$", data):
+            return data
+        return ""
+
+    def _check_special_chars(self, data: str) -> str:
+        # More comprehensive special character validation can be added here.
+        allowed_chars = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789. ,")
+        return ''.join(c for c in data if c in allowed_chars)
+
 
     def require_rate_limit(self, func):
         @wraps(func)
