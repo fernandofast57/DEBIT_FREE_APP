@@ -1,8 +1,7 @@
-from flask import Blueprint, jsonify, request, current_app
-from flask_login import login_required, current_user
+from flask import Blueprint, jsonify, request, current_app, render_template
+from flask_login import login_required, current_user, logout_user
 from app import db
-from app.models import User
-from app.models import MoneyAccount, GoldAccount
+from app.models import User, MoneyAccount, GoldAccount, Transaction # Assumed Transaction model exists
 from werkzeug.security import generate_password_hash
 from decimal import Decimal
 
@@ -84,6 +83,7 @@ def verify():
         'message': 'User verified',
         'verified': True
     }), 200
+
 from flask import Blueprint, request, jsonify
 from app.utils.auth import AuthManager
 from app.utils.security.rate_limiter import rate_limit
@@ -117,6 +117,7 @@ def logout():
     if auth_manager.revoke_token(token):
         return jsonify({'message': 'Logged out successfully'})
     return jsonify({'error': 'Invalid token'}), 401
+
 @auth_bp.route('/login-status', methods=['GET'])
 @login_required
 def login_status():
@@ -128,3 +129,37 @@ def login_status():
             'user': current_user.username
         })
     return jsonify({'status': 'error', 'logged_in': False}), 401
+
+
+# Admin routes (added)
+def admin_required(func):
+    def wrapper(*args, **kwargs):
+        if not current_user.is_admin:
+            return jsonify({'error': 'Unauthorized'}), 403
+        return func(*args, **kwargs)
+    wrapper.__name__ = func.__name__
+    return wrapper
+
+@auth_bp.route('/admin')
+@login_required
+@admin_required
+def admin_dashboard():
+    stats = {
+        'total_users': User.query.count(),
+        'total_transactions': Transaction.query.count()
+    }
+    return render_template('admin/dashboard.html', stats=stats)
+
+@auth_bp.route('/admin/users')
+@login_required
+@admin_required
+def users():
+    users = User.query.all()
+    return render_template('admin/users.html', users=users)
+
+@auth_bp.route('/admin/transactions')
+@login_required
+@admin_required
+def transactions():
+    transactions = Transaction.query.all()
+    return render_template('admin/transactions.html', transactions=transactions)

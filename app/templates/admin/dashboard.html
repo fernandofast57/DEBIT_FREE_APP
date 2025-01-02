@@ -1,100 +1,25 @@
 
-{% extends "base.html" %}
+{% extends "admin/base.html" %}
 {% block content %}
-<div class="container mt-4">
-    <h1>Admin Dashboard</h1>
-    <div class="row mt-4">
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">System Parameters</h5>
-                    <p class="card-text">Manage transformation rates and fees</p>
-                    <a href="{{ url_for('admin.parameters') }}" class="btn btn-primary">Manage Parameters</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">User Management</h5>
-                    <p class="card-text">Manage users and permissions</p>
-                    <a href="{{ url_for('admin.users') }}" class="btn btn-primary">Manage Users</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Noble System</h5>
-                    <p class="card-text">Configure noble ranks and bonuses</p>
-                    <a href="{{ url_for('admin.noble_system') }}" class="btn btn-primary">Noble System</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Blockchain Monitor</h5>
-                    <p class="card-text">Monitor blockchain operations</p>
-                    <a href="{{ url_for('admin.blockchain') }}" class="btn btn-primary">View Monitor</a>
-                </div>
+<h2>Admin Dashboard</h2>
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Users</h5>
+                <p class="card-text">Total Users: {{ stats.total_users }}</p>
+                <a href="{{ url_for('admin.users') }}" class="btn btn-primary">Manage Users</a>
             </div>
         </div>
     </div>
-    
-    <div class="row mt-4">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">System Status</h5>
-                    <div id="system-status">
-                        <p>Last Update: <span id="last-update">Loading...</span></p>
-                        <p>Active Users: <span id="active-users">Loading...</span></p>
-                        <p>Pending Transactions: <span id="pending-tx">Loading...</span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Quick Actions</h5>
-                    <button onclick="refreshCache()" class="btn btn-secondary m-1">Refresh Cache</button>
-                    <button onclick="checkBlockchain()" class="btn btn-info m-1">Check Blockchain Status</button>
-                    <button onclick="generateReport()" class="btn btn-success m-1">Generate Report</button>
-                </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Transactions</h5>
+                <p class="card-text">Total Transactions: {{ stats.total_transactions }}</p>
+                <a href="{{ url_for('admin.transactions') }}" class="btn btn-primary">View Transactions</a>
             </div>
         </div>
     </div>
 </div>
-
-<script>
-function refreshCache() {
-    fetch('/admin/api/refresh-cache', {method: 'POST'})
-        .then(response => response.json())
-        .then(data => alert(data.message));
-}
-
-function checkBlockchain() {
-    fetch('/admin/api/blockchain-status')
-        .then(response => response.json())
-        .then(data => alert(`Blockchain Status: ${data.status}`));
-}
-
-function generateReport() {
-    window.location.href = '/admin/generate-report';
-}
-
-// Update system status every 30 seconds
-setInterval(() => {
-    fetch('/admin/api/system-status')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('last-update').textContent = new Date(data.last_update).toLocaleString();
-            document.getElementById('active-users').textContent = data.active_users;
-            document.getElementById('pending-tx').textContent = data.pending_transactions;
-        });
-}, 30000);
-</script>
 {% endblock %}
