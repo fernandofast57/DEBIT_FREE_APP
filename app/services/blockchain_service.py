@@ -68,20 +68,32 @@ class BlockchainService:
         self.current_rpc_index = 0
         self._connect_to_rpc()
         
+    @retry_with_backoff(max_retries=3, initial_delay=1, max_delay=10)
     def _connect_to_rpc(self):
+        """Connessione a RPC con retry automatico e rotazione endpoint"""
         if not self.rpc_endpoints:
             raise ValueError("No RPC endpoints configured")
-            
-        endpoint = self.rpc_endpoints[self.current_rpc_index].strip()
-        try:
-            self.w3 = Web3(Web3.HTTPProvider(endpoint))
-            self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
-            if self.w3.is_connected():
-                logger.info(f"Connected to blockchain node: {endpoint}")
-                self._setup_contract()
-                self._setup_account()
-                return True
-            return False
+        
+        attempts = 0
+        while attempts < len(self.rpc_endpoints):
+            endpoint = self.rpc_endpoints[self.current_rpc_index].strip()
+            try:
+                logger.info(f"Tentativo connessione a: {endpoint}")
+                self.w3 = Web3(Web3.HTTPProvider(endpoint, request_kwargs={'timeout': 10}))
+                self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+                
+                if self.w3.is_connected():
+                    logger.info(f"Connesso con successo al nodo: {endpoint}")
+                    self._setup_contract()
+                    self._setup_account()
+                    return True
+                    
+            except Exception as e:
+                logger.warning(f"Connessione fallita a {endpoint}: {str(e)}")
+                self.current_rpc_index = (self.current_rpc_index + 1) % len(self.rpc_endpoints)
+                attempts += 1
+                
+        raise ConnectionError("Impossibile connettersi a nessun endpoint RPC")
         except Exception as e:
             logger.error(f"Blockchain transaction error: {str(e)}")
             return {'status': 'error', 'message': str(e)}
