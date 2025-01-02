@@ -23,10 +23,11 @@ def test_monitor_transaction_success(monitor):
         'tx_hash': '0x123',
         'block_number': 100
     }
-    
+
+    # Call the synchronous method
     monitor.monitor_transactions(transaction_data)
     metrics = monitor.get_metrics()
-    
+
     assert len(metrics['transactions']) == 1
     assert metrics['transactions'][0]['type'] == 'transfer'
     assert metrics['transactions'][0]['status'] == 'success'
@@ -36,10 +37,11 @@ def test_monitor_transaction_success(monitor):
 async def test_monitor_network(monitor, web3_mock):
     web3_mock.net.peer_count = 3
     web3_mock.net.listening = True
-    
+
+    # Call the async method
     await monitor.monitor_network()
     metrics = monitor.get_metrics()
-    
+
     assert metrics['network_stats']['peer_count'] == 3
     assert metrics['network_stats']['is_listening'] == True
     assert metrics['network_stats']['network_id'] == 1
@@ -51,10 +53,11 @@ async def test_monitor_block_time(monitor, web3_mock):
         {'timestamp': 1600000000},
         {'timestamp': 1599999970}
     ]
-    
+
+    # Call the async method
     await monitor.monitor_block_time()
     metrics = monitor.get_metrics()
-    
+
     assert len(metrics['block_times']) == 1
     assert metrics['block_times'][0]['block_time'] == 30
     assert metrics['block_times'][0]['block_number'] == 100
@@ -69,15 +72,17 @@ def test_metrics_limit(monitor):
         })
     metrics = monitor.get_metrics()
     assert len(metrics['transactions']) == 100  # Verifica limite di ritenzione
+
 @pytest.mark.asyncio
 async def test_reconnection_system(blockchain_service):
     """Test automatic reconnection system"""
     # Simulate connection drop
     blockchain_service.w3.is_connected.return_value = False
-    
+
     # Force reconnection attempt
     await blockchain_service._connect_to_rpc()
-    
+
     # Verify multiple connection attempts were made
     assert blockchain_service.w3.is_connected.call_count > 1
     assert blockchain_service.current_rpc_index == 0  # Should reset to first endpoint
+

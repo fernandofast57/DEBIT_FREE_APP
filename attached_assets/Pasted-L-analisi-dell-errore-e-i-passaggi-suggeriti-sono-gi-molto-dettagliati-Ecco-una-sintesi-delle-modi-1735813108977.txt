@@ -1,0 +1,94 @@
+L'analisi dell'errore e i passaggi suggeriti sono già molto dettagliati. Ecco una sintesi delle modifiche necessarie da apportare al tuo codice per gestire correttamente l'uso di await e per verificare che i test siano impostati appropriatamente.
+
+Modifiche al Metodo monitor_transactions
+Dovrai decidere se monitor_transactions deve essere sincrono o asincrono. Ecco come gestirli.
+
+1. Se il metodo rimane sincrono (senza async):
+def monitor_transactions(self, transaction_data: Dict[str, Any]) -> None:
+    """Monitor transaction metrics and trigger alerts if needed."""
+    try:
+        timestamp = datetime.utcnow().isoformat()
+        gas_price = self.w3.eth.gas_price  # Rimosso `await`
+        
+        transaction_info = {
+            'timestamp': timestamp,
+            'type': transaction_data.get('type', 'unknown'),
+            'status': transaction_data.get('status', 'unknown'),
+            'tx_hash': transaction_data.get('tx_hash', ''),
+            'gas_price': gas_price,
+            'block_number': transaction_data.get('block_number')
+        }
+        
+        self.metrics['transactions'].append(transaction_info)
+        self.metrics['gas_prices'].append(gas_price)
+        
+        # Controllo dell'allerta sul prezzo del gas
+        gas_price_gwei = self.w3.from_wei(gas_price, 'gwei')
+        if gas_price_gwei > self.alerts['gas_price_threshold']:
+            self.send_alert(f"High gas price detected: {gas_price_gwei} gwei")
+        
+        # Applicare la politica di ritenzione dei dati
+        self._apply_retention_policy()
+        
+    except Exception as e:
+        self._handle_error(f"Transaction monitoring error: {str(e)}")
+2. Se vuoi mantenere il metodo asincrono:
+async def monitor_transactions(self, transaction_data: Dict[str, Any]) -> None:
+    """Monitor transaction metrics and trigger alerts if needed."""
+    try:
+        timestamp = datetime.utcnow().isoformat()
+        gas_price = await self.w3.eth.gas_price  # Mantieni `await`
+        
+        transaction_info = {
+            'timestamp': timestamp,
+            'type': transaction_data.get('type', 'unknown'),
+            'status': transaction_data.get('status', 'unknown'),
+            'tx_hash': transaction_data.get('tx_hash', ''),
+            'gas_price': gas_price,
+            'block_number': transaction_data.get('block_number')
+        }
+        
+        self.metrics['transactions'].append(transaction_info)
+        self.metrics['gas_prices'].append(gas_price)
+        
+        # Controllo dell'allerta sul prezzo del gas
+        gas_price_gwei = self.w3.from_wei(gas_price, 'gwei')
+        if gas_price_gwei > self.alerts['gas_price_threshold']:
+            self.send_alert(f"High gas price detected: {gas_price_gwei} gwei")
+        
+        # Applicare la politica di ritenzione dei dati
+        self._apply_retention_policy()
+        
+    except Exception as e:
+        self._handle_error(f"Transaction monitoring error: {str(e)}")
+Aggiornamento dei Test
+Assicurati di chiamare il metodo monitor_transactions con await se è asincrono:
+
+@pytest.mark.asyncio
+async def test_monitor_transaction_success(monitor):
+    transaction_data = {
+        'type': 'transfer',
+        'status': 'success',
+        'tx_hash': '0x123',
+        'block_number': 100
+    }
+    
+    await monitor.monitor_transactions(transaction_data)  # Usa `await` se il metodo è asincrono
+    metrics = monitor.get_metrics()
+    
+    assert len(metrics['transactions']) == 1
+    assert metrics['transactions'][0]['type'] == 'transfer'
+    assert metrics['transactions'][0]['status'] == 'success'
+    assert metrics['transactions'][0]['tx_hash'] == '0x123'
+Assicurazione della Configurazione dei Test
+Assicurati che pytest-asyncio sia installato e configurato correttamente nel tuo file pytest.ini:
+
+[pytest]
+asyncio_mode = auto
+Esecuzione dei Test
+Esegui i test con:
+
+pytest tests/unit/test_blockchain_monitor.py -v --disable-warnings
+Se hai apportato modifiche per rendere il metodo asincrono, il comando rimarrà lo stesso poiché è già configurato per gestire async.
+
+Con queste modifiche, dovresti essere in grado di risolvere l'errore e garantire che il progetto funzioni correttamente!

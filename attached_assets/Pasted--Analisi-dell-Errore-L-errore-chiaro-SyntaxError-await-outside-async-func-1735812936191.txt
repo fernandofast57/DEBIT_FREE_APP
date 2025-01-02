@@ -1,0 +1,164 @@
+### 🔍 **Analisi dell'Errore**
+
+L'errore è chiaro:
+
+```
+SyntaxError: 'await' outside async function
+```
+
+Questo significa che stai usando `await` in un contesto non asincrono (`await` può essere usato solo all'interno di funzioni definite come `async def`).
+
+---
+
+## 🛠️ **Soluzione Passo-Passo**
+
+### 1️⃣ **Risolvi il Metodo `monitor_transactions`**
+
+Nel file `app/utils/blockchain_monitor.py`, localizza il metodo con l'errore (`gas_price = await self.w3.eth.gas_price`) e correggilo.
+
+Se il metodo **non è definito come `async`**, devi:
+
+1. **Rimuovere `await`** se non richiesto.
+2. Se deve rimanere asincrono, assicurati che il metodo sia definito con `async def`.
+
+#### ✅ **Metodo Sincrono (se non serve async)**
+
+```python
+def monitor_transactions(self, transaction_data: Dict[str, Any]) -> None:
+    """Monitor transaction metrics and trigger alerts if needed."""
+    try:
+        timestamp = datetime.utcnow().isoformat()
+        gas_price = self.w3.eth.gas_price  # Rimosso await
+        
+        transaction_info = {
+            'timestamp': timestamp,
+            'type': transaction_data.get('type', 'unknown'),
+            'status': transaction_data.get('status', 'unknown'),
+            'tx_hash': transaction_data.get('tx_hash', ''),
+            'gas_price': gas_price,
+            'block_number': transaction_data.get('block_number')
+        }
+        
+        self.metrics['transactions'].append(transaction_info)
+        self.metrics['gas_prices'].append(gas_price)
+        
+        # Gas price alert check
+        gas_price_gwei = self.w3.from_wei(gas_price, 'gwei')
+        if gas_price_gwei > self.alerts['gas_price_threshold']:
+            self.send_alert(f"High gas price detected: {gas_price_gwei} gwei")
+        
+        # Maintain data retention policy
+        self._apply_retention_policy()
+        
+    except Exception as e:
+        self._handle_error(f"Transaction monitoring error: {str(e)}")
+```
+
+#### ✅ **Metodo Asincrono (se deve essere async)**
+
+Se vuoi mantenerlo asincrono, scrivi:
+
+```python
+async def monitor_transactions(self, transaction_data: Dict[str, Any]) -> None:
+    """Monitor transaction metrics and trigger alerts if needed."""
+    try:
+        timestamp = datetime.utcnow().isoformat()
+        gas_price = await self.w3.eth.gas_price  # await rimane
+        
+        transaction_info = {
+            'timestamp': timestamp,
+            'type': transaction_data.get('type', 'unknown'),
+            'status': transaction_data.get('status', 'unknown'),
+            'tx_hash': transaction_data.get('tx_hash', ''),
+            'gas_price': gas_price,
+            'block_number': transaction_data.get('block_number')
+        }
+        
+        self.metrics['transactions'].append(transaction_info)
+        self.metrics['gas_prices'].append(gas_price)
+        
+        # Gas price alert check
+        gas_price_gwei = self.w3.from_wei(gas_price, 'gwei')
+        if gas_price_gwei > self.alerts['gas_price_threshold']:
+            self.send_alert(f"High gas price detected: {gas_price_gwei} gwei")
+        
+        # Maintain data retention policy
+        self._apply_retention_policy()
+        
+    except Exception as e:
+        self._handle_error(f"Transaction monitoring error: {str(e)}")
+```
+
+> **Nota:** Se scegli la versione `async`, assicurati che tutte le chiamate a `monitor_transactions` nel codice e nei test siano fatte con `await`.
+
+---
+
+### 2️⃣ **Aggiorna i Test**
+
+Nel file `tests/unit/test_blockchain_monitor.py`, se il metodo è stato reso asincrono (`async`):
+
+- Aggiungi `await` durante la chiamata nel test.
+
+```python
+@pytest.mark.asyncio
+async def test_monitor_transaction_success(monitor):
+    transaction_data = {
+        'type': 'transfer',
+        'status': 'success',
+        'tx_hash': '0x123',
+        'block_number': 100
+    }
+    
+    await monitor.monitor_transactions(transaction_data)  # await per chiamare async
+    metrics = monitor.get_metrics()
+    
+    assert len(metrics['transactions']) == 1
+    assert metrics['transactions'][0]['type'] == 'transfer'
+    assert metrics['transactions'][0]['status'] == 'success'
+    assert metrics['transactions'][0]['tx_hash'] == '0x123'
+```
+
+---
+
+### 3️⃣ **Assicurati che i Test Async siano Correttamente Configurati**
+
+Assicurati che `pytest-asyncio` sia installato:
+
+```bash
+pip install pytest-asyncio
+```
+
+E che `pytest.ini` abbia:
+
+```ini
+[pytest]
+asyncio_mode = auto
+```
+
+---
+
+### 4️⃣ **Riesegui i Test**
+
+Se il metodo è sincrono:
+
+```bash
+pytest tests/unit/test_blockchain_monitor.py -v --disable-warnings
+```
+
+Se è asincrono:
+
+```bash
+pytest tests/unit/test_blockchain_monitor.py -v --disable-warnings --asyncio-mode=auto
+```
+
+---
+
+### 🔄 **Cosa fare se il problema persiste?**
+
+1. Conferma che tutti i metodi asincroni siano chiamati con `await`.
+2. Assicurati che le dipendenze di `web3` siano aggiornate.
+3. Controlla che nei test, i metodi sincroni siano chiamati direttamente e quelli asincroni con `await`.
+
+---
+
+Fammi sapere come procede! 🚀
