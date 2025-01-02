@@ -17,9 +17,15 @@ migrate = Migrate()
 def create_app(config_class=Config):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_class)
+
+from flask_login import LoginManager
+
+login_manager = LoginManager()
+
     cache.init_app(app)
 
     db.init_app(app)
+    login_manager.init_app(app)
     migrate.init_app(app, db)
     
     # Initialize load balancer
