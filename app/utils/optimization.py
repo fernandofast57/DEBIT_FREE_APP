@@ -2,6 +2,20 @@
 from sqlalchemy import text
 from app.database import db
 
+def optimize_queries():
+    """Apply database query optimizations"""
+    try:
+        with db.engine.connect() as conn:
+            conn.execute(text("PRAGMA journal_mode=WAL"))
+            conn.execute(text("PRAGMA synchronous=NORMAL"))
+            conn.execute(text("PRAGMA cache_size=10000"))
+            conn.execute(text("PRAGMA temp_store=MEMORY"))
+        db.session.commit()
+        print("Query optimization completed successfully")
+    except Exception as e:
+        print(f"Error optimizing queries: {e}")
+        db.session.rollback()
+
 def create_indexes():
     """Create optimized database indexes"""
     try:
