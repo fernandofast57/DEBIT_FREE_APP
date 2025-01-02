@@ -1,9 +1,13 @@
 
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_required, current_user
 from functools import wraps
-from app.models import db, User, Transaction
-from app.models.models import Parameter
+import json
+from datetime import datetime
+from app.models import db, User, Transaction, Parameter
+from app.services.blockchain_service import BlockchainService
+from app.utils.cache.redis_manager import RedisManager
+from app.services.noble_rank_service import NobleRankService
 
 admin_bp = Blueprint('custom_admin', __name__, url_prefix='/admin')
 
@@ -38,6 +42,63 @@ def parameters():
         return redirect(url_for('admin.parameters'))
     
     params = Parameter.query.first()
+
+
+@admin_bp.route('/noble-system')
+@login_required
+@admin_required
+def noble_system():
+    noble_service = NobleRankService()
+    ranks = noble_service.get_all_ranks()
+    return render_template('admin/noble_system.html', ranks=ranks)
+
+@admin_bp.route('/blockchain')
+@login_required
+@admin_required
+def blockchain():
+    blockchain_service = BlockchainService()
+    stats = blockchain_service.get_network_stats()
+    return render_template('admin/blockchain.html', stats=stats)
+
+@admin_bp.route('/api/system-status')
+@login_required
+@admin_required
+def system_status():
+    return jsonify({
+        'last_update': datetime.utcnow().isoformat(),
+        'active_users': User.query.filter_by(is_active=True).count(),
+        'pending_transactions': Transaction.query.filter_by(status='pending').count()
+    })
+
+@admin_bp.route('/api/refresh-cache', methods=['POST'])
+@login_required
+@admin_required
+def refresh_cache():
+    redis = RedisManager()
+    redis.flush_all()
+    return jsonify({'message': 'Cache refreshed successfully'})
+
+@admin_bp.route('/api/blockchain-status')
+@login_required
+@admin_required
+def blockchain_status():
+    blockchain_service = BlockchainService()
+    status = blockchain_service.check_connection()
+    return jsonify({'status': 'connected' if status else 'disconnected'})
+
+@admin_bp.route('/generate-report')
+@login_required
+@admin_required
+def generate_report():
+    # Generate system report
+    report_data = {
+        'users': User.query.count(),
+        'transactions': Transaction.query.count(),
+        'parameters': Parameter.query.first().to_dict()
+    }
+    
+    return jsonify(report_data)
+
     return render_template('admin/parameters.html', params=params)
 
 @admin_bp.route('/users')

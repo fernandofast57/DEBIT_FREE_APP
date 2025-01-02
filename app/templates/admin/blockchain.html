@@ -1,0 +1,66 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h1>Blockchain Monitor</h1>
+    
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Network Statistics</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item">Gas Price: {{ stats.gas_price }} Gwei</li>
+                        <li class="list-group-item">Block Number: {{ stats.block_number }}</li>
+                        <li class="list-group-item">Network ID: {{ stats.network_id }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Smart Contract Status</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item">Contract Address: {{ stats.contract_address }}</li>
+                        <li class="list-group-item">Total Transactions: {{ stats.total_transactions }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Recent Transactions</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Hash</th>
+                                <th>Block</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tx in stats.recent_transactions %}
+                            <tr>
+                                <td>{{ tx.hash }}</td>
+                                <td>{{ tx.block_number }}</td>
+                                <td>{{ tx.from_address }}</td>
+                                <td>{{ tx.to_address }}</td>
+                                <td>{{ tx.value }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
