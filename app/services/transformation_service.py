@@ -1,4 +1,3 @@
-
 from decimal import Decimal
 from typing import Dict, Any, List
 from datetime import datetime
@@ -78,15 +77,29 @@ class TransformationService:
     @staticmethod
     async def process_transformation(user_id: int, euro_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
         """Process complete money to gold transformation"""
-        logger.info(f"Starting transformation process for user {user_id} - Amount: {euro_amount}€")
+        logger.info(f"Avvio trasformazione per utente {user_id} - Importo: {euro_amount}€")
+        
         try:
+            # Validazione input
+            if not isinstance(user_id, int) or user_id <= 0:
+                logger.error(f"ID utente non valido: {user_id}")
+                return {"status": "error", "message": "ID utente non valido"}
+                
+            if not isinstance(euro_amount, Decimal) or euro_amount <= 0:
+                logger.error(f"Importo euro non valido: {euro_amount}")
+                return {"status": "error", "message": "Importo euro non valido"}
+                
+            if not isinstance(fixing_price, Decimal) or fixing_price <= 0:
+                logger.error(f"Fixing price non valido: {fixing_price}")
+                return {"status": "error", "message": "Fixing price non valido"}
+
             # 1. Verify transfer
-            logger.debug(f"Verifying transfer for user {user_id}")
+            logger.debug(f"Verifica trasferimento per utente {user_id}")
             if not await TransformationService.verify_transfer(user_id, euro_amount):
-                logger.warning(f"Transfer verification failed for user {user_id} - Insufficient funds")
+                logger.warning(f"Verifica trasferimento fallita per utente {user_id} - Fondi insufficienti")
                 return {
                     "status": "error",
-                    "message": "Invalid transfer or insufficient funds"
+                    "message": "Trasferimento non valido o fondi insufficienti"
                 }
 
             # 2. Process organization fee
