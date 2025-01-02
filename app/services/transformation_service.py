@@ -17,11 +17,19 @@ class TransformationService:
     }
 
     @staticmethod
-    async def verify_transfer(user_id: int, transfer_amount: Decimal) -> bool:
-        """Verify if transfer is valid for transformation"""
+    async def verify_transfer(user_id: int, transfer_amount: Decimal) -> Dict[str, Any]:
+        """Verify if transfer is valid for transformation with detailed validation"""
         try:
             user = await User.query.get(user_id)
-            return user and user.money_account.balance >= transfer_amount
+            if not user:
+                return {"valid": False, "reason": "User not found"}
+            if not user.money_account:
+                return {"valid": False, "reason": "No money account found"}
+            if user.money_account.balance < transfer_amount:
+                return {"valid": False, "reason": "Insufficient funds"}
+            if transfer_amount <= 0:
+                return {"valid": False, "reason": "Invalid amount"}
+            return {"valid": True, "user": user}
         except Exception as e:
             logger.error(f"Transfer verification error: {str(e)}")
             return False
