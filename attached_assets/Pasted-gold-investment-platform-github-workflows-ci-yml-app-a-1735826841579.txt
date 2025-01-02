@@ -1,0 +1,111 @@
+gold-investment-platform/
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+├── app/
+│   ├── admin/
+│   │   ├── __init__.py
+│   │   └── views.py
+│   ├── api/
+│   │   └── v1/
+│   ├── config/
+│   │   ├── __init__.py
+│   │   ├── constants.py
+│   │   ├── logging_config.py
+│   │   ├── mobile.py
+│   │   └── project_structure.json
+│   ├── middleware/
+│   │   ├── __init__.py
+│   │   ├── security.py
+│   │   └── structure_validator_middleware.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── accounting.py
+│   │   ├── init_noble_ranks.py
+│   │   └── models.py
+│   ├── routes/
+│   │   ├── __init__.py
+│   │   ├── affiliate.py
+│   │   ├── auth.py
+│   │   └── gold.py
+│   ├── schemas/
+│   │   ├── __init__.py
+│   │   └── transformation_schema.py
+│   ├── services/
+│   │   ├── __init__.py
+│   │   ├── accounting_service.py
+│   │   ├── batch_collection_service.py
+│   │   ├── blockchain_noble_service.py
+│   │   ├── blockchain_service.py
+│   │   ├── bonus_distribution_service.py
+│   │   ├── noble_rank_service.py
+│   ├── templates/
+│   │   └── admin/
+│   ├── utils/
+│   │   ├── cache/
+│   │   ├── database/
+│   │   ├── security/
+│   │   ├── advanced_config.py
+│   │   ├── auth.py
+│   │   ├── backup_manager.py
+│   │   ├── blockchain_monitor.py
+│   │   ├── error_handler.py
+│   │   ├── errors.py
+│   │   ├── load_balancer.py
+│   │   ├── logging_config.py
+│   │   ├── monitoring.py
+│   │   ├── optimization.py
+│   │   ├── performance_monitor.py
+│   │   ├── rate_limiter.py
+│   │   ├── retry.py
+│   │   └── rollback_manager.py
+│   ├── __init__.py
+│   └── database.py
+├── attached_assets/
+├── blockchain/
+│   ├── contracts/
+│   ├── migrations/
+│   ├── scripts/
+│   └── tests/
+├── docs/
+│   ├── API_DOCUMENTATION.md
+│   ├── GLOSSARY.md
+│   └── USAGE.md
+├── frontend/
+│   └── src/
+├── gold-investment-export/
+├── instance/
+│   └── gold_investment.db
+├── logs/
+│   ├── app.log
+│   ├── error.log
+│   ├── gold-investment.log
+│   └── security.log
+├── migrations/
+│   ├── versions/
+│   ├── README
+│   ├── alembic.ini
+│   └── env.py
+├── scripts/
+│   ├── backup_db.py
+│   ├── deploy.py
+│   └── test_distribution.py
+├── tests/
+│   ├── functional/
+│   ├── integration/
+│   ├── performance/
+│   ├── security/
+│   ├── unit/
+│   │   ├── test_blockchain_monitor.py
+│   │   ├── test_bonus_service.py
+│   │   ├── test_constants.py
+│   │   ├── test_logging.py
+│   │   ├── test_noble_system.py
+│   ├── conftest.py
+│   ├── helpers.py
+│   └── pytest.ini
+├── .env
+├── .env.example
+├── .gitignore
+├── .replit
+└── README.md
