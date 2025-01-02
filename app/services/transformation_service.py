@@ -78,10 +78,11 @@ class TransformationService:
     @staticmethod
     async def process_transformation(user_id: int, euro_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
         """Process complete money to gold transformation"""
-        logger.info(f"Starting transformation process for user {user_id} - Amount: {euro_amount}€")
+        logger.info(f"Inizio trasformazione - Utente: {user_id} - Importo: {euro_amount}€ - Fixing: {fixing_price}")
+        
         try:
-            # 1. Verify transfer
-            logger.debug(f"Verifying transfer for user {user_id}")
+            # 1. Verifica del trasferimento
+            logger.info(f"Controllo disponibilità fondi per utente {user_id}")
             if not await TransformationService.verify_transfer(user_id, euro_amount):
                 logger.warning(f"Transfer verification failed for user {user_id} - Insufficient funds")
                 return {
@@ -90,10 +91,14 @@ class TransformationService:
                 }
 
             # 2. Process organization fee
+            logger.info(f"Calcolo commissioni per importo {euro_amount}€")
             net_amount = await TransformationService.process_organization_fee(euro_amount)
+            logger.info(f"Importo netto dopo commissioni: {net_amount}€")
 
             # 3. Calculate gold amount
+            logger.info(f"Calcolo grammi oro con fixing price {fixing_price}")
             gold_amount = await TransformationService.calculate_gold_amount(net_amount, fixing_price)
+            logger.info(f"Grammi oro calcolati: {gold_amount}g")
 
             # 4. Process transformation
             async with db.session.begin():
