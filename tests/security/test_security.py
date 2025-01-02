@@ -114,3 +114,48 @@ def test_input_validation():
     
     # Verify special characters are handled
     assert isinstance(sanitized["special_chars"], str)
+import pytest
+from app.utils.security.security_manager import SecurityManager
+from app.utils.security.rate_limiter import RobustRateLimiter
+
+def test_sql_injection_prevention():
+    """Test prevenzione SQL injection"""
+    security_manager = SecurityManager()
+    malicious_inputs = [
+        "1' OR '1'='1",
+        "1; DROP TABLE users--",
+        "1 UNION SELECT * FROM passwords"
+    ]
+    
+    for input in malicious_inputs:
+        sanitized = security_manager.sanitize_input(input)
+        assert "'" not in sanitized
+        assert ";" not in sanitized
+        assert "UNION" not in sanitized
+
+def test_xss_prevention():
+    """Test prevenzione XSS"""
+    security_manager = SecurityManager()
+    malicious_inputs = [
+        "<script>alert('xss')</script>",
+        "<img src='javascript:alert()'>",
+        "<svg onload=alert(1)>"
+    ]
+    
+    for input in malicious_inputs:
+        sanitized = security_manager.sanitize_input(input)
+        assert "<script>" not in sanitized
+        assert "javascript:" not in sanitized
+        assert "<svg onload" not in sanitized
+
+def test_rate_limiter_stress():
+    """Test stress del rate limiter"""
+    limiter = RobustRateLimiter()
+    user_id = "test_user"
+    
+    # Simula traffico intenso
+    for _ in range(1000):
+        limiter.is_rate_limited(user_id)
+    
+    # Verifica che il rate limiting sia attivo
+    assert limiter.is_rate_limited(user_id)
