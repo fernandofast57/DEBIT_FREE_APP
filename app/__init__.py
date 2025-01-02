@@ -1,3 +1,4 @@
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_caching import Cache
@@ -8,7 +9,7 @@ from app.database import db
 from app.admin import admin
 from app.models.models import User, NobleRank, Transaction
 from sqlalchemy import text
-from app.utils.database.migrations import migration_manager # Added this line
+from app.utils.database.migrations import migration_manager
 
 cache = Cache(config={'CACHE_TYPE': 'simple'})
 login_manager = LoginManager()
@@ -17,13 +18,7 @@ migrate = Migrate()
 def create_app(config_class=Config):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_class)
-
-from flask_login import LoginManager
-
-login_manager = LoginManager()
-
     cache.init_app(app)
-
     db.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db)
@@ -38,13 +33,13 @@ login_manager = LoginManager()
             from app.utils.optimization import optimize_queries, create_indexes
             from sqlalchemy import inspect
             inspector = inspect(db.engine)
-            if not inspector.has_table('users'):  # Check if tables exist
+            if not inspector.has_table('users'):
                 db.create_all()
                 print("Tables created successfully.")
                 optimize_queries()
                 create_indexes()
             else:
-                optimize_queries()  # Still run optimizations for existing tables
+                optimize_queries()
 
     login_manager.init_app(app)
     admin.init_app(app)
