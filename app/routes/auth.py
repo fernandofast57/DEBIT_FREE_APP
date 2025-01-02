@@ -116,3 +116,14 @@ def logout():
     if auth_manager.revoke_token(token):
         return jsonify({'message': 'Logged out successfully'})
     return jsonify({'error': 'Invalid token'}), 401
+@auth_bp.route('/login-status', methods=['GET'])
+@login_required
+def login_status():
+    if current_user.is_authenticated:
+        return jsonify({
+            'status': 'success',
+            'logged_in': True,
+            'is_admin': current_user.is_admin,
+            'user': current_user.username
+        })
+    return jsonify({'status': 'error', 'logged_in': False}), 401
