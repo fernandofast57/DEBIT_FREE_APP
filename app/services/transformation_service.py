@@ -38,7 +38,13 @@ class TransformationService:
     async def calculate_gold_amount(euro_amount: Decimal, fixing_price: Decimal) -> Decimal:
         """Calculate gold amount based on fixing price"""
         if fixing_price <= 0:
+            logger.error(f"Invalid fixing price: {fixing_price}")
             raise ValueError("Invalid fixing price")
+        if euro_amount <= 0:
+            logger.error(f"Invalid euro amount: {euro_amount}")
+            raise ValueError("Invalid euro amount")
+            
+        logger.info(f"Calculating gold amount - Euro: {euro_amount}€, Fixing price: {fixing_price}")
         return euro_amount / fixing_price
 
     @staticmethod
@@ -72,9 +78,12 @@ class TransformationService:
     @staticmethod
     async def process_transformation(user_id: int, euro_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
         """Process complete money to gold transformation"""
+        logger.info(f"Starting transformation process for user {user_id} - Amount: {euro_amount}€")
         try:
             # 1. Verify transfer
+            logger.debug(f"Verifying transfer for user {user_id}")
             if not await TransformationService.verify_transfer(user_id, euro_amount):
+                logger.warning(f"Transfer verification failed for user {user_id} - Insufficient funds")
                 return {
                     "status": "error",
                     "message": "Invalid transfer or insufficient funds"
