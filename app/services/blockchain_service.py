@@ -94,9 +94,6 @@ class BlockchainService:
                 attempts += 1
                 
         raise ConnectionError("Impossibile connettersi a nessun endpoint RPC")
-        except Exception as e:
-            logger.error(f"Blockchain transaction error: {str(e)}")
-            return {'status': 'error', 'message': str(e)}
             
 
     def is_connected(self) -> bool:
