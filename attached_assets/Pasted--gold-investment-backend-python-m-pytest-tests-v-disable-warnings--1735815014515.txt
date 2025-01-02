@@ -1,0 +1,627 @@
+/gold-investment-backend$ python -m pytest tests/ -v --disable-warnings
+================================= test session starts ==================================
+platform linux -- Python 3.11.10, pytest-8.1.1, pluggy-1.4.0 -- /home/runner/gold-investment-backend/.pythonlibs/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/gold-investment-backend/tests
+configfile: pytest.ini
+plugins: asyncio-0.23.6, mock-3.14.0, cov-4.1.0, web3-6.11.3
+asyncio: mode=Mode.AUTO
+collected 37 items                                                                     
+
+tests/functional/test_api.py::test_transformation_endpoint ERROR                 [  2%]
+tests/functional/test_api.py::test_account_balance ERROR                         [  5%]
+tests/functional/test_api.py::test_index ERROR                                   [  8%]
+tests/functional/test_api.py::test_invalid_transformation ERROR                  [ 10%]
+tests/functional/test_api.py::test_async_endpoints ERROR                         [ 13%]
+tests/integration/test_blockchain.py::test_batch_transformation_process FAILED   [ 16%]
+tests/integration/test_blockchain.py::test_noble_rank_update FAILED              [ 18%]
+tests/integration/test_blockchain.py::test_blockchain_stats PASSED               [ 21%]
+tests/performance/test_load.py::test_system_under_load FAILED                    [ 24%]
+tests/performance/test_load.py::test_concurrent_transformations PASSED           [ 27%]
+tests/performance/test_load.py::test_blockchain_batch_performance FAILED         [ 29%]
+tests/performance/test_load.py::test_system_under_heavy_load FAILED              [ 32%]
+tests/performance/test_monitoring.py::test_system_monitoring PASSED              [ 35%]
+tests/performance/test_monitoring.py::test_performance_monitor PASSED            [ 37%]
+tests/performance/test_monitoring.py::test_performance_decorator PASSED          [ 40%]
+tests/performance/test_optimization.py::test_table_creation_and_optimization ERROR [ 43%]
+tests/security/test_security.py::test_environment_variables PASSED               [ 45%]
+tests/security/test_security.py::test_rate_limiter PASSED                        [ 48%]
+tests/security/test_security.py::test_security_manager_logging PASSED            [ 51%]
+tests/security/test_security.py::test_permission_checking PASSED                 [ 54%]
+tests/security/test_security.py::test_role_permission_validation PASSED          [ 56%]
+tests/security/test_security.py::test_input_validation FAILED                    [ 59%]
+tests/security/test_security.py::test_sql_injection_prevention FAILED            [ 62%]
+tests/security/test_security.py::test_xss_prevention PASSED                      [ 64%]
+tests/security/test_security.py::test_rate_limiter_stress PASSED                 [ 67%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_structure_bonus ERROR [ 70%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_successful ERROR [ 72%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_invalid_rank ERROR [ 75%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_insufficient_balance ERROR [ 78%]
+tests/unit/test_constants.py::test_status_constants PASSED                       [ 81%]
+tests/unit/test_logging.py::test_logger_initialization PASSED                    [ 83%]
+tests/unit/test_logging.py::test_setup_logging FAILED                            [ 86%]
+tests/unit/test_noble_system.py::test_noble_rank_creation ERROR                  [ 89%]
+tests/unit/test_noble_system.py::test_noble_relation_verification ERROR          [ 91%]
+tests/unit/test_transformation.py::test_transformation_calculates_correct_gold_amount ERROR [ 94%]
+tests/unit/test_transformation.py::test_insufficient_funds_transformation ERROR  [ 97%]
+tests/unit/test_transformation.py::test_invalid_fixing_price ERROR               [100%]
+
+======================================== ERRORS ========================================
+____________________ ERROR at setup of test_transformation_endpoint ____________________
+
+    @pytest.fixture
+    def client():
+>       app = create_app()
+
+tests/functional/test_api.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/__init__.py:46: in create_app
+    from app.routes import auth_bp, main_bp
+app/routes/__init__.py:5: in <module>
+    from app.routes.main import bp as main_bp
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    from flask import Blueprint, send_file, jsonify
+>   from app.utils.performance_monitor import monitor_performance
+E   ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_monitor' (/home/runner/gold-investment-backend/app/utils/performance_monitor.py)
+
+app/routes/main.py:2: ImportError
+-------------------------------- Captured stdout setup ---------------------------------
+Tables created successfully.
+Error creating indexes: (sqlite3.OperationalError) no such table: main.transactions
+[SQL: 
+                CREATE INDEX IF NOT EXISTS idx_transactions_user ON transactions(user_id, created_at);
+                CREATE INDEX IF NOT EXISTS idx_transformations_date ON transformations(created_at, status);
+                CREATE INDEX IF NOT EXISTS idx_noble_ranks_level ON noble_ranks(level, updated_at);
+                CREATE INDEX IF NOT EXISTS idx_users_email ON users(email, status);
+                CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank);
+                CREATE INDEX IF NOT EXISTS idx_transactions_status ON transactions(status, created_at);
+                CREATE INDEX IF NOT EXISTS idx_transformations_user ON transformations(user_id, status);
+            ]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+________________________ ERROR at setup of test_account_balance ________________________
+
+    @pytest.fixture
+    def client():
+>       app = create_app()
+
+tests/functional/test_api.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/__init__.py:46: in create_app
+    from app.routes import auth_bp, main_bp
+app/routes/__init__.py:5: in <module>
+    from app.routes.main import bp as main_bp
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    from flask import Blueprint, send_file, jsonify
+>   from app.utils.performance_monitor import monitor_performance
+E   ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_monitor' (/home/runner/gold-investment-backend/app/utils/performance_monitor.py)
+
+app/routes/main.py:2: ImportError
+-------------------------------- Captured stdout setup ---------------------------------
+Tables created successfully.
+Error creating indexes: (sqlite3.OperationalError) no such table: main.transactions
+[SQL: 
+                CREATE INDEX IF NOT EXISTS idx_transactions_user ON transactions(user_id, created_at);
+                CREATE INDEX IF NOT EXISTS idx_transformations_date ON transformations(created_at, status);
+                CREATE INDEX IF NOT EXISTS idx_noble_ranks_level ON noble_ranks(level, updated_at);
+                CREATE INDEX IF NOT EXISTS idx_users_email ON users(email, status);
+                CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank);
+                CREATE INDEX IF NOT EXISTS idx_transactions_status ON transactions(status, created_at);
+                CREATE INDEX IF NOT EXISTS idx_transformations_user ON transformations(user_id, status);
+            ]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+_____________________________ ERROR at setup of test_index _____________________________
+
+    @pytest.fixture
+    def client():
+>       app = create_app()
+
+tests/functional/test_api.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/__init__.py:46: in create_app
+    from app.routes import auth_bp, main_bp
+app/routes/__init__.py:5: in <module>
+    from app.routes.main import bp as main_bp
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    from flask import Blueprint, send_file, jsonify
+>   from app.utils.performance_monitor import monitor_performance
+E   ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_monitor' (/home/runner/gold-investment-backend/app/utils/performance_monitor.py)
+
+app/routes/main.py:2: ImportError
+-------------------------------- Captured stdout setup ---------------------------------
+Tables created successfully.
+Error creating indexes: (sqlite3.OperationalError) no such table: main.transactions
+[SQL: 
+                CREATE INDEX IF NOT EXISTS idx_transactions_user ON transactions(user_id, created_at);
+                CREATE INDEX IF NOT EXISTS idx_transformations_date ON transformations(created_at, status);
+                CREATE INDEX IF NOT EXISTS idx_noble_ranks_level ON noble_ranks(level, updated_at);
+                CREATE INDEX IF NOT EXISTS idx_users_email ON users(email, status);
+                CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank);
+                CREATE INDEX IF NOT EXISTS idx_transactions_status ON transactions(status, created_at);
+                CREATE INDEX IF NOT EXISTS idx_transformations_user ON transformations(user_id, status);
+            ]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+____________________ ERROR at setup of test_invalid_transformation _____________________
+
+    @pytest.fixture
+    def client():
+>       app = create_app()
+
+tests/functional/test_api.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/__init__.py:46: in create_app
+    from app.routes import auth_bp, main_bp
+app/routes/__init__.py:5: in <module>
+    from app.routes.main import bp as main_bp
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    from flask import Blueprint, send_file, jsonify
+>   from app.utils.performance_monitor import monitor_performance
+E   ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_monitor' (/home/runner/gold-investment-backend/app/utils/performance_monitor.py)
+
+app/routes/main.py:2: ImportError
+-------------------------------- Captured stdout setup ---------------------------------
+Tables created successfully.
+Error creating indexes: (sqlite3.OperationalError) no such table: main.transactions
+[SQL: 
+                CREATE INDEX IF NOT EXISTS idx_transactions_user ON transactions(user_id, created_at);
+                CREATE INDEX IF NOT EXISTS idx_transformations_date ON transformations(created_at, status);
+                CREATE INDEX IF NOT EXISTS idx_noble_ranks_level ON noble_ranks(level, updated_at);
+                CREATE INDEX IF NOT EXISTS idx_users_email ON users(email, status);
+                CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank);
+                CREATE INDEX IF NOT EXISTS idx_transactions_status ON transactions(status, created_at);
+                CREATE INDEX IF NOT EXISTS idx_transformations_user ON transformations(user_id, status);
+            ]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+________________________ ERROR at setup of test_async_endpoints ________________________
+
+    @pytest.fixture
+    def client():
+>       app = create_app()
+
+tests/functional/test_api.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/__init__.py:46: in create_app
+    from app.routes import auth_bp, main_bp
+app/routes/__init__.py:5: in <module>
+    from app.routes.main import bp as main_bp
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    from flask import Blueprint, send_file, jsonify
+>   from app.utils.performance_monitor import monitor_performance
+E   ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_monitor' (/home/runner/gold-investment-backend/app/utils/performance_monitor.py)
+
+app/routes/main.py:2: ImportError
+-------------------------------- Captured stdout setup ---------------------------------
+Tables created successfully.
+Error creating indexes: (sqlite3.OperationalError) no such table: main.transactions
+[SQL: 
+                CREATE INDEX IF NOT EXISTS idx_transactions_user ON transactions(user_id, created_at);
+                CREATE INDEX IF NOT EXISTS idx_transformations_date ON transformations(created_at, status);
+                CREATE INDEX IF NOT EXISTS idx_noble_ranks_level ON noble_ranks(level, updated_at);
+                CREATE INDEX IF NOT EXISTS idx_users_email ON users(email, status);
+                CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank);
+                CREATE INDEX IF NOT EXISTS idx_transactions_status ON transactions(status, created_at);
+                CREATE INDEX IF NOT EXISTS idx_transformations_user ON transformations(user_id, status);
+            ]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+________________ ERROR at setup of test_table_creation_and_optimization ________________
+
+    @pytest.fixture(scope='function')
+    def test_app():
+>       app = create_app()
+
+tests/performance/test_optimization.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/__init__.py:46: in create_app
+    from app.routes import auth_bp, main_bp
+app/routes/__init__.py:5: in <module>
+    from app.routes.main import bp as main_bp
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    from flask import Blueprint, send_file, jsonify
+>   from app.utils.performance_monitor import monitor_performance
+E   ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_monitor' (/home/runner/gold-investment-backend/app/utils/performance_monitor.py)
+
+app/routes/main.py:2: ImportError
+-------------------------------- Captured stdout setup ---------------------------------
+Tables created successfully.
+Error creating indexes: (sqlite3.OperationalError) no such table: main.transactions
+[SQL: 
+                CREATE INDEX IF NOT EXISTS idx_transactions_user ON transactions(user_id, created_at);
+                CREATE INDEX IF NOT EXISTS idx_transformations_date ON transformations(created_at, status);
+                CREATE INDEX IF NOT EXISTS idx_noble_ranks_level ON noble_ranks(level, updated_at);
+                CREATE INDEX IF NOT EXISTS idx_users_email ON users(email, status);
+                CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank);
+                CREATE INDEX IF NOT EXISTS idx_transactions_status ON transactions(status, created_at);
+                CREATE INDEX IF NOT EXISTS idx_transformations_user ON transformations(user_id, status);
+            ]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+____ ERROR at setup of TestBonusDistributionService.test_distribute_structure_bonus ____
+
+    @pytest.fixture
+    def app():
+>       app = create_app(TestConfig)
+
+tests/conftest.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/__init__.py:46: in create_app
+    from app.routes import auth_bp, main_bp
+app/routes/__init__.py:5: in <module>
+    from app.routes.main import bp as main_bp
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    from flask import Blueprint, send_file, jsonify
+>   from app.utils.performance_monitor import monitor_performance
+E   ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_monitor' (/home/runner/gold-investment-backend/app/utils/performance_monitor.py)
+
+app/routes/main.py:2: ImportError
+__ ERROR at setup of TestBonusDistributionService.test_distribute_rewards_successful ___
+
+    @pytest.fixture
+    def app():
+>       app = create_app(TestConfig)
+
+tests/conftest.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/__init__.py:46: in create_app
+    from app.routes import auth_bp, main_bp
+app/routes/__init__.py:5: in <module>
+    from app.routes.main import bp as main_bp
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    from flask import Blueprint, send_file, jsonify
+>   from app.utils.performance_monitor import monitor_performance
+E   ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_monitor' (/home/runner/gold-investment-backend/app/utils/performance_monitor.py)
+
+app/routes/main.py:2: ImportError
+_ ERROR at setup of TestBonusDistributionService.test_distribute_rewards_invalid_rank __
+
+    @pytest.fixture
+    def app():
+>       app = create_app(TestConfig)
+
+tests/conftest.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/__init__.py:46: in create_app
+    from app.routes import auth_bp, main_bp
+app/routes/__init__.py:5: in <module>
+    from app.routes.main import bp as main_bp
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    from flask import Blueprint, send_file, jsonify
+>   from app.utils.performance_monitor import monitor_performance
+E   ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_monitor' (/home/runner/gold-investment-backend/app/utils/performance_monitor.py)
+
+app/routes/main.py:2: ImportError
+_ ERROR at setup of TestBonusDistributionService.test_distribute_rewards_insufficient_balance _
+
+    @pytest.fixture
+    def app():
+>       app = create_app(TestConfig)
+
+tests/conftest.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/__init__.py:46: in create_app
+    from app.routes import auth_bp, main_bp
+app/routes/__init__.py:5: in <module>
+    from app.routes.main import bp as main_bp
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    from flask import Blueprint, send_file, jsonify
+>   from app.utils.performance_monitor import monitor_performance
+E   ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_monitor' (/home/runner/gold-investment-backend/app/utils/performance_monitor.py)
+
+app/routes/main.py:2: ImportError
+______________________ ERROR at setup of test_noble_rank_creation ______________________
+
+    @pytest.fixture
+    def app():
+>       app = create_app(TestConfig)
+
+tests/conftest.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/__init__.py:46: in create_app
+    from app.routes import auth_bp, main_bp
+app/routes/__init__.py:5: in <module>
+    from app.routes.main import bp as main_bp
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    from flask import Blueprint, send_file, jsonify
+>   from app.utils.performance_monitor import monitor_performance
+E   ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_monitor' (/home/runner/gold-investment-backend/app/utils/performance_monitor.py)
+
+app/routes/main.py:2: ImportError
+---------------------------------- Captured log setup ----------------------------------
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+__________________ ERROR at setup of test_noble_relation_verification __________________
+
+    @pytest.fixture
+    def app():
+>       app = create_app(TestConfig)
+
+tests/conftest.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/__init__.py:46: in create_app
+    from app.routes import auth_bp, main_bp
+app/routes/__init__.py:5: in <module>
+    from app.routes.main import bp as main_bp
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    from flask import Blueprint, send_file, jsonify
+>   from app.utils.performance_monitor import monitor_performance
+E   ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_monitor' (/home/runner/gold-investment-backend/app/utils/performance_monitor.py)
+
+app/routes/main.py:2: ImportError
+---------------------------------- Captured log setup ----------------------------------
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+_________ ERROR at setup of test_transformation_calculates_correct_gold_amount _________
+
+    @pytest.fixture
+    def app():
+>       app = create_app(TestConfig)
+
+tests/unit/test_transformation.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/__init__.py:46: in create_app
+    from app.routes import auth_bp, main_bp
+app/routes/__init__.py:5: in <module>
+    from app.routes.main import bp as main_bp
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    from flask import Blueprint, send_file, jsonify
+>   from app.utils.performance_monitor import monitor_performance
+E   ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_monitor' (/home/runner/gold-investment-backend/app/utils/performance_monitor.py)
+
+app/routes/main.py:2: ImportError
+---------------------------------- Captured log setup ----------------------------------
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+_______________ ERROR at setup of test_insufficient_funds_transformation _______________
+
+    @pytest.fixture
+    def app():
+>       app = create_app(TestConfig)
+
+tests/unit/test_transformation.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/__init__.py:46: in create_app
+    from app.routes import auth_bp, main_bp
+app/routes/__init__.py:5: in <module>
+    from app.routes.main import bp as main_bp
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    from flask import Blueprint, send_file, jsonify
+>   from app.utils.performance_monitor import monitor_performance
+E   ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_monitor' (/home/runner/gold-investment-backend/app/utils/performance_monitor.py)
+
+app/routes/main.py:2: ImportError
+---------------------------------- Captured log setup ----------------------------------
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+_____________________ ERROR at setup of test_invalid_fixing_price ______________________
+
+    @pytest.fixture
+    def app():
+>       app = create_app(TestConfig)
+
+tests/unit/test_transformation.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/__init__.py:46: in create_app
+    from app.routes import auth_bp, main_bp
+app/routes/__init__.py:5: in <module>
+    from app.routes.main import bp as main_bp
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    from flask import Blueprint, send_file, jsonify
+>   from app.utils.performance_monitor import monitor_performance
+E   ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_monitor' (/home/runner/gold-investment-backend/app/utils/performance_monitor.py)
+
+app/routes/main.py:2: ImportError
+---------------------------------- Captured log setup ----------------------------------
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+======================================= FAILURES =======================================
+__________________________ test_batch_transformation_process ___________________________
+
+blockchain_service = <app.services.blockchain_service.BlockchainService object at 0x7fe9901d14d0>
+
+    @pytest.mark.asyncio
+    async def test_batch_transformation_process(blockchain_service):
+        """Test batch transformation process"""
+        batch_data = [
+            {"user_id": 1, "amount": 100.0, "timestamp": 1645564800},
+            {"user_id": 2, "amount": 200.0, "timestamp": 1645564800}
+        ]
+    
+        blockchain_service.w3.eth.wait_for_transaction_receipt.return_value = Mock(status=1)
+        result = await blockchain_service.process_batch_transformation(batch_data)
+        assert result is not None
+>       assert hasattr(result, 'status')
+E       assert False
+E        +  where False = hasattr({'message': "'NoneType' object has no attribute 'send_alert'", 'status': 'error'}, 'status')
+
+tests/integration/test_blockchain.py:29: AssertionError
+---------------------------------- Captured log call -----------------------------------
+ERROR    gold_investment:blockchain_service.py:229 Blockchain transaction error: object Mock can't be used in 'await' expression
+ERROR    gold_investment:blockchain_service.py:230 Blockchain batch processing error: object Mock can't be used in 'await' expression
+ERROR    gold_investment:blockchain_service.py:36 Blockchain transaction error: 'NoneType' object has no attribute 'send_alert'
+ERROR    gold_investment:blockchain_service.py:37 Blockchain Transaction Error: 'NoneType' object has no attribute 'send_alert'
+________________________________ test_noble_rank_update ________________________________
+
+blockchain_service = <app.services.blockchain_service.BlockchainService object at 0x7fe990097fd0>
+
+    @pytest.mark.asyncio
+    async def test_noble_rank_update(blockchain_service):
+        """Test noble rank update"""
+        blockchain_service.w3.eth.wait_for_transaction_receipt.return_value = Mock(
+            status=1,
+            transactionHash=b'123456',
+            blockNumber=1234
+        )
+    
+        result = await blockchain_service.update_noble_rank(
+            "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+            1
+        )
+>       assert result['status'] == 'verified'
+E       AssertionError: assert 'error' == 'verified'
+E         
+E         - verified
+E         + error
+
+tests/integration/test_blockchain.py:45: AssertionError
+---------------------------------- Captured log call -----------------------------------
+ERROR    gold_investment:blockchain_service.py:183 Blockchain transaction error: 'NoneType' object has no attribute 'monitor_transactions'
+ERROR    gold_investment:blockchain_service.py:184 Error in update_noble_rank: 'NoneType' object has no attribute 'monitor_transactions'
+WARNING  app.utils.retry:retry.py:20 Attempt 1 failed: 'NoneType' object has no attribute 'send_alert'
+ERROR    gold_investment:blockchain_service.py:183 Blockchain transaction error: 'NoneType' object has no attribute 'monitor_transactions'
+ERROR    gold_investment:blockchain_service.py:184 Error in update_noble_rank: 'NoneType' object has no attribute 'monitor_transactions'
+WARNING  app.utils.retry:retry.py:20 Attempt 2 failed: 'NoneType' object has no attribute 'send_alert'
+ERROR    gold_investment:blockchain_service.py:183 Blockchain transaction error: 'NoneType' object has no attribute 'monitor_transactions'
+ERROR    gold_investment:blockchain_service.py:184 Error in update_noble_rank: 'NoneType' object has no attribute 'monitor_transactions'
+WARNING  app.utils.retry:retry.py:20 Attempt 3 failed: 'NoneType' object has no attribute 'send_alert'
+ERROR    app.utils.retry:retry.py:25 All 3 attempts failed
+ERROR    gold_investment:blockchain_service.py:36 Blockchain transaction error: 'NoneType' object has no attribute 'send_alert'
+ERROR    gold_investment:blockchain_service.py:37 Blockchain Transaction Error: 'NoneType' object has no attribute 'send_alert'
+________________________________ test_system_under_load ________________________________
+
+    def test_system_under_load():
+        """Test system performance under load"""
+        monitor = PerformanceMonitor()
+    
+        # Simulate load
+        for _ in range(100):
+            monitor.record_metric('response_time', 0.1)
+    
+>       avg_response = monitor.get_average('response_time')
+E       AttributeError: 'PerformanceMonitor' object has no attribute 'get_average'
+
+tests/performance/test_load.py:14: AttributeError
+__________________________ test_blockchain_batch_performance ___________________________
+
+    def test_blockchain_batch_performance():
+        """Test performance batch blockchain"""
+        service = BlockchainService()
+    
+        start_time = time.time()
+>       service.process_batch_transactions(batch_size=50)
+E       AttributeError: 'BlockchainService' object has no attribute 'process_batch_transactions'
+
+tests/performance/test_load.py:43: AttributeError
+_____________________________ test_system_under_heavy_load _____________________________
+
+    def test_system_under_heavy_load():
+        """Test del sistema sotto carico pesante"""
+        monitor = PerformanceMonitor()
+    
+        # Simula carico pesante
+        for _ in range(1000):
+            monitor.record_metric('response_time', 0.1)
+>           monitor.record_metric('database_query_times', 0.05)
+
+tests/performance/test_load.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <app.utils.performance_monitor.PerformanceMonitor object at 0x7fe99018d150>
+category = 'database_query_times', value = 0.05
+
+    def record_metric(self, category: str, value: float) -> None:
+        if category not in self.metrics:
+            self.metrics[category] = []
+>       self.metrics[category].append(value)
+E       AttributeError: 'dict' object has no attribute 'append'
+
+app/utils/performance_monitor.py:69: AttributeError
+________________________________ test_input_validation _________________________________
+
+    def test_input_validation():
+        """Test input validation and sanitization"""
+        security_manager = SecurityManager()
+        malicious_input = {
+            "user_id": "1234'; DROP TABLE users;--",
+            "password": "<script>alert('xss')</script>",
+            "path": "../../../../etc/passwd",
+            "nested": {
+                "field": "../../secret.txt",
+                "script": "<IMG SRC=javascript:alert('XSS')>",
+                "sql": "UNION SELECT * FROM users--"
+            },
+            "special_chars": "µ§¶†‡°©®™"
+        }
+    
+        sanitized = security_manager.sanitize_input(malicious_input)
+    
+        # Test SQL injection prevention
+>       assert "DROP TABLE" not in str(sanitized)
+E       assert 'DROP TABLE' not in "{'user_id':..._chars': ''}"
+E         
+E         'DROP TABLE' is contained here:
+E           {'user_id': '1234 DROP TABLE users--', 'password': 'scriptalert(xss)script', 'path': '........etcpasswd', 'nested': {'field': '....secret.txt', 'script': 'IMG SRCjavascriptalert(XSS)', 'sql': 'UNION SELECT  FROM users--'}, 'special_chars': ''}
+E         ?                   ++++++++++
+
+tests/security/test_security.py:101: AssertionError
+____________________________ test_sql_injection_prevention _____________________________
+
+    def test_sql_injection_prevention():
+        """Test prevenzione SQL injection"""
+        security_manager = SecurityManager()
+        malicious_inputs = [
+            "1' OR '1'='1",
+            "1; DROP TABLE users--",
+            "1 UNION SELECT * FROM passwords"
+        ]
+    
+        for input in malicious_inputs:
+            sanitized = security_manager.sanitize_input(input)
+            assert "'" not in sanitized
+            assert ";" not in sanitized
+>           assert "UNION" not in sanitized
+E           AssertionError: assert 'UNION' not in '1 UNION SEL...OM passwords'
+E             
+E             'UNION' is contained here:
+E               1 UNION SELECT  FROM passwords
+E             ?   +++++
+
+tests/security/test_security.py:134: AssertionError
+__________________________________ test_setup_logging __________________________________
+
+    def test_setup_logging():
+        setup_logging()
+        logger = get_logger()
+>       assert len(logger.handlers) > 0
+E       assert 0 > 0
+E        +  where 0 = len([])
+E        +    where [] = <Logger gold_investment (INFO)>.handlers
+
+tests/unit/test_logging.py:12: AssertionError
+=============================== short test summary info ================================
+ERROR tests/functional/test_api.py::test_transformation_endpoint - ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_m...
+ERROR tests/functional/test_api.py::test_account_balance - ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_m...
+ERROR tests/functional/test_api.py::test_index - ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_m...
+ERROR tests/functional/test_api.py::test_invalid_transformation - ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_m...
+ERROR tests/functional/test_api.py::test_async_endpoints - ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_m...
+ERROR tests/performance/test_optimization.py::test_table_creation_and_optimization - ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_m...
+ERROR tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_structure_bonus - ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_m...
+ERROR tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_successful - ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_m...
+ERROR tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_invalid_rank - ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_m...
+ERROR tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_insufficient_balance - ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_m...
+ERROR tests/unit/test_noble_system.py::test_noble_rank_creation - ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_m...
+ERROR tests/unit/test_noble_system.py::test_noble_relation_verification - ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_m...
+ERROR tests/unit/test_transformation.py::test_transformation_calculates_correct_gold_amount - ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_m...
+ERROR tests/unit/test_transformation.py::test_insufficient_funds_transformation - ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_m...
+ERROR tests/unit/test_transformation.py::test_invalid_fixing_price - ImportError: cannot import name 'monitor_performance' from 'app.utils.performance_m...
+FAILED tests/integration/test_blockchain.py::test_batch_transformation_process - assert False
+FAILED tests/integration/test_blockchain.py::test_noble_rank_update - AssertionError: assert 'error' == 'verified'
+FAILED tests/performance/test_load.py::test_system_under_load - AttributeError: 'PerformanceMonitor' object has no attribute 'get_average'
+FAILED tests/performance/test_load.py::test_blockchain_batch_performance - AttributeError: 'BlockchainService' object has no attribute 'process_batch_transact...
+FAILED tests/performance/test_load.py::test_system_under_heavy_load - AttributeError: 'dict' object has no attribute 'append'
+FAILED tests/security/test_security.py::test_input_validation - assert 'DROP TABLE' not in "{'user_id':..._chars': ''}"
+FAILED tests/security/test_security.py::test_sql_injection_prevention - AssertionError: assert 'UNION' not in '1 UNION SEL...OM passwords'
+FAILED tests/unit/test_logging.py::test_setup_logging - assert 0 > 0
+================= 8 failed, 14 passed, 21 warnings, 15 errors in 3.78s =================
+~/gold-investment-backend$ 
