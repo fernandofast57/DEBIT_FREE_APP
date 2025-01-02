@@ -20,28 +20,28 @@ var/
 .installed.cfg
 *.egg
 
-# Node
-node_modules/
-.npm
+# Environment
 .env
+.venv
+env/
+venv/
+ENV/
 
-# Hardhat
-blockchain/cache
-blockchain/artifacts
-blockchain/typechain-types
-
-# IDEs
-.idea/
-.vscode/
-*.swp
-*.swo
+# Database
+instance/
+*.db
+*.db-shm
+*.db-wal
 
 # Logs
 logs/
 *.log
 
-# Local development
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Node
+node_modules/
