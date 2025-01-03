@@ -1,0 +1,75 @@
+import os
+import hashlib
+
+def get_file_hash(file_path):
+    """Calcola l'hash MD5 di un file."""
+    hash_md5 = hashlib.md5()
+    try:
+        with open(file_path, "rb") as f:
+            for chunk in iter(lambda: f.read(4096), b""):
+                hash_md5.update(chunk)
+    except Exception as e:
+        print(f"Errore durante la lettura del file {file_path}: {e}")
+    return hash_md5.hexdigest()
+
+def find_duplicates_and_backups(directory):
+    """Trova file duplicati e di backup in una directory."""
+    files_hash = {}
+    duplicates = []
+    backups = []
+
+    for dirpath, _, filenames in os.walk(directory):
+        for filename in filenames:
+            file_path = os.path.join(dirpath, filename)
+            
+            # Salta file critici
+            if filename in ['README.md', '.gitignore', 'requirements.txt']:
+                continue
+            
+            try:
+                file_hash = get_file_hash(file_path)
+                # Rileva file duplicati
+                if file_hash in files_hash:
+                    duplicates.append(file_path)
+                else:
+                    files_hash[file_hash] = file_path
+                
+                # Rileva file di backup
+                if filename.endswith(('.bak', '.backup', '.tmp', '.old', '.bk', '.orig')):
+                    backups.append(file_path)
+            except Exception as e:
+                print(f"Errore durante la scansione di {file_path}: {e}")
+
+    return duplicates, backups
+
+def delete_files(file_list, dry_run=True):
+    """Elimina i file specificati (se dry_run=False)."""
+    for file_path in file_list:
+        if dry_run:
+            print(f"[DRY RUN] Da eliminare: {file_path}")
+        else:
+            try:
+                os.remove(file_path)
+                print(f"Eliminato: {file_path}")
+            except Exception as e:
+                print(f"Errore durante l'eliminazione di {file_path}: {e}")
+
+if __name__ == "__main__":
+    directory = "/path/to/your/repo"  # Modifica con il percorso corretto
+    duplicates, backups = find_duplicates_and_backups(directory)
+
+    print("✅ Duplicati:")
+    for file in duplicates:
+        print(file)
+
+    print("\n✅ Backup:")
+    for file in backups:
+        print(file)
+
+    # Modalità di simulazione (Dry Run)
+    delete_files(duplicates, dry_run=True)
+    delete_files(backups, dry_run=True)
+
+    # ❗ Rimuovi il commento per eliminare realmente i file:
+    # delete_files(duplicates, dry_run=False)
+    # delete_files(backups, dry_run=False)
