@@ -1,14 +1,28 @@
-
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
+# Inizializzazione delle estensioni
 db = SQLAlchemy()
 login_manager = LoginManager()
 
-from .models import User, MoneyAccount, GoldAccount, Transaction, NobleRank, NobleRelation, GoldBar, GoldAllocation, Parameter, BonusTransaction
+# Import dei modelli
+from .models import (
+    User,
+    MoneyAccount,
+    GoldAccount,
+    Transaction,
+    NobleRank,
+    NobleRelation,
+    GoldBar,
+    GoldAllocation,
+    Parameter,
+    BonusTransaction
+)
 
+# Esplicita gli elementi esportabili
 __all__ = [
     'db',
+    'login_manager',
     'User',
     'MoneyAccount', 
     'GoldAccount',
@@ -20,7 +34,3 @@ __all__ = [
     'Parameter',
     'BonusTransaction'
 ]
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))

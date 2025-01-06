@@ -1,6 +1,7 @@
 
 { pkgs }: {
   deps = [
+    pkgs.mailutils
     pkgs.zip
     pkgs.rsync
     pkgs.python3
