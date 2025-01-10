@@ -58,8 +58,10 @@ def create_app(config_class=Config):
     admin.init_app(app)
 
     # Inizializzazione Migration Manager
-    migration_manager = MigrationManager(app, db)  # Aggiungi questa riga
-    migration_manager.init_migrations()  # Inizializza le migrazioni subito dopo l'applicazione
+    from app.utils.database.migrations import MigrationManager
+    migration_manager = MigrationManager(app, db)
+    migration_manager.init_migrations()
+    migration_manager.apply_migrations()  # Applica tutte le migrazioni esistenti
 
     # Blueprint Registration
     from app.routes import auth_bp, main_bp
