@@ -1,0 +1,688 @@
+~/workspace$ python -m pytest tests/ -v --disable-warnings
+================================= test session starts ==================================
+platform linux -- Python 3.11.10, pytest-8.1.1, pluggy-1.4.0 -- /home/runner/workspace/.pythonlibs/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/workspace/tests
+configfile: pytest.ini
+plugins: asyncio-0.23.6, mock-3.14.0, cov-4.1.0, web3-6.11.3
+asyncio: mode=Mode.AUTO
+collected 47 items                                                                     
+
+tests/functional/test_api.py::test_transformation_endpoint FAILED                [  2%]
+tests/functional/test_api.py::test_account_balance FAILED                        [  4%]
+tests/functional/test_api.py::test_index PASSED                                  [  6%]
+tests/functional/test_api.py::test_invalid_transformation FAILED                 [  8%]
+tests/functional/test_api.py::test_async_endpoints PASSED                        [ 10%]
+tests/integration/test_blockchain.py::test_batch_transformation_process FAILED   [ 12%]
+tests/integration/test_blockchain.py::test_noble_rank_update FAILED              [ 14%]
+tests/integration/test_blockchain.py::test_blockchain_stats PASSED               [ 17%]
+tests/performance/test_load.py::test_system_under_load PASSED                    [ 19%]
+tests/performance/test_load.py::test_concurrent_transformations FAILED           [ 21%]
+tests/performance/test_load.py::test_blockchain_batch_performance FAILED         [ 23%]
+tests/performance/test_load.py::test_system_under_heavy_load FAILED              [ 25%]
+tests/performance/test_monitoring.py::test_system_monitoring PASSED              [ 27%]
+tests/performance/test_monitoring.py::test_performance_monitor FAILED            [ 29%]
+tests/performance/test_monitoring.py::test_performance_decorator PASSED          [ 31%]
+tests/performance/test_optimization.py::test_table_creation_and_optimization FAILED [ 34%]
+tests/security/test_security.py::test_environment_variables PASSED               [ 36%]
+tests/security/test_security.py::test_rate_limiter PASSED                        [ 38%]
+tests/security/test_security.py::test_security_manager_logging PASSED            [ 40%]
+tests/security/test_security.py::test_permission_checking PASSED                 [ 42%]
+tests/security/test_security.py::test_role_permission_validation PASSED          [ 44%]
+tests/security/test_security.py::test_input_validation PASSED                    [ 46%]
+tests/security/test_security.py::test_sql_injection_prevention PASSED            [ 48%]
+tests/security/test_security.py::test_xss_prevention PASSED                      [ 51%]
+tests/security/test_security.py::test_rate_limiter_stress PASSED                 [ 53%]
+tests/unit/test_blockchain_monitor.py::test_basic_monitoring ERROR               [ 55%]
+tests/unit/test_blockchain_monitor.py::test_transaction_validation ERROR         [ 57%]
+tests/unit/test_blockchain_monitor.py::test_network_interruption FAILED          [ 59%]
+tests/unit/test_blockchain_monitor.py::test_invalid_transaction FAILED           [ 61%]
+tests/unit/test_blockchain_monitor.py::test_gas_price_threshold FAILED           [ 63%]
+tests/unit/test_blockchain_monitor.py::test_concurrent_transactions FAILED       [ 65%]
+tests/unit/test_blockchain_monitor.py::test_empty_block FAILED                   [ 68%]
+tests/unit/test_blockchain_monitor.py::test_malformed_transaction FAILED         [ 70%]
+tests/unit/test_blockchain_monitor.py::test_extreme_gas_prices FAILED            [ 72%]
+tests/unit/test_blockchain_monitor.py::test_network_timeout FAILED               [ 74%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_structure_bonus ERROR [ 76%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_successful ERROR [ 78%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_invalid_rank ERROR [ 80%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_insufficient_balance ERROR [ 82%]
+tests/unit/test_constants.py::test_status_constants PASSED                       [ 85%]
+tests/unit/test_logging.py::test_logger_initialization PASSED                    [ 87%]
+tests/unit/test_logging.py::test_setup_logging FAILED                            [ 89%]
+tests/unit/test_noble_system.py::test_noble_rank_creation ERROR                  [ 91%]
+tests/unit/test_noble_system.py::test_noble_relation_verification ERROR          [ 93%]
+tests/unit/test_transformation.py::test_transformation_calculates_correct_gold_amount FAILED [ 95%]
+tests/unit/test_transformation.py::test_insufficient_funds_transformation PASSED [ 97%]
+tests/unit/test_transformation.py::test_invalid_fixing_price FAILED              [100%]
+
+======================================== ERRORS ========================================
+_______________________ ERROR at setup of test_basic_monitoring ________________________
+
+>   ???
+E   TypeError: BlockchainMonitor.__init__() missing 1 required positional argument: 'w3'
+
+/home/runner/gold-investment-backend/tests/unit/test_blockchain_monitor.py:10: TypeError
+____________________ ERROR at setup of test_transaction_validation _____________________
+
+>   ???
+E   TypeError: BlockchainMonitor.__init__() missing 1 required positional argument: 'w3'
+
+/home/runner/gold-investment-backend/tests/unit/test_blockchain_monitor.py:10: TypeError
+____ ERROR at setup of TestBonusDistributionService.test_distribute_structure_bonus ____
+
+self = <test_bonus_service.TestBonusDistributionService object at 0x7f366a4b93d0>
+app = <Flask 'app'>
+
+>   ???
+E   TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+
+/home/runner/gold-investment-backend/tests/unit/test_bonus_service.py:16: TypeError
+-------------------------------- Captured stdout setup ---------------------------------
+Tables created successfully.
+Query optimization completed successfully
+Table transactions does not exist, skipping indexes
+Table transformations does not exist, skipping indexes
+Table noble_ranks does not exist, skipping indexes
+Table users does not exist, skipping indexes
+Table noble_relations does not exist, skipping indexes
+Database optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> dc45cb3ac83f, Initial migration
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+INFO  [alembic.runtime.migration] Running upgrade 3135a7000c3b -> c564559997be, empty message
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+__ ERROR at setup of TestBonusDistributionService.test_distribute_rewards_successful ___
+
+self = <test_bonus_service.TestBonusDistributionService object at 0x7f366a4b9d90>
+app = <Flask 'app'>
+
+>   ???
+E   TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+
+/home/runner/gold-investment-backend/tests/unit/test_bonus_service.py:16: TypeError
+-------------------------------- Captured stdout setup ---------------------------------
+Tables created successfully.
+Query optimization completed successfully
+Table transactions does not exist, skipping indexes
+Table transformations does not exist, skipping indexes
+Table noble_ranks does not exist, skipping indexes
+Table users does not exist, skipping indexes
+Table noble_relations does not exist, skipping indexes
+Database optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> dc45cb3ac83f, Initial migration
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+INFO  [alembic.runtime.migration] Running upgrade 3135a7000c3b -> c564559997be, empty message
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+_ ERROR at setup of TestBonusDistributionService.test_distribute_rewards_invalid_rank __
+
+self = <test_bonus_service.TestBonusDistributionService object at 0x7f366a4ba710>
+app = <Flask 'app'>
+
+>   ???
+E   TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+
+/home/runner/gold-investment-backend/tests/unit/test_bonus_service.py:16: TypeError
+-------------------------------- Captured stdout setup ---------------------------------
+Tables created successfully.
+Query optimization completed successfully
+Table transactions does not exist, skipping indexes
+Table transformations does not exist, skipping indexes
+Table noble_ranks does not exist, skipping indexes
+Table users does not exist, skipping indexes
+Table noble_relations does not exist, skipping indexes
+Database optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> dc45cb3ac83f, Initial migration
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+INFO  [alembic.runtime.migration] Running upgrade 3135a7000c3b -> c564559997be, empty message
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+_ ERROR at setup of TestBonusDistributionService.test_distribute_rewards_insufficient_balance _
+
+self = <test_bonus_service.TestBonusDistributionService object at 0x7f366a4bb0d0>
+app = <Flask 'app'>
+
+>   ???
+E   TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+
+/home/runner/gold-investment-backend/tests/unit/test_bonus_service.py:16: TypeError
+-------------------------------- Captured stdout setup ---------------------------------
+Tables created successfully.
+Query optimization completed successfully
+Table transactions does not exist, skipping indexes
+Table transformations does not exist, skipping indexes
+Table noble_ranks does not exist, skipping indexes
+Table users does not exist, skipping indexes
+Table noble_relations does not exist, skipping indexes
+Database optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> dc45cb3ac83f, Initial migration
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+INFO  [alembic.runtime.migration] Running upgrade 3135a7000c3b -> c564559997be, empty message
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+______________________ ERROR at setup of test_noble_rank_creation ______________________
+file /home/runner/gold-investment-backend/tests/unit/test_noble_system.py, line 7: source code not available
+E       fixture 'mock_blockchain_service' not found
+>       available fixtures: _session_event_loop, app, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, client, cov, deployer, doctest_namespace, event_loop, event_loop_policy, mocker, module_mocker, monkeypatch, no_cover, package_mocker, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, runner, session_mocker, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unit/test_noble_system.py::<event_loop>, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/gold-investment-backend/tests/unit/test_noble_system.py:7
+-------------------------------- Captured stdout setup ---------------------------------
+Tables created successfully.
+Query optimization completed successfully
+Table transactions does not exist, skipping indexes
+Table transformations does not exist, skipping indexes
+Table noble_ranks does not exist, skipping indexes
+Table users does not exist, skipping indexes
+Table noble_relations does not exist, skipping indexes
+Database optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> dc45cb3ac83f, Initial migration
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+INFO  [alembic.runtime.migration] Running upgrade 3135a7000c3b -> c564559997be, empty message
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+__________________ ERROR at setup of test_noble_relation_verification __________________
+file /home/runner/gold-investment-backend/tests/unit/test_noble_system.py, line 19: source code not available
+E       fixture 'mock_blockchain_service' not found
+>       available fixtures: _session_event_loop, app, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, client, cov, deployer, doctest_namespace, event_loop, event_loop_policy, mocker, module_mocker, monkeypatch, no_cover, package_mocker, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, runner, session_mocker, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unit/test_noble_system.py::<event_loop>, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/gold-investment-backend/tests/unit/test_noble_system.py:19
+-------------------------------- Captured stdout setup ---------------------------------
+Tables created successfully.
+Query optimization completed successfully
+Table transactions does not exist, skipping indexes
+Table transformations does not exist, skipping indexes
+Table noble_ranks does not exist, skipping indexes
+Table users does not exist, skipping indexes
+Table noble_relations does not exist, skipping indexes
+Database optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> dc45cb3ac83f, Initial migration
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+INFO  [alembic.runtime.migration] Running upgrade 3135a7000c3b -> c564559997be, empty message
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+======================================= FAILURES =======================================
+_____________________________ test_transformation_endpoint _____________________________
+
+client = <FlaskClient <Flask 'app'>>
+auth_headers = {'Authorization': 'Bearer test-token', 'X-User-Id': '123'}
+
+>   ???
+E   assert 401 == 200
+E    +  where 401 = <WrapperTestResponse streamed [401 UNAUTHORIZED]>.status_code
+
+/home/runner/gold-investment-backend/tests/functional/test_api.py:26: AssertionError
+-------------------------------- Captured stdout setup ---------------------------------
+Query optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+_________________________________ test_account_balance _________________________________
+
+client = <FlaskClient <Flask 'app'>>
+auth_headers = {'Authorization': 'Bearer test-token', 'X-User-Id': '123'}
+
+>   ???
+E   assert 401 == 200
+E    +  where 401 = <WrapperTestResponse streamed [401 UNAUTHORIZED]>.status_code
+
+/home/runner/gold-investment-backend/tests/functional/test_api.py:35: AssertionError
+-------------------------------- Captured stdout setup ---------------------------------
+Query optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+_____________________________ test_invalid_transformation ______________________________
+
+client = <FlaskClient <Flask 'app'>>
+auth_headers = {'Authorization': 'Bearer test-token', 'X-User-Id': '123'}
+
+>   ???
+E   assert 401 == 400
+E    +  where 401 = <WrapperTestResponse streamed [401 UNAUTHORIZED]>.status_code
+
+/home/runner/gold-investment-backend/tests/functional/test_api.py:55: AssertionError
+-------------------------------- Captured stdout setup ---------------------------------
+Query optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+__________________________ test_batch_transformation_process ___________________________
+
+blockchain_service = <app.services.blockchain_service.BlockchainService object at 0x7f36695aafd0>
+
+>   ???
+E   assert False
+E    +  where False = hasattr({'message': "'NoneType' object has no attribute 'send_alert'", 'status': 'error'}, 'status')
+
+/home/runner/gold-investment-backend/tests/integration/test_blockchain.py:29: AssertionError
+________________________________ test_noble_rank_update ________________________________
+
+blockchain_service = <app.services.blockchain_service.BlockchainService object at 0x7f3668c08510>
+
+>   ???
+E   AssertionError: assert 'error' == 'verified'
+E     
+E     - verified
+E     + error
+
+/home/runner/gold-investment-backend/tests/integration/test_blockchain.py:45: AssertionError
+___________________________ test_concurrent_transformations ____________________________
+
+>   ???
+E   AssertionError: assert 'transformation' in {'blockchain_operation_times': {'average': 0.0, 'count': 0, 'latest': 0}, 'database_query_times': {'average': 0.0, 'count': 0, 'latest': 0}, 'response_time': {'average': 0.0, 'count': 0, 'latest': 0}}
+
+/home/runner/gold-investment-backend/tests/performance/test_load.py:71: AssertionError
+__________________________ test_blockchain_batch_performance ___________________________
+
+>   ???
+E   AttributeError: 'BlockchainService' object has no attribute 'process_batch_transactions'
+
+/home/runner/gold-investment-backend/tests/performance/test_load.py:43: AttributeError
+_____________________________ test_system_under_heavy_load _____________________________
+
+>   ???
+E   AttributeError: 'PerformanceMonitor' object has no attribute 'get_alerts'
+
+/home/runner/gold-investment-backend/tests/performance/test_load.py:85: AttributeError
+_______________________________ test_performance_monitor _______________________________
+
+>   ???
+E   AssertionError: assert 3 == 1
+E    +  where 3 = len({'average': 1.5, 'count': 1, 'latest': 1.5})
+
+/home/runner/gold-investment-backend/tests/performance/test_monitoring.py:27: AssertionError
+_________________________ test_table_creation_and_optimization _________________________
+
+test_app = <Flask 'app'>
+
+>   ???
+E   AssertionError: Email index not created
+E   assert 'idx_users_email' in []
+
+/home/runner/gold-investment-backend/tests/performance/test_optimization.py:39: AssertionError
+-------------------------------- Captured stdout setup ---------------------------------
+Query optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+--------------------------------- Captured stdout call ---------------------------------
+Error creating indexes: (sqlite3.OperationalError) no such column: status
+[SQL: CREATE INDEX IF NOT EXISTS idx_transactions_status ON transactions(status, created_at)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+______________________________ test_network_interruption _______________________________
+
+>   ???
+E   TypeError: BlockchainMonitor.__init__() missing 1 required positional argument: 'w3'
+
+/home/runner/gold-investment-backend/tests/unit/test_blockchain_monitor.py:33: TypeError
+_______________________________ test_invalid_transaction _______________________________
+
+>   ???
+E   TypeError: BlockchainMonitor.__init__() missing 1 required positional argument: 'w3'
+
+/home/runner/gold-investment-backend/tests/unit/test_blockchain_monitor.py:43: TypeError
+_______________________________ test_gas_price_threshold _______________________________
+
+>   ???
+E   TypeError: BlockchainMonitor.__init__() missing 1 required positional argument: 'w3'
+
+/home/runner/gold-investment-backend/tests/unit/test_blockchain_monitor.py:52: TypeError
+_____________________________ test_concurrent_transactions _____________________________
+
+>   ???
+E   TypeError: BlockchainMonitor.__init__() missing 1 required positional argument: 'w3'
+
+/home/runner/gold-investment-backend/tests/unit/test_blockchain_monitor.py:59: TypeError
+___________________________________ test_empty_block ___________________________________
+
+>   ???
+E   TypeError: BlockchainMonitor.__init__() missing 1 required positional argument: 'w3'
+
+/home/runner/gold-investment-backend/tests/unit/test_blockchain_monitor.py:68: TypeError
+______________________________ test_malformed_transaction ______________________________
+
+>   ???
+E   TypeError: BlockchainMonitor.__init__() missing 1 required positional argument: 'w3'
+
+/home/runner/gold-investment-backend/tests/unit/test_blockchain_monitor.py:78: TypeError
+_______________________________ test_extreme_gas_prices ________________________________
+
+>   ???
+E   TypeError: BlockchainMonitor.__init__() missing 1 required positional argument: 'w3'
+
+/home/runner/gold-investment-backend/tests/unit/test_blockchain_monitor.py:87: TypeError
+_________________________________ test_network_timeout _________________________________
+
+>   ???
+E   TypeError: BlockchainMonitor.__init__() missing 1 required positional argument: 'w3'
+
+/home/runner/gold-investment-backend/tests/unit/test_blockchain_monitor.py:101: TypeError
+__________________________________ test_setup_logging __________________________________
+
+>   ???
+E   assert 0 > 0
+E    +  where 0 = len([])
+E    +    where [] = <Logger gold_investment (INFO)>.handlers
+
+/home/runner/gold-investment-backend/tests/unit/test_logging.py:12: AssertionError
+__________________ test_transformation_calculates_correct_gold_amount __________________
+
+user_id = 1, euro_amount = Decimal('100.00'), fixing_price = Decimal('50.00')
+
+    @staticmethod
+    async def process_transformation(user_id: int, euro_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
+        """Process complete money to gold transformation"""
+        logger.info(f"Inizio trasformazione - Utente: {user_id} - Importo: {euro_amount}€ - Fixing: {fixing_price}",
+                    extra={'audit_type': 'TRANSFORMATION_START',
+                           'user_id': user_id,
+                           'amount': str(euro_amount),
+                           'fixing_price': str(fixing_price),
+                           'timestamp': datetime.utcnow().isoformat()})
+    
+        try:
+            # 1. Verifica del trasferimento
+            logger.info(f"Controllo disponibilità fondi per utente {user_id}")
+            verification_result = await TransformationService.verify_transfer(user_id, euro_amount)
+            if not verification_result["valid"]:
+                logger.warning(f"Transfer verification failed for user {user_id} - {verification_result['reason']}")
+                return {
+                    "status": "error",
+                    "message": verification_result["reason"]
+                }
+    
+            # 2. Process organization fee
+            logger.info(f"Calcolo commissioni per importo {euro_amount}€")
+            net_amount = await TransformationService.process_organization_fee(euro_amount)
+            logger.info(f"Importo netto dopo commissioni: {net_amount}€")
+    
+            # 3. Calculate gold amount
+            logger.info(f"Calcolo grammi oro con fixing price {fixing_price}")
+            gold_amount = await TransformationService.calculate_gold_amount(net_amount, fixing_price)
+            logger.info(f"Grammi oro calcolati: {gold_amount}g")
+    
+            # 4. Process transformation
+>           async with db.session.begin():
+E           TypeError: 'SessionTransaction' object does not support the asynchronous context manager protocol
+
+app/services/transformation_service.py:117: TypeError
+
+During handling of the above exception, another exception occurred:
+
+app = <Flask 'app'>
+
+>   ???
+
+/home/runner/gold-investment-backend/tests/unit/test_transformation.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+user_id = 1, euro_amount = Decimal('100.00'), fixing_price = Decimal('50.00')
+
+    @staticmethod
+    async def process_transformation(user_id: int, euro_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
+        """Process complete money to gold transformation"""
+        logger.info(f"Inizio trasformazione - Utente: {user_id} - Importo: {euro_amount}€ - Fixing: {fixing_price}",
+                    extra={'audit_type': 'TRANSFORMATION_START',
+                           'user_id': user_id,
+                           'amount': str(euro_amount),
+                           'fixing_price': str(fixing_price),
+                           'timestamp': datetime.utcnow().isoformat()})
+    
+        try:
+            # 1. Verifica del trasferimento
+            logger.info(f"Controllo disponibilità fondi per utente {user_id}")
+            verification_result = await TransformationService.verify_transfer(user_id, euro_amount)
+            if not verification_result["valid"]:
+                logger.warning(f"Transfer verification failed for user {user_id} - {verification_result['reason']}")
+                return {
+                    "status": "error",
+                    "message": verification_result["reason"]
+                }
+    
+            # 2. Process organization fee
+            logger.info(f"Calcolo commissioni per importo {euro_amount}€")
+            net_amount = await TransformationService.process_organization_fee(euro_amount)
+            logger.info(f"Importo netto dopo commissioni: {net_amount}€")
+    
+            # 3. Calculate gold amount
+            logger.info(f"Calcolo grammi oro con fixing price {fixing_price}")
+            gold_amount = await TransformationService.calculate_gold_amount(net_amount, fixing_price)
+            logger.info(f"Grammi oro calcolati: {gold_amount}g")
+    
+            # 4. Process transformation
+            async with db.session.begin():
+                user = await User.query.get(user_id)
+    
+                # Update money and gold accounts
+                user.money_account.balance -= euro_amount
+                user.gold_account.balance += gold_amount
+                user.gold_account.last_update = datetime.utcnow()
+    
+                # Distribute affiliate bonuses
+                await TransformationService.distribute_affiliate_bonuses(user, gold_amount)
+    
+                await db.session.commit()
+    
+            return {
+                "status": "success",
+                "gold_grams": float(gold_amount),
+                "transaction_id": None  # You can add transaction ID logic if needed
+            }
+    
+        except Exception as e:
+            logger.error(f"Transformation error: {str(e)}")
+>           await db.session.rollback()
+E           TypeError: object NoneType can't be used in 'await' expression
+
+app/services/transformation_service.py:138: TypeError
+-------------------------------- Captured stdout setup ---------------------------------
+Tables created successfully.
+Query optimization completed successfully
+Table transactions does not exist, skipping indexes
+Table transformations does not exist, skipping indexes
+Table noble_ranks does not exist, skipping indexes
+Table users does not exist, skipping indexes
+Table noble_relations does not exist, skipping indexes
+Database optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> dc45cb3ac83f, Initial migration
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+INFO  [alembic.runtime.migration] Running upgrade 3135a7000c3b -> c564559997be, empty message
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+______________________________ test_invalid_fixing_price _______________________________
+
+user_id = 1, euro_amount = Decimal('100.00'), fixing_price = Decimal('0')
+
+    @staticmethod
+    async def process_transformation(user_id: int, euro_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
+        """Process complete money to gold transformation"""
+        logger.info(f"Inizio trasformazione - Utente: {user_id} - Importo: {euro_amount}€ - Fixing: {fixing_price}",
+                    extra={'audit_type': 'TRANSFORMATION_START',
+                           'user_id': user_id,
+                           'amount': str(euro_amount),
+                           'fixing_price': str(fixing_price),
+                           'timestamp': datetime.utcnow().isoformat()})
+    
+        try:
+            # 1. Verifica del trasferimento
+            logger.info(f"Controllo disponibilità fondi per utente {user_id}")
+            verification_result = await TransformationService.verify_transfer(user_id, euro_amount)
+            if not verification_result["valid"]:
+                logger.warning(f"Transfer verification failed for user {user_id} - {verification_result['reason']}")
+                return {
+                    "status": "error",
+                    "message": verification_result["reason"]
+                }
+    
+            # 2. Process organization fee
+            logger.info(f"Calcolo commissioni per importo {euro_amount}€")
+            net_amount = await TransformationService.process_organization_fee(euro_amount)
+            logger.info(f"Importo netto dopo commissioni: {net_amount}€")
+    
+            # 3. Calculate gold amount
+            logger.info(f"Calcolo grammi oro con fixing price {fixing_price}")
+>           gold_amount = await TransformationService.calculate_gold_amount(net_amount, fixing_price)
+
+app/services/transformation_service.py:113: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+euro_amount = Decimal('95.0000'), fixing_price = Decimal('0')
+
+    @staticmethod
+    async def calculate_gold_amount(euro_amount: Decimal, fixing_price: Decimal) -> Decimal:
+        """Calculate gold amount based on fixing price"""
+        if fixing_price <= 0:
+            logger.error(f"Invalid fixing price: {fixing_price}")
+>           raise ValueError("Invalid fixing price")
+E           ValueError: Invalid fixing price
+
+app/services/transformation_service.py:49: ValueError
+
+During handling of the above exception, another exception occurred:
+
+app = <Flask 'app'>
+
+>   ???
+
+/home/runner/gold-investment-backend/tests/unit/test_transformation.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+user_id = 1, euro_amount = Decimal('100.00'), fixing_price = Decimal('0')
+
+    @staticmethod
+    async def process_transformation(user_id: int, euro_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
+        """Process complete money to gold transformation"""
+        logger.info(f"Inizio trasformazione - Utente: {user_id} - Importo: {euro_amount}€ - Fixing: {fixing_price}",
+                    extra={'audit_type': 'TRANSFORMATION_START',
+                           'user_id': user_id,
+                           'amount': str(euro_amount),
+                           'fixing_price': str(fixing_price),
+                           'timestamp': datetime.utcnow().isoformat()})
+    
+        try:
+            # 1. Verifica del trasferimento
+            logger.info(f"Controllo disponibilità fondi per utente {user_id}")
+            verification_result = await TransformationService.verify_transfer(user_id, euro_amount)
+            if not verification_result["valid"]:
+                logger.warning(f"Transfer verification failed for user {user_id} - {verification_result['reason']}")
+                return {
+                    "status": "error",
+                    "message": verification_result["reason"]
+                }
+    
+            # 2. Process organization fee
+            logger.info(f"Calcolo commissioni per importo {euro_amount}€")
+            net_amount = await TransformationService.process_organization_fee(euro_amount)
+            logger.info(f"Importo netto dopo commissioni: {net_amount}€")
+    
+            # 3. Calculate gold amount
+            logger.info(f"Calcolo grammi oro con fixing price {fixing_price}")
+            gold_amount = await TransformationService.calculate_gold_amount(net_amount, fixing_price)
+            logger.info(f"Grammi oro calcolati: {gold_amount}g")
+    
+            # 4. Process transformation
+            async with db.session.begin():
+                user = await User.query.get(user_id)
+    
+                # Update money and gold accounts
+                user.money_account.balance -= euro_amount
+                user.gold_account.balance += gold_amount
+                user.gold_account.last_update = datetime.utcnow()
+    
+                # Distribute affiliate bonuses
+                await TransformationService.distribute_affiliate_bonuses(user, gold_amount)
+    
+                await db.session.commit()
+    
+            return {
+                "status": "success",
+                "gold_grams": float(gold_amount),
+                "transaction_id": None  # You can add transaction ID logic if needed
+            }
+    
+        except Exception as e:
+            logger.error(f"Transformation error: {str(e)}")
+>           await db.session.rollback()
+E           TypeError: object NoneType can't be used in 'await' expression
+
+app/services/transformation_service.py:138: TypeError
+-------------------------------- Captured stdout setup ---------------------------------
+Tables created successfully.
+Query optimization completed successfully
+Table transactions does not exist, skipping indexes
+Table transformations does not exist, skipping indexes
+Table noble_ranks does not exist, skipping indexes
+Table users does not exist, skipping indexes
+Table noble_relations does not exist, skipping indexes
+Database optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> dc45cb3ac83f, Initial migration
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+INFO  [alembic.runtime.migration] Running upgrade 3135a7000c3b -> c564559997be, empty message
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+=============================== short test summary info ================================
+ERROR tests/unit/test_blockchain_monitor.py::test_basic_monitoring - TypeError: BlockchainMonitor.__init__() missing 1 required positional argument: 'w3'
+ERROR tests/unit/test_blockchain_monitor.py::test_transaction_validation - TypeError: BlockchainMonitor.__init__() missing 1 required positional argument: 'w3'
+ERROR tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_structure_bonus - TypeError: 'AppContext' object does not support the asynchronous context manager pr...
+ERROR tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_successful - TypeError: 'AppContext' object does not support the asynchronous context manager pr...
+ERROR tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_invalid_rank - TypeError: 'AppContext' object does not support the asynchronous context manager pr...
+ERROR tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_insufficient_balance - TypeError: 'AppContext' object does not support the asynchronous context manager pr...
+ERROR tests/unit/test_noble_system.py::test_noble_rank_creation
+ERROR tests/unit/test_noble_system.py::test_noble_relation_verification
+FAILED tests/functional/test_api.py::test_transformation_endpoint - assert 401 == 200
+FAILED tests/functional/test_api.py::test_account_balance - assert 401 == 200
+FAILED tests/functional/test_api.py::test_invalid_transformation - assert 401 == 400
+FAILED tests/integration/test_blockchain.py::test_batch_transformation_process - assert False
+FAILED tests/integration/test_blockchain.py::test_noble_rank_update - AssertionError: assert 'error' == 'verified'
+FAILED tests/performance/test_load.py::test_concurrent_transformations - AssertionError: assert 'transformation' in {'blockchain_operation_times': {'average...
+FAILED tests/performance/test_load.py::test_blockchain_batch_performance - AttributeError: 'BlockchainService' object has no attribute 'process_batch_transact...
+FAILED tests/performance/test_load.py::test_system_under_heavy_load - AttributeError: 'PerformanceMonitor' object has no attribute 'get_alerts'
+FAILED tests/performance/test_monitoring.py::test_performance_monitor - AssertionError: assert 3 == 1
+FAILED tests/performance/test_optimization.py::test_table_creation_and_optimization - AssertionError: Email index not created
+FAILED tests/unit/test_blockchain_monitor.py::test_network_interruption - TypeError: BlockchainMonitor.__init__() missing 1 required positional argument: 'w3'
+FAILED tests/unit/test_blockchain_monitor.py::test_invalid_transaction - TypeError: BlockchainMonitor.__init__() missing 1 required positional argument: 'w3'
+FAILED tests/unit/test_blockchain_monitor.py::test_gas_price_threshold - TypeError: BlockchainMonitor.__init__() missing 1 required positional argument: 'w3'
+FAILED tests/unit/test_blockchain_monitor.py::test_concurrent_transactions - TypeError: BlockchainMonitor.__init__() missing 1 required positional argument: 'w3'
+FAILED tests/unit/test_blockchain_monitor.py::test_empty_block - TypeError: BlockchainMonitor.__init__() missing 1 required positional argument: 'w3'
+FAILED tests/unit/test_blockchain_monitor.py::test_malformed_transaction - TypeError: BlockchainMonitor.__init__() missing 1 required positional argument: 'w3'
+FAILED tests/unit/test_blockchain_monitor.py::test_extreme_gas_prices - TypeError: BlockchainMonitor.__init__() missing 1 required positional argument: 'w3'
+FAILED tests/unit/test_blockchain_monitor.py::test_network_timeout - TypeError: BlockchainMonitor.__init__() missing 1 required positional argument: 'w3'
+FAILED tests/unit/test_logging.py::test_setup_logging - assert 0 > 0
+FAILED tests/unit/test_transformation.py::test_transformation_calculates_correct_gold_amount - TypeError: object NoneType can't be used in 'await' expression
+FAILED tests/unit/test_transformation.py::test_invalid_fixing_price - TypeError: object NoneType can't be used in 'await' expression
+================= 21 failed, 18 passed, 85 warnings, 8 errors in 5.39s =================
+~/workspace$ 
