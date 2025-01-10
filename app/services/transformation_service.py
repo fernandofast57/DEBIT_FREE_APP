@@ -114,7 +114,8 @@ class TransformationService:
             logger.info(f"Grammi oro calcolati: {gold_amount}g")
 
             # 4. Process transformation
-            async with db.session.begin():
+            async with db.session() as session:
+    async with session.begin():
                 user = await User.query.get(user_id)
 
                 # Update money and gold accounts
