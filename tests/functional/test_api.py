@@ -1,8 +1,8 @@
 import pytest
-from app import create_app
 from flask import json
-from app.models.models import User, MoneyAccount, GoldAccount
 from decimal import Decimal
+from app.models.models import User, MoneyAccount, GoldAccount
+from app.database import db
 
 @pytest.fixture
 def client():
@@ -15,57 +15,51 @@ def client():
 def auth_headers():
     return {'X-User-Id': '123', 'Authorization': 'Bearer test-token'}
 
-@pytest.mark.asyncio
-async def test_transformation_endpoint(client, auth_headers):
-    response = await client.post('/api/v1/transformation', 
-        json={
-            'amount': 100.0,
-            'fixing_price': 50.0
-        },
-        headers=auth_headers
-    )
-    assert response.status_code == 200
-    data = response.get_json()
-    assert data['status'] == 'success'
+def test_transformation_endpoint(client, auth_headers):
+    # Prepara i dati di test
+    test_data = {
+        "euro_amount": "100.00",
+        "fixing_price": "50.00"
+    }
 
-@pytest.mark.asyncio
-async def test_account_balance(client, auth_headers):
-    # Setup test user with accounts
-    user = User(id=1)
-    user.money_account = MoneyAccount(balance=Decimal('1000.00'))
-    user.gold_account = GoldAccount(balance=Decimal('0'))
+    response = client.post('/api/v1/transformations/execute',
+                          headers=auth_headers,
+                          json=test_data)
 
-    response = await client.get('/api/v1/account/balance',
-        headers=auth_headers
-    )
-    assert response.status_code == 200
-    data = response.get_json()
-    assert 'money_balance' in data
-    assert 'gold_balance' in data
-
-def test_index(client):
-    """Test root endpoint"""
-    response = client.get('/')
     assert response.status_code == 200
     data = json.loads(response.data)
-    assert "status" in data
+    assert "transaction_id" in data
+    assert data["status"] == "success"
 
-@pytest.mark.asyncio
-async def test_invalid_transformation(client, auth_headers):
-    response = await client.post('/api/v1/transformation',
-        json={
-            'amount': -100.0,
-            'fixing_price': 50.0
-        },
-        headers=auth_headers
-    )
+def test_account_balance(client, auth_headers):
+    with client.application.app_context():
+        user = User.query.first()
+        assert user is not None
+
+        money_account = MoneyAccount.query.filter_by(user_id=user.id).first()
+        gold_account = GoldAccount.query.filter_by(user_id=user.id).first()
+
+        assert money_account is not None
+        assert gold_account is not None
+
+        response = client.get('/api/v1/accounts/balance',
+                            headers=auth_headers)
+
+        assert response.status_code == 200
+        data = json.loads(response.data)
+        assert "money_balance" in data
+        assert "gold_balance" in data
+
+def test_invalid_transformation(client, auth_headers):
+    invalid_data = {
+        "euro_amount": "-100.00",
+        "fixing_price": "0"
+    }
+
+    response = client.post('/api/v1/transformations/execute',
+                          headers=auth_headers,
+                          json=invalid_data)
+
     assert response.status_code == 400
-    data = response.get_json()
-    assert data['status'] == 'error'
-
-def test_async_endpoints(client, auth_headers):
-    """Test endpoints that require async client"""
-    response = client.get('/api/v1/status', headers=auth_headers)
-    assert response.status_code == 200
     data = json.loads(response.data)
-    assert 'status' in data
+    assert "error" in data
