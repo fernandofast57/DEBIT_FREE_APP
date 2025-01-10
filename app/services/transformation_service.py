@@ -115,7 +115,18 @@ class TransformationService:
 
             # 4. Process transformation
             async with db.session() as session:
-    async with session.begin():
+                async with session.begin():
+                    user = await User.query.get(user_id)
+                    
+                    # Update money and gold accounts
+                    user.money_account.balance -= euro_amount
+                    user.gold_account.balance += gold_amount
+                    user.gold_account.last_update = datetime.utcnow()
+
+                    # Distribute affiliate bonuses
+                    await TransformationService.distribute_affiliate_bonuses(user, gold_amount)
+
+                    await db.session.commit()
                 user = await User.query.get(user_id)
 
                 # Update money and gold accounts
