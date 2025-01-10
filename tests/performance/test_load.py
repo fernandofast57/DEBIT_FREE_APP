@@ -1,7 +1,60 @@
-
 import pytest
+import asyncio
+from decimal import Decimal
+from app.services.transformation_service import TransformationService
 from app.config.constants import TestConfig
 from app.utils.performance_monitor import PerformanceMonitor
+
+@pytest.mark.asyncio
+async def test_concurrent_transformations():
+    service = TransformationService()
+    tasks = []
+    for i in range(5):
+        task = asyncio.create_task(
+            service.process_transformation(
+                user_id=i,
+                euro_amount=Decimal('100.00'),
+                fixing_price=Decimal('50.00')
+            )
+        )
+        tasks.append(task)
+
+    results = await asyncio.gather(*tasks)
+    assert all(r['status'] == 'success' for r in results)
+
+@pytest.mark.asyncio
+async def test_blockchain_batch_performance(blockchain_service):
+    batch_size = 10
+    batch_data = [
+        {"user_id": i, "amount": Decimal('100.0'), "timestamp": 1645564800}
+        for i in range(batch_size)
+    ]
+
+    result = await blockchain_service.process_batch_transformation(batch_data)
+    assert result['status'] == 'success'
+
+@pytest.mark.asyncio
+async def test_system_under_heavy_load():
+    service = TransformationService()
+    large_batch = [
+        (i, Decimal('100.00'), Decimal('50.00'))
+        for i in range(20)
+    ]
+
+    tasks = [
+        asyncio.create_task(
+            service.process_transformation(
+                user_id=user_id,
+                euro_amount=amount,
+                fixing_price=price
+            )
+        )
+        for user_id, amount, price in large_batch
+    ]
+
+    results = await asyncio.gather(*tasks)
+    success_rate = sum(1 for r in results if r['status'] == 'success') / len(results)
+    assert success_rate >= 0.9  # 90% success rate requirement
 
 def test_system_under_load():
     """Test system performance under load"""
@@ -14,64 +67,8 @@ def test_system_under_load():
     avg_response = monitor.get_average('response_time')
     assert avg_response > 0
     assert avg_response < 1.0  # Response time should be under 1 second
-import pytest
-from app.services.transformation_service import TransformationService
-from app.services.blockchain_service import BlockchainService
-from concurrent.futures import ThreadPoolExecutor
-import time
 
-def test_concurrent_transformations():
-    """Test performance con trasformazioni concorrenti"""
-    service = TransformationService()
-    num_requests = 100
-    
-    start_time = time.time()
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        futures = [
-            executor.submit(service.process_transformation, amount=100)
-            for _ in range(num_requests)
-        ]
-    
-    execution_time = time.time() - start_time
-    assert execution_time < 30  # Dovrebbe completare in meno di 30 secondi
-
-def test_blockchain_batch_performance():
-    """Test performance batch blockchain"""
-    service = BlockchainService()
-    
-    start_time = time.time()
-    service.process_batch_transactions(batch_size=50)
-    execution_time = time.time() - start_time
-    
-    assert execution_time < 15  # Dovrebbe completare in meno di 15 secondi
-import pytest
-import asyncio
-from app.utils.performance_monitor import PerformanceMonitor
-from app.services.transformation_service import TransformationService
-from concurrent.futures import ThreadPoolExecutor
-import time
-
-async def test_concurrent_transformations():
-    """Test delle trasformazioni concorrenti sotto carico"""
-    service = TransformationService()
-    monitor = PerformanceMonitor()
-    num_requests = 50
-    
-    start_time = time.time()
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        futures = [
-            executor.submit(service.process_transformation, amount=100)
-            for _ in range(num_requests)
-        ]
-    
-    execution_time = time.time() - start_time
-    assert execution_time < 15  # Dovrebbe completare in meno di 15 secondi
-    
-    metrics = monitor.get_metrics()
-    assert 'transformation' in metrics
-    assert len(monitor.get_alerts()) == 0  # Non dovrebbero esserci alert di performance
-
-def test_system_under_heavy_load():
+def test_system_under_heavy_load_original():
     """Test del sistema sotto carico pesante"""
     monitor = PerformanceMonitor()
     

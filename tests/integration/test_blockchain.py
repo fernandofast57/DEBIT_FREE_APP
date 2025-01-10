@@ -1,47 +1,35 @@
-
 import pytest
 from unittest.mock import Mock, patch
 from app.services.blockchain_service import BlockchainService
-import os
 from decimal import Decimal
 
 @pytest.fixture
 async def blockchain_service():
     service = BlockchainService()
-    # Simuliamo una connessione sempre attiva
     service.w3 = Mock()
     service.w3.is_connected.return_value = True
     service.contract = Mock()
-    service.account = Mock(address='0x742d35Cc6634C0532925a3b844Bc454e4438f44e')
     return service
 
 @pytest.mark.asyncio
 async def test_batch_transformation_process(blockchain_service):
-    """Test batch transformation process"""
     batch_data = [
-        {"user_id": 1, "amount": 100.0, "timestamp": 1645564800},
-        {"user_id": 2, "amount": 200.0, "timestamp": 1645564800}
+        {"user_id": 1, "amount": Decimal('100.0'), "timestamp": 1645564800},
+        {"user_id": 2, "amount": Decimal('200.0'), "timestamp": 1645564800}
     ]
-    
+
+    blockchain_service.contract.functions.processBatchTransformation.return_value.transact.return_value = '0x123'
     blockchain_service.w3.eth.wait_for_transaction_receipt.return_value = Mock(status=1)
+
     result = await blockchain_service.process_batch_transformation(batch_data)
-    assert result is not None
-    assert hasattr(result, 'status')
-    assert result.status == 1
+    assert result['status'] == 'success'
 
 @pytest.mark.asyncio
 async def test_noble_rank_update(blockchain_service):
-    """Test noble rank update"""
-    blockchain_service.w3.eth.wait_for_transaction_receipt.return_value = Mock(
-        status=1,
-        transactionHash=b'123456',
-        blockNumber=1234
-    )
-    
-    result = await blockchain_service.update_noble_rank(
-        "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
-        1
-    )
+    blockchain_service.contract.functions.updateNobleRank.return_value.transact.return_value = '0x123'
+    blockchain_service.w3.eth.wait_for_transaction_receipt.return_value = Mock(status=1)
+
+    result = await blockchain_service.update_noble_rank('0x742d35Cc6634C0532925a3b844Bc454e4438f44e', 1)
     assert result['status'] == 'verified'
 
 @pytest.mark.asyncio

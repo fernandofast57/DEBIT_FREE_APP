@@ -1,7 +1,8 @@
-
 import pytest
 from app import create_app
 from flask import json
+from app.models.models import User, MoneyAccount, GoldAccount
+from decimal import Decimal
 
 @pytest.fixture
 def client():
@@ -14,27 +15,33 @@ def client():
 def auth_headers():
     return {'X-User-Id': '123', 'Authorization': 'Bearer test-token'}
 
-def test_transformation_endpoint(client, auth_headers):
-    """Test transformation endpoint"""
-    response = client.post('/api/v1/transformations/transform',
+@pytest.mark.asyncio
+async def test_transformation_endpoint(client, auth_headers):
+    response = await client.post('/api/v1/transformation', 
         json={
-            "fixing_price": 50.00,
-            "gold_grams": 2.0
+            'amount': 100.0,
+            'fixing_price': 50.0
         },
         headers=auth_headers
     )
     assert response.status_code == 200
-    data = json.loads(response.data)
-    assert 'status' in data
+    data = response.get_json()
+    assert data['status'] == 'success'
 
-def test_account_balance(client, auth_headers):
-    """Test account balance endpoint"""
-    response = client.get('/api/v1/accounts/balance',
+@pytest.mark.asyncio
+async def test_account_balance(client, auth_headers):
+    # Setup test user with accounts
+    user = User(id=1)
+    user.money_account = MoneyAccount(balance=Decimal('1000.00'))
+    user.gold_account = GoldAccount(balance=Decimal('0'))
+
+    response = await client.get('/api/v1/account/balance',
         headers=auth_headers
     )
     assert response.status_code == 200
-    data = json.loads(response.data)
-    assert "gold_balance" in data or "balance" in data
+    data = response.get_json()
+    assert 'money_balance' in data
+    assert 'gold_balance' in data
 
 def test_index(client):
     """Test root endpoint"""
@@ -43,18 +50,18 @@ def test_index(client):
     data = json.loads(response.data)
     assert "status" in data
 
-def test_invalid_transformation(client, auth_headers):
-    """Test transformation with invalid input"""
-    response = client.post('/api/v1/transformations/transform', 
+@pytest.mark.asyncio
+async def test_invalid_transformation(client, auth_headers):
+    response = await client.post('/api/v1/transformation',
         json={
-            "fixing_price": -50.00,
-            "gold_grams": 0
+            'amount': -100.0,
+            'fixing_price': 50.0
         },
         headers=auth_headers
     )
     assert response.status_code == 400
-    data = json.loads(response.data)
-    assert 'errors' in data
+    data = response.get_json()
+    assert data['status'] == 'error'
 
 def test_async_endpoints(client, auth_headers):
     """Test endpoints that require async client"""
