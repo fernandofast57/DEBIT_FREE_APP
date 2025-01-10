@@ -6,8 +6,14 @@ from decimal import Decimal
 from web3.exceptions import BlockNotFound, TransactionNotFound
 
 @pytest.fixture
-def blockchain_monitor():
-    return BlockchainMonitor()
+def web3_mock():
+    mock = Mock()
+    mock.eth.gas_price = 50000000000  # 50 Gwei
+    return mock
+
+@pytest.fixture
+def blockchain_monitor(web3_mock):
+    return BlockchainMonitor(web3_mock)
 
 def test_basic_monitoring(blockchain_monitor):
     """Test basic blockchain monitoring functionality"""
@@ -28,9 +34,9 @@ def test_transaction_validation(blockchain_monitor):
         assert blockchain_monitor.validate_transaction_amount(amount) == expected
 
 @pytest.mark.asyncio
-async def test_network_interruption():
+async def test_network_interruption(web3_mock):
     """Test behavior during network interruption"""
-    monitor = BlockchainMonitor()
+    monitor = BlockchainMonitor(web3_mock)
     with patch('web3.Web3.eth.get_block') as mock_block:
         mock_block.side_effect = BlockNotFound
         response = await monitor.process_block(12345)
@@ -38,34 +44,31 @@ async def test_network_interruption():
         assert 'block not found' in response['message'].lower()
 
 @pytest.mark.asyncio
-async def test_invalid_transaction():
+async def test_invalid_transaction(web3_mock):
     """Test handling of invalid transaction"""
-    monitor = BlockchainMonitor()
+    monitor = BlockchainMonitor(web3_mock)
     with patch('web3.Web3.eth.get_transaction') as mock_tx:
         mock_tx.side_effect = TransactionNotFound
         response = await monitor.verify_transaction('0x1234')
         assert response['status'] == 'error'
         assert 'transaction not found' in response['message'].lower()
 
-def test_gas_price_threshold():
+def test_gas_price_threshold(blockchain_monitor):
     """Test gas price monitoring"""
-    monitor = BlockchainMonitor()
-    with patch('web3.Web3.eth.gas_price') as mock_gas:
-        mock_gas.return_value = 100000000000  # 100 Gwei
-        assert monitor.is_gas_price_acceptable() is False
+    with patch.object(blockchain_monitor.w3.eth, 'gas_price', return_value=100000000000):  # 100 Gwei
+        assert blockchain_monitor.is_gas_price_acceptable() is False
 
-def test_concurrent_transactions():
+def test_concurrent_transactions(blockchain_monitor):
     """Test handling multiple transactions simultaneously"""
-    monitor = BlockchainMonitor()
     transactions = ['0x1234', '0x5678', '0x9abc']
     with patch('web3.Web3.eth.get_transaction_count') as mock_count:
         mock_count.return_value = len(transactions)
-        assert monitor.can_process_transactions(transactions) is True
+        assert blockchain_monitor.can_process_transactions(transactions) is True
 
 @pytest.mark.asyncio
-async def test_empty_block():
+async def test_empty_block(web3_mock):
     """Test handling of empty blocks"""
-    monitor = BlockchainMonitor()
+    monitor = BlockchainMonitor(web3_mock)
     with patch('web3.Web3.eth.get_block') as mock_block:
         mock_block.return_value = {'transactions': []}
         response = await monitor.process_block(12345)
@@ -73,32 +76,30 @@ async def test_empty_block():
         assert len(response.get('transactions', [])) == 0
 
 @pytest.mark.asyncio
-async def test_malformed_transaction():
+async def test_malformed_transaction(web3_mock):
     """Test handling of malformed transaction data"""
-    monitor = BlockchainMonitor()
+    monitor = BlockchainMonitor(web3_mock)
     with patch('web3.Web3.eth.get_transaction') as mock_tx:
         mock_tx.return_value = {'hash': '0x1234', 'value': None}
         response = await monitor.verify_transaction('0x1234')
         assert response['status'] == 'error'
         assert 'invalid transaction data' in response['message'].lower()
 
-def test_extreme_gas_prices():
+def test_extreme_gas_prices(blockchain_monitor):
     """Test handling of extreme gas prices"""
-    monitor = BlockchainMonitor()
     test_cases = [
         (0, True),  # Zero gas price
         (1000000000000000, False),  # Extremely high gas price
         (1, True)  # Minimum gas price
     ]
-    with patch('web3.Web3.eth.gas_price') as mock_gas:
-        for price, expected in test_cases:
-            mock_gas.return_value = price
-            assert monitor.is_gas_price_acceptable() == expected
+    for price, expected in test_cases:
+        with patch.object(blockchain_monitor.w3.eth, 'gas_price', return_value=price):
+            assert blockchain_monitor.is_gas_price_acceptable() == expected
 
 @pytest.mark.asyncio
-async def test_network_timeout():
+async def test_network_timeout(web3_mock):
     """Test handling of network timeouts"""
-    monitor = BlockchainMonitor()
+    monitor = BlockchainMonitor(web3_mock)
     with patch('web3.Web3.eth.get_block') as mock_block:
         mock_block.side_effect = TimeoutError("Request timed out")
         response = await monitor.process_block(12345)
