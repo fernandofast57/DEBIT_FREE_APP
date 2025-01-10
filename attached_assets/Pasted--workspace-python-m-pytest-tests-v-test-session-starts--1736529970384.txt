@@ -1,0 +1,1523 @@
+~/workspace$ python -m pytest tests/ -v
+================================= test session starts ==================================
+platform linux -- Python 3.11.10, pytest-8.1.1, pluggy-1.4.0 -- /home/runner/workspace/.pythonlibs/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/workspace/tests
+configfile: pytest.ini
+plugins: asyncio-0.23.6, mock-3.14.0, cov-4.1.0, web3-6.11.3
+asyncio: mode=Mode.AUTO
+collected 46 items                                                                     
+
+tests/functional/test_api.py::test_transformation_endpoint ERROR                 [  2%]
+tests/functional/test_api.py::test_account_balance ERROR                         [  4%]
+tests/functional/test_api.py::test_invalid_transformation ERROR                  [  6%]
+tests/integration/test_blockchain.py::test_batch_transformation_process FAILED   [  8%]
+tests/integration/test_blockchain.py::test_noble_rank_update FAILED              [ 10%]
+tests/integration/test_blockchain.py::test_blockchain_stats PASSED               [ 13%]
+tests/performance/test_load.py::test_concurrent_transformations FAILED           [ 15%]
+tests/performance/test_load.py::test_blockchain_batch_performance ERROR          [ 17%]
+tests/performance/test_load.py::test_system_under_heavy_load FAILED              [ 19%]
+tests/performance/test_load.py::test_system_under_load PASSED                    [ 21%]
+tests/performance/test_load.py::test_system_under_heavy_load_original FAILED     [ 23%]
+tests/performance/test_monitoring.py::test_system_monitoring PASSED              [ 26%]
+tests/performance/test_monitoring.py::test_performance_monitor FAILED            [ 28%]
+tests/performance/test_monitoring.py::test_performance_decorator PASSED          [ 30%]
+tests/performance/test_optimization.py::test_table_creation_and_optimization FAILED [ 32%]
+tests/security/test_security.py::test_environment_variables PASSED               [ 34%]
+tests/security/test_security.py::test_rate_limiter PASSED                        [ 36%]
+tests/security/test_security.py::test_security_manager_logging PASSED            [ 39%]
+tests/security/test_security.py::test_permission_checking PASSED                 [ 41%]
+tests/security/test_security.py::test_role_permission_validation PASSED          [ 43%]
+tests/security/test_security.py::test_input_validation PASSED                    [ 45%]
+tests/security/test_security.py::test_sql_injection_prevention PASSED            [ 47%]
+tests/security/test_security.py::test_xss_prevention PASSED                      [ 50%]
+tests/security/test_security.py::test_rate_limiter_stress PASSED                 [ 52%]
+tests/unit/test_blockchain_monitor.py::test_basic_monitoring FAILED              [ 54%]
+tests/unit/test_blockchain_monitor.py::test_transaction_validation FAILED        [ 56%]
+tests/unit/test_blockchain_monitor.py::test_network_interruption FAILED          [ 58%]
+tests/unit/test_blockchain_monitor.py::test_invalid_transaction FAILED           [ 60%]
+tests/unit/test_blockchain_monitor.py::test_gas_price_threshold FAILED           [ 63%]
+tests/unit/test_blockchain_monitor.py::test_concurrent_transactions FAILED       [ 65%]
+tests/unit/test_blockchain_monitor.py::test_empty_block FAILED                   [ 67%]
+tests/unit/test_blockchain_monitor.py::test_malformed_transaction FAILED         [ 69%]
+tests/unit/test_blockchain_monitor.py::test_extreme_gas_prices FAILED            [ 71%]
+tests/unit/test_blockchain_monitor.py::test_network_timeout FAILED               [ 73%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_structure_bonus ERROR [ 76%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_successful ERROR [ 78%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_invalid_rank ERROR [ 80%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_insufficient_balance ERROR [ 82%]
+tests/unit/test_constants.py::test_status_constants PASSED                       [ 84%]
+tests/unit/test_logging.py::test_logger_initialization PASSED                    [ 86%]
+tests/unit/test_logging.py::test_setup_logging FAILED                            [ 89%]
+tests/unit/test_noble_system.py::test_noble_rank_creation ERROR                  [ 91%]
+tests/unit/test_noble_system.py::test_noble_relation_verification ERROR          [ 93%]
+tests/unit/test_transformation.py::test_transformation_calculates_correct_gold_amount FAILED [ 95%]
+tests/unit/test_transformation.py::test_insufficient_funds_transformation PASSED [ 97%]
+tests/unit/test_transformation.py::test_invalid_fixing_price FAILED              [100%]
+
+======================================== ERRORS ========================================
+____________________ ERROR at setup of test_transformation_endpoint ____________________
+
+    @pytest.fixture
+    def client():
+>       app = create_app()
+E       NameError: name 'create_app' is not defined
+
+tests/functional/test_api.py:9: NameError
+________________________ ERROR at setup of test_account_balance ________________________
+
+    @pytest.fixture
+    def client():
+>       app = create_app()
+E       NameError: name 'create_app' is not defined
+
+tests/functional/test_api.py:9: NameError
+____________________ ERROR at setup of test_invalid_transformation _____________________
+
+    @pytest.fixture
+    def client():
+>       app = create_app()
+E       NameError: name 'create_app' is not defined
+
+tests/functional/test_api.py:9: NameError
+_________________ ERROR at setup of test_blockchain_batch_performance __________________
+file /home/runner/workspace/tests/performance/test_load.py, line 25
+  @pytest.mark.asyncio
+  async def test_blockchain_batch_performance(blockchain_service):
+      batch_size = 10
+      batch_data = [
+          {"user_id": i, "amount": Decimal('100.0'), "timestamp": 1645564800}
+          for i in range(batch_size)
+      ]
+
+      result = await blockchain_service.process_batch_transformation(batch_data)
+      assert result['status'] == 'success'
+E       fixture 'blockchain_service' not found
+>       available fixtures: _session_event_loop, app, auth_headers, blockchain_monitor, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, cov, deployer, doctest_namespace, event_loop, event_loop_policy, mocker, module_mocker, monkeypatch, no_cover, package_mocker, performance/test_load.py::<event_loop>, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, session_mocker, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory, w3
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/workspace/tests/performance/test_load.py:25
+____ ERROR at setup of TestBonusDistributionService.test_distribute_structure_bonus ____
+
+self = <test_bonus_service.TestBonusDistributionService object at 0x7f46f518f3d0>
+app = <Flask 'app'>
+
+>   ???
+E   TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+
+/home/runner/gold-investment-backend/tests/unit/test_bonus_service.py:16: TypeError
+-------------------------------- Captured stdout setup ---------------------------------
+Query optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+__ ERROR at setup of TestBonusDistributionService.test_distribute_rewards_successful ___
+
+self = <test_bonus_service.TestBonusDistributionService object at 0x7f46f518fe50>
+app = <Flask 'app'>
+
+>   ???
+E   TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+
+/home/runner/gold-investment-backend/tests/unit/test_bonus_service.py:16: TypeError
+-------------------------------- Captured stdout setup ---------------------------------
+Query optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+_ ERROR at setup of TestBonusDistributionService.test_distribute_rewards_invalid_rank __
+
+self = <test_bonus_service.TestBonusDistributionService object at 0x7f46f518c510>
+app = <Flask 'app'>
+
+>   ???
+E   TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+
+/home/runner/gold-investment-backend/tests/unit/test_bonus_service.py:16: TypeError
+-------------------------------- Captured stdout setup ---------------------------------
+Query optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+_ ERROR at setup of TestBonusDistributionService.test_distribute_rewards_insufficient_balance _
+
+self = <test_bonus_service.TestBonusDistributionService object at 0x7f46f518cd10>
+app = <Flask 'app'>
+
+>   ???
+E   TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+
+/home/runner/gold-investment-backend/tests/unit/test_bonus_service.py:16: TypeError
+-------------------------------- Captured stdout setup ---------------------------------
+Query optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+______________________ ERROR at setup of test_noble_rank_creation ______________________
+file /home/runner/gold-investment-backend/tests/unit/test_noble_system.py, line 7: source code not available
+E       fixture 'mock_blockchain_service' not found
+>       available fixtures: _session_event_loop, app, auth_headers, blockchain_monitor, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, cov, deployer, doctest_namespace, event_loop, event_loop_policy, mocker, module_mocker, monkeypatch, no_cover, package_mocker, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, session_mocker, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unit/test_noble_system.py::<event_loop>, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory, w3
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/gold-investment-backend/tests/unit/test_noble_system.py:7
+-------------------------------- Captured stdout setup ---------------------------------
+Query optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+__________________ ERROR at setup of test_noble_relation_verification __________________
+file /home/runner/gold-investment-backend/tests/unit/test_noble_system.py, line 19: source code not available
+E       fixture 'mock_blockchain_service' not found
+>       available fixtures: _session_event_loop, app, auth_headers, blockchain_monitor, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, cov, deployer, doctest_namespace, event_loop, event_loop_policy, mocker, module_mocker, monkeypatch, no_cover, package_mocker, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, session_mocker, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unit/test_noble_system.py::<event_loop>, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory, w3
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/gold-investment-backend/tests/unit/test_noble_system.py:19
+-------------------------------- Captured stdout setup ---------------------------------
+Query optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+======================================= FAILURES =======================================
+__________________________ test_batch_transformation_process ___________________________
+
+blockchain_service = <app.services.blockchain_service.BlockchainService object at 0x7f46f5175e50>
+
+    @pytest.mark.asyncio
+    async def test_batch_transformation_process(blockchain_service):
+        batch_data = [
+            {"user_id": 1, "amount": Decimal('100.0'), "timestamp": 1645564800},
+            {"user_id": 2, "amount": Decimal('200.0'), "timestamp": 1645564800}
+        ]
+    
+        blockchain_service.contract.functions.processBatchTransformation.return_value.transact.return_value = '0x123'
+        blockchain_service.w3.eth.wait_for_transaction_receipt.return_value = Mock(status=1)
+    
+        result = await blockchain_service.process_batch_transformation(batch_data)
+>       assert result['status'] == 'success'
+E       AssertionError: assert 'error' == 'success'
+E         
+E         - success
+E         + error
+
+tests/integration/test_blockchain.py:25: AssertionError
+---------------------------------- Captured log call -----------------------------------
+ERROR    gold_investment:blockchain_service.py:229 Blockchain transaction error: Blockchain connection or account not initialized
+ERROR    gold_investment:blockchain_service.py:230 Blockchain batch processing error: Blockchain connection or account not initialized
+ERROR    gold_investment:blockchain_service.py:36 Blockchain transaction error: 'NoneType' object has no attribute 'send_alert'
+ERROR    gold_investment:blockchain_service.py:37 Blockchain Transaction Error: 'NoneType' object has no attribute 'send_alert'
+________________________________ test_noble_rank_update ________________________________
+
+blockchain_service = <app.services.blockchain_service.BlockchainService object at 0x7f46f51748d0>
+
+    @pytest.mark.asyncio
+    async def test_noble_rank_update(blockchain_service):
+        blockchain_service.contract.functions.updateNobleRank.return_value.transact.return_value = '0x123'
+        blockchain_service.w3.eth.wait_for_transaction_receipt.return_value = Mock(status=1)
+    
+        result = await blockchain_service.update_noble_rank('0x742d35Cc6634C0532925a3b844Bc454e4438f44e', 1)
+>       assert result['status'] == 'verified'
+E       AssertionError: assert 'error' == 'verified'
+E         
+E         - verified
+E         + error
+
+tests/integration/test_blockchain.py:33: AssertionError
+---------------------------------- Captured log call -----------------------------------
+ERROR    gold_investment:blockchain_service.py:144 Blockchain connection or account not initialized
+WARNING  app.utils.retry:retry.py:20 Attempt 1 failed: Blockchain connection or account not initialized
+ERROR    gold_investment:blockchain_service.py:144 Blockchain connection or account not initialized
+WARNING  app.utils.retry:retry.py:20 Attempt 2 failed: Blockchain connection or account not initialized
+ERROR    gold_investment:blockchain_service.py:144 Blockchain connection or account not initialized
+WARNING  app.utils.retry:retry.py:20 Attempt 3 failed: Blockchain connection or account not initialized
+ERROR    app.utils.retry:retry.py:25 All 3 attempts failed
+ERROR    gold_investment:blockchain_service.py:36 Blockchain transaction error: Blockchain connection or account not initialized
+ERROR    gold_investment:blockchain_service.py:37 Blockchain Transaction Error: Blockchain connection or account not initialized
+___________________________ test_concurrent_transformations ____________________________
+
+    @pytest.mark.asyncio
+    async def test_concurrent_transformations():
+        service = TransformationService()
+        tasks = []
+        for i in range(5):
+            task = asyncio.create_task(
+                service.process_transformation(
+                    user_id=i,
+                    euro_amount=Decimal('100.00'),
+                    fixing_price=Decimal('50.00')
+                )
+            )
+            tasks.append(task)
+    
+>       results = await asyncio.gather(*tasks)
+
+tests/performance/test_load.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/services/transformation_service.py:138: in process_transformation
+    await db.session.rollback()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py:1796: in rollback
+    return self._proxied.rollback()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py:197: in _proxied
+    return self.registry()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/util/_collections.py:632: in __call__
+    key = self.scopefunc()
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/session.py:81: in _app_ctx_id
+    return id(app_ctx._get_current_object())  # type: ignore[attr-defined]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def _get_current_object() -> T:
+        try:
+            obj = local.get()
+        except LookupError:
+>           raise RuntimeError(unbound_message) from None
+E           RuntimeError: Working outside of application context.
+E           
+E           This typically means that you attempted to use functionality that needed
+E           the current application. To solve this, set up an application context
+E           with app.app_context(). See the documentation for more information.
+
+/nix/store/0krcky469imsipiwsdvbv8qs696d228n-python3.11-werkzeug-3.0.3/lib/python3.11/site-packages/werkzeug/local.py:519: RuntimeError
+---------------------------------- Captured log call -----------------------------------
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+_____________________________ test_system_under_heavy_load _____________________________
+
+    @pytest.mark.asyncio
+    async def test_system_under_heavy_load():
+        service = TransformationService()
+        large_batch = [
+            (i, Decimal('100.00'), Decimal('50.00'))
+            for i in range(20)
+        ]
+    
+        tasks = [
+            asyncio.create_task(
+                service.process_transformation(
+                    user_id=user_id,
+                    euro_amount=amount,
+                    fixing_price=price
+                )
+            )
+            for user_id, amount, price in large_batch
+        ]
+    
+>       results = await asyncio.gather(*tasks)
+
+tests/performance/test_load.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+app/services/transformation_service.py:138: in process_transformation
+    await db.session.rollback()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py:1796: in rollback
+    return self._proxied.rollback()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py:197: in _proxied
+    return self.registry()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/util/_collections.py:632: in __call__
+    key = self.scopefunc()
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/session.py:81: in _app_ctx_id
+    return id(app_ctx._get_current_object())  # type: ignore[attr-defined]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def _get_current_object() -> T:
+        try:
+            obj = local.get()
+        except LookupError:
+>           raise RuntimeError(unbound_message) from None
+E           RuntimeError: Working outside of application context.
+E           
+E           This typically means that you attempted to use functionality that needed
+E           the current application. To solve this, set up an application context
+E           with app.app_context(). See the documentation for more information.
+
+/nix/store/0krcky469imsipiwsdvbv8qs696d228n-python3.11-werkzeug-3.0.3/lib/python3.11/site-packages/werkzeug/local.py:519: RuntimeError
+---------------------------------- Captured log call -----------------------------------
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:137 Transformation error: 'bool' object is not subscriptable
+________________________ test_system_under_heavy_load_original _________________________
+
+    def test_system_under_heavy_load_original():
+        """Test del sistema sotto carico pesante"""
+        monitor = PerformanceMonitor()
+    
+        # Simula carico pesante
+        for _ in range(1000):
+            monitor.record_metric('response_time', 0.1)
+            monitor.record_metric('database_query_times', 0.05)
+            monitor.record_metric('blockchain_operation_times', 2.0)
+    
+        metrics = monitor.get_metrics()
+>       alerts = monitor.get_alerts()
+E       AttributeError: 'PerformanceMonitor' object has no attribute 'get_alerts'
+
+tests/performance/test_load.py:82: AttributeError
+_______________________________ test_performance_monitor _______________________________
+
+>   ???
+E   AssertionError: assert 3 == 1
+E    +  where 3 = len({'average': 1.5, 'count': 1, 'latest': 1.5})
+
+/home/runner/gold-investment-backend/tests/performance/test_monitoring.py:27: AssertionError
+_________________________ test_table_creation_and_optimization _________________________
+
+test_app = <Flask 'app'>
+
+>   ???
+E   AssertionError: Email index not created
+E   assert 'idx_users_email' in []
+
+/home/runner/gold-investment-backend/tests/performance/test_optimization.py:39: AssertionError
+-------------------------------- Captured stdout setup ---------------------------------
+Query optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+--------------------------------- Captured stdout call ---------------------------------
+Error creating indexes: (sqlite3.OperationalError) no such column: status
+[SQL: CREATE INDEX IF NOT EXISTS idx_transactions_status ON transactions(status, created_at)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+________________________________ test_basic_monitoring _________________________________
+
+blockchain_monitor = <app.utils.blockchain_monitor.BlockchainMonitor object at 0x7f46f431d590>
+
+    def test_basic_monitoring(blockchain_monitor):
+        """Test basic blockchain monitoring functionality"""
+>       with patch('web3.Web3.eth.get_block_number') as mock_block:
+
+tests/unit/test_blockchain_monitor.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:1430: in __enter__
+    self.target = self.getter()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'web3.Web3.eth'
+
+    def resolve_name(name):
+        """
+        Resolve a name to an object.
+    
+        It is expected that `name` will be a string in one of the following
+        formats, where W is shorthand for a valid Python identifier and dot stands
+        for a literal period in these pseudo-regexes:
+    
+        W(.W)*
+        W(.W)*:(W(.W)*)?
+    
+        The first form is intended for backward compatibility only. It assumes that
+        some part of the dotted name is a package, and the rest is an object
+        somewhere within that package, possibly nested inside other objects.
+        Because the place where the package stops and the object hierarchy starts
+        can't be inferred by inspection, repeated attempts to import must be done
+        with this form.
+    
+        In the second form, the caller makes the division point clear through the
+        provision of a single colon: the dotted name to the left of the colon is a
+        package to be imported, and the dotted name to the right is the object
+        hierarchy within that package. Only one import is needed in this form. If
+        it ends with the colon, then a module object is returned.
+    
+        The function will return an object (which might be a module), or raise one
+        of the following exceptions:
+    
+        ValueError - if `name` isn't in a recognised format
+        ImportError - if an import failed when it shouldn't have
+        AttributeError - if a failure occurred when traversing the object hierarchy
+                         within the imported package to get to the desired object.
+        """
+        global _NAME_PATTERN
+        if _NAME_PATTERN is None:
+            # Lazy import to speedup Python startup time
+            import re
+            dotted_words = r'(?!\d)(\w+)(\.(?!\d)(\w+))*'
+            _NAME_PATTERN = re.compile(f'^(?P<pkg>{dotted_words})'
+                                       f'(?P<cln>:(?P<obj>{dotted_words})?)?$',
+                                       re.UNICODE)
+    
+        m = _NAME_PATTERN.match(name)
+        if not m:
+            raise ValueError(f'invalid format: {name!r}')
+        gd = m.groupdict()
+        if gd.get('cln'):
+            # there is a colon - a one-step import is all that's needed
+            mod = importlib.import_module(gd['pkg'])
+            parts = gd.get('obj')
+            parts = parts.split('.') if parts else []
+        else:
+            # no colon - have to iterate to find the package boundary
+            parts = name.split('.')
+            modname = parts.pop(0)
+            # first part *must* be a module/package.
+            mod = importlib.import_module(modname)
+            while parts:
+                p = parts[0]
+                s = f'{modname}.{p}'
+                try:
+                    mod = importlib.import_module(s)
+                    parts.pop(0)
+                    modname = s
+                except ImportError:
+                    break
+        # if we reach this point, mod is the module, already imported, and
+        # parts is the list of parts in the object hierarchy to be traversed, or
+        # an empty list if just the module is wanted.
+        result = mod
+        for p in parts:
+>           result = getattr(result, p)
+E           AttributeError: type object 'Web3' has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/pkgutil.py:715: AttributeError
+_____________________________ test_transaction_validation ______________________________
+
+blockchain_monitor = <app.utils.blockchain_monitor.BlockchainMonitor object at 0x7f46f50b4690>
+
+    def test_transaction_validation(blockchain_monitor):
+        """Test transaction validation with various amounts"""
+        test_cases = [
+            (Decimal('0.001'), True),  # Minimum amount
+            (Decimal('1000000.0'), True),  # Large amount
+            (Decimal('0.0'), False),  # Zero amount
+            (Decimal('-1.0'), False),  # Negative amount
+        ]
+    
+        for amount, expected in test_cases:
+>           assert blockchain_monitor.validate_transaction_amount(amount) == expected
+E           AttributeError: 'BlockchainMonitor' object has no attribute 'validate_transaction_amount'
+
+tests/unit/test_blockchain_monitor.py:34: AttributeError
+______________________________ test_network_interruption _______________________________
+
+web3_mock = <Mock id='139942723059856'>
+
+    @pytest.mark.asyncio
+    async def test_network_interruption(web3_mock):
+        """Test behavior during network interruption"""
+        monitor = BlockchainMonitor(web3_mock)
+>       with patch('web3.Web3.eth.get_block') as mock_block:
+
+tests/unit/test_blockchain_monitor.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:1430: in __enter__
+    self.target = self.getter()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'web3.Web3.eth'
+
+    def resolve_name(name):
+        """
+        Resolve a name to an object.
+    
+        It is expected that `name` will be a string in one of the following
+        formats, where W is shorthand for a valid Python identifier and dot stands
+        for a literal period in these pseudo-regexes:
+    
+        W(.W)*
+        W(.W)*:(W(.W)*)?
+    
+        The first form is intended for backward compatibility only. It assumes that
+        some part of the dotted name is a package, and the rest is an object
+        somewhere within that package, possibly nested inside other objects.
+        Because the place where the package stops and the object hierarchy starts
+        can't be inferred by inspection, repeated attempts to import must be done
+        with this form.
+    
+        In the second form, the caller makes the division point clear through the
+        provision of a single colon: the dotted name to the left of the colon is a
+        package to be imported, and the dotted name to the right is the object
+        hierarchy within that package. Only one import is needed in this form. If
+        it ends with the colon, then a module object is returned.
+    
+        The function will return an object (which might be a module), or raise one
+        of the following exceptions:
+    
+        ValueError - if `name` isn't in a recognised format
+        ImportError - if an import failed when it shouldn't have
+        AttributeError - if a failure occurred when traversing the object hierarchy
+                         within the imported package to get to the desired object.
+        """
+        global _NAME_PATTERN
+        if _NAME_PATTERN is None:
+            # Lazy import to speedup Python startup time
+            import re
+            dotted_words = r'(?!\d)(\w+)(\.(?!\d)(\w+))*'
+            _NAME_PATTERN = re.compile(f'^(?P<pkg>{dotted_words})'
+                                       f'(?P<cln>:(?P<obj>{dotted_words})?)?$',
+                                       re.UNICODE)
+    
+        m = _NAME_PATTERN.match(name)
+        if not m:
+            raise ValueError(f'invalid format: {name!r}')
+        gd = m.groupdict()
+        if gd.get('cln'):
+            # there is a colon - a one-step import is all that's needed
+            mod = importlib.import_module(gd['pkg'])
+            parts = gd.get('obj')
+            parts = parts.split('.') if parts else []
+        else:
+            # no colon - have to iterate to find the package boundary
+            parts = name.split('.')
+            modname = parts.pop(0)
+            # first part *must* be a module/package.
+            mod = importlib.import_module(modname)
+            while parts:
+                p = parts[0]
+                s = f'{modname}.{p}'
+                try:
+                    mod = importlib.import_module(s)
+                    parts.pop(0)
+                    modname = s
+                except ImportError:
+                    break
+        # if we reach this point, mod is the module, already imported, and
+        # parts is the list of parts in the object hierarchy to be traversed, or
+        # an empty list if just the module is wanted.
+        result = mod
+        for p in parts:
+>           result = getattr(result, p)
+E           AttributeError: type object 'Web3' has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/pkgutil.py:715: AttributeError
+_______________________________ test_invalid_transaction _______________________________
+
+web3_mock = <Mock id='139942736248144'>
+
+    @pytest.mark.asyncio
+    async def test_invalid_transaction(web3_mock):
+        """Test handling of invalid transaction"""
+        monitor = BlockchainMonitor(web3_mock)
+>       with patch('web3.Web3.eth.get_transaction') as mock_tx:
+
+tests/unit/test_blockchain_monitor.py:50: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:1430: in __enter__
+    self.target = self.getter()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'web3.Web3.eth'
+
+    def resolve_name(name):
+        """
+        Resolve a name to an object.
+    
+        It is expected that `name` will be a string in one of the following
+        formats, where W is shorthand for a valid Python identifier and dot stands
+        for a literal period in these pseudo-regexes:
+    
+        W(.W)*
+        W(.W)*:(W(.W)*)?
+    
+        The first form is intended for backward compatibility only. It assumes that
+        some part of the dotted name is a package, and the rest is an object
+        somewhere within that package, possibly nested inside other objects.
+        Because the place where the package stops and the object hierarchy starts
+        can't be inferred by inspection, repeated attempts to import must be done
+        with this form.
+    
+        In the second form, the caller makes the division point clear through the
+        provision of a single colon: the dotted name to the left of the colon is a
+        package to be imported, and the dotted name to the right is the object
+        hierarchy within that package. Only one import is needed in this form. If
+        it ends with the colon, then a module object is returned.
+    
+        The function will return an object (which might be a module), or raise one
+        of the following exceptions:
+    
+        ValueError - if `name` isn't in a recognised format
+        ImportError - if an import failed when it shouldn't have
+        AttributeError - if a failure occurred when traversing the object hierarchy
+                         within the imported package to get to the desired object.
+        """
+        global _NAME_PATTERN
+        if _NAME_PATTERN is None:
+            # Lazy import to speedup Python startup time
+            import re
+            dotted_words = r'(?!\d)(\w+)(\.(?!\d)(\w+))*'
+            _NAME_PATTERN = re.compile(f'^(?P<pkg>{dotted_words})'
+                                       f'(?P<cln>:(?P<obj>{dotted_words})?)?$',
+                                       re.UNICODE)
+    
+        m = _NAME_PATTERN.match(name)
+        if not m:
+            raise ValueError(f'invalid format: {name!r}')
+        gd = m.groupdict()
+        if gd.get('cln'):
+            # there is a colon - a one-step import is all that's needed
+            mod = importlib.import_module(gd['pkg'])
+            parts = gd.get('obj')
+            parts = parts.split('.') if parts else []
+        else:
+            # no colon - have to iterate to find the package boundary
+            parts = name.split('.')
+            modname = parts.pop(0)
+            # first part *must* be a module/package.
+            mod = importlib.import_module(modname)
+            while parts:
+                p = parts[0]
+                s = f'{modname}.{p}'
+                try:
+                    mod = importlib.import_module(s)
+                    parts.pop(0)
+                    modname = s
+                except ImportError:
+                    break
+        # if we reach this point, mod is the module, already imported, and
+        # parts is the list of parts in the object hierarchy to be traversed, or
+        # an empty list if just the module is wanted.
+        result = mod
+        for p in parts:
+>           result = getattr(result, p)
+E           AttributeError: type object 'Web3' has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/pkgutil.py:715: AttributeError
+_______________________________ test_gas_price_threshold _______________________________
+
+blockchain_monitor = <app.utils.blockchain_monitor.BlockchainMonitor object at 0x7f46f44acf10>
+
+    def test_gas_price_threshold(blockchain_monitor):
+        """Test gas price monitoring"""
+        with patch.object(blockchain_monitor.w3.eth, 'gas_price', return_value=100000000000):  # 100 Gwei
+>           assert blockchain_monitor.is_gas_price_acceptable() is False
+E           AttributeError: 'BlockchainMonitor' object has no attribute 'is_gas_price_acceptable'
+
+tests/unit/test_blockchain_monitor.py:59: AttributeError
+_____________________________ test_concurrent_transactions _____________________________
+
+blockchain_monitor = <app.utils.blockchain_monitor.BlockchainMonitor object at 0x7f46f439b5d0>
+
+    def test_concurrent_transactions(blockchain_monitor):
+        """Test handling multiple transactions simultaneously"""
+        transactions = ['0x1234', '0x5678', '0x9abc']
+>       with patch('web3.Web3.eth.get_transaction_count') as mock_count:
+
+tests/unit/test_blockchain_monitor.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:1430: in __enter__
+    self.target = self.getter()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'web3.Web3.eth'
+
+    def resolve_name(name):
+        """
+        Resolve a name to an object.
+    
+        It is expected that `name` will be a string in one of the following
+        formats, where W is shorthand for a valid Python identifier and dot stands
+        for a literal period in these pseudo-regexes:
+    
+        W(.W)*
+        W(.W)*:(W(.W)*)?
+    
+        The first form is intended for backward compatibility only. It assumes that
+        some part of the dotted name is a package, and the rest is an object
+        somewhere within that package, possibly nested inside other objects.
+        Because the place where the package stops and the object hierarchy starts
+        can't be inferred by inspection, repeated attempts to import must be done
+        with this form.
+    
+        In the second form, the caller makes the division point clear through the
+        provision of a single colon: the dotted name to the left of the colon is a
+        package to be imported, and the dotted name to the right is the object
+        hierarchy within that package. Only one import is needed in this form. If
+        it ends with the colon, then a module object is returned.
+    
+        The function will return an object (which might be a module), or raise one
+        of the following exceptions:
+    
+        ValueError - if `name` isn't in a recognised format
+        ImportError - if an import failed when it shouldn't have
+        AttributeError - if a failure occurred when traversing the object hierarchy
+                         within the imported package to get to the desired object.
+        """
+        global _NAME_PATTERN
+        if _NAME_PATTERN is None:
+            # Lazy import to speedup Python startup time
+            import re
+            dotted_words = r'(?!\d)(\w+)(\.(?!\d)(\w+))*'
+            _NAME_PATTERN = re.compile(f'^(?P<pkg>{dotted_words})'
+                                       f'(?P<cln>:(?P<obj>{dotted_words})?)?$',
+                                       re.UNICODE)
+    
+        m = _NAME_PATTERN.match(name)
+        if not m:
+            raise ValueError(f'invalid format: {name!r}')
+        gd = m.groupdict()
+        if gd.get('cln'):
+            # there is a colon - a one-step import is all that's needed
+            mod = importlib.import_module(gd['pkg'])
+            parts = gd.get('obj')
+            parts = parts.split('.') if parts else []
+        else:
+            # no colon - have to iterate to find the package boundary
+            parts = name.split('.')
+            modname = parts.pop(0)
+            # first part *must* be a module/package.
+            mod = importlib.import_module(modname)
+            while parts:
+                p = parts[0]
+                s = f'{modname}.{p}'
+                try:
+                    mod = importlib.import_module(s)
+                    parts.pop(0)
+                    modname = s
+                except ImportError:
+                    break
+        # if we reach this point, mod is the module, already imported, and
+        # parts is the list of parts in the object hierarchy to be traversed, or
+        # an empty list if just the module is wanted.
+        result = mod
+        for p in parts:
+>           result = getattr(result, p)
+E           AttributeError: type object 'Web3' has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/pkgutil.py:715: AttributeError
+___________________________________ test_empty_block ___________________________________
+
+web3_mock = <Mock id='139942736459792'>
+
+    @pytest.mark.asyncio
+    async def test_empty_block(web3_mock):
+        """Test handling of empty blocks"""
+        monitor = BlockchainMonitor(web3_mock)
+>       with patch('web3.Web3.eth.get_block') as mock_block:
+
+tests/unit/test_blockchain_monitor.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:1430: in __enter__
+    self.target = self.getter()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'web3.Web3.eth'
+
+    def resolve_name(name):
+        """
+        Resolve a name to an object.
+    
+        It is expected that `name` will be a string in one of the following
+        formats, where W is shorthand for a valid Python identifier and dot stands
+        for a literal period in these pseudo-regexes:
+    
+        W(.W)*
+        W(.W)*:(W(.W)*)?
+    
+        The first form is intended for backward compatibility only. It assumes that
+        some part of the dotted name is a package, and the rest is an object
+        somewhere within that package, possibly nested inside other objects.
+        Because the place where the package stops and the object hierarchy starts
+        can't be inferred by inspection, repeated attempts to import must be done
+        with this form.
+    
+        In the second form, the caller makes the division point clear through the
+        provision of a single colon: the dotted name to the left of the colon is a
+        package to be imported, and the dotted name to the right is the object
+        hierarchy within that package. Only one import is needed in this form. If
+        it ends with the colon, then a module object is returned.
+    
+        The function will return an object (which might be a module), or raise one
+        of the following exceptions:
+    
+        ValueError - if `name` isn't in a recognised format
+        ImportError - if an import failed when it shouldn't have
+        AttributeError - if a failure occurred when traversing the object hierarchy
+                         within the imported package to get to the desired object.
+        """
+        global _NAME_PATTERN
+        if _NAME_PATTERN is None:
+            # Lazy import to speedup Python startup time
+            import re
+            dotted_words = r'(?!\d)(\w+)(\.(?!\d)(\w+))*'
+            _NAME_PATTERN = re.compile(f'^(?P<pkg>{dotted_words})'
+                                       f'(?P<cln>:(?P<obj>{dotted_words})?)?$',
+                                       re.UNICODE)
+    
+        m = _NAME_PATTERN.match(name)
+        if not m:
+            raise ValueError(f'invalid format: {name!r}')
+        gd = m.groupdict()
+        if gd.get('cln'):
+            # there is a colon - a one-step import is all that's needed
+            mod = importlib.import_module(gd['pkg'])
+            parts = gd.get('obj')
+            parts = parts.split('.') if parts else []
+        else:
+            # no colon - have to iterate to find the package boundary
+            parts = name.split('.')
+            modname = parts.pop(0)
+            # first part *must* be a module/package.
+            mod = importlib.import_module(modname)
+            while parts:
+                p = parts[0]
+                s = f'{modname}.{p}'
+                try:
+                    mod = importlib.import_module(s)
+                    parts.pop(0)
+                    modname = s
+                except ImportError:
+                    break
+        # if we reach this point, mod is the module, already imported, and
+        # parts is the list of parts in the object hierarchy to be traversed, or
+        # an empty list if just the module is wanted.
+        result = mod
+        for p in parts:
+>           result = getattr(result, p)
+E           AttributeError: type object 'Web3' has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/pkgutil.py:715: AttributeError
+______________________________ test_malformed_transaction ______________________________
+
+web3_mock = <Mock id='139942736685136'>
+
+    @pytest.mark.asyncio
+    async def test_malformed_transaction(web3_mock):
+        """Test handling of malformed transaction data"""
+        monitor = BlockchainMonitor(web3_mock)
+>       with patch('web3.Web3.eth.get_transaction') as mock_tx:
+
+tests/unit/test_blockchain_monitor.py:82: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:1430: in __enter__
+    self.target = self.getter()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'web3.Web3.eth'
+
+    def resolve_name(name):
+        """
+        Resolve a name to an object.
+    
+        It is expected that `name` will be a string in one of the following
+        formats, where W is shorthand for a valid Python identifier and dot stands
+        for a literal period in these pseudo-regexes:
+    
+        W(.W)*
+        W(.W)*:(W(.W)*)?
+    
+        The first form is intended for backward compatibility only. It assumes that
+        some part of the dotted name is a package, and the rest is an object
+        somewhere within that package, possibly nested inside other objects.
+        Because the place where the package stops and the object hierarchy starts
+        can't be inferred by inspection, repeated attempts to import must be done
+        with this form.
+    
+        In the second form, the caller makes the division point clear through the
+        provision of a single colon: the dotted name to the left of the colon is a
+        package to be imported, and the dotted name to the right is the object
+        hierarchy within that package. Only one import is needed in this form. If
+        it ends with the colon, then a module object is returned.
+    
+        The function will return an object (which might be a module), or raise one
+        of the following exceptions:
+    
+        ValueError - if `name` isn't in a recognised format
+        ImportError - if an import failed when it shouldn't have
+        AttributeError - if a failure occurred when traversing the object hierarchy
+                         within the imported package to get to the desired object.
+        """
+        global _NAME_PATTERN
+        if _NAME_PATTERN is None:
+            # Lazy import to speedup Python startup time
+            import re
+            dotted_words = r'(?!\d)(\w+)(\.(?!\d)(\w+))*'
+            _NAME_PATTERN = re.compile(f'^(?P<pkg>{dotted_words})'
+                                       f'(?P<cln>:(?P<obj>{dotted_words})?)?$',
+                                       re.UNICODE)
+    
+        m = _NAME_PATTERN.match(name)
+        if not m:
+            raise ValueError(f'invalid format: {name!r}')
+        gd = m.groupdict()
+        if gd.get('cln'):
+            # there is a colon - a one-step import is all that's needed
+            mod = importlib.import_module(gd['pkg'])
+            parts = gd.get('obj')
+            parts = parts.split('.') if parts else []
+        else:
+            # no colon - have to iterate to find the package boundary
+            parts = name.split('.')
+            modname = parts.pop(0)
+            # first part *must* be a module/package.
+            mod = importlib.import_module(modname)
+            while parts:
+                p = parts[0]
+                s = f'{modname}.{p}'
+                try:
+                    mod = importlib.import_module(s)
+                    parts.pop(0)
+                    modname = s
+                except ImportError:
+                    break
+        # if we reach this point, mod is the module, already imported, and
+        # parts is the list of parts in the object hierarchy to be traversed, or
+        # an empty list if just the module is wanted.
+        result = mod
+        for p in parts:
+>           result = getattr(result, p)
+E           AttributeError: type object 'Web3' has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/pkgutil.py:715: AttributeError
+_______________________________ test_extreme_gas_prices ________________________________
+
+blockchain_monitor = <app.utils.blockchain_monitor.BlockchainMonitor object at 0x7f46f4345190>
+
+    def test_extreme_gas_prices(blockchain_monitor):
+        """Test handling of extreme gas prices"""
+        test_cases = [
+            (0, True),  # Zero gas price
+            (1000000000000000, False),  # Extremely high gas price
+            (1, True)  # Minimum gas price
+        ]
+        for price, expected in test_cases:
+            with patch.object(blockchain_monitor.w3.eth, 'gas_price', return_value=price):
+>               assert blockchain_monitor.is_gas_price_acceptable() == expected
+E               AttributeError: 'BlockchainMonitor' object has no attribute 'is_gas_price_acceptable'
+
+tests/unit/test_blockchain_monitor.py:97: AttributeError
+_________________________________ test_network_timeout _________________________________
+
+web3_mock = <Mock id='139942735036752'>
+
+    @pytest.mark.asyncio
+    async def test_network_timeout(web3_mock):
+        """Test handling of network timeouts"""
+        monitor = BlockchainMonitor(web3_mock)
+>       with patch('web3.Web3.eth.get_block') as mock_block:
+
+tests/unit/test_blockchain_monitor.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:1430: in __enter__
+    self.target = self.getter()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'web3.Web3.eth'
+
+    def resolve_name(name):
+        """
+        Resolve a name to an object.
+    
+        It is expected that `name` will be a string in one of the following
+        formats, where W is shorthand for a valid Python identifier and dot stands
+        for a literal period in these pseudo-regexes:
+    
+        W(.W)*
+        W(.W)*:(W(.W)*)?
+    
+        The first form is intended for backward compatibility only. It assumes that
+        some part of the dotted name is a package, and the rest is an object
+        somewhere within that package, possibly nested inside other objects.
+        Because the place where the package stops and the object hierarchy starts
+        can't be inferred by inspection, repeated attempts to import must be done
+        with this form.
+    
+        In the second form, the caller makes the division point clear through the
+        provision of a single colon: the dotted name to the left of the colon is a
+        package to be imported, and the dotted name to the right is the object
+        hierarchy within that package. Only one import is needed in this form. If
+        it ends with the colon, then a module object is returned.
+    
+        The function will return an object (which might be a module), or raise one
+        of the following exceptions:
+    
+        ValueError - if `name` isn't in a recognised format
+        ImportError - if an import failed when it shouldn't have
+        AttributeError - if a failure occurred when traversing the object hierarchy
+                         within the imported package to get to the desired object.
+        """
+        global _NAME_PATTERN
+        if _NAME_PATTERN is None:
+            # Lazy import to speedup Python startup time
+            import re
+            dotted_words = r'(?!\d)(\w+)(\.(?!\d)(\w+))*'
+            _NAME_PATTERN = re.compile(f'^(?P<pkg>{dotted_words})'
+                                       f'(?P<cln>:(?P<obj>{dotted_words})?)?$',
+                                       re.UNICODE)
+    
+        m = _NAME_PATTERN.match(name)
+        if not m:
+            raise ValueError(f'invalid format: {name!r}')
+        gd = m.groupdict()
+        if gd.get('cln'):
+            # there is a colon - a one-step import is all that's needed
+            mod = importlib.import_module(gd['pkg'])
+            parts = gd.get('obj')
+            parts = parts.split('.') if parts else []
+        else:
+            # no colon - have to iterate to find the package boundary
+            parts = name.split('.')
+            modname = parts.pop(0)
+            # first part *must* be a module/package.
+            mod = importlib.import_module(modname)
+            while parts:
+                p = parts[0]
+                s = f'{modname}.{p}'
+                try:
+                    mod = importlib.import_module(s)
+                    parts.pop(0)
+                    modname = s
+                except ImportError:
+                    break
+        # if we reach this point, mod is the module, already imported, and
+        # parts is the list of parts in the object hierarchy to be traversed, or
+        # an empty list if just the module is wanted.
+        result = mod
+        for p in parts:
+>           result = getattr(result, p)
+E           AttributeError: type object 'Web3' has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/pkgutil.py:715: AttributeError
+__________________________________ test_setup_logging __________________________________
+
+>   ???
+E   assert 0 > 0
+E    +  where 0 = len([])
+E    +    where [] = <Logger gold_investment (INFO)>.handlers
+
+/home/runner/gold-investment-backend/tests/unit/test_logging.py:12: AssertionError
+__________________ test_transformation_calculates_correct_gold_amount __________________
+
+user_id = 1, euro_amount = Decimal('100.00'), fixing_price = Decimal('50.00')
+
+    @staticmethod
+    async def process_transformation(user_id: int, euro_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
+        """Process complete money to gold transformation"""
+        logger.info(f"Inizio trasformazione - Utente: {user_id} - Importo: {euro_amount}€ - Fixing: {fixing_price}",
+                    extra={'audit_type': 'TRANSFORMATION_START',
+                           'user_id': user_id,
+                           'amount': str(euro_amount),
+                           'fixing_price': str(fixing_price),
+                           'timestamp': datetime.utcnow().isoformat()})
+    
+        try:
+            # 1. Verifica del trasferimento
+            logger.info(f"Controllo disponibilità fondi per utente {user_id}")
+            verification_result = await TransformationService.verify_transfer(user_id, euro_amount)
+            if not verification_result["valid"]:
+                logger.warning(f"Transfer verification failed for user {user_id} - {verification_result['reason']}")
+                return {
+                    "status": "error",
+                    "message": verification_result["reason"]
+                }
+    
+            # 2. Process organization fee
+            logger.info(f"Calcolo commissioni per importo {euro_amount}€")
+            net_amount = await TransformationService.process_organization_fee(euro_amount)
+            logger.info(f"Importo netto dopo commissioni: {net_amount}€")
+    
+            # 3. Calculate gold amount
+            logger.info(f"Calcolo grammi oro con fixing price {fixing_price}")
+            gold_amount = await TransformationService.calculate_gold_amount(net_amount, fixing_price)
+            logger.info(f"Grammi oro calcolati: {gold_amount}g")
+    
+            # 4. Process transformation
+>           async with db.session.begin():
+E           TypeError: 'SessionTransaction' object does not support the asynchronous context manager protocol
+
+app/services/transformation_service.py:117: TypeError
+
+During handling of the above exception, another exception occurred:
+
+app = <Flask 'app'>
+
+>   ???
+
+/home/runner/gold-investment-backend/tests/unit/test_transformation.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+user_id = 1, euro_amount = Decimal('100.00'), fixing_price = Decimal('50.00')
+
+    @staticmethod
+    async def process_transformation(user_id: int, euro_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
+        """Process complete money to gold transformation"""
+        logger.info(f"Inizio trasformazione - Utente: {user_id} - Importo: {euro_amount}€ - Fixing: {fixing_price}",
+                    extra={'audit_type': 'TRANSFORMATION_START',
+                           'user_id': user_id,
+                           'amount': str(euro_amount),
+                           'fixing_price': str(fixing_price),
+                           'timestamp': datetime.utcnow().isoformat()})
+    
+        try:
+            # 1. Verifica del trasferimento
+            logger.info(f"Controllo disponibilità fondi per utente {user_id}")
+            verification_result = await TransformationService.verify_transfer(user_id, euro_amount)
+            if not verification_result["valid"]:
+                logger.warning(f"Transfer verification failed for user {user_id} - {verification_result['reason']}")
+                return {
+                    "status": "error",
+                    "message": verification_result["reason"]
+                }
+    
+            # 2. Process organization fee
+            logger.info(f"Calcolo commissioni per importo {euro_amount}€")
+            net_amount = await TransformationService.process_organization_fee(euro_amount)
+            logger.info(f"Importo netto dopo commissioni: {net_amount}€")
+    
+            # 3. Calculate gold amount
+            logger.info(f"Calcolo grammi oro con fixing price {fixing_price}")
+            gold_amount = await TransformationService.calculate_gold_amount(net_amount, fixing_price)
+            logger.info(f"Grammi oro calcolati: {gold_amount}g")
+    
+            # 4. Process transformation
+            async with db.session.begin():
+                user = await User.query.get(user_id)
+    
+                # Update money and gold accounts
+                user.money_account.balance -= euro_amount
+                user.gold_account.balance += gold_amount
+                user.gold_account.last_update = datetime.utcnow()
+    
+                # Distribute affiliate bonuses
+                await TransformationService.distribute_affiliate_bonuses(user, gold_amount)
+    
+                await db.session.commit()
+    
+            return {
+                "status": "success",
+                "gold_grams": float(gold_amount),
+                "transaction_id": None  # You can add transaction ID logic if needed
+            }
+    
+        except Exception as e:
+            logger.error(f"Transformation error: {str(e)}")
+>           await db.session.rollback()
+E           TypeError: object NoneType can't be used in 'await' expression
+
+app/services/transformation_service.py:138: TypeError
+-------------------------------- Captured stdout setup ---------------------------------
+Tables created successfully.
+Query optimization completed successfully
+Table transactions does not exist, skipping indexes
+Table transformations does not exist, skipping indexes
+Table noble_ranks does not exist, skipping indexes
+Table users does not exist, skipping indexes
+Table noble_relations does not exist, skipping indexes
+Database optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> dc45cb3ac83f, Initial migration
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+INFO  [alembic.runtime.migration] Running upgrade 3135a7000c3b -> c564559997be, empty message
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+______________________________ test_invalid_fixing_price _______________________________
+
+user_id = 1, euro_amount = Decimal('100.00'), fixing_price = Decimal('0')
+
+    @staticmethod
+    async def process_transformation(user_id: int, euro_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
+        """Process complete money to gold transformation"""
+        logger.info(f"Inizio trasformazione - Utente: {user_id} - Importo: {euro_amount}€ - Fixing: {fixing_price}",
+                    extra={'audit_type': 'TRANSFORMATION_START',
+                           'user_id': user_id,
+                           'amount': str(euro_amount),
+                           'fixing_price': str(fixing_price),
+                           'timestamp': datetime.utcnow().isoformat()})
+    
+        try:
+            # 1. Verifica del trasferimento
+            logger.info(f"Controllo disponibilità fondi per utente {user_id}")
+            verification_result = await TransformationService.verify_transfer(user_id, euro_amount)
+            if not verification_result["valid"]:
+                logger.warning(f"Transfer verification failed for user {user_id} - {verification_result['reason']}")
+                return {
+                    "status": "error",
+                    "message": verification_result["reason"]
+                }
+    
+            # 2. Process organization fee
+            logger.info(f"Calcolo commissioni per importo {euro_amount}€")
+            net_amount = await TransformationService.process_organization_fee(euro_amount)
+            logger.info(f"Importo netto dopo commissioni: {net_amount}€")
+    
+            # 3. Calculate gold amount
+            logger.info(f"Calcolo grammi oro con fixing price {fixing_price}")
+>           gold_amount = await TransformationService.calculate_gold_amount(net_amount, fixing_price)
+
+app/services/transformation_service.py:113: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+euro_amount = Decimal('95.0000'), fixing_price = Decimal('0')
+
+    @staticmethod
+    async def calculate_gold_amount(euro_amount: Decimal, fixing_price: Decimal) -> Decimal:
+        """Calculate gold amount based on fixing price"""
+        if fixing_price <= 0:
+            logger.error(f"Invalid fixing price: {fixing_price}")
+>           raise ValueError("Invalid fixing price")
+E           ValueError: Invalid fixing price
+
+app/services/transformation_service.py:49: ValueError
+
+During handling of the above exception, another exception occurred:
+
+app = <Flask 'app'>
+
+>   ???
+
+/home/runner/gold-investment-backend/tests/unit/test_transformation.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+user_id = 1, euro_amount = Decimal('100.00'), fixing_price = Decimal('0')
+
+    @staticmethod
+    async def process_transformation(user_id: int, euro_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
+        """Process complete money to gold transformation"""
+        logger.info(f"Inizio trasformazione - Utente: {user_id} - Importo: {euro_amount}€ - Fixing: {fixing_price}",
+                    extra={'audit_type': 'TRANSFORMATION_START',
+                           'user_id': user_id,
+                           'amount': str(euro_amount),
+                           'fixing_price': str(fixing_price),
+                           'timestamp': datetime.utcnow().isoformat()})
+    
+        try:
+            # 1. Verifica del trasferimento
+            logger.info(f"Controllo disponibilità fondi per utente {user_id}")
+            verification_result = await TransformationService.verify_transfer(user_id, euro_amount)
+            if not verification_result["valid"]:
+                logger.warning(f"Transfer verification failed for user {user_id} - {verification_result['reason']}")
+                return {
+                    "status": "error",
+                    "message": verification_result["reason"]
+                }
+    
+            # 2. Process organization fee
+            logger.info(f"Calcolo commissioni per importo {euro_amount}€")
+            net_amount = await TransformationService.process_organization_fee(euro_amount)
+            logger.info(f"Importo netto dopo commissioni: {net_amount}€")
+    
+            # 3. Calculate gold amount
+            logger.info(f"Calcolo grammi oro con fixing price {fixing_price}")
+            gold_amount = await TransformationService.calculate_gold_amount(net_amount, fixing_price)
+            logger.info(f"Grammi oro calcolati: {gold_amount}g")
+    
+            # 4. Process transformation
+            async with db.session.begin():
+                user = await User.query.get(user_id)
+    
+                # Update money and gold accounts
+                user.money_account.balance -= euro_amount
+                user.gold_account.balance += gold_amount
+                user.gold_account.last_update = datetime.utcnow()
+    
+                # Distribute affiliate bonuses
+                await TransformationService.distribute_affiliate_bonuses(user, gold_amount)
+    
+                await db.session.commit()
+    
+            return {
+                "status": "success",
+                "gold_grams": float(gold_amount),
+                "transaction_id": None  # You can add transaction ID logic if needed
+            }
+    
+        except Exception as e:
+            logger.error(f"Transformation error: {str(e)}")
+>           await db.session.rollback()
+E           TypeError: object NoneType can't be used in 'await' expression
+
+app/services/transformation_service.py:138: TypeError
+-------------------------------- Captured stdout setup ---------------------------------
+Tables created successfully.
+Query optimization completed successfully
+Table transactions does not exist, skipping indexes
+Table transformations does not exist, skipping indexes
+Table noble_ranks does not exist, skipping indexes
+Table users does not exist, skipping indexes
+Table noble_relations does not exist, skipping indexes
+Database optimization completed successfully
+-------------------------------- Captured stderr setup ---------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> dc45cb3ac83f, Initial migration
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+INFO  [alembic.runtime.migration] Running upgrade 3135a7000c3b -> c564559997be, empty message
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+=============================== short test summary info ================================
+ERROR tests/functional/test_api.py::test_transformation_endpoint - NameError: name 'create_app' is not defined
+ERROR tests/functional/test_api.py::test_account_balance - NameError: name 'create_app' is not defined
+ERROR tests/functional/test_api.py::test_invalid_transformation - NameError: name 'create_app' is not defined
+ERROR tests/performance/test_load.py::test_blockchain_batch_performance
+ERROR tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_structure_bonus - TypeError: 'AppContext' object does not support the asynchronous context manager pr...
+ERROR tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_successful - TypeError: 'AppContext' object does not support the asynchronous context manager pr...
+ERROR tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_invalid_rank - TypeError: 'AppContext' object does not support the asynchronous context manager pr...
+ERROR tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_insufficient_balance - TypeError: 'AppContext' object does not support the asynchronous context manager pr...
+ERROR tests/unit/test_noble_system.py::test_noble_rank_creation
+ERROR tests/unit/test_noble_system.py::test_noble_relation_verification
+FAILED tests/integration/test_blockchain.py::test_batch_transformation_process - AssertionError: assert 'error' == 'success'
+FAILED tests/integration/test_blockchain.py::test_noble_rank_update - AssertionError: assert 'error' == 'verified'
+FAILED tests/performance/test_load.py::test_concurrent_transformations - RuntimeError: Working outside of application context.
+FAILED tests/performance/test_load.py::test_system_under_heavy_load - RuntimeError: Working outside of application context.
+FAILED tests/performance/test_load.py::test_system_under_heavy_load_original - AttributeError: 'PerformanceMonitor' object has no attribute 'get_alerts'
+FAILED tests/performance/test_monitoring.py::test_performance_monitor - AssertionError: assert 3 == 1
+FAILED tests/performance/test_optimization.py::test_table_creation_and_optimization - AssertionError: Email index not created
+FAILED tests/unit/test_blockchain_monitor.py::test_basic_monitoring - AttributeError: type object 'Web3' has no attribute 'eth'
+FAILED tests/unit/test_blockchain_monitor.py::test_transaction_validation - AttributeError: 'BlockchainMonitor' object has no attribute 'validate_transaction_a...
+FAILED tests/unit/test_blockchain_monitor.py::test_network_interruption - AttributeError: type object 'Web3' has no attribute 'eth'
+FAILED tests/unit/test_blockchain_monitor.py::test_invalid_transaction - AttributeError: type object 'Web3' has no attribute 'eth'
+FAILED tests/unit/test_blockchain_monitor.py::test_gas_price_threshold - AttributeError: 'BlockchainMonitor' object has no attribute 'is_gas_price_acceptable'
+FAILED tests/unit/test_blockchain_monitor.py::test_concurrent_transactions - AttributeError: type object 'Web3' has no attribute 'eth'
+FAILED tests/unit/test_blockchain_monitor.py::test_empty_block - AttributeError: type object 'Web3' has no attribute 'eth'
+FAILED tests/unit/test_blockchain_monitor.py::test_malformed_transaction - AttributeError: type object 'Web3' has no attribute 'eth'
+FAILED tests/unit/test_blockchain_monitor.py::test_extreme_gas_prices - AttributeError: 'BlockchainMonitor' object has no attribute 'is_gas_price_acceptable'
+FAILED tests/unit/test_blockchain_monitor.py::test_network_timeout - AttributeError: type object 'Web3' has no attribute 'eth'
+FAILED tests/unit/test_logging.py::test_setup_logging - assert 0 > 0
+FAILED tests/unit/test_transformation.py::test_transformation_calculates_correct_gold_amount - TypeError: object NoneType can't be used in 'await' expression
+FAILED tests/unit/test_transformation.py::test_invalid_fixing_price - TypeError: object NoneType can't be used in 'await' expression
+================ 20 failed, 16 passed, 59 warnings, 10 errors in 4.97s =================
+~/workspace$ 
