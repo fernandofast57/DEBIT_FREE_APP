@@ -1,3 +1,4 @@
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_caching import Cache
@@ -8,7 +9,7 @@ from app.database import db
 from app.admin import admin
 from app.models.models import User, NobleRank, Transaction
 from sqlalchemy import text
-from app.utils.database.migrations import migration_manager
+from app.utils.database.migrations import MigrationManager  # Modifica qui
 
 # Inizializzazione estensioni Flask
 cache = Cache(config={'CACHE_TYPE': 'simple'})
@@ -25,7 +26,7 @@ def create_app(config_class=Config):
     db.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db)
-    
+
     # Configurazione del login_manager
     @login_manager.user_loader
     def load_user(user_id):
@@ -43,7 +44,7 @@ def create_app(config_class=Config):
     with app.app_context():
         from app.utils.optimization import optimize_queries, create_indexes
         from sqlalchemy import inspect
-        
+
         inspector = inspect(db.engine)
         if not inspector.has_table('users'):
             db.create_all()
@@ -55,6 +56,10 @@ def create_app(config_class=Config):
 
     # Inizializzazione Admin
     admin.init_app(app)
+
+    # Inizializzazione Migration Manager
+    migration_manager = MigrationManager(app, db)  # Aggiungi questa riga
+    migration_manager.init_migrations()  # Inizializza le migrazioni subito dopo l'applicazione
 
     # Blueprint Registration
     from app.routes import auth_bp, main_bp
