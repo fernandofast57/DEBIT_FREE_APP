@@ -42,6 +42,52 @@ class TransformationService:
         return net_amount
 
     @staticmethod
+    async def transform_gold(self, user_id: int, euro_amount: Decimal, fixing_price: Decimal) -> Dict:
+        """Transform euros to gold and record on blockchain"""
+        try:
+            user = await User.query.get(user_id)
+            if not user or not user.money_account:
+                raise ValueError("Invalid user or money account")
+
+            gold_amount = await self.calculate_gold_amount(euro_amount, fixing_price)
+            
+            # Record on blockchain
+            blockchain_service = BlockchainService()
+            tx_result = await blockchain_service.record_gold_transaction(
+                user.blockchain_address,
+                float(euro_amount),
+                float(gold_amount)
+            )
+            
+            if tx_result['status'] != 'verified':
+                raise ValueError(f"Blockchain transaction failed: {tx_result.get('message')}")
+                
+            # Update database
+            user.money_account.balance -= euro_amount
+            user.gold_account.balance += gold_amount
+            
+            transformation = GoldTransformation(
+                user_id=user_id,
+                euro_amount=euro_amount,
+                gold_grams=gold_amount,
+                fixing_price=fixing_price,
+                blockchain_tx_hash=tx_result['transaction_hash']
+            )
+            
+            db.session.add(transformation)
+            await db.session.commit()
+            
+            return {
+                'status': 'success',
+                'gold_amount': float(gold_amount),
+                'transaction_hash': tx_result['transaction_hash']
+            }
+            
+        except Exception as e:
+            await db.session.rollback()
+            logger.error(f"Gold transformation error: {str(e)}")
+            raise
+
     async def calculate_gold_amount(euro_amount: Decimal, fixing_price: Decimal) -> Decimal:
         """Calculate gold amount based on fixing price"""
         if fixing_price <= 0:

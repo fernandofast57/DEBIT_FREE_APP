@@ -186,6 +186,37 @@ class BlockchainService:
             return {'status': 'rejected', 'message': str(e)}
 
     @log_blockchain_transaction
+    async def record_gold_transaction(self, user_address: str, euro_amount: float, gold_grams: float) -> Dict[str, Any]:
+        """Record a gold transformation transaction on blockchain"""
+        if not self.is_connected():
+            raise ValueError("Blockchain connection not initialized")
+            
+        try:
+            transaction = self.contract.functions.transformGold(
+                user_address,
+                int(euro_amount * 100),  # Convert to cents
+                int(gold_grams * 10000)  # Convert to base units
+            ).build_transaction({
+                'from': self.account.address,
+                'nonce': self.w3.eth.get_transaction_count(self.account.address),
+                'gas': 200000,
+                'gasPrice': self.w3.eth.gas_price
+            })
+            
+            signed_txn = self.w3.eth.account.sign_transaction(transaction, os.getenv('PRIVATE_KEY'))
+            tx_hash = self.w3.eth.send_raw_transaction(signed_txn.rawTransaction)
+            receipt = self.w3.eth.wait_for_transaction_receipt(tx_hash)
+            
+            return {
+                'status': 'verified',
+                'transaction_hash': receipt.transactionHash.hex(),
+                'block_number': receipt.blockNumber
+            }
+            
+        except Exception as e:
+            logger.error(f"Error recording gold transaction: {str(e)}")
+            return {'status': 'error', 'message': str(e)}
+
     async def process_batch_transformation(self, batch_data: List[Dict]) -> Any:
         """Process a batch of transformations on blockchain with security validation"""
         try:

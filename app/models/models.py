@@ -67,6 +67,8 @@ class GoldTransformation(db.Model):
     euro_amount = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
     gold_grams = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
     fixing_price = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
+    blockchain_tx_hash = db.Column(db.String(66), nullable=True)
+    blockchain_status = db.Column(db.String(20), default='pending')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     user = db.relationship('User', back_populates='gold_transformations')
