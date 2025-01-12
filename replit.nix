@@ -1,6 +1,8 @@
 
 { pkgs }: {
   deps = [
+    pkgs.sqlite-interactive
+    pkgs.nano
     pkgs.mailutils
     pkgs.zip
     pkgs.rsync
