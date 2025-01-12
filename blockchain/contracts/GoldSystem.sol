@@ -9,9 +9,10 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 contract NobleGoldSystem is Ownable, ReentrancyGuard {
     using SafeMath for uint256;
 
-    struct Investment {
+    struct GoldTransaction {
         uint256 euroAmount;
         uint256 goldGrams;
+        uint256 fixingPrice;
         uint256 timestamp;
         bool isVerified;
     }
@@ -25,79 +26,61 @@ contract NobleGoldSystem is Ownable, ReentrancyGuard {
         string ibanHash;
     }
 
-    mapping(address => Investment[]) public investments;
+    mapping(address => GoldTransaction[]) public transactions;
     mapping(address => Noble) public nobles;
     mapping(address => address[]) public referrals;
-    mapping(address => bool) public verifiedAccounts;
     
     uint256 public constant CLIENT_SHARE = 933; // 93.3%
     uint256 public constant NETWORK_SHARE = 17; // 1.7%
     uint256 public constant OPERATIONAL_SHARE = 50; // 5%
     uint256 public constant BASIS_POINTS = 1000;
     
-    address public operationalWallet;
-    
-    event KYCVerified(address indexed user);
-    event IBANVerified(address indexed user);
     event GoldTransformed(
         address indexed user,
         uint256 euroAmount,
         uint256 goldGrams,
+        uint256 fixingPrice,
         uint256 timestamp
     );
+    
     event BonusDistributed(
         address indexed user,
         address indexed referrer,
         uint256 amount,
         string bonusType
     );
+    
+    event NobleRankUpdated(
+        address indexed user,
+        string newRank,
+        uint256 timestamp
+    );
 
     constructor() Ownable(msg.sender) {}
-
-    modifier onlyVerifiedUser(address user) {
-        require(verifiedAccounts[user], "User not verified");
-        require(nobles[user].kycVerified, "KYC not completed");
-        _;
-    }
-
-    function verifyKYC(address user) external onlyOwner {
-        nobles[user].kycVerified = true;
-        emit KYCVerified(user);
-    }
-
-    function verifyIBAN(address user, string memory ibanHash) external onlyOwner {
-        nobles[user].ibanHash = ibanHash;
-        emit IBANVerified(user);
-    }
 
     function transformGold(
         address user,
         uint256 euroAmount,
-        uint256 goldGrams
-    ) external onlyOwner onlyVerifiedUser(user) nonReentrant {
+        uint256 goldGrams,
+        uint256 fixingPrice
+    ) external onlyOwner nonReentrant {
         require(euroAmount > 0, "Invalid euro amount");
         require(goldGrams > 0, "Invalid gold amount");
 
         uint256 clientGold = goldGrams.mul(CLIENT_SHARE).div(BASIS_POINTS);
         uint256 networkGold = goldGrams.mul(NETWORK_SHARE).div(BASIS_POINTS);
-        uint256 operationalGold = goldGrams.mul(OPERATIONAL_SHARE).div(BASIS_POINTS);
         
-        // Transfer operational fee
-        if (operationalWallet != address(0)) {
-            // Implementation for operational gold transfer
-            emit BonusDistributed(user, operationalWallet, operationalGold, "OPERATIONAL");
-        }
-
-        investments[user].push(Investment({
+        transactions[user].push(GoldTransaction({
             euroAmount: euroAmount,
             goldGrams: clientGold,
+            fixingPrice: fixingPrice,
             timestamp: block.timestamp,
             isVerified: true
         }));
 
         _distributeNetworkBonus(user, networkGold);
         
-        emit GoldTransformed(user, euroAmount, clientGold, block.timestamp);
+        emit GoldTransformed(user, euroAmount, clientGold, fixingPrice, block.timestamp);
     }
 
     function _distributeNetworkBonus(address user, uint256 networkGold) internal {
@@ -117,5 +100,31 @@ contract NobleGoldSystem is Ownable, ReentrancyGuard {
             current = nobles[current].upline;
             level++;
         }
+    }
+
+    function getTransactionHistory(address user) external view returns (
+        uint256[] memory euroAmounts,
+        uint256[] memory goldGrams,
+        uint256[] memory timestamps
+    ) {
+        GoldTransaction[] storage userTxs = transactions[user];
+        uint256 length = userTxs.length;
+        
+        euroAmounts = new uint256[](length);
+        goldGrams = new uint256[](length);
+        timestamps = new uint256[](length);
+        
+        for (uint256 i = 0; i < length; i++) {
+            euroAmounts[i] = userTxs[i].euroAmount;
+            goldGrams[i] = userTxs[i].goldGrams;
+            timestamps[i] = userTxs[i].timestamp;
+        }
+        
+        return (euroAmounts, goldGrams, timestamps);
+    }
+
+    function updateNobleRank(address user, string calldata newRank) external onlyOwner {
+        nobles[user].rank = newRank;
+        emit NobleRankUpdated(user, newRank, block.timestamp);
     }
 }
