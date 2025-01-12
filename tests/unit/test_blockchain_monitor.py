@@ -101,3 +101,34 @@ async def test_network_timeout(web3_mock):
     response = await monitor.process_block(12345)
     assert response['status'] == 'error'
     assert 'timeout' in response['message'].lower()
+import pytest
+from unittest.mock import Mock, patch
+from app.utils.blockchain_monitor import BlockchainMonitor
+from web3 import Web3
+
+@pytest.fixture
+def mock_w3():
+    w3 = Mock(spec=Web3)
+    w3.eth.get_block_number.return_value = 1000
+    return w3
+
+@pytest.fixture
+def blockchain_monitor(mock_w3):
+    return BlockchainMonitor(mock_w3)
+
+def test_monitor_transaction(blockchain_monitor):
+    tx_data = {
+        'type': 'gold_transformation',
+        'status': 'success',
+        'tx_hash': '0x123'
+    }
+    result = blockchain_monitor.monitor_transactions(tx_data)
+    assert result['status'] == 'monitored'
+
+def test_alert_system(blockchain_monitor):
+    result = blockchain_monitor.send_alert("Test alert")
+    assert result['status'] == 'sent'
+
+def test_block_monitoring(blockchain_monitor, mock_w3):
+    mock_w3.eth.get_block_number.return_value = 1001
+    assert blockchain_monitor.check_new_blocks()
