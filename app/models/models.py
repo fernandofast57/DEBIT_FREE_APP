@@ -34,17 +34,15 @@ class Parameter(db.Model):
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     __table_args__ = {'extend_existing': True}
-
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
-
+    referrer_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
     transactions = db.relationship('Transaction', back_populates='user')
     money_account = db.relationship('MoneyAccount', back_populates='user', uselist=False)
     gold_account = db.relationship('GoldAccount', back_populates='user', uselist=False)
     gold_transformations = db.relationship('GoldTransformation', back_populates='user')
-
     def __repr__(self):
         return f"<User {self.username}>"
 
