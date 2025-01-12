@@ -1,3 +1,4 @@
+
 from web3 import Web3
 from eth_account import Account
 import json
@@ -17,25 +18,25 @@ def deploy_contract():
         print("\nStarting deployment process...")
         load_dotenv()
 
-        # Connect to network
         w3 = Web3(Web3.HTTPProvider(MUMBAI_RPC_URLS[0]))
         if not w3.is_connected():
             raise ConnectionError("Could not connect to Polygon Mumbai")
 
-        # Load account
         private_key = os.getenv('POLYGON_PRIVATE_KEY')
         if not private_key:
             raise ValueError("POLYGON_PRIVATE_KEY not found in environment")
         account = Account.from_key(private_key)
 
-        # Load contract
-        with open('blockchain/contracts/GoldSystem.json') as f:
-            contract_json = json.load(f)
+        with open('blockchain/contracts/GoldSystem.sol') as f:
+            contract_source = f.read()
 
-        # Deploy contract
+        # Compile the contract using solc
+        compiled_sol = compile_source(contract_source)
+        contract_interface = compiled_sol['<stdin>:NobleGoldSystem']
+
         contract = w3.eth.contract(
-            abi=contract_json['abi'],
-            bytecode=contract_json['bytecode']
+            abi=contract_interface['abi'],
+            bytecode=contract_interface['bin']
         )
 
         transaction = contract.constructor().build_transaction({
@@ -54,7 +55,6 @@ def deploy_contract():
         contract_address = receipt['contractAddress']
         print(f"Contract deployed to: {contract_address}")
 
-        # Save deployment info
         deployment_info = {
             'address': contract_address,
             'network': 'mumbai',
