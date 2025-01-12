@@ -1,0 +1,159 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
+
+import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+
+contract NobleGoldSystem is AccessControl, Pausable, ReentrancyGuard {
+    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+    bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
+
+    struct GoldTransaction {
+        uint256 id;
+        address user;
+        uint256 goldAmount;
+        uint256 fixingPrice;
+        uint256 timestamp;
+        address affiliate;
+        bool processed;
+    }
+
+    struct AffiliateBonus {
+        address affiliate;
+        uint256 bonusAmount;
+        bool paid;
+    }
+
+    mapping(uint256 => GoldTransaction) public transactions;
+    mapping(address => AffiliateBonus[]) public affiliateBonuses;
+    
+    uint256 public transactionCount;
+    uint256 public bonusPercentage;
+
+    event GoldTransactionRecorded(
+        uint256 indexed id,
+        address indexed user,
+        uint256 goldAmount,
+        uint256 fixingPrice,
+        uint256 timestamp
+    );
+
+    event BonusPaid(
+        address indexed affiliate,
+        uint256 amount,
+        uint256 transactionId
+    );
+
+    constructor() {
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _setupRole(ADMIN_ROLE, msg.sender);
+        bonusPercentage = 5; // 5% default bonus
+    }
+
+    function recordGoldTransaction(
+        address user,
+        uint256 goldAmount,
+        uint256 fixingPrice,
+        address affiliate
+    ) external onlyRole(OPERATOR_ROLE) nonReentrant whenNotPaused returns (uint256) {
+        require(user != address(0), "Invalid user address");
+        require(goldAmount > 0, "Invalid gold amount");
+        require(fixingPrice > 0, "Invalid fixing price");
+
+        uint256 transactionId = ++transactionCount;
+        
+        transactions[transactionId] = GoldTransaction({
+            id: transactionId,
+            user: user,
+            goldAmount: goldAmount,
+            fixingPrice: fixingPrice,
+            timestamp: block.timestamp,
+            affiliate: affiliate,
+            processed: false
+        });
+
+        emit GoldTransactionRecorded(
+            transactionId,
+            user,
+            goldAmount,
+            fixingPrice,
+            block.timestamp
+        );
+
+        if (affiliate != address(0)) {
+            processBonusPayment(transactionId);
+        }
+
+        return transactionId;
+    }
+
+    function processBonusPayment(uint256 transactionId) internal {
+        GoldTransaction storage transaction = transactions[transactionId];
+        require(!transaction.processed, "Transaction already processed");
+        
+        uint256 transactionValue = transaction.goldAmount * transaction.fixingPrice;
+        uint256 bonusAmount = (transactionValue * bonusPercentage) / 100;
+
+        AffiliateBonus memory bonus = AffiliateBonus({
+            affiliate: transaction.affiliate,
+            bonusAmount: bonusAmount,
+            paid: false
+        });
+
+        affiliateBonuses[transaction.affiliate].push(bonus);
+        transaction.processed = true;
+
+        emit BonusPaid(
+            transaction.affiliate,
+            bonusAmount,
+            transactionId
+        );
+    }
+
+    function setBonusPercentage(uint256 newPercentage) external onlyRole(ADMIN_ROLE) {
+        require(newPercentage <= 100, "Invalid percentage");
+        bonusPercentage = newPercentage;
+    }
+
+    function pause() external onlyRole(ADMIN_ROLE) {
+        _pause();
+    }
+
+    function unpause() external onlyRole(ADMIN_ROLE) {
+        _unpause();
+    }
+
+    function getTransaction(uint256 transactionId) external view returns (
+        address user,
+        uint256 goldAmount,
+        uint256 fixingPrice,
+        uint256 timestamp,
+        address affiliate,
+        bool processed
+    ) {
+        GoldTransaction storage transaction = transactions[transactionId];
+        return (
+            transaction.user,
+            transaction.goldAmount,
+            transaction.fixingPrice,
+            transaction.timestamp,
+            transaction.affiliate,
+            transaction.processed
+        );
+    }
+
+    function getAffiliateBonus(address affiliate) external view returns (
+        uint256 totalBonus,
+        uint256 unpaidBonus
+    ) {
+        AffiliateBonus[] storage bonuses = affiliateBonuses[affiliate];
+        for (uint i = 0; i < bonuses.length; i++) {
+            totalBonus += bonuses[i].bonusAmount;
+            if (!bonuses[i].paid) {
+                unpaidBonus += bonuses[i].bonusAmount;
+            }
+        }
+        return (totalBonus, unpaidBonus);
+    }
+}
