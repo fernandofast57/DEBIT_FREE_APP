@@ -22,7 +22,7 @@ def after_request(response):
 if __name__ == '__main__':
     with app.app_context():
         try:
-            port = int(os.getenv('PORT', 8080))
+            port = int(os.getenv('PORT', 8080))  # Default to port 8080
             env = os.getenv('FLASK_ENV', 'development')
             debug = env == 'development'
             
@@ -30,7 +30,7 @@ if __name__ == '__main__':
             server = load_balancer.get_next_server()
             
             logger.info(f"Starting application on {server['host']}:{server['port']} in {env} mode")
-            app.run(host='0.0.0.0', port=server['port'], debug=debug)
+            app.run(host='0.0.0.0', port=server['port'], debug=debug)  # Binding to 0.0.0.0
         except Exception as e:
             logger.error(f"Failed to start application: {e}")
             raise

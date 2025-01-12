@@ -1,0 +1,50 @@
+To ensure that all simulated external service calls, such as blockchain interactions, are correctly set up in your tests, you should properly mock any external dependencies. This will prevent your tests from failing or being skipped if they cannot connect to the real services. Here are some steps to consider:
+
+1. Use Mocks for External Calls
+You should use mocking to simulate the behavior of external services during testing. Here’s how you can do it effectively:
+
+Example for Mocking Blockchain Interactions
+Here’s an example of how to set up mocks for your BlockchainService. You can add this to your existing test files or create a new one.
+
+from unittest.mock import Mock, patch
+import pytest
+from app.services.blockchain_service import BlockchainService
+@pytest.fixture
+def blockchain_service():
+    service = BlockchainService()
+    service.w3 = Mock()
+    service.contract = Mock()
+    
+    # Mocking the connection and contract functions
+    service.w3.is_connected.return_value = True
+    service.w3.eth.get_block_number.return_value = 12345  # Example block number
+    return service
+@pytest.mark.asyncio
+async def test_blockchain_functionality(blockchain_service):
+    # Mocking specific contract functions
+    transaction_response = Mock()
+    transaction_response.status = 1  # Simulates a successful transaction status
+    
+    blockchain_service.contract.functions.processBatchTransformation.return_value.transact.return_value = transaction_response
+    batch_data = [
+        {"user_id": 1, "amount": Decimal('100.0'), "timestamp": 1645564800},
+        {"user_id": 2, "amount": Decimal('200.0'), "timestamp": 1645564800}
+    ]
+    
+    result = await blockchain_service.process_batch_transformation(batch_data)
+    assert result['status'] == 'success'  # Check for expected success status
+2. Verify All External Calls Are Mocked
+Review any functions that interact with external services and ensure they're either mocked or wrapped in a condition that can be turned off during testing.
+
+3. Handle Exceptions Gracefully
+It's good practice to handle exceptions from external calls to prevent your tests from crashing. You can implement try-except blocks within your service methods, or you can simulate exceptions in your tests using mocks.
+
+Example of Simulating an Exception
+@pytest.mark.asyncio
+async def test_blockchain_failure(blockchain_service):
+    # Simulate a failure in the contract
+    blockchain_service.contract.functions.processBatchTransformation.side_effect = Exception("Blockchain connection failed")
+    batch_data = [{"user_id": 1, "amount": Decimal('100.0')}]
+    result = await blockchain_service.process_batch_transformation(batch_data)
+    assert result['status'] == 'error'  # Expecting an error status as a result of the simulated failure
+By mocking the responses and simulating various scenarios, you can ensure that your tests accurately reflect the behavior of your application without depending on external services. If you have any specific external services or calls you want to simulate, feel free to share more details!

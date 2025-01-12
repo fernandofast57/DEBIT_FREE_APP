@@ -1,0 +1,1387 @@
+~/workspace$ PYTHONPATH=./ pytest
+==================================== test session starts ====================================
+platform linux -- Python 3.11.10, pytest-7.4.3, pluggy-1.5.0 -- /nix/store/wqhkxzzlaswkj3gimqign99sshvllcg6-python-wrapped-0.1.0/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/runner/workspace
+configfile: pytest.ini
+testpaths: tests/unit, tests/integration, tests/functional, tests/security, tests/performance, tests/e2e
+plugins: mock-3.12.0, asyncio-0.21.1, web3-6.11.3
+asyncio: mode=Mode.STRICT
+collected 47 items                                                                          
+
+tests/unit/test_blockchain_monitor.py::test_basic_monitoring FAILED                   [  2%]
+tests/unit/test_blockchain_monitor.py::test_transaction_validation PASSED             [  4%]
+tests/unit/test_blockchain_monitor.py::test_network_interruption FAILED               [  6%]
+tests/unit/test_blockchain_monitor.py::test_invalid_transaction FAILED                [  8%]
+tests/unit/test_blockchain_monitor.py::test_gas_price_threshold PASSED                [ 10%]
+tests/unit/test_blockchain_monitor.py::test_concurrent_transactions FAILED            [ 12%]
+tests/unit/test_blockchain_monitor.py::test_empty_block FAILED                        [ 14%]
+tests/unit/test_blockchain_monitor.py::test_malformed_transaction FAILED              [ 17%]
+tests/unit/test_blockchain_monitor.py::test_extreme_gas_prices FAILED                 [ 19%]
+tests/unit/test_blockchain_monitor.py::test_network_timeout FAILED                    [ 21%]
+tests/unit/test_blockchain_service.py::test_batch_transformation_process SKIPPED      [ 23%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_structure_bonus FAILED [ 25%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_successful FAILED [ 27%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_invalid_rank FAILED [ 29%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_insufficient_balance FAILED [ 31%]
+tests/unit/test_constants.py::test_status_constants PASSED                            [ 34%]
+tests/unit/test_logging.py::test_logger_initialization PASSED                         [ 36%]
+tests/unit/test_logging.py::test_setup_logging FAILED                                 [ 38%]
+tests/unit/test_noble_system.py::test_noble_rank_creation ERROR                       [ 40%]
+tests/unit/test_noble_system.py::test_noble_relation_verification ERROR               [ 42%]
+tests/unit/test_transformation.py::test_transformation_calculates_correct_gold_amount FAILED [ 44%]
+tests/unit/test_transformation.py::test_insufficient_funds_transformation FAILED      [ 46%]
+tests/unit/test_transformation.py::test_invalid_fixing_price FAILED                   [ 48%]
+tests/integration/test_blockchain.py::test_batch_transformation_process SKIPPED (...) [ 51%]
+tests/integration/test_blockchain.py::test_noble_rank_update SKIPPED (Blockchain ...) [ 53%]
+tests/integration/test_blockchain.py::test_blockchain_stats SKIPPED (Blockchain c...) [ 55%]
+tests/functional/test_api.py::test_transformation_endpoint ERROR                      [ 57%]
+tests/functional/test_api.py::test_account_balance ERROR                              [ 59%]
+tests/functional/test_api.py::test_invalid_transformation ERROR                       [ 61%]
+tests/security/test_security.py::test_environment_variables PASSED                    [ 63%]
+tests/security/test_security.py::test_rate_limiter PASSED                             [ 65%]
+tests/security/test_security.py::test_security_manager_logging PASSED                 [ 68%]
+tests/security/test_security.py::test_permission_checking PASSED                      [ 70%]
+tests/security/test_security.py::test_role_permission_validation PASSED               [ 72%]
+tests/security/test_security.py::test_input_validation PASSED                         [ 74%]
+tests/security/test_security.py::test_sql_injection_prevention PASSED                 [ 76%]
+tests/security/test_security.py::test_xss_prevention PASSED                           [ 78%]
+tests/security/test_security.py::test_rate_limiter_stress PASSED                      [ 80%]
+tests/performance/test_load.py::test_concurrent_transformations FAILED                [ 82%]
+tests/performance/test_load.py::test_blockchain_batch_performance ERROR               [ 85%]
+tests/performance/test_load.py::test_system_under_heavy_load FAILED                   [ 87%]
+tests/performance/test_load.py::test_system_under_load PASSED                         [ 89%]
+tests/performance/test_load.py::test_system_under_heavy_load_original FAILED          [ 91%]
+tests/performance/test_monitoring.py::test_system_monitoring PASSED                   [ 93%]
+tests/performance/test_monitoring.py::test_performance_monitor FAILED                 [ 95%]
+tests/performance/test_monitoring.py::test_performance_decorator PASSED               [ 97%]
+tests/performance/test_optimization.py::test_table_creation_and_optimization FAILED   [100%]
+
+========================================== ERRORS ===========================================
+________________________ ERROR at setup of test_noble_rank_creation _________________________
+file /home/runner/workspace/tests/unit/test_noble_system.py, line 7
+  def test_noble_rank_creation(app, mock_blockchain_service):
+E       fixture 'mock_blockchain_service' not found
+>       available fixtures: app, auth_headers, blockchain_monitor, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, client, deployer, doctest_namespace, event_loop, mocker, module_mocker, monkeypatch, package_mocker, populate_database, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, runner, session_mocker, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory, w3
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/workspace/tests/unit/test_noble_system.py:7
+----------------------------------- Captured stdout setup -----------------------------------
+Tables created successfully.
+Query optimization completed successfully
+Error creating indexes: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+----------------------------------- Captured stderr setup -----------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+____________________ ERROR at setup of test_noble_relation_verification _____________________
+file /home/runner/workspace/tests/unit/test_noble_system.py, line 19
+  def test_noble_relation_verification(app, mock_blockchain_service):
+E       fixture 'mock_blockchain_service' not found
+>       available fixtures: app, auth_headers, blockchain_monitor, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, client, deployer, doctest_namespace, event_loop, mocker, module_mocker, monkeypatch, package_mocker, populate_database, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, runner, session_mocker, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory, w3
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/workspace/tests/unit/test_noble_system.py:19
+----------------------------------- Captured stdout setup -----------------------------------
+Tables created successfully.
+Query optimization completed successfully
+Error creating indexes: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+----------------------------------- Captured stderr setup -----------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+______________________ ERROR at setup of test_transformation_endpoint _______________________
+
+    @pytest.fixture
+    def client():
+>       app = create_app()
+E       NameError: name 'create_app' is not defined
+
+tests/functional/test_api.py:9: NameError
+__________________________ ERROR at setup of test_account_balance ___________________________
+
+    @pytest.fixture
+    def client():
+>       app = create_app()
+E       NameError: name 'create_app' is not defined
+
+tests/functional/test_api.py:9: NameError
+_______________________ ERROR at setup of test_invalid_transformation _______________________
+
+    @pytest.fixture
+    def client():
+>       app = create_app()
+E       NameError: name 'create_app' is not defined
+
+tests/functional/test_api.py:9: NameError
+____________________ ERROR at setup of test_blockchain_batch_performance ____________________
+file /home/runner/workspace/tests/performance/test_load.py, line 25
+  @pytest.mark.asyncio
+  async def test_blockchain_batch_performance(blockchain_service):
+      batch_size = 10
+      batch_data = [
+          {"user_id": i, "amount": Decimal('100.0'), "timestamp": 1645564800}
+          for i in range(batch_size)
+      ]
+
+      result = await blockchain_service.process_batch_transformation(batch_data)
+      assert result['status'] == 'success'
+E       fixture 'blockchain_service' not found
+>       available fixtures: app, auth_headers, blockchain_monitor, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, client, deployer, doctest_namespace, event_loop, mocker, module_mocker, monkeypatch, package_mocker, populate_database, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, runner, session_mocker, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory, w3
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/workspace/tests/performance/test_load.py:25
+========================================= FAILURES ==========================================
+___________________________________ test_basic_monitoring ___________________________________
+
+blockchain_monitor = <app.utils.blockchain_monitor.BlockchainMonitor object at 0x7fae234665d0>
+
+    def test_basic_monitoring(blockchain_monitor):
+        """Test basic blockchain monitoring functionality"""
+>       with patch('web3.Web3.eth.get_block_number') as mock_block:
+
+tests/unit/test_blockchain_monitor.py:19: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:1430: in __enter__
+    self.target = self.getter()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'web3.Web3.eth'
+
+    def resolve_name(name):
+        """
+        Resolve a name to an object.
+    
+        It is expected that `name` will be a string in one of the following
+        formats, where W is shorthand for a valid Python identifier and dot stands
+        for a literal period in these pseudo-regexes:
+    
+        W(.W)*
+        W(.W)*:(W(.W)*)?
+    
+        The first form is intended for backward compatibility only. It assumes that
+        some part of the dotted name is a package, and the rest is an object
+        somewhere within that package, possibly nested inside other objects.
+        Because the place where the package stops and the object hierarchy starts
+        can't be inferred by inspection, repeated attempts to import must be done
+        with this form.
+    
+        In the second form, the caller makes the division point clear through the
+        provision of a single colon: the dotted name to the left of the colon is a
+        package to be imported, and the dotted name to the right is the object
+        hierarchy within that package. Only one import is needed in this form. If
+        it ends with the colon, then a module object is returned.
+    
+        The function will return an object (which might be a module), or raise one
+        of the following exceptions:
+    
+        ValueError - if `name` isn't in a recognised format
+        ImportError - if an import failed when it shouldn't have
+        AttributeError - if a failure occurred when traversing the object hierarchy
+                         within the imported package to get to the desired object.
+        """
+        global _NAME_PATTERN
+        if _NAME_PATTERN is None:
+            # Lazy import to speedup Python startup time
+            import re
+            dotted_words = r'(?!\d)(\w+)(\.(?!\d)(\w+))*'
+            _NAME_PATTERN = re.compile(f'^(?P<pkg>{dotted_words})'
+                                       f'(?P<cln>:(?P<obj>{dotted_words})?)?$',
+                                       re.UNICODE)
+    
+        m = _NAME_PATTERN.match(name)
+        if not m:
+            raise ValueError(f'invalid format: {name!r}')
+        gd = m.groupdict()
+        if gd.get('cln'):
+            # there is a colon - a one-step import is all that's needed
+            mod = importlib.import_module(gd['pkg'])
+            parts = gd.get('obj')
+            parts = parts.split('.') if parts else []
+        else:
+            # no colon - have to iterate to find the package boundary
+            parts = name.split('.')
+            modname = parts.pop(0)
+            # first part *must* be a module/package.
+            mod = importlib.import_module(modname)
+            while parts:
+                p = parts[0]
+                s = f'{modname}.{p}'
+                try:
+                    mod = importlib.import_module(s)
+                    parts.pop(0)
+                    modname = s
+                except ImportError:
+                    break
+        # if we reach this point, mod is the module, already imported, and
+        # parts is the list of parts in the object hierarchy to be traversed, or
+        # an empty list if just the module is wanted.
+        result = mod
+        for p in parts:
+>           result = getattr(result, p)
+E           AttributeError: type object 'Web3' has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/pkgutil.py:715: AttributeError
+_________________________________ test_network_interruption _________________________________
+
+web3_mock = <Mock id='140385894851216'>
+
+    @pytest.mark.asyncio
+    async def test_network_interruption(web3_mock):
+        """Test behavior during network interruption"""
+        monitor = BlockchainMonitor(web3_mock)
+>       with patch('web3.Web3.eth.get_block') as mock_block:
+
+tests/unit/test_blockchain_monitor.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:1430: in __enter__
+    self.target = self.getter()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'web3.Web3.eth'
+
+    def resolve_name(name):
+        """
+        Resolve a name to an object.
+    
+        It is expected that `name` will be a string in one of the following
+        formats, where W is shorthand for a valid Python identifier and dot stands
+        for a literal period in these pseudo-regexes:
+    
+        W(.W)*
+        W(.W)*:(W(.W)*)?
+    
+        The first form is intended for backward compatibility only. It assumes that
+        some part of the dotted name is a package, and the rest is an object
+        somewhere within that package, possibly nested inside other objects.
+        Because the place where the package stops and the object hierarchy starts
+        can't be inferred by inspection, repeated attempts to import must be done
+        with this form.
+    
+        In the second form, the caller makes the division point clear through the
+        provision of a single colon: the dotted name to the left of the colon is a
+        package to be imported, and the dotted name to the right is the object
+        hierarchy within that package. Only one import is needed in this form. If
+        it ends with the colon, then a module object is returned.
+    
+        The function will return an object (which might be a module), or raise one
+        of the following exceptions:
+    
+        ValueError - if `name` isn't in a recognised format
+        ImportError - if an import failed when it shouldn't have
+        AttributeError - if a failure occurred when traversing the object hierarchy
+                         within the imported package to get to the desired object.
+        """
+        global _NAME_PATTERN
+        if _NAME_PATTERN is None:
+            # Lazy import to speedup Python startup time
+            import re
+            dotted_words = r'(?!\d)(\w+)(\.(?!\d)(\w+))*'
+            _NAME_PATTERN = re.compile(f'^(?P<pkg>{dotted_words})'
+                                       f'(?P<cln>:(?P<obj>{dotted_words})?)?$',
+                                       re.UNICODE)
+    
+        m = _NAME_PATTERN.match(name)
+        if not m:
+            raise ValueError(f'invalid format: {name!r}')
+        gd = m.groupdict()
+        if gd.get('cln'):
+            # there is a colon - a one-step import is all that's needed
+            mod = importlib.import_module(gd['pkg'])
+            parts = gd.get('obj')
+            parts = parts.split('.') if parts else []
+        else:
+            # no colon - have to iterate to find the package boundary
+            parts = name.split('.')
+            modname = parts.pop(0)
+            # first part *must* be a module/package.
+            mod = importlib.import_module(modname)
+            while parts:
+                p = parts[0]
+                s = f'{modname}.{p}'
+                try:
+                    mod = importlib.import_module(s)
+                    parts.pop(0)
+                    modname = s
+                except ImportError:
+                    break
+        # if we reach this point, mod is the module, already imported, and
+        # parts is the list of parts in the object hierarchy to be traversed, or
+        # an empty list if just the module is wanted.
+        result = mod
+        for p in parts:
+>           result = getattr(result, p)
+E           AttributeError: type object 'Web3' has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/pkgutil.py:715: AttributeError
+_________________________________ test_invalid_transaction __________________________________
+
+web3_mock = <Mock id='140385893205200'>
+
+    @pytest.mark.asyncio
+    async def test_invalid_transaction(web3_mock):
+        """Test handling of invalid transaction"""
+        monitor = BlockchainMonitor(web3_mock)
+>       with patch('web3.Web3.eth.get_transaction') as mock_tx:
+
+tests/unit/test_blockchain_monitor.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:1430: in __enter__
+    self.target = self.getter()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'web3.Web3.eth'
+
+    def resolve_name(name):
+        """
+        Resolve a name to an object.
+    
+        It is expected that `name` will be a string in one of the following
+        formats, where W is shorthand for a valid Python identifier and dot stands
+        for a literal period in these pseudo-regexes:
+    
+        W(.W)*
+        W(.W)*:(W(.W)*)?
+    
+        The first form is intended for backward compatibility only. It assumes that
+        some part of the dotted name is a package, and the rest is an object
+        somewhere within that package, possibly nested inside other objects.
+        Because the place where the package stops and the object hierarchy starts
+        can't be inferred by inspection, repeated attempts to import must be done
+        with this form.
+    
+        In the second form, the caller makes the division point clear through the
+        provision of a single colon: the dotted name to the left of the colon is a
+        package to be imported, and the dotted name to the right is the object
+        hierarchy within that package. Only one import is needed in this form. If
+        it ends with the colon, then a module object is returned.
+    
+        The function will return an object (which might be a module), or raise one
+        of the following exceptions:
+    
+        ValueError - if `name` isn't in a recognised format
+        ImportError - if an import failed when it shouldn't have
+        AttributeError - if a failure occurred when traversing the object hierarchy
+                         within the imported package to get to the desired object.
+        """
+        global _NAME_PATTERN
+        if _NAME_PATTERN is None:
+            # Lazy import to speedup Python startup time
+            import re
+            dotted_words = r'(?!\d)(\w+)(\.(?!\d)(\w+))*'
+            _NAME_PATTERN = re.compile(f'^(?P<pkg>{dotted_words})'
+                                       f'(?P<cln>:(?P<obj>{dotted_words})?)?$',
+                                       re.UNICODE)
+    
+        m = _NAME_PATTERN.match(name)
+        if not m:
+            raise ValueError(f'invalid format: {name!r}')
+        gd = m.groupdict()
+        if gd.get('cln'):
+            # there is a colon - a one-step import is all that's needed
+            mod = importlib.import_module(gd['pkg'])
+            parts = gd.get('obj')
+            parts = parts.split('.') if parts else []
+        else:
+            # no colon - have to iterate to find the package boundary
+            parts = name.split('.')
+            modname = parts.pop(0)
+            # first part *must* be a module/package.
+            mod = importlib.import_module(modname)
+            while parts:
+                p = parts[0]
+                s = f'{modname}.{p}'
+                try:
+                    mod = importlib.import_module(s)
+                    parts.pop(0)
+                    modname = s
+                except ImportError:
+                    break
+        # if we reach this point, mod is the module, already imported, and
+        # parts is the list of parts in the object hierarchy to be traversed, or
+        # an empty list if just the module is wanted.
+        result = mod
+        for p in parts:
+>           result = getattr(result, p)
+E           AttributeError: type object 'Web3' has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/pkgutil.py:715: AttributeError
+_______________________________ test_concurrent_transactions ________________________________
+
+blockchain_monitor = <app.utils.blockchain_monitor.BlockchainMonitor object at 0x7fae23511f90>
+
+    def test_concurrent_transactions(blockchain_monitor):
+        """Test handling multiple transactions simultaneously"""
+        transactions = ['0x1234', '0x5678', '0x9abc']
+>       with patch('web3.Web3.eth.get_transaction_count') as mock_count:
+
+tests/unit/test_blockchain_monitor.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:1430: in __enter__
+    self.target = self.getter()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'web3.Web3.eth'
+
+    def resolve_name(name):
+        """
+        Resolve a name to an object.
+    
+        It is expected that `name` will be a string in one of the following
+        formats, where W is shorthand for a valid Python identifier and dot stands
+        for a literal period in these pseudo-regexes:
+    
+        W(.W)*
+        W(.W)*:(W(.W)*)?
+    
+        The first form is intended for backward compatibility only. It assumes that
+        some part of the dotted name is a package, and the rest is an object
+        somewhere within that package, possibly nested inside other objects.
+        Because the place where the package stops and the object hierarchy starts
+        can't be inferred by inspection, repeated attempts to import must be done
+        with this form.
+    
+        In the second form, the caller makes the division point clear through the
+        provision of a single colon: the dotted name to the left of the colon is a
+        package to be imported, and the dotted name to the right is the object
+        hierarchy within that package. Only one import is needed in this form. If
+        it ends with the colon, then a module object is returned.
+    
+        The function will return an object (which might be a module), or raise one
+        of the following exceptions:
+    
+        ValueError - if `name` isn't in a recognised format
+        ImportError - if an import failed when it shouldn't have
+        AttributeError - if a failure occurred when traversing the object hierarchy
+                         within the imported package to get to the desired object.
+        """
+        global _NAME_PATTERN
+        if _NAME_PATTERN is None:
+            # Lazy import to speedup Python startup time
+            import re
+            dotted_words = r'(?!\d)(\w+)(\.(?!\d)(\w+))*'
+            _NAME_PATTERN = re.compile(f'^(?P<pkg>{dotted_words})'
+                                       f'(?P<cln>:(?P<obj>{dotted_words})?)?$',
+                                       re.UNICODE)
+    
+        m = _NAME_PATTERN.match(name)
+        if not m:
+            raise ValueError(f'invalid format: {name!r}')
+        gd = m.groupdict()
+        if gd.get('cln'):
+            # there is a colon - a one-step import is all that's needed
+            mod = importlib.import_module(gd['pkg'])
+            parts = gd.get('obj')
+            parts = parts.split('.') if parts else []
+        else:
+            # no colon - have to iterate to find the package boundary
+            parts = name.split('.')
+            modname = parts.pop(0)
+            # first part *must* be a module/package.
+            mod = importlib.import_module(modname)
+            while parts:
+                p = parts[0]
+                s = f'{modname}.{p}'
+                try:
+                    mod = importlib.import_module(s)
+                    parts.pop(0)
+                    modname = s
+                except ImportError:
+                    break
+        # if we reach this point, mod is the module, already imported, and
+        # parts is the list of parts in the object hierarchy to be traversed, or
+        # an empty list if just the module is wanted.
+        result = mod
+        for p in parts:
+>           result = getattr(result, p)
+E           AttributeError: type object 'Web3' has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/pkgutil.py:715: AttributeError
+_____________________________________ test_empty_block ______________________________________
+
+web3_mock = <Mock id='140385893814032'>
+
+    @pytest.mark.asyncio
+    async def test_empty_block(web3_mock):
+        """Test handling of empty blocks"""
+        monitor = BlockchainMonitor(web3_mock)
+>       with patch('web3.Web3.eth.get_block') as mock_block:
+
+tests/unit/test_blockchain_monitor.py:71: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:1430: in __enter__
+    self.target = self.getter()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'web3.Web3.eth'
+
+    def resolve_name(name):
+        """
+        Resolve a name to an object.
+    
+        It is expected that `name` will be a string in one of the following
+        formats, where W is shorthand for a valid Python identifier and dot stands
+        for a literal period in these pseudo-regexes:
+    
+        W(.W)*
+        W(.W)*:(W(.W)*)?
+    
+        The first form is intended for backward compatibility only. It assumes that
+        some part of the dotted name is a package, and the rest is an object
+        somewhere within that package, possibly nested inside other objects.
+        Because the place where the package stops and the object hierarchy starts
+        can't be inferred by inspection, repeated attempts to import must be done
+        with this form.
+    
+        In the second form, the caller makes the division point clear through the
+        provision of a single colon: the dotted name to the left of the colon is a
+        package to be imported, and the dotted name to the right is the object
+        hierarchy within that package. Only one import is needed in this form. If
+        it ends with the colon, then a module object is returned.
+    
+        The function will return an object (which might be a module), or raise one
+        of the following exceptions:
+    
+        ValueError - if `name` isn't in a recognised format
+        ImportError - if an import failed when it shouldn't have
+        AttributeError - if a failure occurred when traversing the object hierarchy
+                         within the imported package to get to the desired object.
+        """
+        global _NAME_PATTERN
+        if _NAME_PATTERN is None:
+            # Lazy import to speedup Python startup time
+            import re
+            dotted_words = r'(?!\d)(\w+)(\.(?!\d)(\w+))*'
+            _NAME_PATTERN = re.compile(f'^(?P<pkg>{dotted_words})'
+                                       f'(?P<cln>:(?P<obj>{dotted_words})?)?$',
+                                       re.UNICODE)
+    
+        m = _NAME_PATTERN.match(name)
+        if not m:
+            raise ValueError(f'invalid format: {name!r}')
+        gd = m.groupdict()
+        if gd.get('cln'):
+            # there is a colon - a one-step import is all that's needed
+            mod = importlib.import_module(gd['pkg'])
+            parts = gd.get('obj')
+            parts = parts.split('.') if parts else []
+        else:
+            # no colon - have to iterate to find the package boundary
+            parts = name.split('.')
+            modname = parts.pop(0)
+            # first part *must* be a module/package.
+            mod = importlib.import_module(modname)
+            while parts:
+                p = parts[0]
+                s = f'{modname}.{p}'
+                try:
+                    mod = importlib.import_module(s)
+                    parts.pop(0)
+                    modname = s
+                except ImportError:
+                    break
+        # if we reach this point, mod is the module, already imported, and
+        # parts is the list of parts in the object hierarchy to be traversed, or
+        # an empty list if just the module is wanted.
+        result = mod
+        for p in parts:
+>           result = getattr(result, p)
+E           AttributeError: type object 'Web3' has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/pkgutil.py:715: AttributeError
+________________________________ test_malformed_transaction _________________________________
+
+web3_mock = <Mock id='140385894852816'>
+
+    @pytest.mark.asyncio
+    async def test_malformed_transaction(web3_mock):
+        """Test handling of malformed transaction data"""
+        monitor = BlockchainMonitor(web3_mock)
+>       with patch('web3.Web3.eth.get_transaction') as mock_tx:
+
+tests/unit/test_blockchain_monitor.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:1430: in __enter__
+    self.target = self.getter()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'web3.Web3.eth'
+
+    def resolve_name(name):
+        """
+        Resolve a name to an object.
+    
+        It is expected that `name` will be a string in one of the following
+        formats, where W is shorthand for a valid Python identifier and dot stands
+        for a literal period in these pseudo-regexes:
+    
+        W(.W)*
+        W(.W)*:(W(.W)*)?
+    
+        The first form is intended for backward compatibility only. It assumes that
+        some part of the dotted name is a package, and the rest is an object
+        somewhere within that package, possibly nested inside other objects.
+        Because the place where the package stops and the object hierarchy starts
+        can't be inferred by inspection, repeated attempts to import must be done
+        with this form.
+    
+        In the second form, the caller makes the division point clear through the
+        provision of a single colon: the dotted name to the left of the colon is a
+        package to be imported, and the dotted name to the right is the object
+        hierarchy within that package. Only one import is needed in this form. If
+        it ends with the colon, then a module object is returned.
+    
+        The function will return an object (which might be a module), or raise one
+        of the following exceptions:
+    
+        ValueError - if `name` isn't in a recognised format
+        ImportError - if an import failed when it shouldn't have
+        AttributeError - if a failure occurred when traversing the object hierarchy
+                         within the imported package to get to the desired object.
+        """
+        global _NAME_PATTERN
+        if _NAME_PATTERN is None:
+            # Lazy import to speedup Python startup time
+            import re
+            dotted_words = r'(?!\d)(\w+)(\.(?!\d)(\w+))*'
+            _NAME_PATTERN = re.compile(f'^(?P<pkg>{dotted_words})'
+                                       f'(?P<cln>:(?P<obj>{dotted_words})?)?$',
+                                       re.UNICODE)
+    
+        m = _NAME_PATTERN.match(name)
+        if not m:
+            raise ValueError(f'invalid format: {name!r}')
+        gd = m.groupdict()
+        if gd.get('cln'):
+            # there is a colon - a one-step import is all that's needed
+            mod = importlib.import_module(gd['pkg'])
+            parts = gd.get('obj')
+            parts = parts.split('.') if parts else []
+        else:
+            # no colon - have to iterate to find the package boundary
+            parts = name.split('.')
+            modname = parts.pop(0)
+            # first part *must* be a module/package.
+            mod = importlib.import_module(modname)
+            while parts:
+                p = parts[0]
+                s = f'{modname}.{p}'
+                try:
+                    mod = importlib.import_module(s)
+                    parts.pop(0)
+                    modname = s
+                except ImportError:
+                    break
+        # if we reach this point, mod is the module, already imported, and
+        # parts is the list of parts in the object hierarchy to be traversed, or
+        # an empty list if just the module is wanted.
+        result = mod
+        for p in parts:
+>           result = getattr(result, p)
+E           AttributeError: type object 'Web3' has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/pkgutil.py:715: AttributeError
+__________________________________ test_extreme_gas_prices __________________________________
+
+blockchain_monitor = <app.utils.blockchain_monitor.BlockchainMonitor object at 0x7fae234e1c90>
+
+    def test_extreme_gas_prices(blockchain_monitor):
+        """Test handling of extreme gas prices"""
+        test_cases = [
+            (0, True),  # Zero gas price
+            (1000000000000000, False),  # Extremely high gas price
+            (1, True)  # Minimum gas price
+        ]
+        for price, expected in test_cases:
+            with patch.object(blockchain_monitor.w3.eth, 'gas_price', return_value=price):
+>               assert blockchain_monitor.is_gas_price_acceptable() == expected
+E               assert False == True
+E                +  where False = <bound method BlockchainMonitor.is_gas_price_acceptable of <app.utils.blockchain_monitor.BlockchainMonitor object at 0x7fae234e1c90>>()
+E                +    where <bound method BlockchainMonitor.is_gas_price_acceptable of <app.utils.blockchain_monitor.BlockchainMonitor object at 0x7fae234e1c90>> = <app.utils.blockchain_monitor.BlockchainMonitor object at 0x7fae234e1c90>.is_gas_price_acceptable
+
+tests/unit/test_blockchain_monitor.py:96: AssertionError
+------------------------------------- Captured log call -------------------------------------
+ERROR    app.utils.blockchain_monitor:blockchain_monitor.py:35 Error checking gas price: '<' not supported between instances of 'MagicMock' and 'int'
+___________________________________ test_network_timeout ____________________________________
+
+web3_mock = <Mock id='140385889698320'>
+
+    @pytest.mark.asyncio
+    async def test_network_timeout(web3_mock):
+        """Test handling of network timeouts"""
+        monitor = BlockchainMonitor(web3_mock)
+>       with patch('web3.Web3.eth.get_block') as mock_block:
+
+tests/unit/test_blockchain_monitor.py:102: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:1430: in __enter__
+    self.target = self.getter()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+name = 'web3.Web3.eth'
+
+    def resolve_name(name):
+        """
+        Resolve a name to an object.
+    
+        It is expected that `name` will be a string in one of the following
+        formats, where W is shorthand for a valid Python identifier and dot stands
+        for a literal period in these pseudo-regexes:
+    
+        W(.W)*
+        W(.W)*:(W(.W)*)?
+    
+        The first form is intended for backward compatibility only. It assumes that
+        some part of the dotted name is a package, and the rest is an object
+        somewhere within that package, possibly nested inside other objects.
+        Because the place where the package stops and the object hierarchy starts
+        can't be inferred by inspection, repeated attempts to import must be done
+        with this form.
+    
+        In the second form, the caller makes the division point clear through the
+        provision of a single colon: the dotted name to the left of the colon is a
+        package to be imported, and the dotted name to the right is the object
+        hierarchy within that package. Only one import is needed in this form. If
+        it ends with the colon, then a module object is returned.
+    
+        The function will return an object (which might be a module), or raise one
+        of the following exceptions:
+    
+        ValueError - if `name` isn't in a recognised format
+        ImportError - if an import failed when it shouldn't have
+        AttributeError - if a failure occurred when traversing the object hierarchy
+                         within the imported package to get to the desired object.
+        """
+        global _NAME_PATTERN
+        if _NAME_PATTERN is None:
+            # Lazy import to speedup Python startup time
+            import re
+            dotted_words = r'(?!\d)(\w+)(\.(?!\d)(\w+))*'
+            _NAME_PATTERN = re.compile(f'^(?P<pkg>{dotted_words})'
+                                       f'(?P<cln>:(?P<obj>{dotted_words})?)?$',
+                                       re.UNICODE)
+    
+        m = _NAME_PATTERN.match(name)
+        if not m:
+            raise ValueError(f'invalid format: {name!r}')
+        gd = m.groupdict()
+        if gd.get('cln'):
+            # there is a colon - a one-step import is all that's needed
+            mod = importlib.import_module(gd['pkg'])
+            parts = gd.get('obj')
+            parts = parts.split('.') if parts else []
+        else:
+            # no colon - have to iterate to find the package boundary
+            parts = name.split('.')
+            modname = parts.pop(0)
+            # first part *must* be a module/package.
+            mod = importlib.import_module(modname)
+            while parts:
+                p = parts[0]
+                s = f'{modname}.{p}'
+                try:
+                    mod = importlib.import_module(s)
+                    parts.pop(0)
+                    modname = s
+                except ImportError:
+                    break
+        # if we reach this point, mod is the module, already imported, and
+        # parts is the list of parts in the object hierarchy to be traversed, or
+        # an empty list if just the module is wanted.
+        result = mod
+        for p in parts:
+>           result = getattr(result, p)
+E           AttributeError: type object 'Web3' has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/pkgutil.py:715: AttributeError
+_______________ TestBonusDistributionService.test_distribute_structure_bonus ________________
+
+self = <test_bonus_service.TestBonusDistributionService object at 0x7fae23592c50>
+app = <Flask 'app'>
+bonus_service = <app.services.bonus_distribution_service.BonusDistributionService object at 0x7fae231b67d0>
+setup_test_data = <coroutine object TestBonusDistributionService.setup_test_data at 0x7fae233dc240>
+
+    @pytest.mark.asyncio
+    async def test_distribute_structure_bonus(self, app, bonus_service, setup_test_data):
+>       async with app.app_context():
+E       TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+
+tests/unit/test_bonus_service.py:31: TypeError
+----------------------------------- Captured stdout setup -----------------------------------
+Query optimization completed successfully
+----------------------------------- Captured stderr setup -----------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+______________ TestBonusDistributionService.test_distribute_rewards_successful ______________
+
+self = <test_bonus_service.TestBonusDistributionService object at 0x7fae23591f50>
+app = <Flask 'app'>
+bonus_service = <app.services.bonus_distribution_service.BonusDistributionService object at 0x7fae22521c10>
+setup_test_data = <coroutine object TestBonusDistributionService.setup_test_data at 0x7fae225f4540>
+
+    @pytest.mark.asyncio
+    async def test_distribute_rewards_successful(self, app, bonus_service, setup_test_data):
+>       async with app.app_context():
+E       TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+
+tests/unit/test_bonus_service.py:51: TypeError
+----------------------------------- Captured stdout setup -----------------------------------
+Tables created successfully.
+Query optimization completed successfully
+Error creating indexes: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+----------------------------------- Captured stderr setup -----------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+_____________ TestBonusDistributionService.test_distribute_rewards_invalid_rank _____________
+
+self = <test_bonus_service.TestBonusDistributionService object at 0x7fae23592e90>
+app = <Flask 'app'>
+bonus_service = <app.services.bonus_distribution_service.BonusDistributionService object at 0x7fae224d8390>
+setup_test_data = <coroutine object TestBonusDistributionService.setup_test_data at 0x7fae225f4340>
+
+    @pytest.mark.asyncio
+    async def test_distribute_rewards_invalid_rank(self, app, bonus_service, setup_test_data):
+>       async with app.app_context():
+E       TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+
+tests/unit/test_bonus_service.py:70: TypeError
+----------------------------------- Captured stdout setup -----------------------------------
+Tables created successfully.
+Query optimization completed successfully
+Error creating indexes: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+----------------------------------- Captured stderr setup -----------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+_________ TestBonusDistributionService.test_distribute_rewards_insufficient_balance _________
+
+self = <test_bonus_service.TestBonusDistributionService object at 0x7fae23593290>
+app = <Flask 'app'>
+bonus_service = <app.services.bonus_distribution_service.BonusDistributionService object at 0x7fae2233de50>
+setup_test_data = <coroutine object TestBonusDistributionService.setup_test_data at 0x7fae23523740>
+
+    @pytest.mark.asyncio
+    async def test_distribute_rewards_insufficient_balance(self, app, bonus_service, setup_test_data):
+>       async with app.app_context():
+E       TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+
+tests/unit/test_bonus_service.py:80: TypeError
+----------------------------------- Captured stdout setup -----------------------------------
+Tables created successfully.
+Query optimization completed successfully
+Error creating indexes: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+----------------------------------- Captured stderr setup -----------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+____________________________________ test_setup_logging _____________________________________
+
+    def test_setup_logging():
+        setup_logging()
+        logger = get_logger()
+>       assert len(logger.handlers) > 0
+E       assert 0 > 0
+E        +  where 0 = len([])
+E        +    where [] = <Logger gold_investment (INFO)>.handlers
+
+tests/unit/test_logging.py:12: AssertionError
+____________________ test_transformation_calculates_correct_gold_amount _____________________
+
+self = <Mapper at 0x7fae24f35210; User>, key = 'gold_rewards', _configure_mappers = False
+
+    def get_property(
+        self, key: str, _configure_mappers: bool = False
+    ) -> MapperProperty[Any]:
+        """return a MapperProperty associated with the given key."""
+    
+        if _configure_mappers:
+            self._check_configure()
+    
+        try:
+>           return self._props[key]
+E           KeyError: 'gold_rewards'
+
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:2505: KeyError
+
+The above exception was the direct cause of the following exception:
+
+app = <Flask 'app'>
+
+    @pytest.mark.asyncio
+    async def test_transformation_calculates_correct_gold_amount(app):
+        with app.app_context():
+            # Setup
+            service = TransformationService()
+            euro_amount = Decimal('100.00')
+            fixing_price = Decimal('50.00')
+            expected_gold = Decimal('1.90')  # (100 - 5% fee) / 50
+    
+>           test_user = User(id=1)
+
+tests/unit/test_transformation.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+<string>:4: in __init__
+    ???
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/state.py:561: in _initialize_instance
+    manager.dispatch.init(self, args, kwargs)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/event/attr.py:487: in __call__
+    fn(*args, **kw)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4391: in _event_on_init
+    instrumenting_mapper._check_configure()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:2386: in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4199: in _configure_registries
+    _do_configure_registries(registries, cascade)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4240: in _do_configure_registries
+    mapper._post_configure_properties()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:2403: in _post_configure_properties
+    prop.init()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/interfaces.py:579: in init
+    self.do_init()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:1640: in do_init
+    self._generate_backref()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:2129: in _generate_backref
+    self._add_reverse_property(self.back_populates)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/relationships.py:1571: in _add_reverse_property
+    other = self.mapper.get_property(key, _configure_mappers=False)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <Mapper at 0x7fae24f35210; User>, key = 'gold_rewards', _configure_mappers = False
+
+    def get_property(
+        self, key: str, _configure_mappers: bool = False
+    ) -> MapperProperty[Any]:
+        """return a MapperProperty associated with the given key."""
+    
+        if _configure_mappers:
+            self._check_configure()
+    
+        try:
+            return self._props[key]
+        except KeyError as err:
+>           raise sa_exc.InvalidRequestError(
+                f"Mapper '{self}' has no property '{key}'.  If this property "
+                "was indicated from other mappers or configure events, ensure "
+                "registry.configure() has been called."
+            ) from err
+E           sqlalchemy.exc.InvalidRequestError: Mapper 'Mapper[User(users)]' has no property 'gold_rewards'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:2507: InvalidRequestError
+----------------------------------- Captured stdout setup -----------------------------------
+Tables created successfully.
+Query optimization completed successfully
+Table transformations does not exist, skipping indexes
+Error creating indexes: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+----------------------------------- Captured stderr setup -----------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> dc45cb3ac83f, Initial migration
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+__________________________ test_insufficient_funds_transformation ___________________________
+
+app = <Flask 'app'>
+
+    @pytest.mark.asyncio
+    async def test_insufficient_funds_transformation(app):
+        with app.app_context():
+            # Setup
+            service = TransformationService()
+            euro_amount = Decimal('1000.00')
+            fixing_price = Decimal('50.00')
+    
+>           test_user = User(id=1)
+
+tests/unit/test_transformation.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+<string>:4: in __init__
+    ???
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/state.py:561: in _initialize_instance
+    manager.dispatch.init(self, args, kwargs)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/event/attr.py:487: in __call__
+    fn(*args, **kw)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4391: in _event_on_init
+    instrumenting_mapper._check_configure()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:2386: in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4199: in _configure_registries
+    _do_configure_registries(registries, cascade)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+registries = set(), cascade = True
+
+    @util.preload_module("sqlalchemy.orm.decl_api")
+    def _do_configure_registries(
+        registries: Set[_RegistryType], cascade: bool
+    ) -> None:
+        registry = util.preloaded.orm_decl_api.registry
+    
+        orig = set(registries)
+    
+        for reg in registry._recurse_with_dependencies(registries):
+            has_skip = False
+    
+            for mapper in reg._mappers_to_configure():
+                run_configure = None
+    
+                for fn in mapper.dispatch.before_mapper_configured:
+                    run_configure = fn(mapper, mapper.class_)
+                    if run_configure is EXT_SKIP:
+                        has_skip = True
+                        break
+                if run_configure is EXT_SKIP:
+                    continue
+    
+                if getattr(mapper, "_configure_failed", False):
+                    e = sa_exc.InvalidRequestError(
+                        "One or more mappers failed to initialize - "
+                        "can't proceed with initialization of other "
+                        "mappers. Triggering mapper: '%s'. "
+                        "Original exception was: %s"
+                        % (mapper, mapper._configure_failed)
+                    )
+                    e._configure_failed = mapper._configure_failed  # type: ignore
+>                   raise e
+E                   sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[GoldReward(gold_rewards)]'. Original exception was: Mapper 'Mapper[User(users)]' has no property 'gold_rewards'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4236: InvalidRequestError
+----------------------------------- Captured stdout setup -----------------------------------
+Tables created successfully.
+Query optimization completed successfully
+Table transformations does not exist, skipping indexes
+Error creating indexes: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+----------------------------------- Captured stderr setup -----------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> dc45cb3ac83f, Initial migration
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+_________________________________ test_invalid_fixing_price _________________________________
+
+app = <Flask 'app'>
+
+    @pytest.mark.asyncio
+    async def test_invalid_fixing_price(app):
+        with app.app_context():
+            # Setup
+            service = TransformationService()
+            euro_amount = Decimal('100.00')
+            fixing_price = Decimal('0')
+    
+>           test_user = User(id=1)
+
+tests/unit/test_transformation.py:62: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+<string>:4: in __init__
+    ???
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/state.py:561: in _initialize_instance
+    manager.dispatch.init(self, args, kwargs)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/event/attr.py:487: in __call__
+    fn(*args, **kw)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4391: in _event_on_init
+    instrumenting_mapper._check_configure()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:2386: in _check_configure
+    _configure_registries({self.registry}, cascade=True)
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4199: in _configure_registries
+    _do_configure_registries(registries, cascade)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+registries = set(), cascade = True
+
+    @util.preload_module("sqlalchemy.orm.decl_api")
+    def _do_configure_registries(
+        registries: Set[_RegistryType], cascade: bool
+    ) -> None:
+        registry = util.preloaded.orm_decl_api.registry
+    
+        orig = set(registries)
+    
+        for reg in registry._recurse_with_dependencies(registries):
+            has_skip = False
+    
+            for mapper in reg._mappers_to_configure():
+                run_configure = None
+    
+                for fn in mapper.dispatch.before_mapper_configured:
+                    run_configure = fn(mapper, mapper.class_)
+                    if run_configure is EXT_SKIP:
+                        has_skip = True
+                        break
+                if run_configure is EXT_SKIP:
+                    continue
+    
+                if getattr(mapper, "_configure_failed", False):
+                    e = sa_exc.InvalidRequestError(
+                        "One or more mappers failed to initialize - "
+                        "can't proceed with initialization of other "
+                        "mappers. Triggering mapper: '%s'. "
+                        "Original exception was: %s"
+                        % (mapper, mapper._configure_failed)
+                    )
+                    e._configure_failed = mapper._configure_failed  # type: ignore
+>                   raise e
+E                   sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[GoldReward(gold_rewards)]'. Original exception was: Mapper 'Mapper[User(users)]' has no property 'gold_rewards'.  If this property was indicated from other mappers or configure events, ensure registry.configure() has been called.
+
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/mapper.py:4236: InvalidRequestError
+----------------------------------- Captured stdout setup -----------------------------------
+Tables created successfully.
+Query optimization completed successfully
+Table transformations does not exist, skipping indexes
+Error creating indexes: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+----------------------------------- Captured stderr setup -----------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> dc45cb3ac83f, Initial migration
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+______________________________ test_concurrent_transformations ______________________________
+
+    @pytest.mark.asyncio
+    async def test_concurrent_transformations():
+        service = TransformationService()
+        tasks = []
+        for i in range(5):
+            task = asyncio.create_task(
+                service.process_transformation(
+                    user_id=i,
+                    euro_amount=Decimal('100.00'),
+                    fixing_price=Decimal('50.00')
+                )
+            )
+            tasks.append(task)
+    
+>       results = await asyncio.gather(*tasks)
+
+tests/performance/test_load.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app/services/transformation_service.py:150: in process_transformation
+    await db.session.rollback()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py:1810: in rollback
+    return self._proxied.rollback()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py:198: in _proxied
+    return self.registry()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/_collections.py:640: in __call__
+    key = self.scopefunc()
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/session.py:81: in _app_ctx_id
+    return id(app_ctx._get_current_object())  # type: ignore[attr-defined]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _get_current_object() -> T:
+        try:
+            obj = local.get()
+        except LookupError:
+>           raise RuntimeError(unbound_message) from None
+E           RuntimeError: Working outside of application context.
+E           
+E           This typically means that you attempted to use functionality that needed
+E           the current application. To solve this, set up an application context
+E           with app.app_context(). See the documentation for more information.
+
+.pythonlibs/lib/python3.11/site-packages/werkzeug/local.py:508: RuntimeError
+_______________________________ test_system_under_heavy_load ________________________________
+
+    @pytest.mark.asyncio
+    async def test_system_under_heavy_load():
+        service = TransformationService()
+        large_batch = [
+            (i, Decimal('100.00'), Decimal('50.00'))
+            for i in range(20)
+        ]
+    
+        tasks = [
+            asyncio.create_task(
+                service.process_transformation(
+                    user_id=user_id,
+                    euro_amount=amount,
+                    fixing_price=price
+                )
+            )
+            for user_id, amount, price in large_batch
+        ]
+    
+>       results = await asyncio.gather(*tasks)
+
+tests/performance/test_load.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app/services/transformation_service.py:150: in process_transformation
+    await db.session.rollback()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py:1810: in rollback
+    return self._proxied.rollback()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py:198: in _proxied
+    return self.registry()
+.pythonlibs/lib/python3.11/site-packages/sqlalchemy/util/_collections.py:640: in __call__
+    key = self.scopefunc()
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/session.py:81: in _app_ctx_id
+    return id(app_ctx._get_current_object())  # type: ignore[attr-defined]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _get_current_object() -> T:
+        try:
+            obj = local.get()
+        except LookupError:
+>           raise RuntimeError(unbound_message) from None
+E           RuntimeError: Working outside of application context.
+E           
+E           This typically means that you attempted to use functionality that needed
+E           the current application. To solve this, set up an application context
+E           with app.app_context(). See the documentation for more information.
+
+.pythonlibs/lib/python3.11/site-packages/werkzeug/local.py:508: RuntimeError
+___________________________ test_system_under_heavy_load_original ___________________________
+
+    def test_system_under_heavy_load_original():
+        """Test del sistema sotto carico pesante"""
+        monitor = PerformanceMonitor()
+    
+        # Simula carico pesante
+        for _ in range(1000):
+            monitor.record_metric('response_time', 0.1)
+            monitor.record_metric('database_query_times', 0.05)
+            monitor.record_metric('blockchain_operation_times', 2.0)
+    
+        metrics = monitor.get_metrics()
+>       alerts = monitor.get_alerts()
+E       AttributeError: 'PerformanceMonitor' object has no attribute 'get_alerts'
+
+tests/performance/test_load.py:82: AttributeError
+_________________________________ test_performance_monitor __________________________________
+
+    def test_performance_monitor():
+        """Test performance monitoring capabilities"""
+        monitor = PerformanceMonitor()
+        monitor.record_metric('test_category', 1.5)
+    
+        metrics = monitor.get_metrics()
+        assert 'test_category' in metrics
+>       assert len(metrics['test_category']) == 1
+E       AssertionError: assert 3 == 1
+E        +  where 3 = len({'average': 1.5, 'count': 1, 'latest': 1.5})
+
+tests/performance/test_monitoring.py:27: AssertionError
+___________________________ test_table_creation_and_optimization ____________________________
+
+test_app = <Flask 'app'>
+
+    def test_table_creation_and_optimization(test_app):
+        """Test successful table creation and index optimization"""
+        with test_app.app_context():
+            db.create_all()
+            db.session.commit()  # Ensure tables are created and committed
+            # Get inspector
+            inspector = inspect(db.engine)
+            tables = inspector.get_table_names()
+    
+            # Verify core tables exist
+            assert 'users' in tables, "Users table not found"
+            assert 'noble_ranks' in tables, "Noble ranks table not found"
+            assert 'transactions' in tables, "Transactions table not found"
+    
+            # Create indexes
+            create_indexes()
+    
+            # Verify indexes
+            indexes = inspector.get_indexes('users')
+            index_names = [idx['name'] for idx in indexes]
+            assert 'idx_users_email' in index_names, "Email index not created"
+    
+            # Verify foreign keys
+            fks = inspector.get_foreign_keys('noble_ranks')
+>           assert any(fk['referred_table'] == 'users' for fk in fks), "User foreign key not found"
+E           AssertionError: User foreign key not found
+E           assert False
+E            +  where False = any(<generator object test_table_creation_and_optimization.<locals>.<genexpr> at 0x7fae2240f030>)
+
+tests/performance/test_optimization.py:43: AssertionError
+----------------------------------- Captured stdout setup -----------------------------------
+Tables created successfully.
+Query optimization completed successfully
+Error creating indexes: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+----------------------------------- Captured stderr setup -----------------------------------
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade dc45cb3ac83f -> 3135a7000c3b
+----------------------------------- Captured stdout call ------------------------------------
+Error creating indexes: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+================================== short test summary info ==================================
+SKIPPED [1] tests/unit/test_blockchain_service.py:31: Blockchain connection not available: 'coroutine' object has no attribute 'w3'
+SKIPPED [1] tests/integration/test_blockchain.py:32: Blockchain connection not available: 'coroutine' object has no attribute 'w3'
+SKIPPED [1] tests/integration/test_blockchain.py:43: Blockchain connection not available: 'coroutine' object has no attribute 'w3'
+SKIPPED [1] tests/integration/test_blockchain.py:60: Blockchain connection not available: 'coroutine' object has no attribute 'w3'
+ERROR tests/unit/test_noble_system.py::test_noble_rank_creation
+ERROR tests/unit/test_noble_system.py::test_noble_relation_verification
+ERROR tests/functional/test_api.py::test_transformation_endpoint - NameError: name 'create_app' is not defined
+ERROR tests/functional/test_api.py::test_account_balance - NameError: name 'create_app' is not defined
+ERROR tests/functional/test_api.py::test_invalid_transformation - NameError: name 'create_app' is not defined
+ERROR tests/performance/test_load.py::test_blockchain_batch_performance
+FAILED tests/unit/test_blockchain_monitor.py::test_basic_monitoring - AttributeError: type object 'Web3' has no attribute 'eth'
+FAILED tests/unit/test_blockchain_monitor.py::test_network_interruption - AttributeError: type object 'Web3' has no attribute 'eth'
+FAILED tests/unit/test_blockchain_monitor.py::test_invalid_transaction - AttributeError: type object 'Web3' has no attribute 'eth'
+FAILED tests/unit/test_blockchain_monitor.py::test_concurrent_transactions - AttributeError: type object 'Web3' has no attribute 'eth'
+FAILED tests/unit/test_blockchain_monitor.py::test_empty_block - AttributeError: type object 'Web3' has no attribute 'eth'
+FAILED tests/unit/test_blockchain_monitor.py::test_malformed_transaction - AttributeError: type object 'Web3' has no attribute 'eth'
+FAILED tests/unit/test_blockchain_monitor.py::test_extreme_gas_prices - assert False == True
+FAILED tests/unit/test_blockchain_monitor.py::test_network_timeout - AttributeError: type object 'Web3' has no attribute 'eth'
+FAILED tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_structure_bonus - TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+FAILED tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_successful - TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+FAILED tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_invalid_rank - TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+FAILED tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_insufficient_balance - TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+FAILED tests/unit/test_logging.py::test_setup_logging - assert 0 > 0
+FAILED tests/unit/test_transformation.py::test_transformation_calculates_correct_gold_amount - sqlalchemy.exc.InvalidRequestError: Mapper 'Mapper[User(users)]' has no property 'gold_r...
+FAILED tests/unit/test_transformation.py::test_insufficient_funds_transformation - sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't pro...
+FAILED tests/unit/test_transformation.py::test_invalid_fixing_price - sqlalchemy.exc.InvalidRequestError: One or more mappers failed to initialize - can't pro...
+FAILED tests/performance/test_load.py::test_concurrent_transformations - RuntimeError: Working outside of application context.
+FAILED tests/performance/test_load.py::test_system_under_heavy_load - RuntimeError: Working outside of application context.
+FAILED tests/performance/test_load.py::test_system_under_heavy_load_original - AttributeError: 'PerformanceMonitor' object has no attribute 'get_alerts'
+FAILED tests/performance/test_monitoring.py::test_performance_monitor - AssertionError: assert 3 == 1
+FAILED tests/performance/test_optimization.py::test_table_creation_and_optimization - AssertionError: User foreign key not found
+============== 21 failed, 16 passed, 4 skipped, 61 warnings, 6 errors in 6.31s ==============
+~/workspace$

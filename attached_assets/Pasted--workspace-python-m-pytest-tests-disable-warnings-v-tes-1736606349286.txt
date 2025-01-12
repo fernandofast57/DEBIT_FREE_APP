@@ -1,0 +1,71 @@
+~/workspace$ python -m pytest tests/ --disable-warnings -v
+==================================== test session starts ====================================
+platform linux -- Python 3.11.10, pytest-8.1.1, pluggy-1.4.0 -- /home/runner/workspace/.pythonlibs/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/workspace/tests
+configfile: pytest.ini
+plugins: asyncio-0.23.6, mock-3.14.0, cov-4.1.0, web3-6.11.3
+asyncio: mode=Mode.AUTO
+collected 31 items / 4 errors                                                               
+
+========================================== ERRORS ===========================================
+______________________ ERROR collecting integration/test_blockchain.py ______________________
+ImportError while importing test module '/home/runner/workspace/tests/integration/test_blockchain.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/integration/test_blockchain.py:3: in <module>
+    from app.services.blockchain_service import BlockchainService
+app/services/__init__.py:5: in <module>
+    from .bonus_distribution_service import BonusDistributionService
+app/services/bonus_distribution_service.py:6: in <module>
+    from app.models.models import User, GoldReward, db
+E   ImportError: cannot import name 'GoldReward' from 'app.models.models' (/home/runner/workspace/app/models/models.py)
+_________________________ ERROR collecting performance/test_load.py _________________________
+ImportError while importing test module '/home/runner/workspace/tests/performance/test_load.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/performance/test_load.py:4: in <module>
+    from app.services.transformation_service import TransformationService
+app/services/__init__.py:5: in <module>
+    from .bonus_distribution_service import BonusDistributionService
+app/services/bonus_distribution_service.py:6: in <module>
+    from app.models.models import User, GoldReward, db
+E   ImportError: cannot import name 'GoldReward' from 'app.models.models' (/home/runner/workspace/app/models/models.py)
+________________________ ERROR collecting unit/test_bonus_service.py ________________________
+ImportError while importing test module '/home/runner/workspace/tests/unit/test_bonus_service.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/unit/test_bonus_service.py:7: in <module>
+    from app.services.bonus_distribution_service import BonusDistributionService
+app/services/__init__.py:5: in <module>
+    from .bonus_distribution_service import BonusDistributionService
+app/services/bonus_distribution_service.py:6: in <module>
+    from app.models.models import User, GoldReward, db
+E   ImportError: cannot import name 'GoldReward' from 'app.models.models' (/home/runner/workspace/app/models/models.py)
+_______________________ ERROR collecting unit/test_transformation.py ________________________
+ImportError while importing test module '/home/runner/workspace/tests/unit/test_transformation.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tests/unit/test_transformation.py:4: in <module>
+    from app.services.transformation_service import TransformationService
+app/services/__init__.py:5: in <module>
+    from .bonus_distribution_service import BonusDistributionService
+app/services/bonus_distribution_service.py:6: in <module>
+    from app.models.models import User, GoldReward, db
+E   ImportError: cannot import name 'GoldReward' from 'app.models.models' (/home/runner/workspace/app/models/models.py)
+================================== short test summary info ==================================
+ERROR tests/integration/test_blockchain.py
+ERROR tests/performance/test_load.py
+ERROR tests/unit/test_bonus_service.py
+ERROR tests/unit/test_transformation.py
+!!!!!!!!!!!!!!!!!!!!!!!!!! Interrupted: 4 errors during collection !!!!!!!!!!!!!!!!!!!!!!!!!!
+=============================== 2 warnings, 4 errors in 0.37s ===============================
+~/workspace$ 
