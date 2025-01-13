@@ -44,9 +44,14 @@ def mock_w3():
     w3.eth = Mock()
     w3.eth.get_block_number = Mock(return_value=12345)
     w3.eth.wait_for_transaction_receipt = Mock(return_value=Mock(status=1))
+    w3.eth.get_transaction_count = Mock(return_value=0)
+    w3.eth.send_raw_transaction = Mock(return_value=b'0x123')
+    w3.eth.contract = Mock()
     w3.is_connected = Mock(return_value=True)
     w3.eth.gas_price = 20000000000
     w3.eth.chain_id = 80001
+    w3.eth.account = Mock()
+    w3.eth.account.sign_transaction = Mock(return_value=Mock(rawTransaction=b'0x456'))
     return w3
 
 @pytest.fixture
