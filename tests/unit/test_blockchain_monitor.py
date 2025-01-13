@@ -1,23 +1,19 @@
 import pytest
 from unittest.mock import Mock, patch
 from app.utils.blockchain_monitor import BlockchainMonitor
+from web3 import Web3
 from decimal import Decimal
 from web3.exceptions import BlockNotFound, TransactionNotFound
 
 @pytest.fixture
-def web3_mock():
-    mock = Mock()
-    # Create eth attribute with all required methods
-    mock.eth = Mock()
-    mock.eth.gas_price = 50000000000  # 50 Gwei
-    mock.eth.get_block = Mock(return_value={'transactions': [], 'number': 1000})
-    mock.eth.get_transaction = Mock(return_value={'hash': '0x1234', 'value': 1000000})
-    mock.eth.get_transaction_count = Mock(return_value=3)
-    return mock
+def mock_w3():
+    w3 = Mock(spec=Web3)
+    w3.eth.get_block_number.return_value = 1000
+    return w3
 
 @pytest.fixture
-def blockchain_monitor(web3_mock):
-    return BlockchainMonitor(web3_mock)
+def blockchain_monitor(mock_w3):
+    return BlockchainMonitor(mock_w3)
 
 @pytest.mark.asyncio
 async def test_basic_monitoring(blockchain_monitor):
@@ -114,5 +110,5 @@ def test_alert_system(blockchain_monitor):
     assert result['status'] == 'sent'
 
 def test_block_monitoring(blockchain_monitor, mock_w3):
-    blockchain_monitor.w3.eth.get_block_number.return_value = 1001
+    mock_w3.eth.get_block_number.return_value = 1001
     assert blockchain_monitor.check_new_blocks()

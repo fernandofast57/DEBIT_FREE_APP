@@ -39,12 +39,23 @@ def runner(app):
     return app.test_cli_runner()
 
 @pytest.fixture
-def w3():
-    provider = Web3.HTTPProvider('https://polygon-mumbai.infura.io/v3/YOUR-PROJECT-ID')
-    w3 = Web3(provider)
-    if not w3.is_connected():
-        pytest.skip("Blocco della connessione blockchain non disponibile")
+def mock_w3():
+    w3 = Mock(spec=Web3)
+    w3.eth = Mock()
+    w3.eth.get_block_number = Mock(return_value=12345)
+    w3.eth.wait_for_transaction_receipt = Mock(return_value=Mock(status=1))
+    w3.is_connected = Mock(return_value=True)
+    w3.eth.gas_price = 20000000000
+    w3.eth.chain_id = 80001
     return w3
+
+@pytest.fixture
+async def blockchain_service(mock_w3):
+    service = BlockchainService()
+    service.w3 = mock_w3
+    service.contract = Mock()
+    service.account = Mock(address='0x742d35Cc6634C0532925a3b844Bc454e4438f44e')
+    return service
 
 @pytest.fixture
 def blockchain_monitor(w3):
