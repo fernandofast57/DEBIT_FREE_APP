@@ -1,9 +1,11 @@
 import pytest
-from app import create_app  # Assicura che create_app sia importato correttamente
+from unittest.mock import Mock
+from app import create_app
 from app.database import db
-from app.models.models import User, MoneyAccount, GoldAccount  # Importa i modelli
+from app.models.models import User, MoneyAccount, GoldAccount
 from web3 import Web3
 from app.utils.blockchain_monitor import BlockchainMonitor
+from app.services.blockchain_service import BlockchainService  # Aggiunto
 from decimal import Decimal
 
 @pytest.fixture
@@ -11,7 +13,6 @@ def app():
     app = create_app()
     app.config['TESTING'] = True
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
-
     with app.app_context():
         db.create_all()
         yield app
@@ -26,9 +27,9 @@ def populate_database(app):
         user.gold_account = GoldAccount(balance=Decimal('0.00'))
         db.session.add(user)
         db.session.commit()
-        yield  # Consenti al test di eseguire
-        db.session.remove()  # Rimuovi la sessione
-        db.drop_all()  # Pulisci il database
+        yield
+        db.session.remove()
+        db.drop_all()
 
 @pytest.fixture
 def client(app):
@@ -63,8 +64,8 @@ async def blockchain_service(mock_w3):
     return service
 
 @pytest.fixture
-def blockchain_monitor(w3):
-    return BlockchainMonitor(w3)
+def blockchain_monitor(mock_w3):  # Modificato per usare mock_w3
+    return BlockchainMonitor(mock_w3)
 
 @pytest.fixture
 def auth_headers():
@@ -74,4 +75,4 @@ def auth_headers():
     }
 
 def get_test_rpc_url():
-    return "http://0.0.0.0:8545"  # Assicurati che l'URL RPC sia accessibile
+    return "http://0.0.0.0:8545"
