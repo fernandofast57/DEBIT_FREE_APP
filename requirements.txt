@@ -39,4 +39,4 @@ pyotp==2.8.0
 qrcode==7.4.2
 python-jose[cryptography]==3.3.0
 validators==0.20.0
-schwifty==2024.1.1  # Per la validazione IBAN
+schwifty==2024.11.0  # Per la validazione IBAN
