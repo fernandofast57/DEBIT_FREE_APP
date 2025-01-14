@@ -1,0 +1,55 @@
+Ecco un glossario ampliato per la programmazione, che integra i termini del glossario precedente e introduce nuovi concetti specifici per lo sviluppo del codice:
+
+Glossario di Programmazione per "Gold Investment Platform"
+
+2FA_SECRET_KEY: Variabile di ambiente che memorizza la chiave segreta per l'algoritmo di generazione dei codici 2FA.
+ACCOUNT_ACTIVATION_EXPIRATION: Tempo di scadenza (in ore) del link di attivazione dell'account utente.
+AFFILIATE_BONUS_LEVELS: Dizionario che definisce le percentuali di bonus per ogni livello di affiliazione. Esempio: {1: 0.07, 2: 0.05, 3: 0.05}.
+AFFILIATE_BONUS_TRANSACTION_TYPE: Costante stringa che identifica le transazioni relative ai bonus di affiliazione nel database. Esempio: "AFFILIATE_BONUS".
+API_BASE_URL: URL di base per le chiamate API. Esempio: "https://api.goldinvestment.com/v1".
+AUTH_TOKEN_EXPIRATION: Tempo di scadenza (in ore) del token di autenticazione JWT.
+BACKEND_URL: URL del server backend Flask. Esempio: "https://backend.goldinvestment.com".
+BATCH_TRANSFORMATION_CRON: Stringa cron che definisce la pianificazione per l'esecuzione del processo di trasformazione batch. Esempio: "0 0 * * 1" (ogni lunedì a mezzanotte).
+BLOCKCHAIN_NETWORK: Nome della rete blockchain utilizzata (es. "Polygon").
+BONUS_DISTRIBUTION_SERVICE: Nome del modulo Python che gestisce la distribuzione dei bonus di affiliazione.
+CACHE_TIMEOUT: Tempo di scadenza (in secondi) per la cache Redis.
+CONTRACT_ADDRESS: Indirizzo del contratto intelligente sulla blockchain.
+DATABASE_URL: Stringa di connessione al database. Esempio: "postgresql://user:password@host:port/database".
+EMAIL_SENDER_ADDRESS: Indirizzo email utilizzato per inviare le notifiche.
+FIXING_API_URL: URL dell'API che fornisce il prezzo giornaliero dell'oro (fixing).
+FRONTEND_URL: URL del frontend React. Esempio: "https://goldinvestment.com".
+GOLD_PRICE_UPDATE_INTERVAL: Intervallo di tempo (in secondi) per l'aggiornamento del prezzo dell'oro dal fixing API.
+GOLD_TRANSFORMATION_CONTRACT_ABI: ABI (Application Binary Interface) del contratto intelligente per la trasformazione euro-oro.
+GOLD_TRANSFORMATION_GAS_LIMIT: Limite di gas per le transazioni blockchain relative alla trasformazione euro-oro.
+JWT_SECRET_KEY: Chiave segreta per la firma dei token JWT.
+KYC_DOCUMENT_TYPES: Tupla che elenca i tipi di documenti accettati per la verifica KYC. Esempio: ("passport", "driver_license", "identity_card").
+LOGGER_NAME: Nome del logger dell'applicazione. Esempio: "gold_investment_app".
+MAX_API_REQUESTS: Numero massimo di richieste API consentite per utente in un determinato periodo di tempo.
+MONEY_ACCOUNT_BALANCE_FIELD: Nome del campo nel modello MoneyAccount che memorizza il saldo in euro.
+NOBLE_RANK_NAMES: Tupla che elenca i nomi dei ranghi nobiliari nel sistema di affiliazione. Esempio: ("Knight", "Baron", "Earl", "Duke").
+PASSWORD_RESET_EXPIRATION: Tempo di scadenza (in ore) del link per la reimpostazione della password.
+PAYMENT_PROVIDER: Nome del provider di servizi di pagamento (es. "Stripe").
+RATE_LIMIT_WINDOW: Finestra temporale (in secondi) per il calcolo del rate limiting.
+REDIS_URL: URL del server Redis. Esempio: "redis://:password@host:port".
+SENDGRID_API_KEY: Chiave API per il servizio di email SendGrid.
+TRANSACTION_FEE_PERCENTAGE: Percentuale di commissione trattenuta dal sistema per ogni transazione di acquisto oro. Esempio: 0.05 (5%).
+USER_MODEL_FIELDS: Tupla che elenca i campi del modello User. Esempio: ("username", "email", "password_hash", "is_active").
+Utilizzo del Glossario nel Codice:
+
+Mantenere la coerenza dei nomi delle variabili, funzioni, classi, moduli e costanti con il glossario.
+Utilizzare commenti esplicativi nel codice per chiarire il significato e l'uso dei termini specifici.
+Esempio:
+
+from app.models import User  # Importa il modello "User" definito nel glossario
+
+
+
+def calculate_affiliate_bonus(transaction_amount):
+
+    """Calcola il bonus di affiliazione in base al TRANSACTION_FEE_PERCENTAGE."""
+
+    bonus = transaction_amount * TRANSACTION_FEE_PERCENTAGE
+
+    return bonus
+
+Seguendo questo glossario, si garantisce una maggiore leggibilità, manutenibilità e coerenza del codice, semplificando la collaborazione e riducendo il rischio di errori.
