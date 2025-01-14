@@ -123,13 +123,16 @@ class GoldAccount(db.Model):
 
 class KYCDetail(db.Model):
     __tablename__ = 'kyc_details'
+    __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    document_type = db.Column(db.String(50), nullable=False)
+    document_type = db.Column(
+        db.String(50), nullable=False)  # passport, id_card, drivers_license
     document_number = db.Column(db.String(100), nullable=False)
     document_url = db.Column(db.String(255))
-    status = db.Column(db.String(20), default='pending')
+    status = db.Column(db.String(20),
+                       default='pending')  # pending, approved, rejected
     verification_date = db.Column(db.DateTime, nullable=True)
     submitted_date = db.Column(db.DateTime, default=datetime.utcnow)
     verified_by = db.Column(db.Integer,
@@ -137,10 +140,13 @@ class KYCDetail(db.Model):
                             nullable=True)
     notes = db.Column(db.Text)
 
+    # Relazioni
     user = db.relationship('User',
                            foreign_keys=[user_id],
                            back_populates='kyc_documents')
-    verifier = db.relationship('User', foreign_keys=[verified_by])
+    verifier = db.relationship('User',
+                               foreign_keys=[verified_by],
+                               backref='kyc_verifications')
 
     def __repr__(self):
         return f"<KYCDetail {self.id} - User {self.user_id} - Status {self.status}>"
