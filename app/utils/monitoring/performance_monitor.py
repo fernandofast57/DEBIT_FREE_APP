@@ -43,11 +43,21 @@ class PerformanceMonitor:
             for category, values in self.metrics.items()
         }
 
+    def __init__(self):
+        self.metrics: Dict[str, List[float]] = {
+            'response_time': [],
+            'database_query_times': [],
+            'blockchain_operation_times': []
+        }
+        self.start_time = datetime.now()
+        self._shutdown_flag = False
+
     def save_metrics(self) -> None:
         """Save current metrics to storage"""
-        metrics = self.get_metrics()
-        # Log metrics before shutdown
-        logging.info(f"Saving metrics before shutdown: {metrics}")
+        if not self._shutdown_flag:
+            self._shutdown_flag = True
+            metrics = self.get_metrics()
+            logging.info(f"Saving metrics before shutdown: {metrics}")
 
     def track_time(self, category: str):
         def decorator(func):
