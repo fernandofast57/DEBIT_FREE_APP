@@ -42,6 +42,12 @@ class PerformanceMonitor:
             for category, values in self.metrics.items()
         }
 
+    def save_metrics(self) -> None:
+        """Save current metrics to storage"""
+        metrics = self.get_metrics()
+        # Log metrics before shutdown
+        logging.info(f"Saving metrics before shutdown: {metrics}")
+
     def track_time(self, category: str):
         def decorator(func):
             @functools.wraps(func)
