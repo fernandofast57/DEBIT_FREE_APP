@@ -93,11 +93,30 @@ class ApplicationManager:
             )
 
             with self.app.app_context():
-                self.app.run(host='0.0.0.0',
-                             port=server['port'],
-                             debug=debug,
-                             use_reloader=use_reloader,
-                             threaded=True)
+                # Use Gunicorn for production
+            from gunicorn.app.base import BaseApplication
+
+            class StandaloneApplication(BaseApplication):
+                def __init__(self, app, options=None):
+                    self.options = options or {}
+                    self.application = app
+                    super().__init__()
+
+                def load_config(self):
+                    for key, value in self.options.items():
+                        self.cfg.set(key, value)
+
+                def load(self):
+                    return self.application
+
+            options = {
+                'bind': f"0.0.0.0:{server['port']}",
+                'workers': 4,
+                'worker_class': 'sync',
+                'timeout': 30
+            }
+
+            StandaloneApplication(self.app, options).run()
 
         except Exception as e:
             logger.error(f"Failed to start application: {e}")
