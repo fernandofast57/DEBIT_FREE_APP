@@ -1,37 +1,58 @@
-# app/utils/monitoring/performance_monitor.py
+
 import time
-import json
+import functools
+from typing import Dict, List, Any, Callable
 from datetime import datetime
-import logging
-from typing import Dict, Any
 
-logger = logging.getLogger(__name__)
-
+def monitor_performance(func: Callable) -> Callable:
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        execution_time = time.time() - start_time
+        return result
+    return wrapper
 
 class PerformanceMonitor:
-
     def __init__(self):
-        self.metrics = []
-        self.start_time = time.time()
+        self.metrics: Dict[str, List[float]] = {
+            'response_time': [],
+            'database_query_times': [],
+            'blockchain_operation_times': []
+        }
+        self.start_time = datetime.now()
 
-    def record_metrics(self, metrics: Dict[str, Any]):
-        """Registra metriche con timestamp"""
-        metrics['timestamp'] = datetime.utcnow().isoformat()
-        self.metrics.append(metrics)
+    def record_metric(self, category: str, value: float) -> None:
+        if category not in self.metrics:
+            self.metrics[category] = []
+        self.metrics[category].append(value)
 
-        # Log delle metriche se superano soglie critiche
-        if metrics.get('memory_mb', 0) > 1000:  # 1GB
-            logger.warning(f"High memory usage: {metrics['memory_mb']}MB")
-        if metrics.get('cpu_percent', 0) > 80:
-            logger.warning(f"High CPU usage: {metrics['cpu_percent']}%")
+    def get_average(self, category: str) -> float:
+        if not self.metrics.get(category):
+            return 0.0
+        return sum(self.metrics[category]) / len(self.metrics[category])
 
-    def save_metrics(self):
-        """Salva le metriche su file"""
-        try:
-            with open('logs/performance_metrics.json', 'a') as f:
-                for metric in self.metrics:
-                    json.dump(metric, f)
-                    f.write('\n')
-            self.metrics = []  # Reset dopo il salvataggio
-        except Exception as e:
-            logger.error(f"Failed to save metrics: {e}")
+    def get_metrics(self) -> Dict[str, Any]:
+        return {
+            category: {
+                'average': self.get_average(category),
+                'count': len(values),
+                'latest': values[-1] if values else 0
+            }
+            for category, values in self.metrics.items()
+        }
+
+    def track_time(self, category: str):
+        def decorator(func):
+            @functools.wraps(func)
+            async def wrapper(*args, **kwargs):
+                start_time = time.time()
+                result = await func(*args, **kwargs)
+                execution_time = time.time() - start_time
+                self.record_metric(category, execution_time)
+                return result
+            return wrapper
+        return decorator
+
+# Create the singleton instance
+performance_monitor = PerformanceMonitor()
