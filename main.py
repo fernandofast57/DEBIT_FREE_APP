@@ -94,7 +94,7 @@ class ApplicationManager:
 
             with self.app.app_context():
                 # Use Gunicorn for production
-            from gunicorn.app.base import BaseApplication
+                from gunicorn.app.base import BaseApplication
 
             class StandaloneApplication(BaseApplication):
                 def __init__(self, app, options=None):
