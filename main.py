@@ -24,13 +24,20 @@ if __name__ == '__main__':
         try:
             port = int(os.getenv('PORT', 8080))  # Default to port 8080
             env = os.getenv('FLASK_ENV', 'development')
-            debug = env == 'development'
+            debug = False  # Force production mode
+            use_reloader = False  # Disable reloader in production
             
             from app.utils.load_balancer import load_balancer
             server = load_balancer.get_next_server()
             
-            logger.info(f"Starting application on {server['host']}:{server['port']} in {env} mode")
-            app.run(host='0.0.0.0', port=server['port'], debug=debug)  # Binding to 0.0.0.0
+            logger.info(f"Starting application on {server['host']}:{server['port']} in production mode")
+            app.run(
+                host='0.0.0.0',
+                port=server['port'],
+                debug=debug,
+                use_reloader=use_reloader,
+                threaded=True
+            )
         except Exception as e:
             logger.error(f"Failed to start application: {e}")
             raise
