@@ -2,7 +2,7 @@
 import time
 import logging
 from functools import wraps
-from typing import Callable, Optional
+from typing import Callable, Optional, Any
 
 logger = logging.getLogger(__name__)
 
