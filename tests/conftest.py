@@ -10,7 +10,6 @@ from app.models.models import User, MoneyAccount, GoldAccount
 from app.utils.blockchain_monitor import BlockchainMonitor
 from app.services.blockchain_service import BlockchainService
 
-
 @pytest.fixture
 def app():
     app = create_app()
@@ -28,28 +27,31 @@ def app():
         db.session.remove()
         db.drop_all()
 
-
 @pytest.fixture
 def client(app):
     return app.test_client()
-
 
 @pytest.fixture
 def runner(app):
     return app.test_cli_runner()
 
+@pytest.fixture
+def test_db(app):
+    """Fixture del database per i test"""
+    return db
 
 @pytest.fixture
-def test_user(app):
+def test_user(app, test_db):
     """Crea un utente di test con account money e gold"""
+    from app.models.models import User  # Import locale per evitare conflitti
+
     with app.app_context():
         user = User(username='test_user', email='test@example.com')
         user.money_account = MoneyAccount(balance=Decimal('1000.00'))
         user.gold_account = GoldAccount(balance=Decimal('0.00'))
-        db.session.add(user)
-        db.session.commit()
+        test_db.session.add(user)
+        test_db.session.commit()
         return user
-
 
 @pytest.fixture
 def auth_token(app, test_user):
@@ -59,11 +61,8 @@ def auth_token(app, test_user):
         'exp': datetime.utcnow() + timedelta(days=1),
         'iat': datetime.utcnow()
     }
-    token = jwt.encode(payload,
-                       app.config['JWT_SECRET_KEY'],
-                       algorithm='HS256')
+    token = jwt.encode(payload, app.config['JWT_SECRET_KEY'], algorithm='HS256')
     return f'Bearer {token}'
-
 
 @pytest.fixture
 def auth_headers(auth_token, test_user):
@@ -73,7 +72,6 @@ def auth_headers(auth_token, test_user):
         'X-User-Id': str(test_user.id),
         'Content-Type': 'application/json'
     }
-
 
 @pytest.fixture
 def mock_w3():
@@ -104,7 +102,6 @@ def mock_w3():
 
     return w3
 
-
 @pytest.fixture
 async def blockchain_service(mock_w3):
     """Servizio blockchain configurato per i test"""
@@ -113,13 +110,11 @@ async def blockchain_service(mock_w3):
     service.contract = Mock()
     service.contract.functions = Mock()
     service.contract.functions.transfer = Mock()
-    service.contract.functions.transfer().transact = Mock(
-        return_value=b'0x123')
+    service.contract.functions.transfer().transact = Mock(return_value=b'0x123')
     service.account = Mock(
         address='0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
         privateKey=b'0x123')
     return service
-
 
 @pytest.fixture
 def blockchain_monitor(mock_w3):
@@ -128,26 +123,6 @@ def blockchain_monitor(mock_w3):
     monitor.last_processed_block = 12344  # Un blocco prima del corrente
     return monitor
 
-
-@pytest.fixture
-def populate_database(app, test_user):
-    """Popola il database con dati di esempio aggiuntivi se necessario"""
-    with app.app_context():
-        # Qui puoi aggiungere altri dati di test se necessario
-        yield
-        db.session.remove()
-        db.drop_all()
-
-
 def get_test_rpc_url():
     """URL RPC per testing"""
     return "http://0.0.0.0:8545"
-
-
-# Configurazione markers pytest
-def pytest_configure(config):
-    config.addinivalue_line(
-        "markers", "blockchain: mark test as blockchain integration test")
-    config.addinivalue_line("markers",
-                            "integration: mark test as integration test")
-    config.addinivalue_line("markers", "unit: mark test as unit test")
