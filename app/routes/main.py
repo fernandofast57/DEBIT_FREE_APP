@@ -1,5 +1,5 @@
 
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, current_app
 from flask_login import login_required, current_user
 from app.utils.auth import admin_required, operator_required
 from app.services.accounting_service import AccountingService
@@ -16,11 +16,15 @@ def index():
 @bp.route('/dashboard')
 @login_required
 def dashboard():
-    if current_user.is_admin:
-        return redirect(url_for('main.admin_dashboard'))
-    elif current_user.is_operator:
-        return redirect(url_for('main.operator_dashboard'))
-    return redirect(url_for('main.client_dashboard'))
+    try:
+        if current_user.is_admin:
+            return redirect(url_for('main.admin_dashboard'))
+        elif current_user.is_operator:
+            return redirect(url_for('main.operator_dashboard'))
+        return redirect(url_for('main.client_dashboard'))
+    except Exception as e:
+        current_app.logger.error(f"Dashboard error: {str(e)}")
+        return render_template('errors/500.html'), 500
 
 @bp.route('/client/dashboard')
 @login_required
