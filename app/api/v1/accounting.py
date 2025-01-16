@@ -2,6 +2,7 @@
 from flask import Blueprint, jsonify, request
 from app.services.accounting_service import AccountingService
 from app.utils.auth import auth_required
+from app.utils.audit_logger import require_operator_approval
 
 bp = Blueprint('accounting', __name__)
 accounting_service = AccountingService()
