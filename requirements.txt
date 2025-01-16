@@ -10,6 +10,7 @@ Quart>=0.19.4
 Quart-Schema>=0.15.0
 hypercorn>=0.15.0
 Jinja2>=3.1.2
+prometheus-client>=0.16.0
 
 # Database and Caching
 redis>=5.0.1

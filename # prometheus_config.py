@@ -1,32 +1,54 @@
-# prometheus_config.py
-from prometheus_client import Counter, Histogram
+from prometheus_client import Counter, Summary, Gauge
+from functools import wraps
 import time
 
-# Metriche per il monitoraggio
-REQUEST_COUNT = Counter('request_count', 'Total request count',
-                        ['method', 'endpoint', 'status'])
+# Metriche per la distribuzione settimanale dell'oro
+GOLD_DISTRIBUTION_DURATION = Summary(
+    'gold_distribution_process_duration_seconds',
+    'Time spent processing weekly gold distribution')
 
-REQUEST_LATENCY = Histogram('request_latency_seconds', 'Request latency',
-                            ['endpoint'])
+GOLD_DISTRIBUTION_TOTAL = Counter(
+    'gold_distribution_total', 'Total number of gold distributions processed')
 
-DB_QUERY_LATENCY = Histogram('db_query_latency_seconds',
-                             'Database query latency', ['query_type'])
+GOLD_DISTRIBUTION_ERRORS = Counter(
+    'gold_distribution_errors_total',
+    'Number of errors during gold distribution', ['error_type'])
+
+GOLD_AMOUNT_PROCESSED = Gauge('gold_amount_processed_grams',
+                              'Amount of gold processed in grams')
+
+EURO_AMOUNT_PROCESSED = Gauge('euro_amount_processed',
+                              'Amount of euros processed')
+
+ACTIVE_DISTRIBUTIONS = Gauge('gold_distribution_active',
+                             'Number of active distribution processes')
 
 
-def track_request(fn):
-    """Decorator per tracciare le richieste"""
+def track_distribution_metrics(func):
+    """Decorator per tracciare le metriche della distribuzione"""
 
-    def wrapper(*args, **kwargs):
-        start_time = time.time()
-        response = fn(*args, **kwargs)
-        latency = time.time() - start_time
+    @wraps(func)
+    async def wrapper(*args, **kwargs):
+        ACTIVE_DISTRIBUTIONS.inc()
+        try:
+            start_time = time.time()
+            result = await func(*args, **kwargs)
 
-        REQUEST_COUNT.labels(method=request.method,
-                             endpoint=request.endpoint,
-                             status=response.status_code).inc()
+            # Aggiorna le metriche
+            GOLD_DISTRIBUTION_DURATION.observe(time.time() - start_time)
+            GOLD_DISTRIBUTION_TOTAL.inc()
 
-        REQUEST_LATENCY.labels(endpoint=request.endpoint).observe(latency)
+            if 'total_gold' in result:
+                GOLD_AMOUNT_PROCESSED.set(float(result['total_gold']))
+            if 'total_euro' in result:
+                EURO_AMOUNT_PROCESSED.set(float(result['total_euro']))
 
-        return response
+            return result
+
+        except Exception as e:
+            GOLD_DISTRIBUTION_ERRORS.labels(error_type=type(e).__name__).inc()
+            raise
+        finally:
+            ACTIVE_DISTRIBUTIONS.dec()
 
     return wrapper
