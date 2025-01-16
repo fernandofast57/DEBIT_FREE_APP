@@ -5,13 +5,15 @@ import os
 
 APP_NAME = 'GoldInvestment'
 
+# Create and configure the root logger
+logger = logging.getLogger(APP_NAME)
+
 def setup_logging():
     # Create logs directory if it doesn't exist
     if not os.path.exists('logs'):
         os.makedirs('logs')
 
     # Configure the root logger
-    logger = logging.getLogger()
     logger.setLevel(logging.INFO)
 
     # Create handlers
@@ -28,9 +30,10 @@ def setup_logging():
     file_handler.setFormatter(formatter)
     console_handler.setFormatter(formatter)
 
-    # Add handlers to the logger
-    logger.addHandler(file_handler)
-    logger.addHandler(console_handler)
+    # Add handlers to the logger if they haven't been added already
+    if not logger.handlers:
+        logger.addHandler(file_handler)
+        logger.addHandler(console_handler)
 
     return logger
 
@@ -44,12 +47,7 @@ def get_logger(name: str) -> logging.Logger:
     Returns:
         logging.Logger: Configured logger instance
     """
-    logger = logging.getLogger(f"{APP_NAME}.{name}")
-
-    if not logger.handlers:  # Avoid adding handlers multiple times
-        setup_logging()
-
-    return logger
+    return logging.getLogger(f"{APP_NAME}.{name}")
 
 # Setup logging when module is imported
 setup_logging()
