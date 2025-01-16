@@ -1,0 +1,92 @@
+
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Approvazione Transazioni</h2>
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>Transazioni in Attesa</h4>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Utente</th>
+                        <th>Tipo</th>
+                        <th>Importo</th>
+                        <th>Controlli</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody id="pendingTransactions">
+                    <!-- Popolato via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+function loadPendingTransactions() {
+    fetch('/api/v1/admin/approvals/pending')
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.getElementById('pendingTransactions');
+            tbody.innerHTML = '';
+            
+            data.transactions.forEach(tx => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${tx.id}</td>
+                    <td>${tx.user_id}</td>
+                    <td>${tx.type}</td>
+                    <td>${tx.amount}</td>
+                    <td>
+                        <ul class="list-unstyled">
+                            ${Object.entries(tx.validation_checks).map(([key, value]) => 
+                                `<li class="${value ? 'text-success' : 'text-danger'}">
+                                    ${key}: ${value ? '✓' : '✗'}
+                                </li>`
+                            ).join('')}
+                        </ul>
+                    </td>
+                    <td>
+                        <button onclick="approveTransaction(${tx.id})" 
+                                class="btn btn-success btn-sm">
+                            Approva
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        });
+}
+
+function approveTransaction(txId) {
+    if (!confirm('Confermi l\'approvazione della transazione?')) return;
+    
+    fetch(`/api/v1/admin/approvals/approve/${txId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('Transazione approvata e registrata nella blockchain');
+            loadPendingTransactions();
+        } else {
+            alert('Errore: ' + data.error);
+        }
+    });
+}
+
+// Carica le transazioni all'avvio
+document.addEventListener('DOMContentLoaded', loadPendingTransactions);
+// Aggiorna ogni 30 secondi
+setInterval(loadPendingTransactions, 30000);
+</script>
+{% endblock %}
