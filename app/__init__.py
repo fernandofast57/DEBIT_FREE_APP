@@ -69,13 +69,18 @@ def create_app(config_class=ProductionConfig):
         from app.utils.optimization import optimize_queries, create_indexes
         inspector = inspect(db.engine)
 
-        if not inspector.has_table('users'):
-            db.create_all()
-            app.logger.info("Tables created successfully.")
+        try:
+            if not inspector.has_table('users'):
+                db.create_all()
+                app.logger.info("Tables created successfully.")
+            
             optimize_queries()
             create_indexes()
-        else:
-            optimize_queries()
+            db.session.commit()
+            
+        except Exception as e:
+            app.logger.error(f"Database initialization error: {str(e)}")
+            db.session.rollback()
 
     # Inizializzazione Admin
     admin.init_app(app)
