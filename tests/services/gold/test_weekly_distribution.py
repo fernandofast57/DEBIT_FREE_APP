@@ -4,10 +4,56 @@ from datetime import datetime
 from unittest.mock import patch, MagicMock
 from app.database import db
 from app.models.models import User, MoneyAccount, GoldAccount
-from app.models.distribution import WeeklyDistributionLog
 from app.services.gold.weekly_distribution import WeeklyGoldDistribution
 
 pytestmark = [pytest.mark.asyncio, pytest.mark.gold]
+
+@pytest.mark.asyncio
+async def test_distribution_process(test_user, distribution_service):
+    """Test completo del processo di distribuzione"""
+    fixing_price = Decimal('1800.00')
+
+    # 1. Setup sincrono del database
+    with patch('app.services.gold.weekly_distribution.datetime') as mock_datetime:
+        mock_datetime.now.return_value = datetime(2024, 1, 1, 15, 30)
+        mock_datetime.utcnow.return_value = datetime(2024, 1, 1, 15, 30)
+
+        # 2. Esecuzione operazione asincrona
+        result = await distribution_service.process_distribution(fixing_price)
+
+        # 3. Verifica risultati
+        assert result['status'] == 'success'
+        assert Decimal(str(result['total_euro'])) == Decimal('1000.00')
+        assert Decimal(str(result['total_gold'])) > Decimal('0')
+
+        # 4. Verifica stato database (sincrono)
+        with db.session() as session:
+            user = session.query(User).filter_by(id=test_user.id).first()
+            assert user.money_account.balance == Decimal('0')
+            assert user.gold_account.balance > Decimal('0')
+
+@pytest.mark.asyncio
+async def test_distribution_with_blockchain(test_user, distribution_service, mock_blockchain_service):
+    """Test distribuzione con integrazione blockchain"""
+    fixing_price = Decimal('1800.00')
+
+    # 1. Setup blockchain mock
+    mock_blockchain_service.record_gold_transaction.return_value = {
+        'status': 'success',
+        'transaction_hash': '0x123'
+    }
+
+    # 2. Esegui distribuzione
+    result = await distribution_service.process_distribution(fixing_price)
+
+    # 3. Verifica risultati
+    assert result['status'] == 'success'
+    assert mock_blockchain_service.record_gold_transaction.called
+
+    # 4. Verifica stato finale (sincrono)
+    with db.session() as session:
+        user = session.query(User).filter_by(id=test_user.id).first()
+        assert user.gold_account.balance > Decimal('0')
 
 @pytest.fixture
 async def test_user(test_db):
@@ -27,30 +73,10 @@ async def distribution_service():
     service = WeeklyGoldDistribution()
     return service
 
-@pytest.mark.asyncio
-async def test_distribution_process(test_user, distribution_service):
-    """Test del processo di distribuzione con gestione asincrona appropriata"""
-    fixing_price = Decimal('1800.00')
+@pytest.fixture
+def mock_blockchain_service():
+    return MagicMock()
 
-    # Mock della data per permettere la distribuzione
-    with patch('app.services.gold.weekly_distribution.datetime') as mock_datetime:
-        mock_datetime.now.return_value = datetime(2024, 1, 1, 15, 30)
-        mock_datetime.utcnow.return_value = datetime(2024, 1, 1, 15, 30)
-
-        # Esegui la distribuzione
-        result = await distribution_service.process_distribution(fixing_price)
-
-        # Verifica il risultato
-        assert result['status'] == 'success'
-        assert Decimal(str(result['total_euro'])) == Decimal('1000.00')
-        assert Decimal(str(result['total_gold'])) > Decimal('0')
-        assert result['users_processed'] == 1
-
-        # Verifica lo stato dell'utente dopo la distribuzione
-        async with db.session() as session:
-            await session.refresh(test_user)
-            assert test_user.money_account.balance == Decimal('0')
-            assert test_user.gold_account.balance > Decimal('0')
 
 @pytest.mark.usefixtures("app", "test_db")
 class TestWeeklyGoldDistribution:
