@@ -1,0 +1,215 @@
+Per implementare questo sistema in modo sicuro seguendo le pratiche CI/CD, organizziamo la struttura e i file necessari:
+
+1. **Struttura Directory**:
+```
+app/
+├── services/
+│   ├── gold/
+│   │   ├── __init__.py
+│   │   ├── weekly_distribution.py      # Classe principale
+│   │   ├── distribution_backup.py      # Sistema di backup
+│   │   └── distribution_validator.py   # Validazioni
+│   └── __init__.py
+├── models/
+│   ├── __init__.py
+│   └── distribution.py                 # Model per log e snapshots
+└── tests/
+    └── services/
+        └── gold/
+            ├── __init__.py
+            ├── test_weekly_distribution.py
+            ├── test_distribution_backup.py
+            └── test_distribution_validator.py
+```
+
+2. **File da Creare/Modificare**:
+
+a. `app/services/gold/weekly_distribution.py`:
+```python
+from decimal import Decimal
+from datetime import datetime
+import asyncio
+from app.database import db
+from app.models.distribution import WeeklyDistributionLog, DistributionSnapshot
+from .distribution_backup import DistributionBackup
+from .distribution_validator import DistributionValidator
+
+class WeeklyGoldDistribution:
+    # Inserisci qui il codice della classe principale
+```
+
+b. `app/services/gold/distribution_backup.py`:
+```python
+from typing import Dict
+from decimal import Decimal
+from datetime import datetime
+from app.database import db
+from app.models.distribution import DistributionSnapshot
+
+class DistributionBackup:
+    # Inserisci qui il codice del sistema di backup
+```
+
+c. `app/services/gold/distribution_validator.py`:
+```python
+from decimal import Decimal
+from typing import Dict
+from app.database import db
+from app.models.distribution import WeeklyDistributionLog
+
+class DistributionValidator:
+    # Inserisci qui il codice delle validazioni
+```
+
+d. `app/models/distribution.py`:
+```python
+from app.database import db
+from datetime import datetime
+from sqlalchemy.dialects.postgresql import JSONB
+
+class WeeklyDistributionLog(db.Model):
+    __tablename__ = 'weekly_distribution_logs'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    processing_date = db.Column(db.DateTime, nullable=False)
+    fixing_price = db.Column(db.Numeric(20, 8), nullable=False)
+    total_euro_processed = db.Column(db.Numeric(20, 2), nullable=False)
+    total_gold_distributed = db.Column(db.Numeric(20, 8), nullable=False)
+    users_processed = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.String(20), nullable=False)
+    error_details = db.Column(JSONB)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+class DistributionSnapshot(db.Model):
+    __tablename__ = 'distribution_snapshots'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.DateTime, nullable=False)
+    snapshot_data = db.Column(JSONB, nullable=False)
+    restored = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+```
+
+3. **Test Files**:
+
+a. `tests/services/gold/test_weekly_distribution.py`:
+```python
+import pytest
+from decimal import Decimal
+from app.services.gold.weekly_distribution import WeeklyGoldDistribution
+
+@pytest.mark.asyncio
+class TestWeeklyGoldDistribution:
+    async def test_pre_distribution_checks(self):
+        distribution = WeeklyGoldDistribution()
+        result = await distribution.pre_distribution_checks()
+        assert result is True
+
+    async def test_distribution_calculations(self):
+        # Test con valori noti
+        distribution = WeeklyGoldDistribution()
+        fixing_price = Decimal('1800.00')  # €/gr
+        test_amount = Decimal('1000.00')   # €
+        
+        expected_gold = (test_amount * Decimal('0.95')) / fixing_price
+        result = await distribution.calculate_gold_amount(test_amount, fixing_price)
+        
+        assert result == expected_gold
+```
+
+4. **CI/CD Pipeline** (.github/workflows/gold-distribution.yml):
+```yaml
+name: Gold Distribution Tests
+
+on:
+  push:
+    paths:
+      - 'app/services/gold/**'
+      - 'tests/services/gold/**'
+  pull_request:
+    paths:
+      - 'app/services/gold/**'
+      - 'tests/services/gold/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-asyncio pytest-cov
+    
+    - name: Run tests with coverage
+      env:
+        DATABASE_URL: postgresql://postgres:test_password@localhost:5432/test_db
+      run: |
+        pytest tests/services/gold/ --cov=app/services/gold -v
+    
+    - name: Check test coverage
+      run: |
+        coverage report --fail-under=95
+```
+
+5. **Procedura di Deployment**:
+
+a. **Staging**:
+```bash
+# 1. Esegui migrazione database per i nuovi modelli
+alembic upgrade head
+
+# 2. Deploy in staging
+./deploy_staging.sh
+
+# 3. Esegui test di integrazione
+pytest tests/integration/gold/
+
+# 4. Verifica logs
+tail -f logs/gold-distribution.log
+```
+
+b. **Production**:
+```bash
+# 1. Backup database
+./backup_db.sh
+
+# 2. Esegui migrazione
+alembic upgrade head
+
+# 3. Deploy
+./deploy_production.sh
+
+# 4. Monitora logs
+tail -f logs/gold-distribution.log
+```
+
+6. **Monitoraggio**:
+- Implementa alerts su Grafana/Prometheus per:
+  * Tempo di esecuzione distribuzione
+  * Errori durante la distribuzione
+  * Discrepanze nei calcoli
+  * Tentativi di esecuzione fuori orario
+
+Vuoi che approfondiamo qualche aspetto specifico di questa implementazione?
