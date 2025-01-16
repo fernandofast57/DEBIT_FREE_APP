@@ -59,7 +59,7 @@ class TestGoldTransformation:
     @pytest.mark.asyncio
     async def test_transformation_with_fees(self, test_db, test_user, distribution_service, mock_fixing_price):
         """Test transformation with fee calculation"""
-        structure_fee = Decimal('0.067')  # 6.7%
+        structure_fee = Decimal('0.05')  # 5% come definito in TransformationService
         initial_amount = Decimal('1000.00')
         
         with db.session() as session:
