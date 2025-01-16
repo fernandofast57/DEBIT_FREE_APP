@@ -8,17 +8,28 @@ logger = logging.getLogger(__name__)
 
 def monitor_performance(func: Callable) -> Callable:
     @wraps(func)
-    def wrapper(*args, **kwargs) -> Any:
+    async def wrapper(*args, **kwargs) -> Any:
         start_time = time.time()
         try:
-            result = func(*args, **kwargs)
+            result = await func(*args, **kwargs) if asyncio.iscoroutinefunction(func) else func(*args, **kwargs)
             execution_time = time.time() - start_time
+            
+            if execution_time > 5.0:  # Alert on slow operations
+                logger.warning(f"Performance Alert: {func.__name__} took {execution_time:.2f} seconds")
+                
             logger.info(f"Function {func.__name__} executed in {execution_time:.2f} seconds")
             return result
         except Exception as e:
-            logger.error(f"Error in {func.__name__}: {str(e)}")
+            logger.error(f"Critical Error in {func.__name__}: {str(e)}")
+            # Notify administrators
+            await notify_admin(func.__name__, str(e))
             raise
     return wrapper
+
+async def notify_admin(function_name: str, error_details: str):
+    """Notifica gli amministratori in caso di errori critici"""
+    logger.critical(f"Admin Alert - Function: {function_name}, Error: {error_details}")
+    # Implementa qui la logica di notifica (email, SMS, etc.)
 
 class SystemMonitor:
     def __init__(self):
