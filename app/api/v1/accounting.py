@@ -8,6 +8,7 @@ accounting_service = AccountingService()
 
 @bp.route('/balance', methods=['GET'])
 @auth_required
+@require_operator_approval
 def get_balance():
     """Get user's account balance"""
     return jsonify({
