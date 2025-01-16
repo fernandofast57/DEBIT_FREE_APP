@@ -1,4 +1,3 @@
-
 import pytest
 from decimal import Decimal
 from datetime import datetime
@@ -22,23 +21,39 @@ async def test_user(test_db):
         await session.commit()
         return user
 
-@pytest.mark.usefixtures("app", "test_db")
-class TestWeeklyGoldDistribution:
-    async def test_distribution_process(self, test_db, test_user):
-        distribution = WeeklyGoldDistribution()
-        fixing_price = Decimal('1800.00')
+@pytest.fixture
+async def distribution_service():
+    """Fixture per il servizio di distribuzione"""
+    service = WeeklyGoldDistribution()
+    return service
 
-        with patch('app.services.gold.weekly_distribution.datetime') as mock_datetime:
-            mock_datetime.now.return_value = datetime(2024, 1, 1, 15, 30)
-            mock_datetime.utcnow.return_value = datetime(2024, 1, 1, 15, 30)
-            
-            result = await distribution.process_distribution(fixing_price)
+@pytest.mark.asyncio
+async def test_distribution_process(test_user, distribution_service):
+    """Test del processo di distribuzione con gestione asincrona appropriata"""
+    fixing_price = Decimal('1800.00')
 
+    # Mock della data per permettere la distribuzione
+    with patch('app.services.gold.weekly_distribution.datetime') as mock_datetime:
+        mock_datetime.now.return_value = datetime(2024, 1, 1, 15, 30)
+        mock_datetime.utcnow.return_value = datetime(2024, 1, 1, 15, 30)
+
+        # Esegui la distribuzione
+        result = await distribution_service.process_distribution(fixing_price)
+
+        # Verifica il risultato
         assert result['status'] == 'success'
         assert Decimal(str(result['total_euro'])) == Decimal('1000.00')
         assert Decimal(str(result['total_gold'])) > Decimal('0')
         assert result['users_processed'] == 1
 
+        # Verifica lo stato dell'utente dopo la distribuzione
+        async with db.session() as session:
+            await session.refresh(test_user)
+            assert test_user.money_account.balance == Decimal('0')
+            assert test_user.gold_account.balance > Decimal('0')
+
+@pytest.mark.usefixtures("app", "test_db")
+class TestWeeklyGoldDistribution:
     async def test_backup_restore(self, test_db, test_user):
         distribution = WeeklyGoldDistribution()
         

@@ -41,16 +41,17 @@ def test_db(app):
     return db
 
 @pytest.fixture
-def test_user(app, test_db):
+async def test_user(app, test_db):
     """Crea un utente di test con account money e gold"""
     from app.models.models import User  # Import locale per evitare conflitti
 
-    with app.app_context():
+    async with db.session() as session:
         user = User(username='test_user', email='test@example.com')
         user.money_account = MoneyAccount(balance=Decimal('1000.00'))
         user.gold_account = GoldAccount(balance=Decimal('0.00'))
-        test_db.session.add(user)
-        test_db.session.commit()
+        session.add(user)
+        await session.commit()
+        await session.refresh(user)
         return user
 
 @pytest.fixture
