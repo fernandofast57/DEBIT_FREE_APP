@@ -1,50 +1,88 @@
 import pytest
 from unittest.mock import Mock
+from datetime import datetime, timedelta
+import jwt
+from decimal import Decimal
+from web3 import Web3
 from app import create_app
 from app.database import db
 from app.models.models import User, MoneyAccount, GoldAccount
-from web3 import Web3
 from app.utils.blockchain_monitor import BlockchainMonitor
-from app.services.blockchain_service import BlockchainService  # Aggiunto
-from decimal import Decimal
+from app.services.blockchain_service import BlockchainService
+
 
 @pytest.fixture
 def app():
     app = create_app()
-    app.config['TESTING'] = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+    app.config.update({
+        'TESTING': True,
+        'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:',
+        'SECRET_KEY': 'test-secret-key',
+        'JWT_SECRET_KEY': 'test-jwt-secret-key',
+        'BLOCKCHAIN_ENABLED': True
+    })
+
     with app.app_context():
         db.create_all()
         yield app
+        db.session.remove()
         db.drop_all()
 
+
 @pytest.fixture
-def populate_database(app):
-    """Popola il database con dati di esempio prima di ciascun test."""
+def client(app):
+    return app.test_client()
+
+
+@pytest.fixture
+def runner(app):
+    return app.test_cli_runner()
+
+
+@pytest.fixture
+def test_user(app):
+    """Crea un utente di test con account money e gold"""
     with app.app_context():
         user = User(username='test_user', email='test@example.com')
         user.money_account = MoneyAccount(balance=Decimal('1000.00'))
         user.gold_account = GoldAccount(balance=Decimal('0.00'))
         db.session.add(user)
         db.session.commit()
-        yield
-        db.session.remove()
-        db.drop_all()
+        return user
+
 
 @pytest.fixture
-def client(app):
-    return app.test_client()
+def auth_token(app, test_user):
+    """Genera un token JWT valido per l'utente di test"""
+    payload = {
+        'user_id': test_user.id,
+        'exp': datetime.utcnow() + timedelta(days=1),
+        'iat': datetime.utcnow()
+    }
+    token = jwt.encode(payload,
+                       app.config['JWT_SECRET_KEY'],
+                       algorithm='HS256')
+    return f'Bearer {token}'
+
 
 @pytest.fixture
-def runner(app):
-    return app.test_cli_runner()
+def auth_headers(auth_token, test_user):
+    """Fornisce gli headers di autenticazione completi"""
+    return {
+        'Authorization': auth_token,
+        'X-User-Id': str(test_user.id),
+        'Content-Type': 'application/json'
+    }
+
 
 @pytest.fixture
 def mock_w3():
+    """Mock completo per Web3 con tutte le funzionalità necessarie"""
     w3 = Mock(spec=Web3)
     w3.eth = Mock()
     w3.eth.get_block_number = Mock(return_value=12345)
-    w3.eth.wait_for_transaction_receipt = Mock(return_value=Mock(status=1))
+    w3.eth.wait_for_transaction_receipt = Mock(return_value=Mock(
+        status=1, transactionHash=b'0x123', blockNumber=12345))
     w3.eth.get_transaction_count = Mock(return_value=0)
     w3.eth.send_raw_transaction = Mock(return_value=b'0x123')
     w3.eth.contract = Mock()
@@ -52,27 +90,64 @@ def mock_w3():
     w3.eth.gas_price = 20000000000
     w3.eth.chain_id = 80001
     w3.eth.account = Mock()
-    w3.eth.account.sign_transaction = Mock(return_value=Mock(rawTransaction=b'0x456'))
+    w3.eth.account.sign_transaction = Mock(
+        return_value=Mock(rawTransaction=b'0x456', hash=b'0x123'))
+
+    # Aggiungi mock per eventi blockchain
+    w3.eth.get_logs = Mock(return_value=[{
+        'args': {
+            'user': '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+            'amount': 1000000000000000000,  # 1 ETH in wei
+            'timestamp': int(datetime.utcnow().timestamp())
+        }
+    }])
+
     return w3
+
 
 @pytest.fixture
 async def blockchain_service(mock_w3):
+    """Servizio blockchain configurato per i test"""
     service = BlockchainService()
     service.w3 = mock_w3
     service.contract = Mock()
-    service.account = Mock(address='0x742d35Cc6634C0532925a3b844Bc454e4438f44e')
+    service.contract.functions = Mock()
+    service.contract.functions.transfer = Mock()
+    service.contract.functions.transfer().transact = Mock(
+        return_value=b'0x123')
+    service.account = Mock(
+        address='0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+        privateKey=b'0x123')
     return service
 
-@pytest.fixture
-def blockchain_monitor(mock_w3):  # Modificato per usare mock_w3
-    return BlockchainMonitor(mock_w3)
 
 @pytest.fixture
-def auth_headers():
-    return {
-        'Authorization': 'Bearer valid-test-token',
-        'X-User-Id': '123'
-    }
+def blockchain_monitor(mock_w3):
+    """Monitor blockchain configurato per i test"""
+    monitor = BlockchainMonitor(mock_w3)
+    monitor.last_processed_block = 12344  # Un blocco prima del corrente
+    return monitor
+
+
+@pytest.fixture
+def populate_database(app, test_user):
+    """Popola il database con dati di esempio aggiuntivi se necessario"""
+    with app.app_context():
+        # Qui puoi aggiungere altri dati di test se necessario
+        yield
+        db.session.remove()
+        db.drop_all()
+
 
 def get_test_rpc_url():
+    """URL RPC per testing"""
     return "http://0.0.0.0:8545"
+
+
+# Configurazione markers pytest
+def pytest_configure(config):
+    config.addinivalue_line(
+        "markers", "blockchain: mark test as blockchain integration test")
+    config.addinivalue_line("markers",
+                            "integration: mark test as integration test")
+    config.addinivalue_line("markers", "unit: mark test as unit test")
