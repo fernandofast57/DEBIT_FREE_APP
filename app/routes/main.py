@@ -9,6 +9,10 @@ bp = Blueprint('main', __name__)
 accounting_service = AccountingService()
 notification_service = NotificationService()
 
+@bp.route('/')
+def index():
+    return render_template('index.html')
+
 @bp.route('/dashboard')
 @login_required
 def dashboard():
