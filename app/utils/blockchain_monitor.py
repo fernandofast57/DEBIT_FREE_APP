@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 class BlockchainMonitor:
     def __init__(self, w3: Web3):
         self.w3 = w3
+        self.logger = logger #Added logger for consistency
         self.setup_logging()
         if hasattr(self.w3, 'middleware_onion'):
             self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
@@ -26,6 +27,8 @@ class BlockchainMonitor:
             'error_threshold': 5,
             'low_peer_threshold': 2
         }
+        # Placeholder for notification service
+        self.notification_service = None #Added notification service
 
     def setup_logging(self):
         handler = logging.FileHandler('logs/blockchain.log')
@@ -43,11 +46,52 @@ class BlockchainMonitor:
 
     async def monitor_transactions(self, transaction_data: Dict[str, Any]) -> Dict[str, str]:
         try:
-            logger.info(f"Monitoring transaction: {transaction_data}")
-            return {'status': 'monitored', 'data': transaction_data}
+            tx_hash = transaction_data.get('tx_hash')
+            if not tx_hash:
+                self.logger.error("Missing transaction hash")
+                return {'status': 'error', 'message': 'Missing transaction hash'}
+
+            receipt = await self.w3.eth.get_transaction_receipt(tx_hash)
+            if not receipt:
+                await self._handle_pending_transaction(tx_hash)
+                return {'status': 'pending', 'tx_hash': tx_hash}
+
+            if receipt.status == 0:
+                await self._handle_failed_transaction(tx_hash, transaction_data)
+                return {'status': 'failed', 'tx_hash': tx_hash}
+
+            if not self._verify_amounts(transaction_data, receipt):
+                await self._handle_amount_mismatch(tx_hash, transaction_data)
+                return {'status': 'error', 'message': 'Amount mismatch'}
+
+            self.logger.info(f"Transaction {tx_hash} verified successfully")
+            return {'status': 'success', 'tx_hash': tx_hash}
+
         except Exception as e:
-            logger.error(f"Transaction monitoring failed: {str(e)}")
+            self.logger.critical(f"Transaction monitoring error: {str(e)}")
+            await self.notification_service.notify_admins(
+                "MONITORING_ERROR",
+                f"Transaction monitoring failed: {str(e)}"
+            )
             return {'status': 'error', 'message': str(e)}
+
+    async def _handle_pending_transaction(self, tx_hash):
+        self.logger.warning(f"Transaction {tx_hash} is pending.")
+        # Add logic to handle pending transactions
+
+    async def _handle_failed_transaction(self, tx_hash, transaction_data):
+        self.logger.error(f"Transaction {tx_hash} failed.")
+        # Add logic to handle failed transactions
+
+    async def _handle_amount_mismatch(self, tx_hash, transaction_data):
+        self.logger.error(f"Amount mismatch in transaction {tx_hash}.")
+        # Add logic to handle amount mismatches
+
+    def _verify_amounts(self, transaction_data, receipt):
+        # Placeholder for amount verification
+        self.logger.info("Verifying Amounts - Placeholder Implementation")
+        return True
+
 
     async def process_block(self, block_number: int) -> Dict[str, Any]:
         try:
