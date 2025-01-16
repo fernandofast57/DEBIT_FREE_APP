@@ -1,0 +1,62 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="dashboard-container">
+    <div class="account-summary">
+        <div class="balance-card">
+            <h3>Saldo Euro</h3>
+            <p class="balance">€{{ euro_balance }}</p>
+        </div>
+        <div class="balance-card">
+            <h3>Saldo Oro</h3>
+            <p class="balance">{{ gold_balance }}g</p>
+        </div>
+    </div>
+
+    <div class="transactions-section">
+        <h3>Le Tue Transazioni</h3>
+        <table class="transactions-table">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Tipo</th>
+                    <th>Importo</th>
+                    <th>Stato</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tx in transactions %}
+                <tr>
+                    <td>{{ tx.created_at.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ tx.type }}</td>
+                    <td>{{ tx.amount }}</td>
+                    <td>{{ tx.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="rewards-section">
+        <h3>Premi Network</h3>
+        <table class="rewards-table">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Codice Premio</th>
+                    <th>Quantità Oro</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reward in rewards %}
+                <tr>
+                    <td>{{ reward.created_at.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ reward.code }}</td>
+                    <td>{{ reward.amount }}g</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
