@@ -3,9 +3,11 @@ from decimal import Decimal
 from app.services.gold.distribution_backup import DistributionBackup
 from app.database import db
 
+pytestmark = [pytest.mark.asyncio, pytest.mark.gold]
 
-@pytest.mark.asyncio
+@pytest.mark.usefixtures("app", "test_db")
 class TestDistributionBackup:
+    # I test rimangono gli stessi
 
     async def test_create_snapshot(self, test_db):
         backup = DistributionBackup()

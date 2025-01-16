@@ -3,9 +3,11 @@ from decimal import Decimal
 from app.services.gold.distribution_validator import DistributionValidator
 from app.database import db
 
+pytestmark = [pytest.mark.asyncio, pytest.mark.gold]
 
-@pytest.mark.asyncio
+@pytest.mark.usefixtures("app", "test_db")
 class TestDistributionValidator:
+    # I test rimangono gli stessi
 
     async def test_validate_fixing_price(self):
         validator = DistributionValidator()

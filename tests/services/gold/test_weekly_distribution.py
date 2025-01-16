@@ -3,12 +3,12 @@ from decimal import Decimal
 from datetime import datetime
 from app.database import db
 from app.services.gold.weekly_distribution import WeeklyGoldDistribution
-from app.services.gold.distribution_validator import DistributionValidator
-from app.models.distribution import WeeklyDistributionLog, DistributionSnapshot
 
+pytestmark = [pytest.mark.asyncio, pytest.mark.gold]  # Aggiungiamo entrambi i marker
 
-@pytest.mark.asyncio
+@pytest.mark.usefixtures("app", "test_db")
 class TestWeeklyGoldDistribution:
+    # I test rimangono gli stessi
 
     async def test_distribution_process(self, test_db):
         distribution = WeeklyGoldDistribution()
