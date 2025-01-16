@@ -1,70 +1,71 @@
 
 import pytest
 from decimal import Decimal
-from app.services.transformation_service import TransformationService
-from app.models.models import User, MoneyAccount, GoldAccount
-from unittest.mock import AsyncMock, patch
-from app import create_app
+from datetime import datetime
+from unittest.mock import patch, MagicMock
+from app.services.gold.weekly_distribution import WeeklyGoldDistribution
+from app.models.models import User, MoneyAccount, GoldAccount, Transaction
 from app.database import db
-from config import TestConfig
-
-@pytest.fixture
-def app():
-    app = create_app(TestConfig)
-    return app
 
 @pytest.mark.asyncio
-async def test_transformation_calculates_correct_gold_amount(app):
-    with app.app_context():
-        # Setup
-        service = TransformationService()
-        euro_amount = Decimal('100.00')
-        fixing_price = Decimal('50.00')
-        expected_gold = Decimal('1.90')  # (100 - 5% fee) / 50
-
-        test_user = User(id=1)
-        test_user.money_account = MoneyAccount(balance=euro_amount)
-        test_user.gold_account = GoldAccount(balance=Decimal('0'))
+class TestGoldTransformation:
+    @pytest.fixture
+    def distribution_service(self):
+        return WeeklyGoldDistribution()
+    
+    @pytest.fixture
+    def mock_fixing_price(self):
+        return Decimal('1800.00')
         
-        with patch('app.models.models.User.query') as mock_query:
-            mock_query.get = AsyncMock(return_value=test_user)
-            result = await service.process_transformation(1, euro_amount, fixing_price)
+    async def test_complete_transformation_flow(self, test_db, test_user, distribution_service, mock_fixing_price):
+        """Test the complete transformation flow from EUR to gold"""
+        # 1. Pre-transformation checks
+        initial_money = Decimal('1000.00')
+        initial_gold = Decimal('0.00')
+        
+        with db.session() as session:
+            # Verify initial balances
+            user = session.query(User).filter_by(id=test_user.id).first()
+            assert user.money_account.balance == initial_money
+            assert user.gold_account.balance == initial_gold
             
+            # 2. Execute transformation
+            result = await distribution_service.process_distribution(mock_fixing_price)
+            
+            # 3. Verify transformation results
             assert result['status'] == 'success'
-            assert abs(Decimal(str(result['gold_grams'])) - expected_gold) < Decimal('0.01')
+            assert Decimal(str(result['total_euro'])) == initial_money
+            
+            # 4. Verify final balances
+            session.refresh(user)
+            assert user.money_account.balance == Decimal('0.00')
+            assert user.gold_account.balance > Decimal('0.00')
+            
+            # 5. Verify transaction record
+            transaction = session.query(Transaction).filter_by(user_id=user.id).first()
+            assert transaction is not None
+            assert transaction.amount == initial_money
+            assert transaction.type == 'transformation'
 
-@pytest.mark.asyncio
-async def test_insufficient_funds_transformation(app):
-    with app.app_context():
-        # Setup
-        service = TransformationService()
-        euro_amount = Decimal('1000.00')
-        fixing_price = Decimal('50.00')
+    @pytest.mark.asyncio
+    async def test_transformation_validation(self, distribution_service, mock_fixing_price):
+        """Test validation of transformation parameters"""
+        with pytest.raises(ValueError):
+            await distribution_service.process_distribution(Decimal('-1800.00'))
+            
+        with pytest.raises(ValueError):
+            await distribution_service.process_distribution(Decimal('0.00'))
 
-        test_user = User(id=1)
-        test_user.money_account = MoneyAccount(balance=Decimal('100.00'))
-        test_user.gold_account = GoldAccount(balance=Decimal('0'))
+    @pytest.mark.asyncio
+    async def test_transformation_with_fees(self, test_db, test_user, distribution_service, mock_fixing_price):
+        """Test transformation with fee calculation"""
+        structure_fee = Decimal('0.067')  # 6.7%
+        initial_amount = Decimal('1000.00')
         
-        with patch('app.models.models.User.query') as mock_query:
-            mock_query.get = AsyncMock(return_value=test_user)
-            result = await service.process_transformation(1, euro_amount, fixing_price)
-            assert result['status'] == 'error'
-            assert 'insufficient funds' in str(result['message']).lower()
-
-@pytest.mark.asyncio
-async def test_invalid_fixing_price(app):
-    with app.app_context():
-        # Setup
-        service = TransformationService()
-        euro_amount = Decimal('100.00')
-        fixing_price = Decimal('0')
-
-        test_user = User(id=1)
-        test_user.money_account = MoneyAccount(balance=euro_amount)
-        test_user.gold_account = GoldAccount(balance=Decimal('0'))
-        
-        with patch('app.models.models.User.query') as mock_query:
-            mock_query.get = AsyncMock(return_value=test_user)
-            result = await service.process_transformation(1, euro_amount, fixing_price)
-            assert result['status'] == 'error'
-            assert 'invalid fixing price' in str(result['message']).lower()
+        with db.session() as session:
+            result = await distribution_service.process_distribution(mock_fixing_price)
+            
+            user = session.query(User).filter_by(id=test_user.id).first()
+            expected_gold = (initial_amount * (1 - structure_fee)) / mock_fixing_price
+            
+            assert abs(user.gold_account.balance - expected_gold) < Decimal('0.0001')
