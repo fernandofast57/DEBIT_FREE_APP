@@ -1,63 +1,103 @@
 
 from sqlalchemy import text
 from app.database import db
+import logging
+
+logger = logging.getLogger(__name__)
 
 def optimize_queries():
     """Apply database query optimizations"""
     try:
         with db.engine.connect() as conn:
-            conn.execute(text("PRAGMA journal_mode=WAL"))
-            conn.execute(text("PRAGMA synchronous=NORMAL"))
-            conn.execute(text("PRAGMA cache_size=10000"))
-            conn.execute(text("PRAGMA temp_store=MEMORY"))
-        db.session.commit()
-        print("Query optimization completed successfully")
+            # Set pragmas with error handling
+            pragmas = [
+                "PRAGMA journal_mode=WAL",
+                "PRAGMA synchronous=NORMAL", 
+                "PRAGMA cache_size=10000",
+                "PRAGMA temp_store=MEMORY"
+            ]
+            
+            for pragma in pragmas:
+                try:
+                    conn.execute(text(pragma))
+                    logger.info(f"Successfully executed: {pragma}")
+                except Exception as e:
+                    logger.error(f"Failed to execute pragma {pragma}: {str(e)}")
+                    
+        logger.info("Query optimization completed successfully")
     except Exception as e:
-        print(f"Error optimizing queries: {e}")
+        logger.error(f"Error in query optimization: {str(e)}")
         db.session.rollback()
 
 def create_indexes():
-    """Create optimized database indexes"""
+    """Create optimized database indexes with improved error handling"""
     try:
         with db.engine.connect() as conn:
-            # Check if tables exist
-            for table in ['transactions', 'transformations', 'noble_ranks', 'users', 'noble_relations']:
-                result = conn.execute(text(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table}'"))
-                if not result.fetchone():
-                    print(f"Table {table} does not exist, skipping indexes")
-                    continue
-                
-                # Drop existing indexes if they exist
-                index_check_sql = "SELECT name FROM sqlite_master WHERE type='index' AND tbl_name=?"
-                
-                # Create indexes based on existing tables
-                if table == 'transactions':
-                    conn.execute(text("CREATE INDEX IF NOT EXISTS idx_transactions_user ON transactions(user_id, created_at)"))
-                    conn.execute(text("CREATE INDEX IF NOT EXISTS idx_transactions_status ON transactions(status, created_at)"))
-                elif table == 'transformations':
-                    # Check and drop existing index before creating new one
-                    existing_indexes = conn.execute(text(index_check_sql), [table]).fetchall()
-                    for idx in existing_indexes:
-                        if idx[0] in ['idx_transformations_date', 'idx_transformations_user']:
-                            conn.execute(text(f"DROP INDEX IF EXISTS {idx[0]}"))
-                    
-                    conn.execute(text("CREATE INDEX IF NOT EXISTS idx_transformations_date ON transformations(created_at, status)"))
-                    conn.execute(text("CREATE INDEX IF NOT EXISTS idx_transformations_user ON transformations(user_id, status)"))
-                elif table == 'noble_ranks':
-                    conn.execute(text("CREATE INDEX IF NOT EXISTS idx_noble_ranks_level ON noble_ranks(level)"))
-                elif table == 'users':
-                    conn.execute(text("CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)"))
-                elif table == 'noble_relations':
-                    conn.execute(text("CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)"))
-
-            # Optimize SQLite
-            conn.execute(text("PRAGMA journal_mode=WAL"))
-            conn.execute(text("PRAGMA synchronous=NORMAL"))
-            conn.execute(text("PRAGMA cache_size=10000"))
-            conn.execute(text("PRAGMA temp_store=MEMORY"))
+            # Tables we expect to work with
+            tables = {
+                'transactions': [
+                    ('idx_transactions_user', 'user_id, created_at'),
+                    ('idx_transactions_status', 'status, created_at')
+                ],
+                'transformations': [
+                    ('idx_transformations_date', 'created_at, status'),
+                    ('idx_transformations_user', 'user_id, status')
+                ],
+                'noble_ranks': [
+                    ('idx_noble_ranks_level', 'level')
+                ],
+                'users': [
+                    ('idx_users_email', 'email')
+                ],
+                'noble_relations': [
+                    ('idx_noble_relations_user', 'user_id, noble_rank')
+                ]
+            }
             
-        db.session.commit()
-        print("Database optimization completed successfully")
+            # Check each table and create indexes
+            for table_name, indexes in tables.items():
+                try:
+                    # Check if table exists
+                    result = conn.execute(text(
+                        f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table_name}'"
+                    ))
+                    
+                    if not result.fetchone():
+                        logger.warning(f"Table {table_name} does not exist yet, skipping indexes")
+                        continue
+                        
+                    # Get existing indexes
+                    existing_indexes = conn.execute(text(
+                        f"SELECT name FROM sqlite_master WHERE type='index' AND tbl_name='{table_name}'"
+                    )).fetchall()
+                    existing_index_names = [idx[0] for idx in existing_indexes]
+                    
+                    # Create or update indexes
+                    for index_name, columns in indexes:
+                        try:
+                            if index_name in existing_index_names:
+                                # Drop existing index if it exists
+                                conn.execute(text(f"DROP INDEX IF EXISTS {index_name}"))
+                                logger.info(f"Dropped existing index {index_name}")
+                                
+                            # Create new index
+                            create_index_sql = f"CREATE INDEX IF NOT EXISTS {index_name} ON {table_name}({columns})"
+                            conn.execute(text(create_index_sql))
+                            logger.info(f"Created index {index_name} on {table_name}")
+                            
+                        except Exception as e:
+                            logger.error(f"Error creating index {index_name} on {table_name}: {str(e)}")
+                            continue
+                            
+                except Exception as e:
+                    logger.error(f"Error processing table {table_name}: {str(e)}")
+                    continue
+            
+            # Set database optimizations
+            optimize_queries()
+            
+            logger.info("Database optimization completed successfully")
+            
     except Exception as e:
-        print(f"Error creating indexes: {e}")
+        logger.error(f"Error in database optimization: {str(e)}")
         db.session.rollback()
