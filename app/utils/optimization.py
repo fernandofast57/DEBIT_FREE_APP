@@ -1,3 +1,4 @@
+
 from sqlalchemy import text
 from app.database import db
 import logging
@@ -15,14 +16,14 @@ def optimize_queries():
                 "PRAGMA cache_size=10000",
                 "PRAGMA temp_store=MEMORY"
             ]
-
+            
             for pragma in pragmas:
                 try:
                     conn.execute(text(pragma))
                     logger.info(f"Successfully executed: {pragma}")
                 except Exception as e:
                     logger.error(f"Failed to execute pragma {pragma}: {str(e)}")
-
+                    
         logger.info("Query optimization completed successfully")
     except Exception as e:
         logger.error(f"Error in query optimization: {str(e)}")
@@ -52,7 +53,7 @@ def create_indexes():
                     ('idx_noble_relations_user', 'user_id, noble_rank')
                 ]
             }
-
+            
             # Check each table and create indexes
             for table_name, indexes in tables.items():
                 try:
@@ -60,17 +61,17 @@ def create_indexes():
                     result = conn.execute(text(
                         f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table_name}'"
                     ))
-
+                    
                     if not result.fetchone():
                         logger.warning(f"Table {table_name} does not exist yet, skipping indexes")
                         continue
-
+                        
                     # Get existing indexes
                     existing_indexes = conn.execute(text(
                         f"SELECT name FROM sqlite_master WHERE type='index' AND tbl_name='{table_name}'"
                     )).fetchall()
                     existing_index_names = [idx[0] for idx in existing_indexes]
-
+                    
                     # Create or update indexes
                     for index_name, columns in indexes:
                         try:
@@ -78,29 +79,25 @@ def create_indexes():
                                 # Drop existing index if it exists
                                 conn.execute(text(f"DROP INDEX IF EXISTS {index_name}"))
                                 logger.info(f"Dropped existing index {index_name}")
-
-                            # Create new index - added more robust error handling
+                                
+                            # Create new index
                             create_index_sql = f"CREATE INDEX IF NOT EXISTS {index_name} ON {table_name}({columns})"
                             conn.execute(text(create_index_sql))
                             logger.info(f"Created index {index_name} on {table_name}")
-
+                            
                         except Exception as e:
-                            # More specific error handling for constraint violations
-                            if "UNIQUE constraint failed" in str(e):
-                                logger.error(f"UNIQUE constraint failed while creating index {index_name} on {table_name}. Check for duplicate data.")
-                            else:
-                                logger.error(f"Error creating index {index_name} on {table_name}: {str(e)}")
+                            logger.error(f"Error creating index {index_name} on {table_name}: {str(e)}")
                             continue
-
+                            
                 except Exception as e:
                     logger.error(f"Error processing table {table_name}: {str(e)}")
                     continue
-
+            
             # Set database optimizations
             optimize_queries()
-
+            
             logger.info("Database optimization completed successfully")
-
+            
     except Exception as e:
         logger.error(f"Error in database optimization: {str(e)}")
         db.session.rollback()
