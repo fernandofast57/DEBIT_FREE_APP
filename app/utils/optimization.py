@@ -27,11 +27,20 @@ def create_indexes():
                     print(f"Table {table} does not exist, skipping indexes")
                     continue
                 
+                # Drop existing indexes if they exist
+                index_check_sql = "SELECT name FROM sqlite_master WHERE type='index' AND tbl_name=?"
+                
                 # Create indexes based on existing tables
                 if table == 'transactions':
                     conn.execute(text("CREATE INDEX IF NOT EXISTS idx_transactions_user ON transactions(user_id, created_at)"))
                     conn.execute(text("CREATE INDEX IF NOT EXISTS idx_transactions_status ON transactions(status, created_at)"))
                 elif table == 'transformations':
+                    # Check and drop existing index before creating new one
+                    existing_indexes = conn.execute(text(index_check_sql), [table]).fetchall()
+                    for idx in existing_indexes:
+                        if idx[0] in ['idx_transformations_date', 'idx_transformations_user']:
+                            conn.execute(text(f"DROP INDEX IF EXISTS {idx[0]}"))
+                    
                     conn.execute(text("CREATE INDEX IF NOT EXISTS idx_transformations_date ON transformations(created_at, status)"))
                     conn.execute(text("CREATE INDEX IF NOT EXISTS idx_transformations_user ON transformations(user_id, status)"))
                 elif table == 'noble_ranks':
