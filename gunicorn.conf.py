@@ -16,7 +16,7 @@ keepalive = 2
 # Logging
 accesslog = 'logs/gunicorn-access.log'
 errorlog = 'logs/gunicorn-error.log'
-loglevel = 'info'
+loglevel = 'warning'
 
 # Process naming
 proc_name = 'gold-investment'
