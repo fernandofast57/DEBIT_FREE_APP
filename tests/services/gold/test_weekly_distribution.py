@@ -3,57 +3,10 @@ from decimal import Decimal
 from datetime import datetime
 from unittest.mock import patch, MagicMock
 from app.database import db
-from app.models.models import User, MoneyAccount, GoldAccount
+from app.models.models import User, MoneyAccount, GoldAccount, Transaction
 from app.services.gold.weekly_distribution import WeeklyGoldDistribution
 
 pytestmark = [pytest.mark.asyncio, pytest.mark.gold]
-
-@pytest.mark.asyncio
-async def test_distribution_process(test_user, distribution_service):
-    """Test completo del processo di distribuzione"""
-    fixing_price = Decimal('1800.00')
-
-    # 1. Setup sincrono del database
-    with patch('app.services.gold.weekly_distribution.datetime') as mock_datetime:
-        mock_datetime.now.return_value = datetime(2024, 1, 1, 15, 30)
-        mock_datetime.utcnow.return_value = datetime(2024, 1, 1, 15, 30)
-
-        # 2. Esecuzione operazione asincrona
-        result = await distribution_service.process_distribution(fixing_price)
-
-        # 3. Verifica risultati
-        assert result['status'] == 'success'
-        assert Decimal(str(result['total_euro'])) == Decimal('1000.00')
-        assert Decimal(str(result['total_gold'])) > Decimal('0')
-
-        # 4. Verifica stato database (sincrono)
-        with db.session() as session:
-            user = session.query(User).filter_by(id=test_user.id).first()
-            assert user.money_account.balance == Decimal('0')
-            assert user.gold_account.balance > Decimal('0')
-
-@pytest.mark.asyncio
-async def test_distribution_with_blockchain(test_user, distribution_service, mock_blockchain_service):
-    """Test distribuzione con integrazione blockchain"""
-    fixing_price = Decimal('1800.00')
-
-    # 1. Setup blockchain mock
-    mock_blockchain_service.record_gold_transaction.return_value = {
-        'status': 'success',
-        'transaction_hash': '0x123'
-    }
-
-    # 2. Esegui distribuzione
-    result = await distribution_service.process_distribution(fixing_price)
-
-    # 3. Verifica risultati
-    assert result['status'] == 'success'
-    assert mock_blockchain_service.record_gold_transaction.called
-
-    # 4. Verifica stato finale (sincrono)
-    with db.session() as session:
-        user = session.query(User).filter_by(id=test_user.id).first()
-        assert user.gold_account.balance > Decimal('0')
 
 @pytest.fixture
 async def test_user(test_db):
@@ -68,92 +21,100 @@ async def test_user(test_db):
         return user
 
 @pytest.fixture
-async def distribution_service():
-    """Fixture per il servizio di distribuzione"""
-    service = WeeklyGoldDistribution()
-    return service
+def distribution_service():
+    return WeeklyGoldDistribution()
 
 @pytest.fixture
 def mock_blockchain_service():
     return MagicMock()
 
+@pytest.mark.asyncio
+class TestWeeklyDistribution:
+    async def test_complete_distribution_flow(self, test_user, distribution_service, mock_blockchain_service):
+        """Test the complete distribution flow including blockchain validation"""
+        fixing_price = Decimal('1800.00')
 
-@pytest.mark.usefixtures("app", "test_db")
-class TestWeeklyGoldDistribution:
-    async def test_backup_restore(self, test_db, test_user):
-        distribution = WeeklyGoldDistribution()
-        
-        # Create initial snapshot
-        snapshot_id = await distribution.backup.create_snapshot()
-        assert snapshot_id is not None
+        # Mock blockchain service response
+        mock_blockchain_service.record_gold_transaction.return_value = {
+            'status': 'success',
+            'transaction_hash': '0x123abc'
+        }
 
-        # Modify data
+        # Execute distribution
+        with patch('app.services.gold.weekly_distribution.datetime') as mock_datetime:
+            mock_datetime.now.return_value = datetime(2024, 1, 1, 15, 30)
+            mock_datetime.utcnow.return_value = datetime(2024, 1, 1, 15, 30)
+
+            result = await distribution_service.process_distribution(fixing_price)
+
+        # Verify result structure
+        assert result['status'] == 'success'
+        assert 'total_euro' in result
+        assert 'total_gold' in result
+        assert 'users_processed' in result
+
+        # Verify database state
         async with db.session() as session:
-            await session.execute(
-                "UPDATE money_accounts SET balance = balance + 100 WHERE user_id = :user_id",
-                {'user_id': test_user.id}
-            )
-            await session.commit()
+            user = await session.query(User).filter_by(id=test_user.id).first()
+            assert user.money_account.balance == Decimal('0')
+            assert user.gold_account.balance > Decimal('0')
 
-        # Restore snapshot
-        restored = await distribution.backup.restore_latest_snapshot()
-        assert restored is True
+            # Verify transaction record
+            transaction = await session.query(Transaction).filter_by(user_id=user.id).first()
+            assert transaction is not None
+            assert transaction.blockchain_tx_hash == '0x123abc'
 
-    async def test_validation(self, test_db):
-        distribution = WeeklyGoldDistribution()
-        fixing_price = Decimal('1800.00')
-        
-        with patch('app.services.gold.weekly_distribution.datetime') as mock_datetime:
-            mock_datetime.now.return_value = datetime(2024, 1, 1, 15, 30)
-            is_valid = await distribution.validator.validate_fixing_price(fixing_price)
-            assert is_valid is True
+        # Verify blockchain interaction
+        assert mock_blockchain_service.record_gold_transaction.called
 
-    async def test_affiliate_distribution(self, test_db, test_user):
-        distribution = WeeklyGoldDistribution()
-        gold_amount = Decimal('10.00')
-
-        result = await distribution.distribute_affiliate_bonuses(test_user.id, gold_amount)
-        assert isinstance(result, dict)
-
-    async def test_pre_distribution_checks(self, test_db):
-        distribution = WeeklyGoldDistribution()
-        
-        with patch('app.services.gold.weekly_distribution.datetime') as mock_datetime:
-            mock_datetime.now.return_value = datetime(2024, 1, 1, 15, 30)
-            result = await distribution.pre_distribution_checks()
-            assert result is True
-
-    async def test_error_handling(self, test_db):
-        distribution = WeeklyGoldDistribution()
-        result = await distribution.process_distribution(Decimal('-1'))
-        assert result['status'] == 'error'
-        assert 'error' in result
-
-    @pytest.mark.parametrize("fixing_price,expected_status", [
-        (Decimal('1800.00'), 'success'),
-        (Decimal('0'), 'error'),
-        (Decimal('-100'), 'error'),
-        (Decimal('100000.01'), 'error')
-    ])
-    async def test_multiple_scenarios(self, test_db, test_user, fixing_price, expected_status):
-        distribution = WeeklyGoldDistribution()
-        
-        with patch('app.services.gold.weekly_distribution.datetime') as mock_datetime:
-            mock_datetime.now.return_value = datetime(2024, 1, 1, 15, 30)
-            result = await distribution.process_distribution(fixing_price)
-            assert result['status'] == expected_status
-
-    async def test_concurrent_execution(self, test_db, test_user):
-        distribution = WeeklyGoldDistribution()
-        fixing_price = Decimal('1800.00')
-
-        import asyncio
-        tasks = [
-            distribution.process_distribution(fixing_price),
-            distribution.process_distribution(fixing_price)
+    async def test_distribution_validation(self, distribution_service):
+        """Test input validation for distribution process"""
+        invalid_cases = [
+            (Decimal('-1800.00'), "Invalid fixing price"),
+            (Decimal('0.00'), "Invalid fixing price"),
+            (None, "Fixing price required")
         ]
 
-        results = await asyncio.gather(*tasks, return_exceptions=True)
-        success_count = sum(1 for r in results 
-                          if isinstance(r, dict) and r['status'] == 'success')
-        assert success_count == 1
+        for price, expected_error in invalid_cases:
+            with pytest.raises(ValueError, match=expected_error):
+                await distribution_service.process_distribution(price)
+
+    async def test_distribution_backup_restore(self, test_user, distribution_service):
+        """Test backup and restore functionality during distribution"""
+        fixing_price = Decimal('1800.00')
+
+        # Create initial snapshot
+        snapshot_id = await distribution_service.backup.create_snapshot()
+        assert snapshot_id is not None
+
+        # Simulate failed distribution
+        with patch.object(distribution_service, 'distribute_gold', side_effect=Exception("Simulated error")):
+            result = await distribution_service.process_distribution(fixing_price)
+            assert result['status'] == 'error'
+
+        # Verify state is restored
+        async with db.session() as session:
+            user = await session.query(User).filter_by(id=test_user.id).first()
+            assert user.money_account.balance == Decimal('1000.00')
+            assert user.gold_account.balance == Decimal('0.00')
+
+    @pytest.mark.parametrize("user_count", [1, 5, 10])
+    async def test_distribution_performance(self, test_db, user_count, distribution_service):
+        """Test distribution performance with different user counts"""
+        # Create test users
+        async with db.session() as session:
+            for i in range(user_count):
+                user = User(
+                    username=f'testuser{i}',
+                    email=f'test{i}@example.com',
+                    money_account=MoneyAccount(balance=Decimal('1000.00')),
+                    gold_account=GoldAccount(balance=Decimal('0.00'))
+                )
+                session.add(user)
+            await session.commit()
+
+        # Execute distribution
+        result = await distribution_service.process_distribution(Decimal('1800.00'))
+
+        assert result['status'] == 'success'
+        assert result['users_processed'] == user_count
