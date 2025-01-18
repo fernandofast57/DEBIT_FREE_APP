@@ -16,7 +16,12 @@ keepalive = 2
 # Logging
 accesslog = 'logs/gunicorn-access.log'
 errorlog = 'logs/gunicorn-error.log'
-loglevel = 'warning'
+loglevel = 'error'  # Mostra solo errori
+capture_output = True
+enable_stdio_inheritance = True
+
+# Gestione segnali
+ignore_winch = True  # Ignora i segnali di ridimensionamento finestra
 
 # Process naming
 proc_name = 'gold-investment'
