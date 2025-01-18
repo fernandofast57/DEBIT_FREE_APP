@@ -1,3 +1,4 @@
+
 import pytest
 from decimal import Decimal
 from datetime import datetime
@@ -14,16 +15,20 @@ from app.services.gold.weekly_distribution import WeeklyGoldDistribution
 from app.utils.monitoring.performance import performance_monitor
 from app.core.exceptions import DistributionError
 from app.models.distribution import WeeklyDistributionLog
-
+from app import create_app
 
 pytestmark = [pytest.mark.asyncio]
-
 
 class TestWeeklyDistribution:
     @pytest.fixture(autouse=True)
     async def setup(self, async_session, distribution_service):
+        self.app = create_app()
+        self.app_context = self.app.app_context()
+        self.app_context.push()
         self.session = async_session
         self.service = distribution_service
+        yield
+        self.app_context.pop()
 
     async def test_complete_distribution_flow_with_noble_ranks(self):
         fixing_price = Decimal('1800.00')
