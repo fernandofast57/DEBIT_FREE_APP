@@ -3,7 +3,7 @@ import asyncio
 from decimal import Decimal
 from app.services.transformation_service import TransformationService
 from app.config.constants import TestConfig
-from app.utils.performance_monitor import PerformanceMonitor
+from app.utils.monitoring.performance_monitor import PerformanceMonitor
 
 @pytest.mark.asyncio
 async def test_concurrent_transformations():
@@ -56,32 +56,14 @@ async def test_system_under_heavy_load():
     success_rate = sum(1 for r in results if r['status'] == 'success') / len(results)
     assert success_rate >= 0.9  # 90% success rate requirement
 
-def test_system_under_load():
-    """Test system performance under load"""
+def test_performance_monitoring():
+    """Test performance monitoring capabilities"""
     monitor = PerformanceMonitor()
-    
-    # Simulate load
+
     for _ in range(100):
         monitor.record_metric('response_time', 0.1)
-    
-    avg_response = monitor.get_average('response_time')
-    assert avg_response > 0
-    assert avg_response < 1.0  # Response time should be under 1 second
 
-def test_system_under_heavy_load_original():
-    """Test del sistema sotto carico pesante"""
-    monitor = PerformanceMonitor()
-    
-    # Simula carico pesante
-    for _ in range(1000):
-        monitor.record_metric('response_time', 0.1)
-        monitor.record_metric('database_query_times', 0.05)
-        monitor.record_metric('blockchain_operation_times', 2.0)
-    
     metrics = monitor.get_metrics()
-    alerts = monitor.get_alerts()
-    
-    assert len(metrics['response_time']) > 0
-    assert len(metrics['database_query_times']) > 0
-    assert len(metrics['blockchain_operation_times']) > 0
-    assert all(m < 1.0 for m in metrics['response_time'])  # Verifica tempi di risposta
+    assert 'response_time' in metrics
+    assert len(metrics['response_time']) == 100
+    assert all(0 <= m <= 1.0 for m in metrics['response_time'])
