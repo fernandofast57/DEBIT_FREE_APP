@@ -10,6 +10,7 @@ def monitor_performance(func: Callable) -> Callable:
         start_time = time.time()
         result = func(*args, **kwargs)
         execution_time = time.time() - start_time
+        print(f"Performance monitoring: {func.__name__} took {execution_time:.2f} seconds")
         return result
     return wrapper
 
@@ -42,5 +43,4 @@ class PerformanceMonitor:
             for category, values in self.metrics.items()
         }
 
-# Create the singleton instance
 performance_monitor = PerformanceMonitor()
