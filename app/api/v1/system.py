@@ -8,7 +8,7 @@ async def get_status():
     """Async status check endpoint"""
     return jsonify({"status": "operational"}), 200
 from flask import Blueprint, jsonify
-from app.utils.performance_monitor import performance_monitor
+from app.utils.monitoring.performance_monitor import performance_monitor
 
 system_bp = Blueprint('system', __name__)
 
