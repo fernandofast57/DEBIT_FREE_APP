@@ -1,8 +1,9 @@
 from datetime import datetime
 from decimal import Decimal
+from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from app.models import db
-
+from .user import User
 
 class Transaction(db.Model):
     __tablename__ = 'transactions'
@@ -32,46 +33,6 @@ class Parameter(db.Model):
 
     def __repr__(self):
         return f"<Parameter {self.key} = {self.value}>"
-
-
-class User(db.Model, UserMixin):
-    __tablename__ = 'users'
-    __table_args__ = {'extend_existing': True}
-
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128))
-    referrer_id = db.Column(db.Integer,
-                            db.ForeignKey('users.id'),
-                            nullable=True)
-
-    # Campi per 2FA
-    two_factor_secret = db.Column(db.String(32), nullable=True)
-    two_factor_enabled = db.Column(db.Boolean, default=False)
-
-    # Campi per KYC
-    kyc_status = db.Column(db.String(20), default='pending')
-    kyc_verified = db.Column(db.Boolean, default=False)
-    kyc_verified_date = db.Column(db.DateTime, nullable=True)
-
-    # Relazioni
-    transactions = db.relationship('Transaction', back_populates='user')
-    money_account = db.relationship('MoneyAccount',
-                                    back_populates='user',
-                                    uselist=False)
-    gold_account = db.relationship('GoldAccount',
-                                   back_populates='user',
-                                   uselist=False)
-    gold_transformations = db.relationship('GoldTransformation',
-                                           back_populates='user')
-    kyc_documents = db.relationship('KYCDetail',
-                                    back_populates='user',
-                                    foreign_keys='KYCDetail.user_id')
-    gold_rewards = db.relationship('GoldReward', back_populates='user')
-
-    def __repr__(self):
-        return f"<User {self.username}>"
 
 
 class MoneyAccount(db.Model):
