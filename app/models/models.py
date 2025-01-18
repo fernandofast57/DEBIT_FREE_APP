@@ -1,7 +1,7 @@
-from app.database import db
 from datetime import datetime
 from decimal import Decimal
 from flask_login import UserMixin
+from app.models import db
 
 
 class Transaction(db.Model):

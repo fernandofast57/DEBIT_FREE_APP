@@ -11,9 +11,6 @@ migrate = Migrate()
 login_manager.login_view = 'auth.login'
 login_manager.login_message_category = 'info'
 
-# Import models
-from .user import User
-
 # Import dei modelli
 from .models import (
     User,
