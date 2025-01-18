@@ -1,9 +1,15 @@
+import os
+import sys
 import pytest
 from unittest.mock import Mock
 from datetime import datetime, timedelta
 import jwt
 from decimal import Decimal
 from web3 import Web3
+
+# Add the project root to the path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from app import create_app
 from app.database import db
 from app.models.models import User, MoneyAccount, GoldAccount
