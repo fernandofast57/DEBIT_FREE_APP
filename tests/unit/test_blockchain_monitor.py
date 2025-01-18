@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import Mock, patch
-from app.utils.blockchain_monitor import BlockchainMonitor
+from app.utils.monitoring.blockchain_monitor import BlockchainMonitor
 from web3 import Web3
 from decimal import Decimal
 from web3.exceptions import BlockNotFound, TransactionNotFound

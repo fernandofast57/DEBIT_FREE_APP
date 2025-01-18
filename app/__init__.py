@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_caching import Cache
 from flask_login import LoginManager
 from flask_migrate import Migrate
-from config import Config, ProductionConfig
+from app.config.settings import Config, ProductionConfig
 from app.database import db
 from app.admin import admin
 from app.models.models import User, NobleRank, Transaction
