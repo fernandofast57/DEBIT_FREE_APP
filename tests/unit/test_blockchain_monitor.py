@@ -8,6 +8,7 @@ from web3.exceptions import BlockNotFound, TransactionNotFound
 @pytest.fixture
 def mock_w3():
     w3 = Mock(spec=Web3)
+    w3.eth = Mock()
     w3.eth.get_block_number.return_value = 1000
     return w3
 

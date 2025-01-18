@@ -45,13 +45,13 @@ def runner(app):
     return app.test_cli_runner()
 
 @pytest.fixture
-async def test_db():
+async def test_db(app):
     """Provide test database session"""
-    async with db.engine.begin() as conn:
-        await conn.run_sync(db.Base.metadata.create_all)
-    yield db
-    async with db.engine.begin() as conn:
-        await conn.run_sync(db.Base.metadata.drop_all)
+    with app.app_context():
+        db.create_all()
+        yield db
+        db.session.remove()
+        db.drop_all()
 
 @pytest.fixture
 def test_user(app, test_db):

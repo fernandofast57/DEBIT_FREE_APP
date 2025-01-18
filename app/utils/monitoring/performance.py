@@ -4,6 +4,8 @@ import functools
 from typing import Dict, List, Any, Callable
 from datetime import datetime
 
+import asyncio
+
 def monitor_performance(func: Callable) -> Callable:
     @functools.wraps(func)
     async def wrapper(*args, **kwargs):
