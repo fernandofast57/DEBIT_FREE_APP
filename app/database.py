@@ -9,7 +9,7 @@ db = SQLAlchemy()
 # Create engine and session
 engine = create_engine('sqlite:///:memory:', echo=True)
 db_session = scoped_session(
-    sessionmaker(autocommit=False, autoflush=False, bind=engine))
+    sessionmaker(autocommit=False, autoflush=False, bind=engine, future=True))
 
 # Create declarative base
 Base = declarative_base()

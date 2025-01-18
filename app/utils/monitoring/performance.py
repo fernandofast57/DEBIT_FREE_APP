@@ -1,4 +1,3 @@
-
 import time
 import functools
 from typing import Dict, List, Any, Callable
@@ -46,3 +45,10 @@ class PerformanceMonitor:
         }
 
 performance_monitor = PerformanceMonitor()
+
+def test_performance_monitor():
+    monitor = PerformanceMonitor() 
+    monitor.record_metric('test_category', 1.0)
+    metrics = monitor.get_metrics()
+    assert 'test_category' in metrics
+    assert metrics['test_category']['count'] == 1
