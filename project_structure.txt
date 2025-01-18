@@ -1,0 +1,76 @@
+
+# Gold Investment Platform - Project Structure
+
+## Root Directory (/)
+|-- app/                      # Application core
+    |-- admin/               # Admin panel functionality
+    |-- api/                 # API endpoints
+        |-- v1/             # API version 1 implementations
+    |-- config/             # Configuration files
+    |-- middleware/         # Application middleware
+    |-- models/             # Database models
+    |-- routes/             # URL routes
+    |-- schemas/            # Data validation schemas
+    |-- services/           # Business logic services
+        |-- gold/          # Gold-specific services
+        |-- validators/    # Validation services
+    |-- templates/          # HTML templates
+        |-- admin/         # Admin templates
+        |-- client/        # Client templates
+        |-- errors/        # Error pages
+        |-- operator/      # Operator templates
+    |-- utils/              # Utility functions
+        |-- cache/         # Caching utilities
+        |-- database/      # Database utilities
+        |-- monitoring/    # System monitoring
+        |-- security/      # Security functions
+
+|-- blockchain/             # Blockchain integration
+    |-- contracts/         # Smart contracts
+    |-- scripts/           # Deployment scripts
+    |-- tests/            # Contract tests
+
+|-- docs/                   # Documentation
+    |-- API_DOCUMENTATION.md
+    |-- GLOSSARY.md
+    |-- USAGE.md
+
+|-- frontend/               # Frontend application
+    |-- src/
+        |-- components/    # React components
+        |-- contexts/      # React contexts
+        |-- utils/        # Frontend utilities
+
+|-- instance/               # Instance-specific files
+    |-- gold_investment.db # SQLite database
+
+|-- logs/                   # Application logs
+    |-- app.log
+    |-- audit.log
+    |-- error.log
+    |-- security.log
+
+|-- migrations/             # Database migrations
+    |-- versions/         # Migration versions
+    |-- alembic.ini      # Alembic configuration
+
+|-- scripts/                # Utility scripts
+    |-- backup_db.py
+    |-- cleanup.py
+    |-- deploy.py
+    |-- test_distribution.py
+
+|-- tests/                  # Test suite
+    |-- functional/       # Functional tests
+    |-- integration/      # Integration tests
+    |-- performance/      # Performance tests
+    |-- security/        # Security tests
+    |-- services/        # Service tests
+    |-- unit/           # Unit tests
+
+## Key Files
+- config.py              # Application configuration
+- main.py               # Application entry point
+- wsgi.py              # WSGI entry point
+- gunicorn.conf.py     # Gunicorn configuration
+- requirements.txt     # Python dependencies
