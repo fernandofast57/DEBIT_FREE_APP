@@ -12,13 +12,14 @@ class BlockchainMonitor:
         self.last_processed_block = 0
         self.alerts = []
 
-    async def monitor_transactions(self, transaction_data: Dict) -> Dict:
+    async def monitor_transactions(self, transaction_data: Dict = None) -> Dict:
         try:
-            self.alerts.append({
-                'type': transaction_data['type'],
-                'status': transaction_data['status'],
-                'tx_hash': transaction_data['tx_hash']
-            })
+            if transaction_data:
+                self.alerts.append({
+                    'type': transaction_data['type'],
+                    'status': transaction_data['status'],
+                    'tx_hash': transaction_data['tx_hash']
+                })
             return {'status': 'monitored'}
         except Exception as e:
             logger.error(f"Error monitoring transaction: {str(e)}")

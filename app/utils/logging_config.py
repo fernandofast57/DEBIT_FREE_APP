@@ -1,4 +1,3 @@
-
 import logging
 from logging.handlers import RotatingFileHandler
 import os
@@ -37,7 +36,7 @@ def setup_logging():
 
     return logger
 
-def get_logger(name: str) -> logging.Logger:
+def get_logger(name="GoldInvestment"):
     """
     Get a logger instance with the specified name.
 
@@ -47,7 +46,7 @@ def get_logger(name: str) -> logging.Logger:
     Returns:
         logging.Logger: Configured logger instance
     """
-    return logging.getLogger(f"{APP_NAME}.{name}")
+    return logging.getLogger(name)
 
 # Setup logging when module is imported
 setup_logging()

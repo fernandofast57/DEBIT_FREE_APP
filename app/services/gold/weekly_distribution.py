@@ -126,6 +126,8 @@ class WeeklyGoldDistribution:
                 if not await self.validator.validate_fixing_price(fixing_price
                                                                   ):
                     raise ValueError("Prezzo fixing non valido")
+                if fixing_price <= Decimal('0'):
+                    raise ValueError("Fixing price must be positive")
 
                 # Crea snapshot pre-distribuzione
                 await self.backup.create_snapshot()
