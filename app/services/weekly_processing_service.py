@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Dict
 from app.database import db
 from app.models.models import User, MoneyAccount, GoldAccount, GoldTransformation
-from app.utils.performance_monitor import performance_monitor
+from app.utils.monitoring.performance_monitor import performance_monitor
 
 logger = logging.getLogger(__name__)
 
