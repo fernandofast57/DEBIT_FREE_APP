@@ -1,0 +1,2912 @@
+/workspace$ python -m pytest tests/ -v --disable-warnings
+==================================== test session starts ====================================
+platform linux -- Python 3.11.10, pytest-8.1.1, pluggy-1.4.0 -- /home/runner/workspace/.pythonlibs/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/workspace/tests
+configfile: pytest.ini
+plugins: asyncio-0.23.6, mock-3.14.0, cov-4.1.0, web3-6.11.3
+asyncio: mode=Mode.AUTO
+collected 75 items                                                                          
+
+tests/functional/test_api.py::test_transformation_endpoint ERROR                      [  1%]
+tests/functional/test_api.py::test_account_balance ERROR                              [  2%]
+tests/functional/test_api.py::test_invalid_transformation ERROR                       [  4%]
+tests/integration/test_auth_flow.py::test_complete_auth_flow ERROR                    [  5%]
+tests/integration/test_auth_flow.py::test_auth_with_invalid_2fa ERROR                 [  6%]
+tests/integration/test_auth_flow.py::test_kyc_submission_validation ERROR             [  8%]
+tests/integration/test_blockchain.py::test_batch_transformation_process SKIPPED (...) [  9%]
+tests/integration/test_blockchain.py::test_noble_rank_update SKIPPED (Blockchain ...) [ 10%]
+tests/integration/test_blockchain.py::test_blockchain_stats PASSED                    [ 12%]
+tests/integration/test_blockchain_transactions.py::test_gold_transformation SKIPPED   [ 13%]
+tests/integration/test_blockchain_transactions.py::test_bonus_distribution SKIPPED    [ 14%]
+tests/performance/test_load.py::test_concurrent_transformations FAILED                [ 16%]
+tests/performance/test_load.py::test_blockchain_batch_performance FAILED              [ 17%]
+tests/performance/test_load.py::test_system_under_heavy_load FAILED                   [ 18%]
+tests/performance/test_load.py::test_performance_monitoring FAILED                    [ 20%]
+tests/performance/test_monitoring.py::test_system_monitoring PASSED                   [ 21%]
+tests/performance/test_monitoring.py::test_performance_monitor FAILED                 [ 22%]
+tests/performance/test_monitoring.py::test_performance_decorator FAILED               [ 24%]
+tests/performance/test_optimization.py::test_table_creation_and_optimization FAILED   [ 25%]
+tests/security/test_security.py::test_environment_variables PASSED                    [ 26%]
+tests/security/test_security.py::test_rate_limiter PASSED                             [ 28%]
+tests/security/test_security.py::test_security_manager_logging PASSED                 [ 29%]
+tests/security/test_security.py::test_permission_checking PASSED                      [ 30%]
+tests/security/test_security.py::test_role_permission_validation PASSED               [ 32%]
+tests/security/test_security.py::test_input_validation PASSED                         [ 33%]
+tests/security/test_security.py::test_sql_injection_prevention PASSED                 [ 34%]
+tests/security/test_security.py::test_xss_prevention PASSED                           [ 36%]
+tests/security/test_security.py::test_rate_limiter_stress PASSED                      [ 37%]
+tests/services/gold/test_distribution_backup.py::TestDistributionBackup::test_create_snapshot ERROR [ 38%]
+tests/services/gold/test_distribution_backup.py::TestDistributionBackup::test_restore_snapshot ERROR [ 40%]
+tests/services/gold/test_distribution_backup.py::TestDistributionBackup::test_verify_snapshot_integrity ERROR [ 41%]
+tests/services/gold/test_distribution_backup.py::TestDistributionBackup::test_snapshot_not_found ERROR [ 42%]
+tests/services/gold/test_distribution_validator.py::TestDistributionValidator::test_validate_fixing_price ERROR [ 44%]
+tests/services/gold/test_distribution_validator.py::TestDistributionValidator::test_validate_system_status ERROR [ 45%]
+tests/services/gold/test_distribution_validator.py::TestDistributionValidator::test_check_database_integrity ERROR [ 46%]
+tests/services/gold/test_distribution_validator.py::TestDistributionValidator::test_validate_distribution_result ERROR [ 48%]
+tests/services/test_weekly_distribution.py::TestWeeklyDistribution::test_complete_distribution_flow_with_noble_ranks ERROR [ 49%]
+tests/services/test_weekly_distribution.py::TestWeeklyDistribution::test_multi_level_affiliate_distribution ERROR [ 50%]
+tests/services/test_weekly_distribution.py::TestWeeklyDistribution::test_distribution_validation[fixing_price0-balance0-Invalid fixing price] ERROR [ 52%]
+tests/services/test_weekly_distribution.py::TestWeeklyDistribution::test_distribution_validation[fixing_price1-balance1-Invalid fixing price] ERROR [ 53%]
+tests/services/test_weekly_distribution.py::TestWeeklyDistribution::test_distribution_validation[fixing_price2-balance2-Invalid balance] ERROR [ 54%]
+tests/services/test_weekly_distribution.py::TestWeeklyDistribution::test_performance_under_load ERROR [ 56%]
+tests/unit/test_blockchain_monitor.py::test_basic_monitoring ERROR                    [ 57%]
+tests/unit/test_blockchain_monitor.py::test_transaction_validation ERROR              [ 58%]
+tests/unit/test_blockchain_monitor.py::test_network_interruption ERROR                [ 60%]
+tests/unit/test_blockchain_monitor.py::test_invalid_transaction ERROR                 [ 61%]
+tests/unit/test_blockchain_monitor.py::test_concurrent_transactions ERROR             [ 62%]
+tests/unit/test_blockchain_monitor.py::test_empty_block ERROR                         [ 64%]
+tests/unit/test_blockchain_monitor.py::test_malformed_transaction ERROR               [ 65%]
+tests/unit/test_blockchain_monitor.py::test_extreme_gas_prices ERROR                  [ 66%]
+tests/unit/test_blockchain_monitor.py::test_network_timeout ERROR                     [ 68%]
+tests/unit/test_blockchain_monitor.py::test_monitor_transaction ERROR                 [ 69%]
+tests/unit/test_blockchain_monitor.py::test_alert_system ERROR                        [ 70%]
+tests/unit/test_blockchain_monitor.py::test_block_monitoring ERROR                    [ 72%]
+tests/unit/test_blockchain_service.py::test_batch_transformation_process SKIPPED      [ 73%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_structure_bonus ERROR [ 74%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_successful ERROR [ 76%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_invalid_rank ERROR [ 77%]
+tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_insufficient_balance ERROR [ 78%]
+tests/unit/test_constants.py::test_status_constants PASSED                            [ 80%]
+tests/unit/test_imports.py::test_imports PASSED                                       [ 81%]
+tests/unit/test_kyc_service.py::test_submit_kyc ERROR                                 [ 82%]
+tests/unit/test_kyc_service.py::test_verify_kyc ERROR                                 [ 84%]
+tests/unit/test_kyc_service.py::test_reject_invalid_kyc ERROR                         [ 85%]
+tests/unit/test_logging.py::test_logger_initialization FAILED                         [ 86%]
+tests/unit/test_logging.py::test_setup_logging FAILED                                 [ 88%]
+tests/unit/test_noble_system.py::test_noble_rank_creation ERROR                       [ 89%]
+tests/unit/test_noble_system.py::test_noble_relation_verification ERROR               [ 90%]
+tests/unit/test_transformation.py::TestGoldTransformation::test_complete_transformation_flow ERROR [ 92%]
+tests/unit/test_transformation.py::TestGoldTransformation::test_transformation_validation FAILED [ 93%]
+tests/unit/test_transformation.py::TestGoldTransformation::test_transformation_with_fees ERROR [ 94%]
+tests/unit/test_two_factor_service.py::test_enable_2fa ERROR                          [ 96%]
+tests/unit/test_two_factor_service.py::test_verify_valid_2fa_token PASSED             [ 97%]
+tests/unit/test_two_factor_service.py::test_verify_invalid_2fa_token PASSED           [ 98%]
+tests/unit/test_two_factor_service.py::test_2fa_qr_code_generation ERROR              [100%]
+
+========================================== ERRORS ===========================================
+______________________ ERROR at setup of test_transformation_endpoint _______________________
+
+    @pytest.fixture
+    def client():
+>       app = create_app()
+E       NameError: name 'create_app' is not defined
+
+tests/functional/test_api.py:9: NameError
+__________________________ ERROR at setup of test_account_balance ___________________________
+
+    @pytest.fixture
+    def client():
+>       app = create_app()
+E       NameError: name 'create_app' is not defined
+
+tests/functional/test_api.py:9: NameError
+_______________________ ERROR at setup of test_invalid_transformation _______________________
+
+    @pytest.fixture
+    def client():
+>       app = create_app()
+E       NameError: name 'create_app' is not defined
+
+tests/functional/test_api.py:9: NameError
+_________________________ ERROR at setup of test_complete_auth_flow _________________________
+
+request = <SubRequest 'test_db' for <Coroutine test_complete_auth_flow>>, kwargs = {}
+unittest = False, func = <function test_db at 0x7fa838cee020>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa8386a99e0>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa8386a9b20>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @pytest.fixture
+    async def test_db():
+        """Provide test database session"""
+>       async with db.engine.begin() as conn:
+E       TypeError: '_GeneratorContextManager' object does not support the asynchronous context manager protocol
+
+tests/conftest.py:50: TypeError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+_______________________ ERROR at setup of test_auth_with_invalid_2fa ________________________
+
+request = <SubRequest 'test_db' for <Coroutine test_auth_with_invalid_2fa>>, kwargs = {}
+unittest = False, func = <function test_db at 0x7fa838cee020>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa83877bf60>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa83896dc60>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @pytest.fixture
+    async def test_db():
+        """Provide test database session"""
+>       async with db.engine.begin() as conn:
+E       TypeError: '_GeneratorContextManager' object does not support the asynchronous context manager protocol
+
+tests/conftest.py:50: TypeError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+_____________________ ERROR at setup of test_kyc_submission_validation ______________________
+
+request = <SubRequest 'test_db' for <Coroutine test_kyc_submission_validation>>, kwargs = {}
+unittest = False, func = <function test_db at 0x7fa838cee020>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa8384f8cc0>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa8384f8b80>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @pytest.fixture
+    async def test_db():
+        """Provide test database session"""
+>       async with db.engine.begin() as conn:
+E       TypeError: '_GeneratorContextManager' object does not support the asynchronous context manager protocol
+
+tests/conftest.py:50: TypeError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+_______________ ERROR at setup of TestDistributionBackup.test_create_snapshot _______________
+
+request = <SubRequest 'test_db' for <Coroutine test_create_snapshot>>, kwargs = {}
+unittest = False, func = <function test_db at 0x7fa838cee020>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa83840d8a0>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa83840e980>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @pytest.fixture
+    async def test_db():
+        """Provide test database session"""
+>       async with db.engine.begin() as conn:
+E       TypeError: '_GeneratorContextManager' object does not support the asynchronous context manager protocol
+
+tests/conftest.py:50: TypeError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+______________ ERROR at setup of TestDistributionBackup.test_restore_snapshot _______________
+
+request = <SubRequest 'test_db' for <Coroutine test_restore_snapshot>>, kwargs = {}
+unittest = False, func = <function test_db at 0x7fa838cee020>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa838933060>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa8389337e0>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @pytest.fixture
+    async def test_db():
+        """Provide test database session"""
+>       async with db.engine.begin() as conn:
+E       TypeError: '_GeneratorContextManager' object does not support the asynchronous context manager protocol
+
+tests/conftest.py:50: TypeError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+__________ ERROR at setup of TestDistributionBackup.test_verify_snapshot_integrity __________
+
+request = <SubRequest 'test_db' for <Coroutine test_verify_snapshot_integrity>>, kwargs = {}
+unittest = False, func = <function test_db at 0x7fa838cee020>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa8382b9c60>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa8389bef20>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @pytest.fixture
+    async def test_db():
+        """Provide test database session"""
+>       async with db.engine.begin() as conn:
+E       TypeError: '_GeneratorContextManager' object does not support the asynchronous context manager protocol
+
+tests/conftest.py:50: TypeError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+_____________ ERROR at setup of TestDistributionBackup.test_snapshot_not_found ______________
+
+request = <SubRequest 'test_db' for <Coroutine test_snapshot_not_found>>, kwargs = {}
+unittest = False, func = <function test_db at 0x7fa838cee020>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa83849cb80>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa8382b9b20>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @pytest.fixture
+    async def test_db():
+        """Provide test database session"""
+>       async with db.engine.begin() as conn:
+E       TypeError: '_GeneratorContextManager' object does not support the asynchronous context manager protocol
+
+tests/conftest.py:50: TypeError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+__________ ERROR at setup of TestDistributionValidator.test_validate_fixing_price ___________
+
+request = <SubRequest 'test_db' for <Coroutine test_validate_fixing_price>>, kwargs = {}
+unittest = False, func = <function test_db at 0x7fa838cee020>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa8382fea20>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa8382ff100>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @pytest.fixture
+    async def test_db():
+        """Provide test database session"""
+>       async with db.engine.begin() as conn:
+E       TypeError: '_GeneratorContextManager' object does not support the asynchronous context manager protocol
+
+tests/conftest.py:50: TypeError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+__________ ERROR at setup of TestDistributionValidator.test_validate_system_status __________
+
+request = <SubRequest 'test_db' for <Coroutine test_validate_system_status>>, kwargs = {}
+unittest = False, func = <function test_db at 0x7fa838cee020>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa8382feca0>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa8382fd6c0>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @pytest.fixture
+    async def test_db():
+        """Provide test database session"""
+>       async with db.engine.begin() as conn:
+E       TypeError: '_GeneratorContextManager' object does not support the asynchronous context manager protocol
+
+tests/conftest.py:50: TypeError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+_________ ERROR at setup of TestDistributionValidator.test_check_database_integrity _________
+
+request = <SubRequest 'test_db' for <Coroutine test_check_database_integrity>>, kwargs = {}
+unittest = False, func = <function test_db at 0x7fa838cee020>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa8382bb060>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa8382fe7a0>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @pytest.fixture
+    async def test_db():
+        """Provide test database session"""
+>       async with db.engine.begin() as conn:
+E       TypeError: '_GeneratorContextManager' object does not support the asynchronous context manager protocol
+
+tests/conftest.py:50: TypeError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+_______ ERROR at setup of TestDistributionValidator.test_validate_distribution_result _______
+
+request = <SubRequest 'test_db' for <Coroutine test_validate_distribution_result>>
+kwargs = {}, unittest = False, func = <function test_db at 0x7fa838cee020>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa8383a99e0>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa8382b9ee0>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @pytest.fixture
+    async def test_db():
+        """Provide test database session"""
+>       async with db.engine.begin() as conn:
+E       TypeError: '_GeneratorContextManager' object does not support the asynchronous context manager protocol
+
+tests/conftest.py:50: TypeError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+_ ERROR at setup of TestWeeklyDistribution.test_complete_distribution_flow_with_noble_ranks _
+
+request = <SubRequest 'async_session' for <Coroutine test_complete_distribution_flow_with_noble_ranks>>
+kwargs = {}, unittest = False, func = <function async_session at 0x7fa838cee3e0>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa838210360>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa8383a9940>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:77: in async_session
+    async with db.session() as session:
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py:220: in __call__
+    sess = self.registry()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/util/_collections.py:632: in __call__
+    key = self.scopefunc()
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/session.py:81: in _app_ctx_id
+    return id(app_ctx._get_current_object())  # type: ignore[attr-defined]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _get_current_object() -> T:
+        try:
+            obj = local.get()
+        except LookupError:
+>           raise RuntimeError(unbound_message) from None
+E           RuntimeError: Working outside of application context.
+E           
+E           This typically means that you attempted to use functionality that needed
+E           the current application. To solve this, set up an application context
+E           with app.app_context(). See the documentation for more information.
+
+/nix/store/0krcky469imsipiwsdvbv8qs696d228n-python3.11-werkzeug-3.0.3/lib/python3.11/site-packages/werkzeug/local.py:519: RuntimeError
+_____ ERROR at setup of TestWeeklyDistribution.test_multi_level_affiliate_distribution ______
+
+request = <SubRequest 'async_session' for <Coroutine test_multi_level_affiliate_distribution>>
+kwargs = {}, unittest = False, func = <function async_session at 0x7fa838cee3e0>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa8385f58a0>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa8385f5a80>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:77: in async_session
+    async with db.session() as session:
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py:220: in __call__
+    sess = self.registry()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/util/_collections.py:632: in __call__
+    key = self.scopefunc()
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/session.py:81: in _app_ctx_id
+    return id(app_ctx._get_current_object())  # type: ignore[attr-defined]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _get_current_object() -> T:
+        try:
+            obj = local.get()
+        except LookupError:
+>           raise RuntimeError(unbound_message) from None
+E           RuntimeError: Working outside of application context.
+E           
+E           This typically means that you attempted to use functionality that needed
+E           the current application. To solve this, set up an application context
+E           with app.app_context(). See the documentation for more information.
+
+/nix/store/0krcky469imsipiwsdvbv8qs696d228n-python3.11-werkzeug-3.0.3/lib/python3.11/site-packages/werkzeug/local.py:519: RuntimeError
+_ ERROR at setup of TestWeeklyDistribution.test_distribution_validation[fixing_price0-balance0-Invalid fixing price] _
+
+request = <SubRequest 'async_session' for <Coroutine test_distribution_validation[fixing_price0-balance0-Invalid fixing price]>>
+kwargs = {}, unittest = False, func = <function async_session at 0x7fa838cee3e0>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa838210400>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa8385f6c00>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:77: in async_session
+    async with db.session() as session:
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py:220: in __call__
+    sess = self.registry()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/util/_collections.py:632: in __call__
+    key = self.scopefunc()
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/session.py:81: in _app_ctx_id
+    return id(app_ctx._get_current_object())  # type: ignore[attr-defined]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _get_current_object() -> T:
+        try:
+            obj = local.get()
+        except LookupError:
+>           raise RuntimeError(unbound_message) from None
+E           RuntimeError: Working outside of application context.
+E           
+E           This typically means that you attempted to use functionality that needed
+E           the current application. To solve this, set up an application context
+E           with app.app_context(). See the documentation for more information.
+
+/nix/store/0krcky469imsipiwsdvbv8qs696d228n-python3.11-werkzeug-3.0.3/lib/python3.11/site-packages/werkzeug/local.py:519: RuntimeError
+_ ERROR at setup of TestWeeklyDistribution.test_distribution_validation[fixing_price1-balance1-Invalid fixing price] _
+
+request = <SubRequest 'async_session' for <Coroutine test_distribution_validation[fixing_price1-balance1-Invalid fixing price]>>
+kwargs = {}, unittest = False, func = <function async_session at 0x7fa838cee3e0>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa8385f6d40>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa8385f4540>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:77: in async_session
+    async with db.session() as session:
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py:220: in __call__
+    sess = self.registry()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/util/_collections.py:632: in __call__
+    key = self.scopefunc()
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/session.py:81: in _app_ctx_id
+    return id(app_ctx._get_current_object())  # type: ignore[attr-defined]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _get_current_object() -> T:
+        try:
+            obj = local.get()
+        except LookupError:
+>           raise RuntimeError(unbound_message) from None
+E           RuntimeError: Working outside of application context.
+E           
+E           This typically means that you attempted to use functionality that needed
+E           the current application. To solve this, set up an application context
+E           with app.app_context(). See the documentation for more information.
+
+/nix/store/0krcky469imsipiwsdvbv8qs696d228n-python3.11-werkzeug-3.0.3/lib/python3.11/site-packages/werkzeug/local.py:519: RuntimeError
+_ ERROR at setup of TestWeeklyDistribution.test_distribution_validation[fixing_price2-balance2-Invalid balance] _
+
+request = <SubRequest 'async_session' for <Coroutine test_distribution_validation[fixing_price2-balance2-Invalid balance]>>
+kwargs = {}, unittest = False, func = <function async_session at 0x7fa838cee3e0>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa8385f49a0>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa8385f40e0>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:77: in async_session
+    async with db.session() as session:
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py:220: in __call__
+    sess = self.registry()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/util/_collections.py:632: in __call__
+    key = self.scopefunc()
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/session.py:81: in _app_ctx_id
+    return id(app_ctx._get_current_object())  # type: ignore[attr-defined]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _get_current_object() -> T:
+        try:
+            obj = local.get()
+        except LookupError:
+>           raise RuntimeError(unbound_message) from None
+E           RuntimeError: Working outside of application context.
+E           
+E           This typically means that you attempted to use functionality that needed
+E           the current application. To solve this, set up an application context
+E           with app.app_context(). See the documentation for more information.
+
+/nix/store/0krcky469imsipiwsdvbv8qs696d228n-python3.11-werkzeug-3.0.3/lib/python3.11/site-packages/werkzeug/local.py:519: RuntimeError
+___________ ERROR at setup of TestWeeklyDistribution.test_performance_under_load ____________
+
+request = <SubRequest 'async_session' for <Coroutine test_performance_under_load>>
+kwargs = {}, unittest = False, func = <function async_session at 0x7fa838cee3e0>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa8385f4400>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa8385f4ae0>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:77: in async_session
+    async with db.session() as session:
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py:220: in __call__
+    sess = self.registry()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/util/_collections.py:632: in __call__
+    key = self.scopefunc()
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/session.py:81: in _app_ctx_id
+    return id(app_ctx._get_current_object())  # type: ignore[attr-defined]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _get_current_object() -> T:
+        try:
+            obj = local.get()
+        except LookupError:
+>           raise RuntimeError(unbound_message) from None
+E           RuntimeError: Working outside of application context.
+E           
+E           This typically means that you attempted to use functionality that needed
+E           the current application. To solve this, set up an application context
+E           with app.app_context(). See the documentation for more information.
+
+/nix/store/0krcky469imsipiwsdvbv8qs696d228n-python3.11-werkzeug-3.0.3/lib/python3.11/site-packages/werkzeug/local.py:519: RuntimeError
+__________________________ ERROR at setup of test_basic_monitoring __________________________
+
+    @pytest.fixture
+    def mock_w3():
+        w3 = Mock(spec=Web3)
+>       w3.eth.get_block_number.return_value = 1000
+
+tests/unit/test_blockchain_monitor.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <Mock spec='Web3' id='140360471089488'>, name = 'eth'
+
+    def __getattr__(self, name):
+        if name in {'_mock_methods', '_mock_unsafe'}:
+            raise AttributeError(name)
+        elif self._mock_methods is not None:
+            if name not in self._mock_methods or name in _all_magics:
+>               raise AttributeError("Mock object has no attribute %r" % name)
+E               AttributeError: Mock object has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:653: AttributeError
+_______________________ ERROR at setup of test_transaction_validation _______________________
+
+    @pytest.fixture
+    def mock_w3():
+        w3 = Mock(spec=Web3)
+>       w3.eth.get_block_number.return_value = 1000
+
+tests/unit/test_blockchain_monitor.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <Mock spec='Web3' id='140360477979216'>, name = 'eth'
+
+    def __getattr__(self, name):
+        if name in {'_mock_methods', '_mock_unsafe'}:
+            raise AttributeError(name)
+        elif self._mock_methods is not None:
+            if name not in self._mock_methods or name in _all_magics:
+>               raise AttributeError("Mock object has no attribute %r" % name)
+E               AttributeError: Mock object has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:653: AttributeError
+________________________ ERROR at setup of test_network_interruption ________________________
+file /home/runner/workspace/tests/unit/test_blockchain_monitor.py, line 37
+  @pytest.mark.asyncio
+  async def test_network_interruption(web3_mock):
+      """Test behavior during network interruption"""
+      monitor = BlockchainMonitor(web3_mock)
+      web3_mock.eth.get_block.side_effect = BlockNotFound
+      response = await monitor.process_block(12345)
+      assert response['status'] == 'error'
+      assert 'block not found' in response['message'].lower()
+E       fixture 'web3_mock' not found
+>       available fixtures: _session_event_loop, app, async_session, auth_headers, auth_token, blockchain_monitor, blockchain_service, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, client, cov, deployer, distribution_service, doctest_namespace, event_loop, event_loop_policy, mock_w3, mocker, module_mocker, monkeypatch, no_cover, package_mocker, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, runner, session_mocker, test_db, test_user, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unit/test_blockchain_monitor.py::<event_loop>, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/workspace/tests/unit/test_blockchain_monitor.py:37
+________________________ ERROR at setup of test_invalid_transaction _________________________
+file /home/runner/workspace/tests/unit/test_blockchain_monitor.py, line 46
+  @pytest.mark.asyncio
+  async def test_invalid_transaction(web3_mock):
+      """Test handling of invalid transaction"""
+      monitor = BlockchainMonitor(web3_mock)
+      web3_mock.eth.get_transaction.side_effect = TransactionNotFound
+      response = await monitor.verify_transaction('0x1234')
+      assert response['status'] == 'error'
+      assert 'transaction not found' in response['message'].lower()
+E       fixture 'web3_mock' not found
+>       available fixtures: _session_event_loop, app, async_session, auth_headers, auth_token, blockchain_monitor, blockchain_service, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, client, cov, deployer, distribution_service, doctest_namespace, event_loop, event_loop_policy, mock_w3, mocker, module_mocker, monkeypatch, no_cover, package_mocker, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, runner, session_mocker, test_db, test_user, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unit/test_blockchain_monitor.py::<event_loop>, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/workspace/tests/unit/test_blockchain_monitor.py:46
+______________________ ERROR at setup of test_concurrent_transactions _______________________
+
+    @pytest.fixture
+    def mock_w3():
+        w3 = Mock(spec=Web3)
+>       w3.eth.get_block_number.return_value = 1000
+
+tests/unit/test_blockchain_monitor.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <Mock spec='Web3' id='140360473462608'>, name = 'eth'
+
+    def __getattr__(self, name):
+        if name in {'_mock_methods', '_mock_unsafe'}:
+            raise AttributeError(name)
+        elif self._mock_methods is not None:
+            if name not in self._mock_methods or name in _all_magics:
+>               raise AttributeError("Mock object has no attribute %r" % name)
+E               AttributeError: Mock object has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:653: AttributeError
+____________________________ ERROR at setup of test_empty_block _____________________________
+file /home/runner/workspace/tests/unit/test_blockchain_monitor.py, line 60
+  @pytest.mark.asyncio
+  async def test_empty_block(web3_mock):
+      """Test handling of empty blocks"""
+      monitor = BlockchainMonitor(web3_mock)
+      web3_mock.eth.get_block.return_value = {'transactions': [], 'number': 12345}
+      response = await monitor.process_block(12345)
+      assert response['status'] == 'success'
+      assert len(response.get('transactions', [])) == 0
+E       fixture 'web3_mock' not found
+>       available fixtures: _session_event_loop, app, async_session, auth_headers, auth_token, blockchain_monitor, blockchain_service, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, client, cov, deployer, distribution_service, doctest_namespace, event_loop, event_loop_policy, mock_w3, mocker, module_mocker, monkeypatch, no_cover, package_mocker, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, runner, session_mocker, test_db, test_user, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unit/test_blockchain_monitor.py::<event_loop>, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/workspace/tests/unit/test_blockchain_monitor.py:60
+_______________________ ERROR at setup of test_malformed_transaction ________________________
+file /home/runner/workspace/tests/unit/test_blockchain_monitor.py, line 69
+  @pytest.mark.asyncio
+  async def test_malformed_transaction(web3_mock):
+      """Test handling of malformed transaction data"""
+      monitor = BlockchainMonitor(web3_mock)
+      web3_mock.eth.get_transaction.return_value = {'hash': '0x1234', 'value': None}
+      response = await monitor.verify_transaction('0x1234')
+      assert response['status'] == 'error'
+      assert 'invalid transaction data' in response['message'].lower()
+E       fixture 'web3_mock' not found
+>       available fixtures: _session_event_loop, app, async_session, auth_headers, auth_token, blockchain_monitor, blockchain_service, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, client, cov, deployer, distribution_service, doctest_namespace, event_loop, event_loop_policy, mock_w3, mocker, module_mocker, monkeypatch, no_cover, package_mocker, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, runner, session_mocker, test_db, test_user, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unit/test_blockchain_monitor.py::<event_loop>, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/workspace/tests/unit/test_blockchain_monitor.py:69
+_________________________ ERROR at setup of test_extreme_gas_prices _________________________
+
+    @pytest.fixture
+    def mock_w3():
+        w3 = Mock(spec=Web3)
+>       w3.eth.get_block_number.return_value = 1000
+
+tests/unit/test_blockchain_monitor.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <Mock spec='Web3' id='140360474221456'>, name = 'eth'
+
+    def __getattr__(self, name):
+        if name in {'_mock_methods', '_mock_unsafe'}:
+            raise AttributeError(name)
+        elif self._mock_methods is not None:
+            if name not in self._mock_methods or name in _all_magics:
+>               raise AttributeError("Mock object has no attribute %r" % name)
+E               AttributeError: Mock object has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:653: AttributeError
+__________________________ ERROR at setup of test_network_timeout ___________________________
+file /home/runner/workspace/tests/unit/test_blockchain_monitor.py, line 90
+  @pytest.mark.asyncio
+  async def test_network_timeout(web3_mock):
+      """Test handling of network timeouts"""
+      monitor = BlockchainMonitor(web3_mock)
+      web3_mock.eth.get_block.side_effect = TimeoutError("Request timed out")
+      response = await monitor.process_block(12345)
+      assert response['status'] == 'error'
+      assert 'timeout' in response['message'].lower()
+E       fixture 'web3_mock' not found
+>       available fixtures: _session_event_loop, app, async_session, auth_headers, auth_token, blockchain_monitor, blockchain_service, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, client, cov, deployer, distribution_service, doctest_namespace, event_loop, event_loop_policy, mock_w3, mocker, module_mocker, monkeypatch, no_cover, package_mocker, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, runner, session_mocker, test_db, test_user, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unit/test_blockchain_monitor.py::<event_loop>, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/workspace/tests/unit/test_blockchain_monitor.py:90
+________________________ ERROR at setup of test_monitor_transaction _________________________
+
+    @pytest.fixture
+    def mock_w3():
+        w3 = Mock(spec=Web3)
+>       w3.eth.get_block_number.return_value = 1000
+
+tests/unit/test_blockchain_monitor.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <Mock spec='Web3' id='140360471726864'>, name = 'eth'
+
+    def __getattr__(self, name):
+        if name in {'_mock_methods', '_mock_unsafe'}:
+            raise AttributeError(name)
+        elif self._mock_methods is not None:
+            if name not in self._mock_methods or name in _all_magics:
+>               raise AttributeError("Mock object has no attribute %r" % name)
+E               AttributeError: Mock object has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:653: AttributeError
+____________________________ ERROR at setup of test_alert_system ____________________________
+
+    @pytest.fixture
+    def mock_w3():
+        w3 = Mock(spec=Web3)
+>       w3.eth.get_block_number.return_value = 1000
+
+tests/unit/test_blockchain_monitor.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <Mock spec='Web3' id='140360480873680'>, name = 'eth'
+
+    def __getattr__(self, name):
+        if name in {'_mock_methods', '_mock_unsafe'}:
+            raise AttributeError(name)
+        elif self._mock_methods is not None:
+            if name not in self._mock_methods or name in _all_magics:
+>               raise AttributeError("Mock object has no attribute %r" % name)
+E               AttributeError: Mock object has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:653: AttributeError
+__________________________ ERROR at setup of test_block_monitoring __________________________
+
+    @pytest.fixture
+    def mock_w3():
+        w3 = Mock(spec=Web3)
+>       w3.eth.get_block_number.return_value = 1000
+
+tests/unit/test_blockchain_monitor.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <Mock spec='Web3' id='140360476461776'>, name = 'eth'
+
+    def __getattr__(self, name):
+        if name in {'_mock_methods', '_mock_unsafe'}:
+            raise AttributeError(name)
+        elif self._mock_methods is not None:
+            if name not in self._mock_methods or name in _all_magics:
+>               raise AttributeError("Mock object has no attribute %r" % name)
+E               AttributeError: Mock object has no attribute 'eth'
+
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/unittest/mock.py:653: AttributeError
+______ ERROR at setup of TestBonusDistributionService.test_distribute_structure_bonus _______
+
+self = <test_bonus_service.TestBonusDistributionService object at 0x7fa838adde50>
+app = <Flask 'app'>
+
+    @pytest.fixture
+    async def setup_test_data(self, app):
+>       async with app.app_context():
+E       TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+
+tests/unit/test_bonus_service.py:16: TypeError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+_____ ERROR at setup of TestBonusDistributionService.test_distribute_rewards_successful _____
+
+self = <test_bonus_service.TestBonusDistributionService object at 0x7fa838aeaa90>
+app = <Flask 'app'>
+
+    @pytest.fixture
+    async def setup_test_data(self, app):
+>       async with app.app_context():
+E       TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+
+tests/unit/test_bonus_service.py:16: TypeError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+____ ERROR at setup of TestBonusDistributionService.test_distribute_rewards_invalid_rank ____
+
+self = <test_bonus_service.TestBonusDistributionService object at 0x7fa838ae8590>
+app = <Flask 'app'>
+
+    @pytest.fixture
+    async def setup_test_data(self, app):
+>       async with app.app_context():
+E       TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+
+tests/unit/test_bonus_service.py:16: TypeError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+_ ERROR at setup of TestBonusDistributionService.test_distribute_rewards_insufficient_balance _
+
+self = <test_bonus_service.TestBonusDistributionService object at 0x7fa838af98d0>
+app = <Flask 'app'>
+
+    @pytest.fixture
+    async def setup_test_data(self, app):
+>       async with app.app_context():
+E       TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+
+tests/unit/test_bonus_service.py:16: TypeError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+_____________________________ ERROR at setup of test_submit_kyc _____________________________
+
+request = <SubRequest 'test_db' for <Coroutine test_submit_kyc>>, kwargs = {}
+unittest = False, func = <function test_db at 0x7fa838cee020>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa8386aa340>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa8383c3380>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @pytest.fixture
+    async def test_db():
+        """Provide test database session"""
+>       async with db.engine.begin() as conn:
+E       TypeError: '_GeneratorContextManager' object does not support the asynchronous context manager protocol
+
+tests/conftest.py:50: TypeError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+_____________________________ ERROR at setup of test_verify_kyc _____________________________
+
+request = <SubRequest 'test_db' for <Coroutine test_verify_kyc>>, kwargs = {}
+unittest = False, func = <function test_db at 0x7fa838cee020>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa83805fa60>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa83805fe20>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @pytest.fixture
+    async def test_db():
+        """Provide test database session"""
+>       async with db.engine.begin() as conn:
+E       TypeError: '_GeneratorContextManager' object does not support the asynchronous context manager protocol
+
+tests/conftest.py:50: TypeError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+_________________________ ERROR at setup of test_reject_invalid_kyc _________________________
+
+request = <SubRequest 'test_db' for <Coroutine test_reject_invalid_kyc>>, kwargs = {}
+unittest = False, func = <function test_db at 0x7fa838cee020>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa8389be480>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa83805e840>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @pytest.fixture
+    async def test_db():
+        """Provide test database session"""
+>       async with db.engine.begin() as conn:
+E       TypeError: '_GeneratorContextManager' object does not support the asynchronous context manager protocol
+
+tests/conftest.py:50: TypeError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+________________________ ERROR at setup of test_noble_rank_creation _________________________
+file /home/runner/workspace/tests/unit/test_noble_system.py, line 7
+  def test_noble_rank_creation(app, mock_blockchain_service):
+E       fixture 'mock_blockchain_service' not found
+>       available fixtures: _session_event_loop, app, async_session, auth_headers, auth_token, blockchain_monitor, blockchain_service, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, client, cov, deployer, distribution_service, doctest_namespace, event_loop, event_loop_policy, mock_w3, mocker, module_mocker, monkeypatch, no_cover, package_mocker, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, runner, session_mocker, test_db, test_user, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unit/test_noble_system.py::<event_loop>, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/workspace/tests/unit/test_noble_system.py:7
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+____________________ ERROR at setup of test_noble_relation_verification _____________________
+file /home/runner/workspace/tests/unit/test_noble_system.py, line 19
+  def test_noble_relation_verification(app, mock_blockchain_service):
+E       fixture 'mock_blockchain_service' not found
+>       available fixtures: _session_event_loop, app, async_session, auth_headers, auth_token, blockchain_monitor, blockchain_service, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, class_mocker, client, cov, deployer, distribution_service, doctest_namespace, event_loop, event_loop_policy, mock_w3, mocker, module_mocker, monkeypatch, no_cover, package_mocker, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, runner, session_mocker, test_db, test_user, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory, unit/test_noble_system.py::<event_loop>, unused_tcp_port, unused_tcp_port_factory, unused_udp_port, unused_udp_port_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/workspace/tests/unit/test_noble_system.py:19
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+________ ERROR at setup of TestGoldTransformation.test_complete_transformation_flow _________
+
+request = <SubRequest 'test_db' for <Coroutine test_complete_transformation_flow>>
+kwargs = {}, unittest = False, func = <function test_db at 0x7fa838cee020>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa8382bac00>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa83805e660>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:50: in test_db
+    async with db.engine.begin() as conn:
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:642: in engine
+    return self.engines[None]
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:628: in engines
+    app = current_app._get_current_object()  # type: ignore[attr-defined]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _get_current_object() -> T:
+        try:
+            obj = local.get()
+        except LookupError:
+>           raise RuntimeError(unbound_message) from None
+E           RuntimeError: Working outside of application context.
+E           
+E           This typically means that you attempted to use functionality that needed
+E           the current application. To solve this, set up an application context
+E           with app.app_context(). See the documentation for more information.
+
+/nix/store/0krcky469imsipiwsdvbv8qs696d228n-python3.11-werkzeug-3.0.3/lib/python3.11/site-packages/werkzeug/local.py:519: RuntimeError
+__________ ERROR at setup of TestGoldTransformation.test_transformation_with_fees ___________
+
+request = <SubRequest 'test_db' for <Coroutine test_transformation_with_fees>>, kwargs = {}
+unittest = False, func = <function test_db at 0x7fa838cee020>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa838213a60>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa838210900>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+tests/conftest.py:50: in test_db
+    async with db.engine.begin() as conn:
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:642: in engine
+    return self.engines[None]
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/extension.py:628: in engines
+    app = current_app._get_current_object()  # type: ignore[attr-defined]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _get_current_object() -> T:
+        try:
+            obj = local.get()
+        except LookupError:
+>           raise RuntimeError(unbound_message) from None
+E           RuntimeError: Working outside of application context.
+E           
+E           This typically means that you attempted to use functionality that needed
+E           the current application. To solve this, set up an application context
+E           with app.app_context(). See the documentation for more information.
+
+/nix/store/0krcky469imsipiwsdvbv8qs696d228n-python3.11-werkzeug-3.0.3/lib/python3.11/site-packages/werkzeug/local.py:519: RuntimeError
+_____________________________ ERROR at setup of test_enable_2fa _____________________________
+
+request = <SubRequest 'test_db' for <Coroutine test_enable_2fa>>, kwargs = {}
+unittest = False, func = <function test_db at 0x7fa838cee020>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa838213e20>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa8382100e0>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @pytest.fixture
+    async def test_db():
+        """Provide test database session"""
+>       async with db.engine.begin() as conn:
+E       TypeError: '_GeneratorContextManager' object does not support the asynchronous context manager protocol
+
+tests/conftest.py:50: TypeError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+_______________________ ERROR at setup of test_2fa_qr_code_generation _______________________
+
+request = <SubRequest 'test_db' for <Coroutine test_2fa_qr_code_generation>>, kwargs = {}
+unittest = False, func = <function test_db at 0x7fa838cee020>
+setup = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.setup at 0x7fa837ff62a0>
+finalizer = <function _wrap_asyncgen_fixture.<locals>._asyncgen_fixture_wrapper.<locals>.finalizer at 0x7fa83896f4c0>
+
+    @functools.wraps(fixture)
+    def _asyncgen_fixture_wrapper(request: FixtureRequest, **kwargs: Any):
+        unittest = False if pytest.version_tuple >= (8, 2) else fixturedef.unittest
+        func = _perhaps_rebind_fixture_func(fixture, request.instance, unittest)
+        event_loop = kwargs.pop(event_loop_fixture_id)
+        gen_obj = func(
+            **_add_kwargs(func, kwargs, event_loop_fixture_id, event_loop, request)
+        )
+    
+        async def setup():
+            res = await gen_obj.__anext__()
+            return res
+    
+        def finalizer() -> None:
+            """Yield again, to finalize."""
+    
+            async def async_finalizer() -> None:
+                try:
+                    await gen_obj.__anext__()
+                except StopAsyncIteration:
+                    pass
+                else:
+                    msg = "Async generator fixture didn't stop."
+                    msg += "Yield only once."
+                    raise ValueError(msg)
+    
+            event_loop.run_until_complete(async_finalizer())
+    
+>       result = event_loop.run_until_complete(setup())
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:326: in setup
+    res = await gen_obj.__anext__()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @pytest.fixture
+    async def test_db():
+        """Provide test database session"""
+>       async with db.engine.begin() as conn:
+E       TypeError: '_GeneratorContextManager' object does not support the asynchronous context manager protocol
+
+tests/conftest.py:50: TypeError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+========================================= FAILURES ==========================================
+______________________________ test_concurrent_transformations ______________________________
+
+    @pytest.mark.asyncio
+    async def test_concurrent_transformations():
+        service = TransformationService()
+        tasks = []
+        for i in range(5):
+            task = asyncio.create_task(
+                service.process_transformation(
+                    user_id=i,
+                    euro_amount=Decimal('100.00'),
+                    fixing_price=Decimal('50.00')
+                )
+            )
+            tasks.append(task)
+    
+>       results = await asyncio.gather(*tasks)
+
+tests/performance/test_load.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app/services/transformation_service.py:196: in process_transformation
+    await db.session.rollback()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py:1796: in rollback
+    return self._proxied.rollback()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py:197: in _proxied
+    return self.registry()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/util/_collections.py:632: in __call__
+    key = self.scopefunc()
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/session.py:81: in _app_ctx_id
+    return id(app_ctx._get_current_object())  # type: ignore[attr-defined]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _get_current_object() -> T:
+        try:
+            obj = local.get()
+        except LookupError:
+>           raise RuntimeError(unbound_message) from None
+E           RuntimeError: Working outside of application context.
+E           
+E           This typically means that you attempted to use functionality that needed
+E           the current application. To solve this, set up an application context
+E           with app.app_context(). See the documentation for more information.
+
+/nix/store/0krcky469imsipiwsdvbv8qs696d228n-python3.11-werkzeug-3.0.3/lib/python3.11/site-packages/werkzeug/local.py:519: RuntimeError
+------------------------------------- Captured log call -------------------------------------
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 0 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 0
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 1 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 1
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 2 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 2
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 3 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 3
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 4 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 4
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+_____________________________ test_blockchain_batch_performance _____________________________
+
+self = <app.services.blockchain_service.BlockchainService object at 0x7fa83899f510>
+batch_data = [{'amount': Decimal('100.0'), 'timestamp': 1645564800, 'user_id': 0}, {'amount': Decimal('100.0'), 'timestamp': 164556....0'), 'timestamp': 1645564800, 'user_id': 4}, {'amount': Decimal('100.0'), 'timestamp': 1645564800, 'user_id': 5}, ...]
+
+    async def process_batch_transformation(self, batch_data: List[Dict]) -> Any:
+        """Process a batch of transformations on blockchain with security validation"""
+        try:
+            if not self.w3 or not self.contract or not self.account: #Check account as well
+                raise ValueError("Blockchain connection or account not initialized")
+    
+            # Validate transaction data
+            for tx in batch_data:
+                if not self._validate_transaction_data(tx):
+                    raise ValueError(f"Invalid transaction data: {tx}")
+    
+            # Validate gas price is within limits
+>           gas_price = await self.w3.eth.gas_price
+E           TypeError: object int can't be used in 'await' expression
+
+app/services/blockchain_service.py:232: TypeError
+
+During handling of the above exception, another exception occurred:
+
+blockchain_service = <app.services.blockchain_service.BlockchainService object at 0x7fa83899f510>
+
+    @pytest.mark.asyncio
+    async def test_blockchain_batch_performance(blockchain_service):
+        batch_size = 10
+        batch_data = [
+            {"user_id": i, "amount": Decimal('100.0'), "timestamp": 1645564800}
+            for i in range(batch_size)
+        ]
+    
+>       result = await blockchain_service.process_batch_transformation(batch_data)
+
+tests/performance/test_load.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <app.services.blockchain_service.BlockchainService object at 0x7fa83899f510>
+batch_data = [{'amount': Decimal('100.0'), 'timestamp': 1645564800, 'user_id': 0}, {'amount': Decimal('100.0'), 'timestamp': 164556....0'), 'timestamp': 1645564800, 'user_id': 4}, {'amount': Decimal('100.0'), 'timestamp': 1645564800, 'user_id': 5}, ...]
+
+    async def process_batch_transformation(self, batch_data: List[Dict]) -> Any:
+        """Process a batch of transformations on blockchain with security validation"""
+        try:
+            if not self.w3 or not self.contract or not self.account: #Check account as well
+                raise ValueError("Blockchain connection or account not initialized")
+    
+            # Validate transaction data
+            for tx in batch_data:
+                if not self._validate_transaction_data(tx):
+                    raise ValueError(f"Invalid transaction data: {tx}")
+    
+            # Validate gas price is within limits
+            gas_price = await self.w3.eth.gas_price
+            max_gas_price = self.w3.to_wei('100', 'gwei')
+            if gas_price > max_gas_price:
+                raise ValueError(f"Gas price too high: {gas_price}")
+    
+            # Validate nonce
+            nonce = await self.w3.eth.get_transaction_count(self.account.address)
+            if not self._validate_nonce(nonce):
+                raise ValueError("Invalid nonce")
+    
+            # Process batch on blockchain with security checks
+            tx = await self.contract.functions.processBatchTransformation(
+                batch_data
+            ).transact({
+                'from': self.account.address,
+                'nonce': nonce,
+                'gas': 2000000,
+                'gasPrice': min(gas_price, max_gas_price)
+            })
+    
+            receipt = await self.w3.eth.wait_for_transaction_receipt(tx)
+            if receipt.status != 1:
+                raise ValueError("Transaction failed")
+    
+            self.monitor.monitor_transactions({'type': 'process_batch_transformation', 'status': 'success', 'tx_hash': receipt.transactionHash.hex()}) #Added monitoring call
+            return receipt
+    
+        except Exception as e:
+            logger.error(f"Blockchain transaction error: {str(e)}")
+            logger.error(f"Blockchain batch processing error: {str(e)}")
+>           self.monitor.send_alert(f"Blockchain batch processing error: {str(e)}") #Added alert call
+E           AttributeError: 'NoneType' object has no attribute 'send_alert'
+
+app/services/blockchain_service.py:262: AttributeError
+----------------------------------- Captured stderr call ------------------------------------
+2025-01-18 14:42:32,846 [ERROR] [GoldInvestment:260] Blockchain transaction error: object int can't be used in 'await' expression
+2025-01-18 14:42:32,846 [ERROR] [GoldInvestment:261] Blockchain batch processing error: object int can't be used in 'await' expression
+------------------------------------- Captured log call -------------------------------------
+ERROR    GoldInvestment:blockchain_service.py:260 Blockchain transaction error: object int can't be used in 'await' expression
+ERROR    GoldInvestment:blockchain_service.py:261 Blockchain batch processing error: object int can't be used in 'await' expression
+_______________________________ test_system_under_heavy_load ________________________________
+
+    @pytest.mark.asyncio
+    async def test_system_under_heavy_load():
+        service = TransformationService()
+        large_batch = [
+            (i, Decimal('100.00'), Decimal('50.00'))
+            for i in range(20)
+        ]
+    
+        tasks = [
+            asyncio.create_task(
+                service.process_transformation(
+                    user_id=user_id,
+                    euro_amount=amount,
+                    fixing_price=price
+                )
+            )
+            for user_id, amount, price in large_batch
+        ]
+    
+>       results = await asyncio.gather(*tasks)
+
+tests/performance/test_load.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+app/services/transformation_service.py:196: in process_transformation
+    await db.session.rollback()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py:1796: in rollback
+    return self._proxied.rollback()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py:197: in _proxied
+    return self.registry()
+/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/util/_collections.py:632: in __call__
+    key = self.scopefunc()
+.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/session.py:81: in _app_ctx_id
+    return id(app_ctx._get_current_object())  # type: ignore[attr-defined]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _get_current_object() -> T:
+        try:
+            obj = local.get()
+        except LookupError:
+>           raise RuntimeError(unbound_message) from None
+E           RuntimeError: Working outside of application context.
+E           
+E           This typically means that you attempted to use functionality that needed
+E           the current application. To solve this, set up an application context
+E           with app.app_context(). See the documentation for more information.
+
+/nix/store/0krcky469imsipiwsdvbv8qs696d228n-python3.11-werkzeug-3.0.3/lib/python3.11/site-packages/werkzeug/local.py:519: RuntimeError
+------------------------------------- Captured log call -------------------------------------
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 0 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 0
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 1 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 1
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 2 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 2
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 3 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 3
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 4 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 4
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 5 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 5
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 6 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 6
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 7 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 7
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 8 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 8
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 9 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 9
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 10 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 10
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 11 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 11
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 12 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 12
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 13 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 13
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 14 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 14
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 15 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 15
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 16 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 16
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 17 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 17
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 18 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 18
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+INFO     app.services.transformation_service:transformation_service.py:134 Inizio trasformazione - Utente: 19 - Importo: 100.00€ - Fixing: 50.00
+INFO     app.services.transformation_service:transformation_service.py:143 Controllo disponibilità fondi per utente 19
+ERROR    app.services.transformation_service:transformation_service.py:33 Transfer verification error: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+ERROR    app.services.transformation_service:transformation_service.py:195 Transformation error: 'bool' object is not subscriptable
+________________________________ test_performance_monitoring ________________________________
+
+    def test_performance_monitoring():
+        """Test performance monitoring capabilities"""
+        monitor = PerformanceMonitor()
+    
+        for _ in range(100):
+            monitor.record_metric('response_time', 0.1)
+    
+        metrics = monitor.get_metrics()
+        assert 'response_time' in metrics
+>       assert len(metrics['response_time']) == 100
+E       AssertionError: assert 3 == 100
+E        +  where 3 = len({'average': 0.09999999999999981, 'count': 100, 'latest': 0.1})
+
+tests/performance/test_load.py:68: AssertionError
+_________________________________ test_performance_monitor __________________________________
+
+    def test_performance_monitor():
+        """Test performance monitoring capabilities"""
+        monitor = PerformanceMonitor()
+        monitor.record_metric('test_category', 1.5)
+    
+        metrics = monitor.get_metrics()
+        assert 'test_category' in metrics
+>       assert len(metrics['test_category']) == 1
+E       AssertionError: assert 3 == 1
+E        +  where 3 = len({'average': 1.5, 'count': 1, 'latest': 1.5})
+
+tests/performance/test_monitoring.py:26: AssertionError
+________________________________ test_performance_decorator _________________________________
+
+self = <Coroutine test_performance_decorator>
+
+    def runtest(self) -> None:
+        self.obj = wrap_in_sync(
+            # https://github.com/pytest-dev/pytest-asyncio/issues/596
+            self.obj,  # type: ignore[has-type]
+        )
+>       super().runtest()
+
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:436: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/nix/store/lr8157i3piybdlm5a9g7rmyz6hxlz1cb-python3.11-pytest-asyncio-0.23.6/lib/python3.11/site-packages/pytest_asyncio/plugin.py:897: in inner
+    _loop.run_until_complete(task)
+/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py:654: in run_until_complete
+    return future.result()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (), kwargs = {}, start_time = 1737211352.9156342
+
+    @functools.wraps(func)
+    async def wrapper(*args, **kwargs):
+        start_time = time.time()
+>       result = await func(*args, **kwargs) if asyncio.iscoroutinefunction(func) else func(*args, **kwargs)
+E       NameError: name 'asyncio' is not defined
+
+app/utils/monitoring/performance.py:11: NameError
+___________________________ test_table_creation_and_optimization ____________________________
+
+test_app = <Flask 'app'>
+
+    def test_table_creation_and_optimization(test_app):
+        """Test successful table creation and index optimization"""
+        with test_app.app_context():
+            db.create_all()
+            db.session.commit()  # Ensure tables are created and committed
+            # Get inspector
+            inspector = inspect(db.engine)
+            tables = inspector.get_table_names()
+    
+            # Verify core tables exist
+            assert 'users' in tables, "Users table not found"
+            assert 'noble_ranks' in tables, "Noble ranks table not found"
+            assert 'transactions' in tables, "Transactions table not found"
+    
+            # Create indexes
+            create_indexes()
+    
+            # Verify indexes
+            indexes = inspector.get_indexes('users')
+            index_names = [idx['name'] for idx in indexes]
+            assert 'idx_users_email' in index_names, "Email index not created"
+    
+            # Verify foreign keys
+            fks = inspector.get_foreign_keys('noble_ranks')
+>           assert any(fk['referred_table'] == 'users' for fk in fks), "User foreign key not found"
+E           AssertionError: User foreign key not found
+E           assert False
+E            +  where False = any(<generator object test_table_creation_and_optimization.<locals>.<genexpr> at 0x7fa8382c1700>)
+
+tests/performance/test_optimization.py:43: AssertionError
+------------------------------------ Captured log setup -------------------------------------
+INFO     app:__init__.py:36 Gold Investment App startup
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8080
+INFO     app.utils.load_balancer:load_balancer.py:24 Registered new server: 0.0.0.0:8081
+INFO     app:__init__.py:74 Tables created successfully.
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+INFO     app:__init__.py:99 Application startup complete
+------------------------------------- Captured log call -------------------------------------
+INFO     app.utils.optimization:optimization.py:81 Dropped existing index idx_transactions_user
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_user on transactions
+INFO     app.utils.optimization:optimization.py:81 Dropped existing index idx_transactions_status
+INFO     app.utils.optimization:optimization.py:86 Created index idx_transactions_status on transactions
+WARNING  app.utils.optimization:optimization.py:66 Table transformations does not exist yet, skipping indexes
+INFO     app.utils.optimization:optimization.py:81 Dropped existing index idx_noble_ranks_level
+INFO     app.utils.optimization:optimization.py:86 Created index idx_noble_ranks_level on noble_ranks
+INFO     app.utils.optimization:optimization.py:81 Dropped existing index idx_users_email
+INFO     app.utils.optimization:optimization.py:86 Created index idx_users_email on users
+ERROR    app.utils.optimization:optimization.py:89 Error creating index idx_noble_relations_user on noble_relations: (sqlite3.OperationalError) no such column: noble_rank
+[SQL: CREATE INDEX IF NOT EXISTS idx_noble_relations_user ON noble_relations(user_id, noble_rank)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA journal_mode=WAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA synchronous=NORMAL
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA cache_size=10000
+INFO     app.utils.optimization:optimization.py:23 Successfully executed: PRAGMA temp_store=MEMORY
+INFO     app.utils.optimization:optimization.py:27 Query optimization completed successfully
+INFO     app.utils.optimization:optimization.py:99 Database optimization completed successfully
+________________________________ test_logger_initialization _________________________________
+
+    def test_logger_initialization():
+>       logger = get_logger()
+E       TypeError: get_logger() missing 1 required positional argument: 'name'
+
+tests/unit/test_logging.py:6: TypeError
+____________________________________ test_setup_logging _____________________________________
+
+    def test_setup_logging():
+        setup_logging()
+>       logger = get_logger()
+E       TypeError: get_logger() missing 1 required positional argument: 'name'
+
+tests/unit/test_logging.py:11: TypeError
+___________________ TestGoldTransformation.test_transformation_validation ___________________
+
+self = <test_transformation.TestGoldTransformation object at 0x7fa838ace250>
+distribution_service = <app.services.gold.weekly_distribution.WeeklyGoldDistribution object at 0x7fa838699850>
+mock_fixing_price = Decimal('1800.00')
+
+    @pytest.mark.asyncio
+    async def test_transformation_validation(self, distribution_service, mock_fixing_price):
+        """Test validation of transformation parameters"""
+>       with pytest.raises(ValueError):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/unit/test_transformation.py:53: Failed
+----------------------------------- Captured stdout call ------------------------------------
+Errore nel logging: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+Errore nel logging: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+Backup Error - Errore nel ripristino dello snapshot: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+================================== short test summary info ==================================
+SKIPPED [1] tests/integration/test_blockchain.py:32: Blockchain connection not available: 'NoneType' object has no attribute 'send_alert'
+SKIPPED [1] tests/integration/test_blockchain.py:43: Blockchain connection not available: assert 'error' == 'verified'
+  
+  - verified
+  + error
+SKIPPED [1] tests/integration/test_blockchain_transactions.py:14: Blockchain connection not available
+SKIPPED [1] tests/integration/test_blockchain_transactions.py:26: Blockchain connection not available
+SKIPPED [1] tests/unit/test_blockchain_service.py:31: Blockchain connection not available: 'NoneType' object has no attribute 'send_alert'
+ERROR tests/functional/test_api.py::test_transformation_endpoint - NameError: name 'create_app' is not defined
+ERROR tests/functional/test_api.py::test_account_balance - NameError: name 'create_app' is not defined
+ERROR tests/functional/test_api.py::test_invalid_transformation - NameError: name 'create_app' is not defined
+ERROR tests/integration/test_auth_flow.py::test_complete_auth_flow - TypeError: '_GeneratorContextManager' object does not support the asynchronous context m...
+ERROR tests/integration/test_auth_flow.py::test_auth_with_invalid_2fa - TypeError: '_GeneratorContextManager' object does not support the asynchronous context m...
+ERROR tests/integration/test_auth_flow.py::test_kyc_submission_validation - TypeError: '_GeneratorContextManager' object does not support the asynchronous context m...
+ERROR tests/services/gold/test_distribution_backup.py::TestDistributionBackup::test_create_snapshot - TypeError: '_GeneratorContextManager' object does not support the asynchronous context m...
+ERROR tests/services/gold/test_distribution_backup.py::TestDistributionBackup::test_restore_snapshot - TypeError: '_GeneratorContextManager' object does not support the asynchronous context m...
+ERROR tests/services/gold/test_distribution_backup.py::TestDistributionBackup::test_verify_snapshot_integrity - TypeError: '_GeneratorContextManager' object does not support the asynchronous context m...
+ERROR tests/services/gold/test_distribution_backup.py::TestDistributionBackup::test_snapshot_not_found - TypeError: '_GeneratorContextManager' object does not support the asynchronous context m...
+ERROR tests/services/gold/test_distribution_validator.py::TestDistributionValidator::test_validate_fixing_price - TypeError: '_GeneratorContextManager' object does not support the asynchronous context m...
+ERROR tests/services/gold/test_distribution_validator.py::TestDistributionValidator::test_validate_system_status - TypeError: '_GeneratorContextManager' object does not support the asynchronous context m...
+ERROR tests/services/gold/test_distribution_validator.py::TestDistributionValidator::test_check_database_integrity - TypeError: '_GeneratorContextManager' object does not support the asynchronous context m...
+ERROR tests/services/gold/test_distribution_validator.py::TestDistributionValidator::test_validate_distribution_result - TypeError: '_GeneratorContextManager' object does not support the asynchronous context m...
+ERROR tests/services/test_weekly_distribution.py::TestWeeklyDistribution::test_complete_distribution_flow_with_noble_ranks - RuntimeError: Working outside of application context.
+ERROR tests/services/test_weekly_distribution.py::TestWeeklyDistribution::test_multi_level_affiliate_distribution - RuntimeError: Working outside of application context.
+ERROR tests/services/test_weekly_distribution.py::TestWeeklyDistribution::test_distribution_validation[fixing_price0-balance0-Invalid fixing price] - RuntimeError: Working outside of application context.
+ERROR tests/services/test_weekly_distribution.py::TestWeeklyDistribution::test_distribution_validation[fixing_price1-balance1-Invalid fixing price] - RuntimeError: Working outside of application context.
+ERROR tests/services/test_weekly_distribution.py::TestWeeklyDistribution::test_distribution_validation[fixing_price2-balance2-Invalid balance] - RuntimeError: Working outside of application context.
+ERROR tests/services/test_weekly_distribution.py::TestWeeklyDistribution::test_performance_under_load - RuntimeError: Working outside of application context.
+ERROR tests/unit/test_blockchain_monitor.py::test_basic_monitoring - AttributeError: Mock object has no attribute 'eth'
+ERROR tests/unit/test_blockchain_monitor.py::test_transaction_validation - AttributeError: Mock object has no attribute 'eth'
+ERROR tests/unit/test_blockchain_monitor.py::test_network_interruption
+ERROR tests/unit/test_blockchain_monitor.py::test_invalid_transaction
+ERROR tests/unit/test_blockchain_monitor.py::test_concurrent_transactions - AttributeError: Mock object has no attribute 'eth'
+ERROR tests/unit/test_blockchain_monitor.py::test_empty_block
+ERROR tests/unit/test_blockchain_monitor.py::test_malformed_transaction
+ERROR tests/unit/test_blockchain_monitor.py::test_extreme_gas_prices - AttributeError: Mock object has no attribute 'eth'
+ERROR tests/unit/test_blockchain_monitor.py::test_network_timeout
+ERROR tests/unit/test_blockchain_monitor.py::test_monitor_transaction - AttributeError: Mock object has no attribute 'eth'
+ERROR tests/unit/test_blockchain_monitor.py::test_alert_system - AttributeError: Mock object has no attribute 'eth'
+ERROR tests/unit/test_blockchain_monitor.py::test_block_monitoring - AttributeError: Mock object has no attribute 'eth'
+ERROR tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_structure_bonus - TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+ERROR tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_successful - TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+ERROR tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_invalid_rank - TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+ERROR tests/unit/test_bonus_service.py::TestBonusDistributionService::test_distribute_rewards_insufficient_balance - TypeError: 'AppContext' object does not support the asynchronous context manager protocol
+ERROR tests/unit/test_kyc_service.py::test_submit_kyc - TypeError: '_GeneratorContextManager' object does not support the asynchronous context m...
+ERROR tests/unit/test_kyc_service.py::test_verify_kyc - TypeError: '_GeneratorContextManager' object does not support the asynchronous context m...
+ERROR tests/unit/test_kyc_service.py::test_reject_invalid_kyc - TypeError: '_GeneratorContextManager' object does not support the asynchronous context m...
+ERROR tests/unit/test_noble_system.py::test_noble_rank_creation
+ERROR tests/unit/test_noble_system.py::test_noble_relation_verification
+ERROR tests/unit/test_transformation.py::TestGoldTransformation::test_complete_transformation_flow - RuntimeError: Working outside of application context.
+ERROR tests/unit/test_transformation.py::TestGoldTransformation::test_transformation_with_fees - RuntimeError: Working outside of application context.
+ERROR tests/unit/test_two_factor_service.py::test_enable_2fa - TypeError: '_GeneratorContextManager' object does not support the asynchronous context m...
+ERROR tests/unit/test_two_factor_service.py::test_2fa_qr_code_generation - TypeError: '_GeneratorContextManager' object does not support the asynchronous context m...
+FAILED tests/performance/test_load.py::test_concurrent_transformations - RuntimeError: Working outside of application context.
+FAILED tests/performance/test_load.py::test_blockchain_batch_performance - AttributeError: 'NoneType' object has no attribute 'send_alert'
+FAILED tests/performance/test_load.py::test_system_under_heavy_load - RuntimeError: Working outside of application context.
+FAILED tests/performance/test_load.py::test_performance_monitoring - AssertionError: assert 3 == 100
+FAILED tests/performance/test_monitoring.py::test_performance_monitor - AssertionError: assert 3 == 1
+FAILED tests/performance/test_monitoring.py::test_performance_decorator - NameError: name 'asyncio' is not defined
+FAILED tests/performance/test_optimization.py::test_table_creation_and_optimization - AssertionError: User foreign key not found
+FAILED tests/unit/test_logging.py::test_logger_initialization - TypeError: get_logger() missing 1 required positional argument: 'name'
+FAILED tests/unit/test_logging.py::test_setup_logging - TypeError: get_logger() missing 1 required positional argument: 'name'
+FAILED tests/unit/test_transformation.py::TestGoldTransformation::test_transformation_validation - Failed: DID NOT RAISE <class 'ValueError'>
+============= 10 failed, 15 passed, 5 skipped, 41 warnings, 45 errors in 12.70s =============
+~/workspace$ 
