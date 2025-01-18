@@ -1,18 +1,8 @@
-
 import time
 import functools
 import logging
 from typing import Dict, List, Any, Callable
 from datetime import datetime
-
-def monitor_performance(func: Callable) -> Callable:
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        start_time = time.time()
-        result = func(*args, **kwargs)
-        execution_time = time.time() - start_time
-        return result
-    return wrapper
 
 class PerformanceMonitor:
     def __init__(self):
@@ -22,6 +12,7 @@ class PerformanceMonitor:
             'blockchain_operation_times': []
         }
         self.start_time = datetime.now()
+        self._shutdown_flag = False
 
     def record_metric(self, category: str, value: float) -> None:
         if category not in self.metrics:
@@ -43,22 +34,6 @@ class PerformanceMonitor:
             for category, values in self.metrics.items()
         }
 
-    def __init__(self):
-        self.metrics: Dict[str, List[float]] = {
-            'response_time': [],
-            'database_query_times': [],
-            'blockchain_operation_times': []
-        }
-        self.start_time = datetime.now()
-        self._shutdown_flag = False
-
-    def save_metrics(self) -> None:
-        """Save current metrics to storage"""
-        if not self._shutdown_flag:
-            self._shutdown_flag = True
-            metrics = self.get_metrics()
-            logging.info(f"Saving metrics before shutdown: {metrics}")
-
     def track_time(self, category: str):
         def decorator(func):
             @functools.wraps(func)
@@ -71,5 +46,10 @@ class PerformanceMonitor:
             return wrapper
         return decorator
 
-# Create the singleton instance
+    def save_metrics(self) -> None:
+        if not self._shutdown_flag:
+            self._shutdown_flag = True
+            metrics = self.get_metrics()
+            logging.info(f"Saving metrics before shutdown: {metrics}")
+
 performance_monitor = PerformanceMonitor()

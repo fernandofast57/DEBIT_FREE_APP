@@ -2,7 +2,7 @@
 from typing import Dict, Any
 import logging
 from app.models.models import User, GoldTransformation
-from app.utils.performance_monitor import performance_monitor
+from app.utils.monitoring.performance_monitor import performance_monitor
 
 logger = logging.getLogger(__name__)
 
