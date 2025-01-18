@@ -33,3 +33,4 @@ def monitor_performance():
 
 # Assicurati che la funzione sia disponibile per l'import
 __all__ = ['monitor_performance']
+# Monitoring package initialization
