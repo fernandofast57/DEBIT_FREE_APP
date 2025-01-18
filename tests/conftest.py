@@ -6,15 +6,18 @@ from datetime import datetime, timedelta
 import jwt
 from decimal import Decimal
 from web3 import Web3
+import asyncio
+from app.database import db
+from app.models.models import User, MoneyAccount, GoldAccount
+from app.utils.blockchain_monitor import BlockchainMonitor
+from app.services.blockchain_service import BlockchainService
+from app.services.gold.weekly_distribution import WeeklyGoldDistribution
 
 # Add the project root to the path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from app import create_app
-from app.database import db
-from app.models.models import User, MoneyAccount, GoldAccount
-from app.utils.blockchain_monitor import BlockchainMonitor
-from app.services.blockchain_service import BlockchainService
+
 
 @pytest.fixture
 def app():
@@ -42,9 +45,13 @@ def runner(app):
     return app.test_cli_runner()
 
 @pytest.fixture
-def test_db(app):
-    """Fixture del database per i test"""
-    return db
+async def test_db():
+    """Provide test database session"""
+    async with db.engine.begin() as conn:
+        await conn.run_sync(db.Base.metadata.create_all)
+    yield db
+    async with db.engine.begin() as conn:
+        await conn.run_sync(db.Base.metadata.drop_all)
 
 @pytest.fixture
 def test_user(app, test_db):
@@ -61,8 +68,14 @@ def test_user(app, test_db):
 
 @pytest.fixture
 def distribution_service():
-    """Fixture per il servizio di distribuzione"""
+    """Provide WeeklyGoldDistribution service"""
     return WeeklyGoldDistribution()
+
+@pytest.fixture
+async def async_session():
+    """Provide async database session"""
+    async with db.session() as session:
+        yield session
 
 @pytest.fixture
 def auth_token(app, test_user):
