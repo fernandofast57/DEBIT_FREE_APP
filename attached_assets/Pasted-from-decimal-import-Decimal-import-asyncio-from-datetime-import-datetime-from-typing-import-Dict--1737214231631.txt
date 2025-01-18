@@ -1,0 +1,138 @@
+from decimal import Decimal
+import asyncio
+from datetime import datetime
+from typing import Dict, Optional
+from sqlalchemy.ext.asyncio import AsyncSession
+from app.database import db
+from app.models.models import User, MoneyAccount, GoldAccount, Transaction
+from app.utils.monitoring.performance import performance_monitor
+
+class WeeklyGoldDistribution:
+    def __init__(self):
+        self.structure_fee = Decimal('0.05')  # 5%
+        self.affiliate_fee = Decimal('0.017')  # 1.7%
+        self.total_fee = self.structure_fee + self.affiliate_fee
+        self._processing_lock = asyncio.Lock()
+        self._backup_state = {}
+
+    async def create_backup(self, session: AsyncSession) -> str:
+        """Create a backup of current state"""
+        backup_id = datetime.utcnow().isoformat()
+        users = await session.execute(
+            select(User).join(MoneyAccount).join(GoldAccount)
+        )
+        self._backup_state[backup_id] = {
+            user.id: {
+                'money_balance': user.money_account.balance,
+                'gold_balance': user.gold_account.balance
+            }
+            for user in users.scalars()
+        }
+        return backup_id
+
+    async def restore_backup(self, session: AsyncSession, backup_id: str):
+        """Restore from backup"""
+        if backup_id not in self._backup_state:
+            raise ValueError("Backup not found")
+            
+        backup = self._backup_state[backup_id]
+        for user_id, balances in backup.items():
+            user = await session.get(User, user_id)
+            if user:
+                user.money_account.balance = balances['money_balance']
+                user.gold_account.balance = balances['gold_balance']
+        
+        await session.commit()
+
+    @performance_monitor.track_time("distribution")
+    async def process_weekly_distribution(
+        self, 
+        fixing_price: Decimal, 
+        session: Optional[AsyncSession] = None
+    ) -> Dict:
+        """Process weekly gold distribution for all eligible users"""
+        async with self._processing_lock:
+            try:
+                async with db.get_async_session() if session is None else session as sess:
+                    # Create backup
+                    backup_id = await self.create_backup(sess)
+                    
+                    # Get eligible users
+                    users = await sess.execute(
+                        select(User)
+                        .join(MoneyAccount)
+                        .filter(MoneyAccount.balance > 0)
+                    )
+                    
+                    total_euro = Decimal('0')
+                    total_gold = Decimal('0')
+                    processed_users = 0
+                    
+                    for user in users.scalars():
+                        try:
+                            euro_amount = user.money_account.balance
+                            result = await self.distribute_gold(
+                                sess, 
+                                user.id, 
+                                euro_amount, 
+                                fixing_price
+                            )
+                            
+                            if result['status'] == 'success':
+                                total_euro += euro_amount
+                                total_gold += result['gold_amount']
+                                processed_users += 1
+                                
+                        except Exception as e:
+                            await self.restore_backup(sess, backup_id)
+                            raise RuntimeError(f"Distribution failed: {str(e)}")
+                    
+                    return {
+                        'status': 'success',
+                        'total_euro': total_euro,
+                        'total_gold': total_gold,
+                        'users_processed': processed_users
+                    }
+                    
+            except Exception as e:
+                return {
+                    'status': 'error',
+                    'error': str(e)
+                }
+
+    async def distribute_gold(
+        self, 
+        session: AsyncSession,
+        user_id: int,
+        euro_amount: Decimal,
+        fixing_price: Decimal
+    ) -> Dict:
+        """Distribute gold to a single user"""
+        user = await session.get(User, user_id)
+        if not user:
+            raise ValueError(f"User {user_id} not found")
+            
+        # Calculate gold amount after fees
+        net_amount = euro_amount * (1 - self.total_fee)
+        gold_amount = net_amount / fixing_price
+        
+        # Update balances
+        user.money_account.balance = Decimal('0')
+        user.gold_account.balance += gold_amount
+        
+        # Create transaction record
+        transaction = Transaction(
+            user_id=user_id,
+            amount=euro_amount,
+            transaction_type='gold_purchase',
+            status='completed',
+            description=f'Gold purchase at fixing price {fixing_price}'
+        )
+        session.add(transaction)
+        
+        await session.commit()
+        
+        return {
+            'status': 'success',
+            'gold_amount': gold_amount
+        }
