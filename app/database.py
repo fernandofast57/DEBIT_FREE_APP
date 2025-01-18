@@ -16,10 +16,7 @@ class DatabaseManager:
     def _setup_engines(self, db_url: str) -> None:
         engine_config = {
             'echo': True,
-            'pool_pre_ping': True,
-            'pool_size': 5,
-            'max_overflow': 10,
-            'pool_timeout': 30
+            'pool_pre_ping': True
         }
         
         self.sync_engine = create_engine(db_url, **engine_config)
