@@ -1,4 +1,3 @@
-
 import pytest
 from decimal import Decimal
 from datetime import datetime
@@ -30,15 +29,39 @@ class TestWeeklyDistribution:
         yield
         self.app_context.pop()
 
-    async def test_complete_distribution_flow_with_noble_ranks(self):
-        fixing_price = Decimal('1800.00')
-        result = await self.service.process_distribution(fixing_price)
-        assert result['status'] == 'success'
+    @pytest.fixture
+    async def distribution_service(self):
+        return WeeklyGoldDistribution()
 
-    async def test_multi_level_affiliate_distribution(self):
+    @pytest.fixture
+    async def test_user(self, test_db):
+        async with test_db.get_async_session() as session:
+            user = User(
+                username='test_user',
+                email='test@example.com',
+                money_account=MoneyAccount(balance=Decimal('1000.00')),
+                gold_account=GoldAccount(balance=Decimal('0.00'))
+            )
+            session.add(user)
+            await session.commit()
+            await session.refresh(user)
+            return user
+
+    async def test_complete_distribution_flow(
+        self,
+        distribution_service, 
+        test_user
+    ):
         fixing_price = Decimal('1800.00')
-        result = await self.service.process_distribution(fixing_price)
+        result = await distribution_service.process_distribution(fixing_price)
+
         assert result['status'] == 'success'
+        assert result['total_euro'] == float(Decimal('1000.00'))
+        assert result['users_processed'] == 1
+
+        expected_gold = (Decimal('1000.00') * 
+                        (1 - distribution_service.total_fee)) / fixing_price
+        assert abs(result['total_gold'] - float(expected_gold)) < 0.0001
 
     @pytest.mark.parametrize(
         "fixing_price,balance,expected_error",
