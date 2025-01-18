@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 def optimize_queries():
     """Apply database query optimizations"""
     try:
-        with db.engine.connect() as conn:
+        with db.get_sync_session() as session:
             # Set pragmas with error handling
             pragmas = [
                 "PRAGMA journal_mode=WAL",
@@ -19,7 +19,7 @@ def optimize_queries():
             
             for pragma in pragmas:
                 try:
-                    conn.execute(text(pragma))
+                    session.execute(text(pragma))
                     logger.info(f"Successfully executed: {pragma}")
                 except Exception as e:
                     logger.error(f"Failed to execute pragma {pragma}: {str(e)}")
@@ -27,12 +27,11 @@ def optimize_queries():
         logger.info("Query optimization completed successfully")
     except Exception as e:
         logger.error(f"Error in query optimization: {str(e)}")
-        db.session.rollback()
 
 def create_indexes():
     """Create optimized database indexes with improved error handling"""
     try:
-        with db.engine.connect() as conn:
+        with db.get_sync_session() as session:
             # Tables we expect to work with
             tables = {
                 'transactions': [
@@ -58,16 +57,16 @@ def create_indexes():
             for table_name, indexes in tables.items():
                 try:
                     # Check if table exists
-                    result = conn.execute(text(
+                    result = session.execute(text(
                         f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table_name}'"
                     ))
                     
-                    if not result.fetchone():
+                    if not result.scalar():
                         logger.warning(f"Table {table_name} does not exist yet, skipping indexes")
                         continue
                         
                     # Get existing indexes
-                    existing_indexes = conn.execute(text(
+                    existing_indexes = session.execute(text(
                         f"SELECT name FROM sqlite_master WHERE type='index' AND tbl_name='{table_name}'"
                     )).fetchall()
                     existing_index_names = [idx[0] for idx in existing_indexes]
@@ -76,13 +75,11 @@ def create_indexes():
                     for index_name, columns in indexes:
                         try:
                             if index_name in existing_index_names:
-                                # Drop existing index if it exists
-                                conn.execute(text(f"DROP INDEX IF EXISTS {index_name}"))
+                                session.execute(text(f"DROP INDEX IF EXISTS {index_name}"))
                                 logger.info(f"Dropped existing index {index_name}")
                                 
-                            # Create new index
                             create_index_sql = f"CREATE INDEX IF NOT EXISTS {index_name} ON {table_name}({columns})"
-                            conn.execute(text(create_index_sql))
+                            session.execute(text(create_index_sql))
                             logger.info(f"Created index {index_name} on {table_name}")
                             
                         except Exception as e:
@@ -93,11 +90,7 @@ def create_indexes():
                     logger.error(f"Error processing table {table_name}: {str(e)}")
                     continue
             
-            # Set database optimizations
-            optimize_queries()
-            
             logger.info("Database optimization completed successfully")
             
     except Exception as e:
         logger.error(f"Error in database optimization: {str(e)}")
-        db.session.rollback()
