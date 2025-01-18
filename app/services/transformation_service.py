@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 
 class TransformationService:
     ORGANIZATION_FEE = Decimal('0.05')  # 5% organization fee
+    GOLD_TO_EURO_FEE = Decimal('0.03')  # 3% fee for gold to euro conversion
     AFFILIATE_BONUS = {
         1: Decimal('0.007'),  # 0.7% first level
         2: Decimal('0.005'),  # 0.5% second level
@@ -198,3 +199,42 @@ class TransformationService:
                 "status": "error",
                 "message": str(e)
             }
+
+    @staticmethod
+    async def transform_to_euro(user_id: int, gold_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
+        """Transform gold to euros"""
+        logger.info(f"Starting gold to euro transformation - User: {user_id} - Gold: {gold_amount}g")
+        
+        try:
+            async with db.session() as session:
+                user = await User.query.get(user_id)
+                if not user or not user.gold_account:
+                    raise ValueError("Invalid user or gold account")
+                
+                if user.gold_account.balance < gold_amount:
+                    raise ValueError("Insufficient gold balance")
+                
+                # Calculate euro amount before fee
+                euro_amount = gold_amount * fixing_price
+                
+                # Apply conversion fee
+                fee_amount = euro_amount * TransformationService.GOLD_TO_EURO_FEE
+                net_euro_amount = euro_amount - fee_amount
+                
+                # Update accounts
+                user.gold_account.balance -= gold_amount
+                user.money_account.balance += net_euro_amount
+                user.money_account.last_update = datetime.utcnow()
+                
+                await session.commit()
+                
+                return {
+                    "status": "success",
+                    "euro_amount": float(net_euro_amount),
+                    "fee_amount": float(fee_amount)
+                }
+                
+        except Exception as e:
+            logger.error(f"Gold to euro transformation error: {str(e)}")
+            await session.rollback()
+            raise
