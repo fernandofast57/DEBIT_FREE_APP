@@ -6,9 +6,9 @@ from datetime import datetime
 
 def monitor_performance(func: Callable) -> Callable:
     @functools.wraps(func)
-    def wrapper(*args, **kwargs):
+    async def wrapper(*args, **kwargs):
         start_time = time.time()
-        result = func(*args, **kwargs)
+        result = await func(*args, **kwargs) if asyncio.iscoroutinefunction(func) else func(*args, **kwargs)
         execution_time = time.time() - start_time
         print(f"Performance monitoring: {func.__name__} took {execution_time:.2f} seconds")
         return result
