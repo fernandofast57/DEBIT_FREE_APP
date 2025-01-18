@@ -1,5 +1,4 @@
 
-```python
 from typing import Dict, Any, List
 from decimal import Decimal
 import logging
@@ -47,4 +46,3 @@ class BlockchainMonitor:
     def check_new_blocks(self) -> bool:
         current_block = self.w3.eth.get_block_number()
         return current_block > self.last_processed_block
-```
