@@ -1,4 +1,3 @@
-
 from web3 import Web3
 from web3.middleware import geth_poa_middleware
 import logging
@@ -13,7 +12,7 @@ class BlockchainMonitor:
         self.setup_logging()
         if hasattr(self.w3, 'middleware_onion'):
             self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
-        
+
     def setup_logging(self):
         handler = logging.FileHandler('logs/blockchain.log')
         handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))

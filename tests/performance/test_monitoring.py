@@ -1,5 +1,6 @@
 import pytest
-from app.utils.monitoring.performance import monitor_performance, PerformanceMonitor
+from app.utils.monitoring.performance import monitor_performance
+from app.utils.monitoring.performance_monitor import PerformanceMonitor
 from app.utils.system_monitor import SystemMonitor
 
 def test_system_monitoring():
