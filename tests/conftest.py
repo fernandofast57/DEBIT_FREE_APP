@@ -14,9 +14,18 @@ from app.services.blockchain_service import BlockchainService
 from app.services.gold.weekly_distribution import WeeklyGoldDistribution
 
 # Add the project root to the path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.insert(0,
+                os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from app import create_app
+
+
+@pytest.fixture(scope="session")
+def event_loop():
+    """Create an instance of the default event loop for the test session."""
+    loop = asyncio.get_event_loop_policy().new_event_loop()
+    yield loop
+    loop.close()
 
 
 @pytest.fixture
@@ -36,46 +45,52 @@ def app():
         db.session.remove()
         db.drop_all()
 
+
 @pytest.fixture
 def client(app):
     return app.test_client()
+
 
 @pytest.fixture
 def runner(app):
     return app.test_cli_runner()
 
+
 @pytest.fixture
 async def test_db(app):
     """Provide test database session"""
-    with app.app_context():
-        db.create_all()
+    async with app.app_context():
+        await db.create_all()
         yield db
-        db.session.remove()
-        db.drop_all()
+        await db.session.remove()
+        await db.drop_all()
+
 
 @pytest.fixture
-def test_user(app, test_db):
+async def test_user(app, test_db):
     """Crea un utente di test con account money e gold"""
-    from app.models.models import User as BaseUser
-
-    with app.app_context():
-        user = BaseUser(username='test_user', email='test@example.com')
+    async with app.app_context():
+        user = User(username='test_user', email='test@example.com')
         user.money_account = MoneyAccount(balance=Decimal('1000.00'))
         user.gold_account = GoldAccount(balance=Decimal('0.00'))
         test_db.session.add(user)
-        test_db.session.commit()
+        await test_db.session.commit()
         return user
+
 
 @pytest.fixture
 def distribution_service():
     """Provide WeeklyGoldDistribution service"""
     return WeeklyGoldDistribution()
 
+
 @pytest.fixture
-async def async_session():
-    """Provide async database session"""
-    async with db.session() as session:
-        yield session
+async def async_session(app):
+    """Provide async database session with application context"""
+    async with app.app_context():
+        async with db.session() as session:
+            yield session
+
 
 @pytest.fixture
 def auth_token(app, test_user):
@@ -85,8 +100,11 @@ def auth_token(app, test_user):
         'exp': datetime.utcnow() + timedelta(days=1),
         'iat': datetime.utcnow()
     }
-    token = jwt.encode(payload, app.config['JWT_SECRET_KEY'], algorithm='HS256')
+    token = jwt.encode(payload,
+                       app.config['JWT_SECRET_KEY'],
+                       algorithm='HS256')
     return f'Bearer {token}'
+
 
 @pytest.fixture
 def auth_headers(auth_token, test_user):
@@ -96,6 +114,7 @@ def auth_headers(auth_token, test_user):
         'X-User-Id': str(test_user.id),
         'Content-Type': 'application/json'
     }
+
 
 @pytest.fixture
 def mock_w3():
@@ -126,6 +145,7 @@ def mock_w3():
 
     return w3
 
+
 @pytest.fixture
 async def blockchain_service(mock_w3):
     """Servizio blockchain configurato per i test"""
@@ -134,11 +154,13 @@ async def blockchain_service(mock_w3):
     service.contract = Mock()
     service.contract.functions = Mock()
     service.contract.functions.transfer = Mock()
-    service.contract.functions.transfer().transact = Mock(return_value=b'0x123')
+    service.contract.functions.transfer().transact = Mock(
+        return_value=b'0x123')
     service.account = Mock(
         address='0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
         privateKey=b'0x123')
     return service
+
 
 @pytest.fixture
 def blockchain_monitor(mock_w3):
@@ -146,6 +168,7 @@ def blockchain_monitor(mock_w3):
     monitor = BlockchainMonitor(mock_w3)
     monitor.last_processed_block = 12344  # Un blocco prima del corrente
     return monitor
+
 
 def get_test_rpc_url():
     """URL RPC per testing"""
