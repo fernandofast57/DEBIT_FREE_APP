@@ -1,145 +1,167 @@
 
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, Optional
 from decimal import Decimal
-import asyncio
-from web3.exceptions import ContractLogicError
-from app.utils.logging_config import get_logger
+from datetime import datetime
+import logging
+from web3 import Web3
 from app.models.noble_system import NobleRank
+from app.utils.logging_config import get_logger
 from app.services.blockchain_service import BlockchainService
-from app.utils.retry import retry_with_backoff
+from app.utils.monitoring.blockchain_monitor import BlockchainMonitor
 
 logger = get_logger(__name__)
 
 class BlockchainNobleService:
+    """Service for handling noble-related blockchain operations"""
+    
     def __init__(self, blockchain_service: Optional[BlockchainService] = None):
         self.blockchain_service = blockchain_service or BlockchainService()
-        self._cache = {}
+        self.monitor = BlockchainMonitor(self.blockchain_service.w3)
+        self.logger = logging.getLogger(__name__)
+
+    async def update_noble_rank(self, 
+                              address: str, 
+                              rank_id: int,
+                              user_id: int) -> Dict[str, Any]:
+        """
+        Update noble rank on blockchain
         
-    async def update_noble_rank(self, user_address: str, rank_id: int) -> Dict[str, Any]:
-        """Aggiorna il rank nobile sulla blockchain"""
-        if not self.blockchain_service.is_connected():
-            logger.error("Blockchain service not connected")
-            return {'status': 'error', 'message': 'Blockchain service not connected'}
-            
+        Args:
+            address: User's blockchain address
+            rank_id: New noble rank ID
+            user_id: User's ID in the system
+        """
         try:
-            noble_rank = await NobleRank.get_by_id(rank_id)
-            if not noble_rank:
-                return {'status': 'error', 'message': 'Invalid rank ID'}
-                
-            transaction = await self.blockchain_service.update_noble_rank(
-                address=user_address,
-                rank=rank_id
-            )
-            
-            if transaction['status'] == 'verified':
-                await self._update_cache(user_address, rank_id)
+            if not self.blockchain_service.w3.is_address(address):
                 return {
-                    'status': 'success',
-                    'transaction_hash': transaction['transaction_hash'],
-                    'rank': noble_rank.name
+                    'status': 'error',
+                    'message': 'Invalid blockchain address'
                 }
-            
-            return {'status': 'error', 'message': 'Transaction failed'}
-            
-        except ContractLogicError as e:
-            logger.error(f"Contract error in update_noble_rank: {str(e)}")
-            return {'status': 'error', 'message': str(e)}
-        except Exception as e:
-            logger.error(f"Error in update_noble_rank: {str(e)}")
-            return {'status': 'error', 'message': 'Internal service error'}
 
-    @retry_with_backoff(max_retries=3)
-    async def get_noble_rank(self, address: str) -> Dict[str, Any]:
-        """Recupera il rank nobile corrente dalla blockchain"""
-        try:
-            if cached_rank := self._cache.get(address):
-                return cached_rank
-                
-            contract = self.blockchain_service.contract
-            rank_id = await contract.functions.getRank(address).call()
             noble_rank = await NobleRank.get_by_id(rank_id)
-            
             if not noble_rank:
-                return {'status': 'error', 'message': 'Invalid rank ID'}
-                
-            result = {
-                'status': 'success',
-                'rank_id': rank_id,
-                'rank_name': noble_rank.name,
-                'benefits': noble_rank.benefits
-            }
-            
-            await self._update_cache(address, rank_id)
-            return result
-            
-        except Exception as e:
-            logger.error(f"Error getting noble rank: {str(e)}")
-            return {'status': 'error', 'message': str(e)}
-
-    async def _update_cache(self, address: str, rank_id: int) -> None:
-        """Aggiorna la cache interna dei rank"""
-        try:
-            noble_rank = await NobleRank.get_by_id(rank_id)
-            if noble_rank:
-                self._cache[address] = {
-                    'status': 'success',
-                    'rank_id': rank_id,
-                    'rank_name': noble_rank.name,
-                    'benefits': noble_rank.benefits
+                return {
+                    'status': 'error',
+                    'message': 'Invalid noble rank ID'
                 }
-        except Exception as e:
-            logger.error(f"Cache update error: {str(e)}")
 
-    async def verify_noble_benefits(self, address: str) -> Dict[str, Any]:
-        """Verifica i benefit del rank nobile"""
+            result = await self.blockchain_service.send_transaction(
+                self.blockchain_service.contract.functions.updateNobleRank(
+                    address,
+                    rank_id
+                )
+            )
+
+            await self.monitor.monitor_transactions({
+                'type': 'noble_rank_update',
+                'user_id': user_id,
+                'rank_id': rank_id,
+                'timestamp': datetime.utcnow().isoformat(),
+                'status': result['status'],
+                'tx_hash': result.get('transaction_hash')
+            })
+
+            return result
+
+        except Exception as e:
+            self.logger.error(f"Error updating noble rank: {str(e)}")
+            return {
+                'status': 'error',
+                'message': str(e)
+            }
+
+    async def verify_noble_status(self, 
+                                address: str,
+                                min_rank: int) -> Dict[str, bool]:
+        """
+        Verify if address has required noble rank
+        
+        Args:
+            address: Blockchain address to check
+            min_rank: Minimum required rank
+        """
         try:
-            rank_info = await self.get_noble_rank(address)
-            if rank_info['status'] != 'success':
-                return rank_info
-                
-            benefits = rank_info.get('benefits', {})
+            if not self.blockchain_service.w3.is_address(address):
+                return {'is_valid': False}
+
+            current_rank = await self.blockchain_service.contract.functions.nobleRanks(
+                address
+            ).call()
+
+            return {
+                'is_valid': current_rank >= min_rank,
+                'current_rank': current_rank
+            }
+
+        except Exception as e:
+            self.logger.error(f"Error verifying noble status: {str(e)}")
+            return {'is_valid': False}
+
+    async def calculate_noble_bonus(self,
+                                  address: str,
+                                  amount: Decimal) -> Dict[str, Any]:
+        """
+        Calculate bonus based on noble rank
+        
+        Args:
+            address: User's blockchain address
+            amount: Base amount for bonus calculation
+        """
+        try:
+            status = await self.verify_noble_status(address, 1)
+            if not status['is_valid']:
+                return {'bonus_amount': Decimal('0')}
+
+            rank_multipliers = {
+                1: Decimal('0.01'),  # Bronze
+                2: Decimal('0.02'),  # Silver
+                3: Decimal('0.03'),  # Gold
+                4: Decimal('0.05')   # Platinum
+            }
+
+            multiplier = rank_multipliers.get(
+                status['current_rank'],
+                Decimal('0')
+            )
+            bonus_amount = amount * multiplier
+
             return {
                 'status': 'success',
-                'address': address,
-                'rank_name': rank_info['rank_name'],
-                'active_benefits': benefits,
-                'verification_time': asyncio.get_event_loop().time()
+                'bonus_amount': bonus_amount,
+                'rank': status['current_rank']
             }
-            
-        except Exception as e:
-            logger.error(f"Benefit verification error: {str(e)}")
-            return {'status': 'error', 'message': str(e)}
 
-    async def get_noble_statistics(self) -> Dict[str, Any]:
-        """Recupera statistiche del sistema noble"""
+        except Exception as e:
+            self.logger.error(f"Error calculating noble bonus: {str(e)}")
+            return {
+                'status': 'error',
+                'message': str(e)
+            }
+
+    async def get_noble_stats(self, address: str) -> Dict[str, Any]:
+        """Get noble system statistics for address"""
         try:
-            contract = self.blockchain_service.contract
-            total_nobles = await contract.functions.getTotalNobles().call()
-            stats = {
+            if not self.blockchain_service.w3.is_address(address):
+                return {'status': 'error', 'message': 'Invalid address'}
+
+            current_rank = await self.blockchain_service.contract.functions.nobleRanks(
+                address
+            ).call()
+
+            total_rewards = await self.blockchain_service.contract.functions.totalRewards(
+                address
+            ).call()
+
+            return {
                 'status': 'success',
-                'total_nobles': total_nobles,
-                'ranks_distribution': await self._get_ranks_distribution(),
-                'cache_size': len(self._cache)
+                'current_rank': current_rank,
+                'total_rewards': self.blockchain_service.w3.from_wei(total_rewards, 'ether'),
+                'address': address
             }
-            return stats
-            
-        except Exception as e:
-            logger.error(f"Error getting noble statistics: {str(e)}")
-            return {'status': 'error', 'message': str(e)}
 
-    async def _get_ranks_distribution(self) -> Dict[str, int]:
-        """Calcola la distribuzione dei rank"""
-        try:
-            ranks = await NobleRank.get_all()
-            distribution = {}
-            contract = self.blockchain_service.contract
-            
-            for rank in ranks:
-                count = await contract.functions.getRankCount(rank.id).call()
-                distribution[rank.name] = count
-                
-            return distribution
-            
         except Exception as e:
-            logger.error(f"Error calculating rank distribution: {str(e)}")
-            return {}
+            self.logger.error(f"Error getting noble stats: {str(e)}")
+            return {
+                'status': 'error',
+                'message': str(e)
+            }
