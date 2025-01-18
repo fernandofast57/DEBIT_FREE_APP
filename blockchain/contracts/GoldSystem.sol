@@ -1,140 +1,128 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
 
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
-contract NobleGoldSystem is AccessControl, Pausable, ReentrancyGuard {
-    using SafeMath for uint256;
-
+contract GoldSystem is AccessControl, Pausable, ReentrancyGuard {
+    bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
+    
+    struct Noble {
+        string rank;
+        address upline;
+        uint256 totalInvestment;
+        uint256 lastUpdateTime;
+    }
+    
     struct GoldTransaction {
         uint256 euroAmount;
         uint256 goldGrams;
-        uint256 fixingPrice;
         uint256 timestamp;
-        bool isVerified;
+        string transactionType;
     }
-
-    struct Noble {
-        string rank;
-        uint256 totalVolume;
-        uint256 directReferrals;
-        address upline;
-        bool kycVerified;
-        string ibanHash;
-    }
-
-    mapping(address => GoldTransaction[]) public transactions;
+    
     mapping(address => Noble) public nobles;
-    mapping(address => address[]) public referrals;
-
-    uint256 public constant CLIENT_SHARE = 933; // 93.3%
-    uint256 public constant NETWORK_SHARE = 17; // 1.7%
-    uint256 public constant OPERATIONAL_SHARE = 50; // 5%
-    uint256 public constant BASIS_POINTS = 1000;
-
-    event GoldTransformed(
+    mapping(address => GoldTransaction[]) private transactions;
+    mapping(address => uint256) public goldBalances;
+    
+    uint256 public constant MINIMUM_INVESTMENT = 1000 ether;
+    uint256 public constant MAX_TRANSACTION_AMOUNT = 1000000 ether;
+    
+    event NobleRankUpdated(address indexed user, string newRank, uint256 timestamp);
+    event GoldTransactionExecuted(
         address indexed user,
         uint256 euroAmount,
         uint256 goldGrams,
-        uint256 fixingPrice,
+        string transactionType,
         uint256 timestamp
     );
-
-    event BonusDistributed(
-        address indexed user,
-        address indexed referrer,
-        uint256 amount,
-        string bonusType
-    );
-
-    event NobleRankUpdated(
-        address indexed user,
-        string newRank,
-        uint256 timestamp
-    );
-
-    constructor()  {
+    
+    constructor() {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(OPERATOR_ROLE, msg.sender);
     }
-
-    function transformGold(
+    
+    modifier validAmount(uint256 amount) {
+        require(amount > 0, "Amount must be positive");
+        require(amount <= MAX_TRANSACTION_AMOUNT, "Amount exceeds maximum limit");
+        _;
+    }
+    
+    modifier validAddress(address addr) {
+        require(addr != address(0), "Invalid address");
+        require(addr != address(this), "Cannot be contract address");
+        _;
+    }
+    
+    function executeGoldTransaction(
         address user,
         uint256 euroAmount,
         uint256 goldGrams,
-        uint256 fixingPrice
-    ) external onlyRole(DEFAULT_ADMIN_ROLE) whenNotPaused nonReentrant {
-        require(euroAmount > 0, "Invalid euro amount");
-        require(goldGrams > 0, "Invalid gold amount");
-
-        uint256 clientGold = goldGrams.mul(CLIENT_SHARE).div(BASIS_POINTS);
-        uint256 networkGold = goldGrams.mul(NETWORK_SHARE).div(BASIS_POINTS);
-
+        string memory transactionType
+    ) external onlyRole(OPERATOR_ROLE) whenNotPaused nonReentrant validAddress(user) validAmount(euroAmount) {
+        require(bytes(transactionType).length > 0, "Transaction type required");
+        
+        goldBalances[user] += goldGrams;
+        
         transactions[user].push(GoldTransaction({
             euroAmount: euroAmount,
-            goldGrams: clientGold,
-            fixingPrice: fixingPrice,
+            goldGrams: goldGrams,
             timestamp: block.timestamp,
-            isVerified: true
+            transactionType: transactionType
         }));
-
-        _distributeNetworkBonus(user, networkGold);
-
-        emit GoldTransformed(user, euroAmount, clientGold, fixingPrice, block.timestamp);
+        
+        emit GoldTransactionExecuted(
+            user,
+            euroAmount,
+            goldGrams,
+            transactionType,
+            block.timestamp
+        );
     }
-
-    function _distributeNetworkBonus(address user, uint256 networkGold) internal {
-        address current = nobles[user].upline;
-        uint256 level = 0;
-        uint256[] memory bonusRates = new uint256[](3);
-        bonusRates[0] = 7; // 0.7%
-        bonusRates[1] = 5; // 0.5%
-        bonusRates[2] = 5; // 0.5%
-
-        while (current != address(0) && level < 3) {
-            uint256 bonus = networkGold.mul(bonusRates[level]).div(1000);
-            nobles[current].totalVolume = nobles[current].totalVolume.add(bonus);
-
-            emit BonusDistributed(user, current, bonus, nobles[current].rank);
-
-            current = nobles[current].upline;
-            level++;
+    
+    function updateNobleRank(
+        address user,
+        string calldata newRank,
+        address upline
+    ) external onlyRole(OPERATOR_ROLE) whenNotPaused validAddress(user) {
+        require(bytes(newRank).length > 0, "Rank cannot be empty");
+        if(upline != address(0)) {
+            require(nobles[upline].lastUpdateTime > 0, "Invalid upline");
         }
-    }
-
-    function getTransactionHistory(address user) external view returns (
-        uint256[] memory euroAmounts,
-        uint256[] memory goldGrams,
-        uint256[] memory timestamps
-    ) {
-        GoldTransaction[] storage userTxs = transactions[user];
-        uint256 length = userTxs.length;
-
-        euroAmounts = new uint256[](length);
-        goldGrams = new uint256[](length);
-        timestamps = new uint256[](length);
-
-        for (uint256 i = 0; i < length; i++) {
-            euroAmounts[i] = userTxs[i].euroAmount;
-            goldGrams[i] = userTxs[i].goldGrams;
-            timestamps[i] = userTxs[i].timestamp;
-        }
-
-        return (euroAmounts, goldGrams, timestamps);
-    }
-
-    function updateNobleRank(address user, string calldata newRank) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        
         nobles[user].rank = newRank;
+        nobles[user].upline = upline;
+        nobles[user].lastUpdateTime = block.timestamp;
+        
         emit NobleRankUpdated(user, newRank, block.timestamp);
     }
-
-    function pause() public onlyRole(DEFAULT_ADMIN_ROLE) {
+    
+    function getTransactionHistory(address user) 
+        external 
+        view 
+        validAddress(user) 
+        returns (GoldTransaction[] memory) 
+    {
+        return transactions[user];
+    }
+    
+    function getNobleUpline(address user) 
+        external 
+        view 
+        validAddress(user) 
+        returns (address) 
+    {
+        return nobles[user].upline;
+    }
+    
+    function pause() external onlyRole(DEFAULT_ADMIN_ROLE) {
         _pause();
     }
-
-    function unpause() public onlyRole(DEFAULT_ADMIN_ROLE) {
+    
+    function unpause() external onlyRole(DEFAULT_ADMIN_ROLE) {
         _unpause();
     }
 }
