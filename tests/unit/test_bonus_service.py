@@ -1,86 +1,94 @@
 
 import pytest
-import asyncio
 from decimal import Decimal
-from unittest.mock import patch, MagicMock
-
+from unittest.mock import Mock, patch
 from app.services.bonus_distribution_service import BonusDistributionService
-from app.models.models import User, GoldReward, GoldAccount, db
-from app.utils.errors import InvalidRankError, InsufficientBalanceError
+from app.models.models import User, MoneyAccount, GoldAccount
+from app.database import db
+
+@pytest.fixture
+def bonus_service():
+    return BonusDistributionService()
+
+@pytest.fixture
+async def mock_user():
+    user = User(
+        id=1,
+        username="test_user",
+        email="test@example.com"
+    )
+    user.money_account = MoneyAccount(balance=Decimal('1000.00'))
+    user.gold_account = GoldAccount(balance=Decimal('10.00'))
+    return user
 
 @pytest.mark.asyncio
-class TestBonusDistributionService:
-    
-    @pytest.fixture
-    async def setup_test_data(self, app):
-        async with app.app_context():
-            test_user = User(id=1, username="Test User", email="test@example.com", referrer_id=None)
-            gold_account = GoldAccount(user_id=1, balance=Decimal('10.0000'))
-            test_user.gold_account = gold_account
-            db.session.add(test_user)
-            db.session.add(gold_account)
-            await db.session.commit()
-            return test_user
+async def test_calculate_weekly_bonus(bonus_service, mock_user):
+    transactions = [
+        {'amount': Decimal('100.00'), 'timestamp': 1645564800},
+        {'amount': Decimal('200.00'), 'timestamp': 1645564800}
+    ]
+    bonus = await bonus_service.calculate_weekly_bonus(mock_user, transactions)
+    assert isinstance(bonus, Decimal)
+    assert bonus > 0
 
-    @pytest.fixture
-    def bonus_service(self):
-        return BonusDistributionService()
+@pytest.mark.asyncio
+async def test_calculate_bonus_percentage(bonus_service, mock_user):
+    gold_balance = Decimal('10.00')
+    percentage = await bonus_service.calculate_bonus_percentage(mock_user, gold_balance)
+    assert isinstance(percentage, Decimal)
+    assert 0 <= percentage <= 100
 
-    @pytest.mark.asyncio
-    async def test_distribute_structure_bonus(self, app, bonus_service, setup_test_data):
-        async with app.app_context():
-            user = setup_test_data
-            euro_amount = Decimal('100.00')
-            fixing_price = Decimal('50.0000')
-            
-            result = await bonus_service.distribute_structure_bonus(
-                user_id=user.id, 
-                euro_amount=euro_amount, 
-                fixing_price=fixing_price
-            )
-            
-            assert isinstance(result, dict)
-            assert 'structure_bonus' in result
-            
-            structure_bonus = await GoldReward.query.filter_by(reward_type='structure').one_or_none()
-            assert structure_bonus is not None
-            assert structure_bonus.gold_amount > 0
+@pytest.mark.asyncio
+async def test_distribute_bonus(bonus_service, mock_user):
+    with patch.object(db.session, 'commit'):
+        bonus_amount = Decimal('50.00')
+        result = await bonus_service.distribute_bonus(mock_user, bonus_amount)
+        assert result['status'] == 'success'
+        assert mock_user.money_account.balance == Decimal('1050.00')
 
-    @pytest.mark.asyncio
-    async def test_distribute_rewards_successful(self, app, bonus_service, setup_test_data):
-        async with app.app_context():
-            euro_amount = Decimal('1000.00')
-            fixing_price = Decimal('50.0000')
-            
-            result = await bonus_service.distribute_rewards(
-                user_id=setup_test_data.id,
-                euro_amount=euro_amount,
-                fixing_price=fixing_price
-            )
-            
-            assert 'structure_rewards' in result
-            assert 'achievement_reward' in result
-            assert 'timestamp' in result
-            
-            assert isinstance(result['structure_rewards'], dict)
-            assert isinstance(result['achievement_reward'], dict) or result['achievement_reward'] is None
+@pytest.mark.asyncio
+async def test_zero_bonus_distribution(bonus_service, mock_user):
+    with patch.object(db.session, 'commit'):
+        bonus_amount = Decimal('0.00')
+        result = await bonus_service.distribute_bonus(mock_user, bonus_amount)
+        assert result['status'] == 'skipped'
+        assert mock_user.money_account.balance == Decimal('1000.00')
 
-    @pytest.mark.asyncio
-    async def test_distribute_rewards_invalid_rank(self, app, bonus_service, setup_test_data):
-        async with app.app_context():
-            with pytest.raises(InvalidRankError):
-                await bonus_service.distribute_rewards(
-                    user_id=999999,  # Invalid user id
-                    euro_amount=Decimal('1000.00'),
-                    fixing_price=Decimal('50.0000')
-                )
+@pytest.mark.asyncio
+async def test_negative_bonus_validation(bonus_service, mock_user):
+    with pytest.raises(ValueError):
+        await bonus_service.distribute_bonus(mock_user, Decimal('-10.00'))
 
-    @pytest.mark.asyncio
-    async def test_distribute_rewards_insufficient_balance(self, app, bonus_service, setup_test_data):
-        async with app.app_context():
-            with pytest.raises(InsufficientBalanceError):
-                await bonus_service.distribute_rewards(
-                    user_id=setup_test_data.id,
-                    euro_amount=Decimal('0.00'),  # Invalid amount
-                    fixing_price=Decimal('50.0000')
-                )
+@pytest.mark.asyncio
+async def test_bonus_calculation_no_transactions(bonus_service, mock_user):
+    transactions = []
+    bonus = await bonus_service.calculate_weekly_bonus(mock_user, transactions)
+    assert bonus == Decimal('0.00')
+
+@pytest.mark.asyncio
+async def test_bonus_calculation_with_rank(bonus_service, mock_user):
+    mock_user.noble_rank = 2
+    transactions = [{'amount': Decimal('100.00'), 'timestamp': 1645564800}]
+    bonus = await bonus_service.calculate_weekly_bonus(mock_user, transactions)
+    assert bonus > 0
+    assert bonus > Decimal('0.00')
+
+@pytest.mark.asyncio
+async def test_bonus_distribution_with_error(bonus_service, mock_user):
+    with patch.object(db.session, 'commit', side_effect=Exception('Database error')):
+        result = await bonus_service.distribute_bonus(mock_user, Decimal('50.00'))
+        assert result['status'] == 'error'
+        assert 'Database error' in result['message']
+
+@pytest.mark.asyncio
+async def test_bonus_percentage_limits(bonus_service, mock_user):
+    max_gold = Decimal('1000.00')
+    percentage = await bonus_service.calculate_bonus_percentage(mock_user, max_gold)
+    assert percentage <= Decimal('100.00')
+
+@pytest.mark.asyncio
+async def test_bonus_distribution_notification(bonus_service, mock_user):
+    with patch('app.services.notification_service.NotificationService.send_notification') as mock_notify:
+        result = await bonus_service.distribute_bonus(mock_user, Decimal('50.00'))
+        assert result['status'] == 'success'
+        mock_notify.assert_called_once()
