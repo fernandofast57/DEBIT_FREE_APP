@@ -1,26 +1,141 @@
 import pytest
 from unittest.mock import Mock, patch
-from app.utils.monitoring.blockchain_monitor import BlockchainMonitor
-from app.utils.logging_config import get_logger
-from web3.exceptions import BlockNotFound
-import asyncio
-
-logger = get_logger(__name__)
+from datetime import datetime
+from web3.exceptions import BlockNotFound, TransactionNotFound
+from app.utils.monitoring.blockchain_monitor import BlockchainMonitor, BlockchainEvent
+from decimal import Decimal
+from web3 import Web3
 
 @pytest.fixture
 def mock_w3():
-    w3 = Mock()
-    w3.eth.get_block_number.return_value = 12345
-    w3.eth.get_block.return_value = {
+    mock = Mock()
+    mock.eth.block_number = 12345
+    mock.eth.get_block.return_value = Mock(
+        number=12345,
+        timestamp=int(datetime.now().timestamp()),
+        transactions=[],
+        gasUsed=21000,
+        gasLimit=30000000
+    )
+    mock.eth.get_block_number.return_value = 12345
+    mock.eth.get_block.return_value = {
         'number': 12345,
         'timestamp': 1234567890,
         'transactions': ['0x123', '0x456']
     }
+    mock.eth.chain_id = 1
+    mock.eth.gas_price = 20000000000
+    mock.eth.syncing = False
+    mock.net.peer_count = 10
+    mock.eth.get_transaction_receipt.return_value = Mock(
+        status=1,
+        blockNumber=12345,
+        gasUsed=21000
+    )
+    return mock
+
+@pytest.fixture
+def blockchain_monitor(mock_w3):
+    return BlockchainMonitor(mock_w3)
+
+@pytest.mark.asyncio
+async def test_get_block_details(blockchain_monitor):
+    block_details = await blockchain_monitor.get_block_details(12345)
+    assert isinstance(block_details, dict)
+    assert 'number' in block_details
+    assert 'timestamp' in block_details
+    assert 'transactions' in block_details
+    assert 'gas_used' in block_details
+    assert 'gas_limit' in block_details
+
+@pytest.mark.asyncio
+async def test_get_block_details_error(blockchain_monitor):
+    blockchain_monitor.w3.eth.get_block.side_effect = BlockNotFound
+    with pytest.raises(Exception):
+        await blockchain_monitor.get_block_details(99999)
+
+@pytest.mark.asyncio
+async def test_monitor_events(blockchain_monitor):
+    event_abi = {
+        'name': 'Transfer',
+        'type': 'event',
+        'inputs': []
+    }
+    result = await blockchain_monitor.monitor_events(
+        '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+        event_abi
+    )
+    assert result is True
+    assert 'Transfer' in blockchain_monitor.event_filters
+
+@pytest.mark.asyncio
+async def test_monitor_events_error(blockchain_monitor):
+    blockchain_monitor.w3.eth.contract.side_effect = Exception
+    result = await blockchain_monitor.monitor_events(
+        '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+        {}
+    )
+    assert result is False
+
+@pytest.mark.asyncio
+async def test_process_new_blocks(blockchain_monitor):
+    blockchain_monitor.w3.eth.block_number = 12346
+    processed_blocks = []
+
+    async def mock_process_block(block_num, details):
+        processed_blocks.append(block_num)
+
+    blockchain_monitor._process_block_events = mock_process_block
+    blockchain_monitor._running = True
+
+    await blockchain_monitor.process_new_blocks()
+    assert len(processed_blocks) > 0
+
+@pytest.mark.asyncio
+async def test_get_network_stats(blockchain_monitor):
+    stats = await blockchain_monitor.get_network_stats()
+    assert isinstance(stats, dict)
+    assert 'latest_block' in stats
+    assert 'network_id' in stats
+    assert 'gas_price' in stats
+    assert 'is_syncing' in stats
+    assert 'peer_count' in stats
+    assert 'timestamp' in stats
+
+@pytest.mark.asyncio
+async def test_verify_transaction(blockchain_monitor):
+    result = await blockchain_monitor.verify_transaction('0x123')
+    assert isinstance(result, dict)
+    assert result['status'] == 'success'
+    assert result['block_number'] == 12345
+    assert result['gas_used'] == 21000
+    assert 'confirmations' in result
+
+def test_register_event_handler(blockchain_monitor):
+    async def handler(event):
+        pass
+
+    blockchain_monitor.register_event_handler('Transfer', handler)
+    assert 'Transfer' in blockchain_monitor.event_handlers
+
+def test_stop_monitoring(blockchain_monitor):
+    blockchain_monitor._running = True
+    blockchain_monitor.stop_monitoring()
+    assert blockchain_monitor._running is False
+
+@pytest.fixture
+def mock_w3_original():
+    w3 = Mock(spec=Web3)
+    w3.eth = Mock()
+    w3.eth.get_block_number.return_value = 1000
+    w3.eth.get_block.side_effect = BlockNotFound
+    w3.eth.get_transaction.side_effect = TransactionNotFound
+    w3.eth.gas_price = 10
     return w3
 
 @pytest.fixture
-def monitor(mock_w3):
-    return BlockchainMonitor(mock_w3)
+def blockchain_monitor_original(mock_w3_original):
+    return BlockchainMonitor(mock_w3_original)
 
 @pytest.mark.asyncio
 async def test_monitor_initialization(monitor):
@@ -94,18 +209,6 @@ async def test_concurrent_processing(monitor, mock_w3):
     tasks = [monitor.process_new_blocks() for _ in range(3)]
     results = await asyncio.gather(*tasks)
     assert all(r >= 0 for r in results)
-
-@pytest.fixture
-def mock_w3_original():
-    w3 = Mock(spec=Web3)
-    w3.eth = Mock()
-    w3.eth.get_block_number.return_value = 1000
-    return w3
-
-@pytest.fixture
-def blockchain_monitor_original(mock_w3_original):
-    return BlockchainMonitor(mock_w3_original)
-
 
 @pytest.mark.asyncio
 async def test_basic_monitoring(blockchain_monitor_original):
@@ -205,6 +308,4 @@ def test_block_monitoring(blockchain_monitor_original, mock_w3_original):
     mock_w3_original.eth.get_block_number.return_value = 1001
     assert blockchain_monitor_original.check_new_blocks()
 
-from decimal import Decimal
-from web3 import Web3
-from web3.exceptions import TransactionNotFound
+import asyncio
