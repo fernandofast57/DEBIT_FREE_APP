@@ -7,7 +7,7 @@ import jwt
 from decimal import Decimal
 from web3 import Web3
 import asyncio
-from app.database import db
+from app.database import db, database
 from app.models.models import User, MoneyAccount, GoldAccount
 from app.utils.monitoring.blockchain_monitor import BlockchainMonitor
 from app.services.blockchain_service import BlockchainService
@@ -28,15 +28,13 @@ def event_loop():
     loop.close()
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def app():
     app = create_app()
     app.config.update({
         'TESTING': True,
-        'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:',
-        'SECRET_KEY': 'test-secret-key',
-        'JWT_SECRET_KEY': 'test-jwt-secret-key',
-        'BLOCKCHAIN_ENABLED': True
+        'SQLALCHEMY_DATABASE_URI': 'sqlite:///instance/test.db',
+        'SQLALCHEMY_TRACK_MODIFICATIONS': False
     })
 
     with app.app_context():
@@ -46,24 +44,23 @@ def app():
         db.drop_all()
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def client(app):
     return app.test_client()
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def runner(app):
     return app.test_cli_runner()
 
 
-@pytest.fixture
-async def test_db(app):
-    """Provide test database session"""
-    async with app.app_context():
-        await db.create_all()
+@pytest.fixture(scope='session')
+def test_db(app):
+    with app.app_context():
+        db.create_all()
         yield db
-        await db.session.remove()
-        await db.drop_all()
+        db.session.remove()
+        db.drop_all()
 
 
 @pytest.fixture
