@@ -96,3 +96,28 @@ async def test_bidirectional_transformation(test_user):
         "to_euro"
     )
     assert result_euro['status'] == 'success'
+@pytest.mark.asyncio
+async def test_bidirectional_transformation_flow(test_user, test_db):
+    """Test complete bidirectional transformation flow"""
+    # Initial values
+    euro_amount = Decimal('1000.00')
+    fixing_price = Decimal('50.00')
+    
+    # Test euro to gold
+    result_to_gold = await TransformationService.process_transformation(
+        test_user.id, 
+        euro_amount,
+        fixing_price,
+        "to_gold"
+    )
+    assert result_to_gold['status'] == 'success'
+    gold_amount = result_to_gold['gold_grams']
+    
+    # Test gold to euro
+    result_to_euro = await TransformationService.process_transformation(
+        test_user.id,
+        Decimal(str(gold_amount)),
+        fixing_price,
+        "to_euro"
+    )
+    assert result_to_euro['status'] == 'success'

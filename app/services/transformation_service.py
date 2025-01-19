@@ -131,8 +131,8 @@ class TransformationService:
 
     @staticmethod
     async def process_transformation(user_id: int, amount: Decimal, fixing_price: Decimal, direction: str = "to_gold") -> Dict[str, Any]:
-        """Process complete money to gold transformation"""
-        logger.info(f"Inizio trasformazione - Utente: {user_id} - Importo: {euro_amount}€ - Fixing: {fixing_price}", 
+        """Process bidirectional transformation between euro and gold"""
+        logger.info(f"Inizio trasformazione {direction} - Utente: {user_id} - Importo: {amount} - Fixing: {fixing_price}", 
                     extra={'audit_type': 'TRANSFORMATION_START',
                            'user_id': user_id,
                            'amount': str(euro_amount),
