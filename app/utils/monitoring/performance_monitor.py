@@ -10,6 +10,11 @@ logger = logging.getLogger(__name__)
 class PerformanceMonitor:
     def __init__(self):
         self.metrics = {}
+    
+    def record_metric(self, category: str, value: float):
+        if category not in self.metrics:
+            self.metrics[category] = []
+        self.metrics[category].append(value)
         self.start_time = datetime.now()
 
     def record_metric(self, category: str, value: float):

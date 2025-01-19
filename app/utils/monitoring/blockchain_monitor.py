@@ -67,20 +67,16 @@ class BlockchainMonitor:
     async def get_block_details(self, block_number: int) -> Dict[str, Any]:
         """Fetch detailed block information with retry mechanism"""
         try:
-            block = await self.w3.eth.get_block(block_number, full_transactions=True)
-            if block:
-                return {
-                    'status': 'success',
-                    'number': block.number,
-                    'timestamp': datetime.fromtimestamp(block.timestamp),
-                    'transactions': len(block.transactions),
-                    'gas_used': block.gasUsed,
-                    'gas_limit': block.gasLimit
-                }
-            return {'status': 'error', 'message': 'Block not found'}
+            block = await self.w3.eth.get_block(block_number)
+            return {
+                'status': 'success',
+                'block': block
+            }
         except Exception as e:
-            logger.error(f"Error fetching block {block_number}: {e}")
-            return {'status': 'error', 'message': str(e)}
+            return {
+                'status': 'error',
+                'message': str(e)
+            }
 
     async def monitor_events(self, contract_address: str, event_abi: dict):
         """Monitor specific contract events"""

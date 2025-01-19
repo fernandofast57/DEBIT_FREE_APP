@@ -2,6 +2,9 @@ import os
 from datetime import timedelta
 
 class Config:
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///instance/test.db'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    TESTING = True
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-key-please-change'
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'DATABASE_URL') or 'sqlite:///app.db'
