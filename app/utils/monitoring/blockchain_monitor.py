@@ -1,4 +1,3 @@
-
 from typing import Dict, List, Optional, Any
 from web3 import Web3
 from dataclasses import dataclass
@@ -56,29 +55,32 @@ class BlockchainMonitor:
             return current_block > self.last_processed_block
         except Exception:
             return False
-        
+
     def _get_last_block(self) -> int:
         try:
             return self.w3.eth.block_number
         except Exception as e:
             logger.error(f"Failed to get last block: {e}")
             return 0
-            
+
     @retry_with_backoff(max_retries=3)
     async def get_block_details(self, block_number: int) -> Dict[str, Any]:
         """Fetch detailed block information with retry mechanism"""
         try:
             block = await self.w3.eth.get_block(block_number, full_transactions=True)
-            return {
-                'number': block.number,
-                'timestamp': datetime.fromtimestamp(block.timestamp),
-                'transactions': len(block.transactions),
-                'gas_used': block.gasUsed,
-                'gas_limit': block.gasLimit
-            }
+            if block:
+                return {
+                    'status': 'success',
+                    'number': block.number,
+                    'timestamp': datetime.fromtimestamp(block.timestamp),
+                    'transactions': len(block.transactions),
+                    'gas_used': block.gasUsed,
+                    'gas_limit': block.gasLimit
+                }
+            return {'status': 'error', 'message': 'Block not found'}
         except Exception as e:
             logger.error(f"Error fetching block {block_number}: {e}")
-            raise
+            return {'status': 'error', 'message': str(e)}
 
     async def monitor_events(self, contract_address: str, event_abi: dict):
         """Monitor specific contract events"""
@@ -87,7 +89,7 @@ class BlockchainMonitor:
                 address=contract_address,
                 abi=[event_abi]
             ).events[event_abi['name']]()
-            
+
             self.event_filters[event_abi['name']] = event_filter
             return True
         except Exception as e:
@@ -102,15 +104,15 @@ class BlockchainMonitor:
                 current_block = self.w3.eth.block_number
                 if current_block > self.last_processed_block:
                     block_range = range(self.last_processed_block + 1, current_block + 1)
-                    
+
                     for block_num in block_range:
                         block_details = await self.get_block_details(block_num)
                         await self._process_block_events(block_num, block_details)
-                        
+
                     self.last_processed_block = current_block
-                    
+
                 await asyncio.sleep(1)  # Polling interval
-                
+
             except Exception as e:
                 logger.error(f"Error in block processing: {e}")
                 await asyncio.sleep(5)  # Backoff on error
@@ -120,7 +122,7 @@ class BlockchainMonitor:
         try:
             for event_name, event_filter in self.event_filters.items():
                 events = event_filter.get_new_entries()
-                
+
                 for event in events:
                     blockchain_event = BlockchainEvent(
                         event_type=event_name,
@@ -129,10 +131,10 @@ class BlockchainMonitor:
                         timestamp=block_details['timestamp'],
                         data=dict(event.args)
                     )
-                    
+
                     if event_name in self.event_handlers:
                         await self.event_handlers[event_name](blockchain_event)
-                        
+
         except Exception as e:
             logger.error(f"Error processing events for block {block_number}: {e}")
 

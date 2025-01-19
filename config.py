@@ -1,7 +1,5 @@
-# config.py
 import os
 from datetime import timedelta
-
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-key-please-change'
@@ -59,6 +57,8 @@ class DevelopmentConfig(Config):
 
 
 class TestingConfig(Config):
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///instance/test.db'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
-    WTF_CSRF_ENABLED = False
+    JWT_SECRET_KEY = 'dev-secret-key'
+    BLOCKCHAIN_RPC_URL = 'http://127.0.0.1:8545'
