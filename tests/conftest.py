@@ -147,19 +147,10 @@ def mock_w3():
 
 
 @pytest.fixture
-async def blockchain_service(mock_w3):
-    """Servizio blockchain configurato per i test"""
-    service = BlockchainService()
-    service.w3 = mock_w3
-    service.contract = Mock()
-    service.contract.functions = Mock()
-    service.contract.functions.transfer = Mock()
-    service.contract.functions.transfer().transact = Mock(
-        return_value=b'0x123')
-    service.account = Mock(
-        address='0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
-        privateKey=b'0x123')
-    return service
+async def blockchain_service():
+    """Servizio blockchain configurato per i test usando il mock service"""
+    from app.services.mock_blockchain_service import MockBlockchainService
+    return MockBlockchainService()
 
 
 @pytest.fixture
