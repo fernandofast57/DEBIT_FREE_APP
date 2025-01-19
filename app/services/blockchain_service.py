@@ -33,7 +33,7 @@ class BlockchainService:
         if not self.rpc_endpoints:
             raise ValueError("No RPC endpoints configured")
 
-        self._connect_to_rpc()
+        asyncio.create_task(self._connect_to_rpc())
         if self.w3:
             self.monitor = BlockchainMonitor(self.w3)
 

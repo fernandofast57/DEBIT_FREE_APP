@@ -86,6 +86,8 @@ class ApplicationManager:
             use_reloader = False
 
             from app.utils.load_balancer import load_balancer
+            # Register default server
+            load_balancer.register_server('0.0.0.0', port)
             server = load_balancer.get_next_server()
 
             logger.info(
