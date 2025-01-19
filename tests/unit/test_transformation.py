@@ -1,11 +1,10 @@
-
 import pytest
 from decimal import Decimal
-from datetime import datetime
 from unittest.mock import patch, MagicMock
 from app.services.gold.weekly_distribution import WeeklyGoldDistribution
 from app.models.models import User, MoneyAccount, GoldAccount, Transaction
 from app.database import db
+from app.services.transformation_service import TransformationService
 
 @pytest.mark.asyncio
 class TestGoldTransformation:
@@ -69,55 +68,56 @@ class TestGoldTransformation:
             expected_gold = (initial_amount * (1 - structure_fee)) / mock_fixing_price
             
             assert abs(user.gold_account.balance - expected_gold) < Decimal('0.0001')
-import pytest
-from decimal import Decimal
-from app.services.transformation_service import TransformationService
+
+@pytest.mark.asyncio
+async def test_transformation_validation():
+    """Test input validation for transformation"""
+    with pytest.raises(ValueError):
+        await TransformationService.process_transformation(
+            user_id=1,
+            amount=Decimal('-100'),
+            fixing_price=Decimal('50'),
+            direction="to_gold"
+        )
 
 @pytest.mark.asyncio
 async def test_bidirectional_transformation(test_user):
-    # Test euro to gold
-    euro_amount = Decimal('1000.00')
-    fixing_price = Decimal('50.00')
-    
-    result = await TransformationService.process_transformation(
-        test_user.id, 
-        euro_amount,
-        fixing_price,
-        "to_gold"
-    )
-    assert result['status'] == 'success'
-    
-    # Test gold to euro
-    gold_amount = result['gold_grams']
-    result_euro = await TransformationService.process_transformation(
-        test_user.id,
-        Decimal(str(gold_amount)),
-        fixing_price,
-        "to_euro"
-    )
-    assert result_euro['status'] == 'success'
-@pytest.mark.asyncio
-async def test_bidirectional_transformation_flow(test_user, test_db):
     """Test complete bidirectional transformation flow"""
-    # Initial values
-    euro_amount = Decimal('1000.00')
+    # Initial setup
+    test_user.money_account.balance = Decimal('1000.00')
+    test_user.gold_account.balance = Decimal('0.00')
     fixing_price = Decimal('50.00')
-    
+
     # Test euro to gold
-    result_to_gold = await TransformationService.process_transformation(
-        test_user.id, 
-        euro_amount,
-        fixing_price,
-        "to_gold"
+    result = await TransformationService.process_transformation(
+        user_id=test_user.id,
+        amount=Decimal('100.00'),
+        fixing_price=fixing_price,
+        direction="to_gold"
     )
-    assert result_to_gold['status'] == 'success'
-    gold_amount = result_to_gold['gold_grams']
-    
+
+    assert result['status'] == 'success'
+    assert Decimal(str(result['gold_grams'])) > Decimal('0')
+
     # Test gold to euro
-    result_to_euro = await TransformationService.process_transformation(
-        test_user.id,
-        Decimal(str(gold_amount)),
-        fixing_price,
-        "to_euro"
+    gold_amount = Decimal(str(result['gold_grams']))
+    result_euro = await TransformationService.process_transformation(
+        user_id=test_user.id,
+        amount=gold_amount,
+        fixing_price=fixing_price,
+        direction="to_euro"
     )
-    assert result_to_euro['status'] == 'success'
+
+    assert result_euro['status'] == 'success'
+    assert Decimal(str(result_euro['euro_amount'])) > Decimal('0')
+
+@pytest.mark.asyncio
+async def test_fee_calculation():
+    """Test fee calculations for transformations"""
+    euro_amount = Decimal('1000.00')
+
+    # Calculate organization fee
+    net_amount = await TransformationService.process_organization_fee(euro_amount)
+    expected_fee = euro_amount * TransformationService.ORGANIZATION_FEE
+
+    assert net_amount == euro_amount - expected_fee
