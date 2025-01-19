@@ -53,7 +53,7 @@ class ApplicationManager:
 
     def initialize_app(self):
         """Inizializza l'applicazione Flask con le tue configurazioni esistenti"""
-        self.app = create_app(Config())
+        self.app = create_app(Config)
         CORS(self.app, resources={r"/api/*": {"origins": "*"}})
 
         @self.app.after_request

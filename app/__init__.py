@@ -38,7 +38,7 @@ def create_app(test_config=None):
     if test_config is None:
         app.config.from_object(Config)
     else:
-        app.config.update(test_config)
+        app.config.from_object(test_config)
 
     # Initialize extensions
     cache.init_app(app)
