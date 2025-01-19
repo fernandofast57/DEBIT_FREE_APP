@@ -30,36 +30,54 @@ class BlockchainService:
             raise
 
     def _sync_setup_web3(self) -> None:
+        default_endpoints = [
+            "https://polygon-mumbai.blockpi.network/v1/rpc/public",
+            "https://polygon-mumbai-bor.publicnode.com",
+            "https://rpc.ankr.com/polygon_mumbai"
+        ]
         self.rpc_endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
+        self.rpc_endpoints = [ep.strip() for ep in self.rpc_endpoints if ep.strip()]
+        
         if not self.rpc_endpoints:
-            # Use a public Mumbai testnet endpoint if no RPC endpoints are configured
-            self.rpc_endpoints = ["https://rpc-mumbai.maticvigil.com"]
-            logger.warning("No RPC endpoints configured in environment variables. Using public Mumbai testnet endpoint.")
+            self.rpc_endpoints = default_endpoints
+            logger.warning("Using default public Mumbai testnet endpoints")
 
         self._sync_connect_to_rpc()
         if self.w3:
             self.monitor = BlockchainMonitor(self.w3)
 
     def _sync_connect_to_rpc(self) -> bool:
+        connection_errors = []
+        
         for endpoint in self.rpc_endpoints:
             try:
-                provider = Web3.HTTPProvider(endpoint.strip(), 
-                    request_kwargs={'timeout': 10})
+                provider = Web3.HTTPProvider(
+                    endpoint.strip(),
+                    request_kwargs={
+                        'timeout': 30,
+                        'headers': {
+                            'Content-Type': 'application/json',
+                            'User-Agent': 'Web3.py/6.0.0'
+                        }
+                    }
+                )
                 self.w3 = Web3(provider)
                 self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
-                if self.w3.is_connected():
+                if self.w3.is_connected() and self.w3.eth.chain_id == 80001:  # Mumbai testnet chain ID
                     self._setup_contract()
                     self._setup_account()
-                    logger.info(f"Connected to blockchain node: {endpoint}")
+                    logger.info(f"Connected to Mumbai testnet via: {endpoint}")
                     return True
 
             except Exception as e:
-                logger.warning(f"Failed to connect to {endpoint}: {str(e)}")
-                logger.debug(f"Connection error details: {type(e).__name__}")
+                error_msg = f"Failed to connect to {endpoint}: {str(e)}"
+                connection_errors.append(error_msg)
+                logger.warning(error_msg)
                 continue
 
-        raise ConnectionError("Failed to connect to any RPC endpoint")
+        error_details = "\n".join(connection_errors)
+        raise ConnectionError(f"Failed to connect to any RPC endpoint:\n{error_details}")
 
     @retry_with_backoff(max_retries=3)
     def _connect_to_rpc(self) -> bool:
