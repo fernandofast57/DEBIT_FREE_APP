@@ -169,3 +169,28 @@ def blockchain_monitor(mock_w3):
 def get_test_rpc_url():
     """URL RPC per testing"""
     return "http://0.0.0.0:8545"
+import pytest
+from app import create_app
+from app.database import db
+import asyncio
+
+@pytest.fixture(scope="session")
+def event_loop():
+    """Create an instance of the default event loop for the test session."""
+    loop = asyncio.get_event_loop_policy().new_event_loop()
+    yield loop
+    loop.close()
+
+@pytest.fixture(scope='session')
+def app():
+    app = create_app()
+    app.config.update({
+        'TESTING': True,
+        'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:',
+        'SQLALCHEMY_TRACK_MODIFICATIONS': False
+    })
+
+    with app.app_context():
+        db.create_all()
+        yield app
+        db.drop_all()

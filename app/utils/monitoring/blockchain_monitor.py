@@ -67,7 +67,9 @@ class BlockchainMonitor:
     async def get_block_details(self, block_number: int) -> Dict[str, Any]:
         """Fetch detailed block information with retry mechanism"""
         try:
-            block = await self.w3.eth.get_block(block_number, full_transactions=True)
+            block = await self.w3.eth.get_block(block_number)
+            if not block:
+                return {'status': 'error', 'message': 'Block not found'}
             return {
                 'status': 'success',
                 'number': block['number'],
