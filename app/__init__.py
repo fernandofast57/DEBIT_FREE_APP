@@ -18,7 +18,6 @@ cache = Cache(config={'CACHE_TYPE': 'simple'})
 login_manager = LoginManager()
 migrate = Migrate()
 
-
 # Configurazione logging per produzione
 def setup_logging(app):
     if not os.path.exists('logs'):
