@@ -1,6 +1,9 @@
-from typing import Dict, List, Optional
+
+from typing import Dict, List, Optional, Callable
 from datetime import datetime
 import logging
+import time
+import functools
 
 logger = logging.getLogger(__name__)
 
@@ -25,5 +28,24 @@ class PerformanceMonitor:
             self.metrics[category] = []
         else:
             self.metrics.clear()
+
+    def track_time(self, category: str):
+        def decorator(func: Callable):
+            @functools.wraps(func)
+            async def wrapper(*args, **kwargs):
+                start_time = time.time()
+                result = await func(*args, **kwargs)
+                execution_time = time.time() - start_time
+                self.record_metric(category, execution_time)
+                return result
+            return wrapper
+        return decorator
+
+    def save_metrics(self):
+        """Save metrics to log file"""
+        for category, values in self.metrics.items():
+            if values:
+                avg = sum(values) / len(values)
+                logger.info(f"Average {category}: {avg:.2f}")
 
 performance_monitor = PerformanceMonitor()
