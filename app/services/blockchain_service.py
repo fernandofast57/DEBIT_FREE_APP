@@ -32,7 +32,9 @@ class BlockchainService:
     def _sync_setup_web3(self) -> None:
         self.rpc_endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
         if not self.rpc_endpoints:
-            raise ValueError("No RPC endpoints configured")
+            # Use a public Mumbai testnet endpoint if no RPC endpoints are configured
+            self.rpc_endpoints = ["https://rpc-mumbai.maticvigil.com"]
+            logger.warning("No RPC endpoints configured in environment variables. Using public Mumbai testnet endpoint.")
 
         self._sync_connect_to_rpc()
         if self.w3:
@@ -53,7 +55,8 @@ class BlockchainService:
                     return True
 
             except Exception as e:
-                logger.warning(f"Failed to connect to {endpoint}: {e}")
+                logger.warning(f"Failed to connect to {endpoint}: {str(e)}")
+                logger.debug(f"Connection error details: {type(e).__name__}")
                 continue
 
         raise ConnectionError("Failed to connect to any RPC endpoint")
