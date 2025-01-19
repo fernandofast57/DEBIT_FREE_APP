@@ -7,7 +7,7 @@ import jwt
 from decimal import Decimal
 from web3 import Web3
 import asyncio
-from app.database import db, database
+from app.database import db
 from app.models.models import User, MoneyAccount, GoldAccount
 from app.utils.monitoring.blockchain_monitor import BlockchainMonitor
 from app.services.blockchain_service import BlockchainService
