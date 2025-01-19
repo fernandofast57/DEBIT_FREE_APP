@@ -5,7 +5,7 @@ from typing import Dict
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import db
 from app.models.models import User, MoneyAccount, GoldAccount, Transaction
-from app.utils.monitoring.performance import performance_monitor
+from app.utils.monitoring.performance_monitor import performance_monitor
 
 class WeeklyGoldDistribution:
     def __init__(self):
