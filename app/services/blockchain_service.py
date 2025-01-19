@@ -18,7 +18,7 @@ class BlockchainService:
         self.contract = None
         self.account = None
         self.monitor = None
-        self._setup_web3()
+        self._sync_setup_web3()
 
     @lru_cache(maxsize=32)
     def _get_contract_abi(self) -> dict:
@@ -29,14 +29,34 @@ class BlockchainService:
             logger.error(f"Failed to load contract ABI: {e}")
             raise
 
-    def _setup_web3(self) -> None:
+    def _sync_setup_web3(self) -> None:
         self.rpc_endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
         if not self.rpc_endpoints:
             raise ValueError("No RPC endpoints configured")
 
-        asyncio.create_task(self._connect_to_rpc())
+        self._sync_connect_to_rpc()
         if self.w3:
             self.monitor = BlockchainMonitor(self.w3)
+
+    def _sync_connect_to_rpc(self) -> bool:
+        for endpoint in self.rpc_endpoints:
+            try:
+                provider = Web3.HTTPProvider(endpoint.strip(), 
+                    request_kwargs={'timeout': 10})
+                self.w3 = Web3(provider)
+                self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+
+                if self.w3.is_connected():
+                    self._setup_contract()
+                    self._setup_account()
+                    logger.info(f"Connected to blockchain node: {endpoint}")
+                    return True
+
+            except Exception as e:
+                logger.warning(f"Failed to connect to {endpoint}: {e}")
+                continue
+
+        raise ConnectionError("Failed to connect to any RPC endpoint")
 
     @retry_with_backoff(max_retries=3)
     def _connect_to_rpc(self) -> bool:
