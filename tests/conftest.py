@@ -12,6 +12,7 @@ from app.models.models import User, MoneyAccount, GoldAccount
 from app.utils.monitoring.blockchain_monitor import BlockchainMonitor
 from app.services.blockchain_service import BlockchainService
 from app.services.gold.weekly_distribution import WeeklyGoldDistribution
+from flask import Flask
 
 # Add the project root to the path
 sys.path.insert(0,
@@ -30,12 +31,15 @@ def event_loop():
 
 @pytest.fixture(scope='session')
 def app():
-    app = create_app()
+    app = Flask(__name__)
     app.config.update({
         'TESTING': True,
         'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:',
-        'SQLALCHEMY_TRACK_MODIFICATIONS': False
+        'SQLALCHEMY_TRACK_MODIFICATIONS': False,
+        'SECRET_KEY': 'test-key'
     })
+
+    db.init_app(app)
 
     with app.app_context():
         db.create_all()
@@ -43,12 +47,12 @@ def app():
         db.drop_all()
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture
 def client(app):
     return app.test_client()
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture
 def runner(app):
     return app.test_cli_runner()
 
@@ -97,7 +101,7 @@ def auth_token(app, test_user):
         'iat': datetime.utcnow()
     }
     token = jwt.encode(payload,
-                       app.config['JWT_SECRET_KEY'],
+                       app.config['SECRET_KEY'],
                        algorithm='HS256')
     return f'Bearer {token}'
 
@@ -169,28 +173,3 @@ def blockchain_monitor(mock_w3):
 def get_test_rpc_url():
     """URL RPC per testing"""
     return "http://0.0.0.0:8545"
-import pytest
-from app import create_app
-from app.database import db
-import asyncio
-
-@pytest.fixture(scope="session")
-def event_loop():
-    """Create an instance of the default event loop for the test session."""
-    loop = asyncio.get_event_loop_policy().new_event_loop()
-    yield loop
-    loop.close()
-
-@pytest.fixture(scope='session')
-def app():
-    app = create_app()
-    app.config.update({
-        'TESTING': True,
-        'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:',
-        'SQLALCHEMY_TRACK_MODIFICATIONS': False
-    })
-
-    with app.app_context():
-        db.create_all()
-        yield app
-        db.drop_all()

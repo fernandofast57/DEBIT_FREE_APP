@@ -5,7 +5,7 @@ from flask_caching import Cache
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from app.config import Config
-from app.database import db
+from app.database import db, migrate
 from app.admin import admin
 from app.models.models import User, NobleRank, Transaction
 from sqlalchemy import text, inspect
@@ -16,7 +16,7 @@ import os
 # Inizializzazione estensioni Flask
 cache = Cache(config={'CACHE_TYPE': 'simple'})
 login_manager = LoginManager()
-migrate = Migrate()
+
 
 # Configurazione logging per produzione
 def setup_logging(app):
@@ -35,10 +35,14 @@ def setup_logging(app):
     app.logger.info('Gold Investment App startup')
 
 
-def create_app(config_class=Config):
+def create_app(test_config=None):
     """Factory per creare l'app Flask."""
     app = Flask(__name__, instance_relative_config=True)
-    app.config.from_object(config_class)
+
+    if test_config is None:
+        app.config.from_object(Config)
+    else:
+        app.config.update(test_config)
 
     # Inizializzazione delle estensioni
     cache.init_app(app)
