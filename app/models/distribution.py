@@ -1,5 +1,5 @@
 
-from app.database import db
+from app.database import db, Base
 from datetime import datetime
 
 class WeeklyDistributionLog(db.Model):

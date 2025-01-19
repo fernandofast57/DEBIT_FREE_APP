@@ -1,7 +1,8 @@
 
 from sqlalchemy import create_engine
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import sessionmaker, declarative_base, scoped_session
+from sqlalchemy.ext.declarative import declarative_base
 from contextlib import asynccontextmanager, contextmanager
 import logging
 from typing import Generator
@@ -78,4 +79,9 @@ class DatabaseManager:
             self.logger.error(f"Connection check failed: {str(e)}")
             return False
 
-db = DatabaseManager("sqlite:///instance/gold_investment.db")
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declared_attr
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy(model_class=declarative_base())
+database = DatabaseManager("sqlite:///instance/gold_investment.db")
