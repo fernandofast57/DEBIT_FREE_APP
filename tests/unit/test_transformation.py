@@ -11,35 +11,35 @@ class TestGoldTransformation:
     @pytest.fixture
     def distribution_service(self):
         return WeeklyGoldDistribution()
-    
+
     @pytest.fixture
     def mock_fixing_price(self):
         return Decimal('1800.00')
-        
+
     async def test_complete_transformation_flow(self, test_db, test_user, distribution_service, mock_fixing_price):
         """Test the complete transformation flow from EUR to gold"""
         # 1. Pre-transformation checks
         initial_money = Decimal('1000.00')
         initial_gold = Decimal('0.00')
-        
+
         with db.session() as session:
             # Verify initial balances
             user = session.query(User).filter_by(id=test_user.id).first()
             assert user.money_account.balance == initial_money
             assert user.gold_account.balance == initial_gold
-            
+
             # 2. Execute transformation
             result = await distribution_service.process_distribution(mock_fixing_price)
-            
+
             # 3. Verify transformation results
             assert result['status'] == 'success'
             assert Decimal(str(result['total_euro'])) == initial_money
-            
+
             # 4. Verify final balances
             session.refresh(user)
             assert user.money_account.balance == Decimal('0.00')
             assert user.gold_account.balance > Decimal('0.00')
-            
+
             # 5. Verify transaction record
             transaction = session.query(Transaction).filter_by(user_id=user.id).first()
             assert transaction is not None
@@ -51,7 +51,7 @@ class TestGoldTransformation:
         """Test validation of transformation parameters"""
         with pytest.raises(ValueError):
             await distribution_service.process_distribution(Decimal('-1800.00'))
-            
+
         with pytest.raises(ValueError):
             await distribution_service.process_distribution(Decimal('0.00'))
 
@@ -60,18 +60,19 @@ class TestGoldTransformation:
         """Test transformation with fee calculation"""
         structure_fee = Decimal('0.05')  # 5% come definito in TransformationService
         initial_amount = Decimal('1000.00')
-        
+
         with db.session() as session:
             result = await distribution_service.process_distribution(mock_fixing_price)
-            
+
             user = session.query(User).filter_by(id=test_user.id).first()
             expected_gold = (initial_amount * (1 - structure_fee)) / mock_fixing_price
-            
+
             assert abs(user.gold_account.balance - expected_gold) < Decimal('0.0001')
 
 @pytest.mark.asyncio
 async def test_transformation_validation():
     """Test input validation for transformation"""
+    euro_amount = Decimal('100.00') #Fixed this line
     with pytest.raises(ValueError):
         await TransformationService.process_transformation(
             user_id=1,
