@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_caching import Cache
 from flask_login import LoginManager
 from flask_migrate import Migrate
-from app.config.settings import Config, ProductionConfig
+from app.config import Config
 from app.models import db
 from app.admin import admin
 from app.models.models import User, NobleRank, Transaction
@@ -36,7 +36,7 @@ def setup_logging(app):
     app.logger.info('Gold Investment App startup')
 
 
-def create_app(config_class=ProductionConfig):
+def create_app(config_class=Config):
     """Factory per creare l'app Flask."""
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_class)
@@ -103,7 +103,7 @@ def create_app(config_class=ProductionConfig):
 
 # Configurazione per l'esecuzione diretta
 if __name__ == '__main__':
-    app = create_app(ProductionConfig)
+    app = create_app(Config)
     app.run(
         host='0.0.0.0',
         port=8080,
