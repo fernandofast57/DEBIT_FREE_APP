@@ -17,7 +17,7 @@ from datetime import datetime
 from decimal import Decimal
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-from app.models import db
+from . import db
 from .user import User
 
 class Transaction(db.Model):

@@ -1,3 +1,4 @@
+
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
@@ -11,7 +12,7 @@ migrate = Migrate()
 login_manager.login_view = 'auth.login'
 login_manager.login_message_category = 'info'
 
-# Import dei modelli
+# Import models after db initialization
 from .models import (
     User,
     MoneyAccount,
@@ -25,7 +26,7 @@ from .models import (
     BonusTransaction
 )
 
-# Esplicita gli elementi esportabili
+# Explicitly export
 __all__ = [
     'db',
     'login_manager',
