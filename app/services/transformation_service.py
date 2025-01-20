@@ -51,7 +51,7 @@ class TransformationService:
                 raise ValueError("Invalid user or money account")
 
             gold_amount = await self.calculate_gold_amount(euro_amount, fixing_price)
-            
+
             # Record on blockchain
             blockchain_service = BlockchainService()
             tx_result = await blockchain_service.record_gold_transaction(
@@ -59,14 +59,14 @@ class TransformationService:
                 float(euro_amount),
                 float(gold_amount)
             )
-            
+
             if tx_result['status'] != 'verified':
                 raise ValueError(f"Blockchain transaction failed: {tx_result.get('message')}")
-                
+
             # Update database
             user.money_account.balance -= euro_amount
             user.gold_account.balance += gold_amount
-            
+
             transformation = GoldTransformation(
                 user_id=user_id,
                 euro_amount=euro_amount,
@@ -74,16 +74,16 @@ class TransformationService:
                 fixing_price=fixing_price,
                 blockchain_tx_hash=tx_result['transaction_hash']
             )
-            
+
             db.session.add(transformation)
             await db.session.commit()
-            
+
             return {
                 'status': 'success',
                 'gold_amount': float(gold_amount),
                 'transaction_hash': tx_result['transaction_hash']
             }
-            
+
         except Exception as e:
             await db.session.rollback()
             logger.error(f"Gold transformation error: {str(e)}")
@@ -164,7 +164,7 @@ class TransformationService:
             async with db.session() as session:
                 async with session.begin():
                     user = await User.query.get(user_id)
-                    
+
                     # Update money and gold accounts
                     user.money_account.balance -= euro_amount
                     user.gold_account.balance += gold_amount
@@ -189,7 +189,11 @@ class TransformationService:
             return {
                 "status": "success",
                 "gold_grams": float(gold_amount),
-                "transaction_id": None  # You can add transaction ID logic if needed
+                "transaction_id": None,
+                "fees": {
+                    "organization": float(euro_amount * TransformationService.ORGANIZATION_FEE),
+                    "affiliate_bonus": float(gold_amount * sum(TransformationService.AFFILIATE_BONUS.values()))
+                }
             }
 
         except Exception as e:
@@ -204,36 +208,36 @@ class TransformationService:
     async def transform_to_euro(user_id: int, gold_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
         """Transform gold to euros"""
         logger.info(f"Starting gold to euro transformation - User: {user_id} - Gold: {gold_amount}g")
-        
+
         try:
             async with db.session() as session:
                 user = await User.query.get(user_id)
                 if not user or not user.gold_account:
                     raise ValueError("Invalid user or gold account")
-                
+
                 if user.gold_account.balance < gold_amount:
                     raise ValueError("Insufficient gold balance")
-                
+
                 # Calculate euro amount before fee
                 euro_amount = gold_amount * fixing_price
-                
+
                 # Apply conversion fee
                 fee_amount = euro_amount * TransformationService.GOLD_TO_EURO_FEE
                 net_euro_amount = euro_amount - fee_amount
-                
+
                 # Update accounts
                 user.gold_account.balance -= gold_amount
                 user.money_account.balance += net_euro_amount
                 user.money_account.last_update = datetime.utcnow()
-                
+
                 await session.commit()
-                
+
                 return {
                     "status": "success",
                     "euro_amount": float(net_euro_amount),
                     "fee_amount": float(fee_amount)
                 }
-                
+
         except Exception as e:
             logger.error(f"Gold to euro transformation error: {str(e)}")
             await session.rollback()
