@@ -4,6 +4,7 @@ from decimal import Decimal
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from . import db
+from .user import User
 
 class BankTransfer(db.Model):
     __tablename__ = 'bank_transfers'
