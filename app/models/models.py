@@ -1,4 +1,10 @@
 
+from datetime import datetime
+from decimal import Decimal
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
+from . import db
+
 class BankTransfer(db.Model):
     __tablename__ = 'bank_transfers'
     
@@ -12,12 +18,6 @@ class BankTransfer(db.Model):
     completed_at = db.Column(db.DateTime, nullable=True)
     
     user = db.relationship('User', backref='bank_transfers')
-
-from datetime import datetime
-from decimal import Decimal
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin
-from . import db
 
 class Transaction(db.Model):
     __tablename__ = 'transactions'
