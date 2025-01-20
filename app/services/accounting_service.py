@@ -6,7 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from app.models.accounting import GoldInventory, AccountingEntry
 from app.models.models import Transaction
 from app.database import db
-from app.services.mock_blockchain_service import MockBlockchainService as BlockchainService
+from app.services.blockchain_service import BlockchainService
 from app.utils.logging_config import get_logger
 
 logger = get_logger(__name__)

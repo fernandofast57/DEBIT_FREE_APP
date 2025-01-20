@@ -202,7 +202,3 @@ class NobleRelation(db.Model):
 
     def __repr__(self):
         return f"<NobleRelation User {self.user_id} Rank {self.noble_rank_id}>"
-
-class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    transactions = db.relationship('Transaction', backref='user', lazy=True)

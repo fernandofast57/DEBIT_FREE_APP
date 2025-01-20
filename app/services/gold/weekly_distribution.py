@@ -1,4 +1,3 @@
-
 from decimal import Decimal
 import asyncio
 from datetime import datetime
@@ -6,7 +5,7 @@ from typing import Dict
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import db
 from app.models.models import User, MoneyAccount, GoldAccount, Transaction
-from app.utils.monitoring.performance_monitor import performance_monitor
+from app.utils.monitoring.performance import performance_monitor
 
 class WeeklyGoldDistribution:
     def __init__(self):
@@ -31,13 +30,15 @@ class WeeklyGoldDistribution:
 
     @performance_monitor.track_time("distribution")
     async def process_distribution(self, fixing_price: Decimal) -> Dict:
-        if fixing_price <= Decimal('0'):
-            raise ValueError("Invalid fixing price")
-
         async with self._processing_lock:
+            if fixing_price <= Decimal('0'):
+                raise ValueError("Fixing price must be positive")
+
+            backup_id = None
             try:
                 async with db.get_async_session() as session:
                     backup_id = await self.create_backup(session)
+
                     total_euro = Decimal('0')
                     total_gold = Decimal('0')
                     processed_users = 0
@@ -46,12 +47,11 @@ class WeeklyGoldDistribution:
                         "SELECT * FROM users WHERE money_account_balance > 0")
 
                     for user in users:
-                        if user.money_account_balance < 0:
-                            raise ValueError("Invalid balance")
-                            
+                        # Calcola oro al netto delle fee
                         net_amount = user.money_account_balance * (1 - self.total_fee)
                         gold_amount = net_amount / fixing_price
 
+                        # Aggiorna i bilanci
                         await session.execute(
                             """UPDATE gold_accounts 
                                SET balance = balance + :gold
@@ -64,6 +64,7 @@ class WeeklyGoldDistribution:
                                WHERE user_id = :user_id""",
                             {'user_id': user.id})
 
+                        # Registra transazione
                         transaction = Transaction(
                             user_id=user.id,
                             euro_amount=user.money_account_balance,
@@ -89,10 +90,11 @@ class WeeklyGoldDistribution:
 
             except Exception as e:
                 if backup_id:
-                    await self.restore_backup(session, backup_id)
-                raise
+                    await self.restore_backup(session, backup_id) #This function is missing in the edited code, but needed for completeness.  I'll add a placeholder.
+                raise Exception(f"Distribution failed: {str(e)}")
 
     async def restore_backup(self, session: AsyncSession, backup_id: str):
+        # Placeholder for restore logic.  Implementation details missing from edited code.
         if backup_id in self._backup_state:
             for user_id, balances in self._backup_state[backup_id].items():
                 await session.execute(
@@ -106,3 +108,4 @@ class WeeklyGoldDistribution:
                        WHERE user_id = :user_id""",
                     {'gold_balance': balances['gold_balance'], 'user_id': user_id})
             await session.commit()
+            print(f"Restored backup: {backup_id}")  #Temporary logging for testing.  Remove in production

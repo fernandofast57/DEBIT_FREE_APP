@@ -1,41 +1,41 @@
-
-from typing import Dict, List, Optional, Callable
-from datetime import datetime
-import logging
 import time
 import functools
-
-logger = logging.getLogger(__name__)
+import logging
+from typing import Dict, List, Any, Callable
+from datetime import datetime
 
 class PerformanceMonitor:
     def __init__(self):
-        self.metrics = {}
-    
-    def record_metric(self, category: str, value: float):
-        if category not in self.metrics:
-            self.metrics[category] = []
-        self.metrics[category].append(value)
+        self.metrics: Dict[str, List[float]] = {
+            'response_time': [],
+            'database_query_times': [],
+            'blockchain_operation_times': []
+        }
         self.start_time = datetime.now()
+        self._shutdown_flag = False
 
-    def record_metric(self, category: str, value: float):
+    def record_metric(self, category: str, value: float) -> None:
         if category not in self.metrics:
             self.metrics[category] = []
         self.metrics[category].append(value)
-        logger.debug(f"Recorded metric {category}: {value}")
 
-    def get_metrics(self, category: Optional[str] = None) -> Dict:
-        if category:
-            return {category: self.metrics.get(category, [])}
-        return self.metrics
+    def get_average(self, category: str) -> float:
+        if not self.metrics.get(category):
+            return 0.0
+        return sum(self.metrics[category]) / len(self.metrics[category])
 
-    def clear_metrics(self, category: Optional[str] = None):
-        if category:
-            self.metrics[category] = []
-        else:
-            self.metrics.clear()
+    def get_metrics(self) -> Dict[str, Any]:
+        return {
+            category: {
+                'average': self.get_average(category),
+                'count': len(values),
+                'latest': values[-1] if values else 0
+            }
+            for category, values in self.metrics.items()
+        }
 
     def track_time(self, category: str):
-        def decorator(func: Callable):
+        def decorator(func):
             @functools.wraps(func)
             async def wrapper(*args, **kwargs):
                 start_time = time.time()
@@ -46,11 +46,10 @@ class PerformanceMonitor:
             return wrapper
         return decorator
 
-    def save_metrics(self):
-        """Save metrics to log file"""
-        for category, values in self.metrics.items():
-            if values:
-                avg = sum(values) / len(values)
-                logger.info(f"Average {category}: {avg:.2f}")
+    def save_metrics(self) -> None:
+        if not self._shutdown_flag:
+            self._shutdown_flag = True
+            metrics = self.get_metrics()
+            logging.info(f"Saving metrics before shutdown: {metrics}")
 
 performance_monitor = PerformanceMonitor()

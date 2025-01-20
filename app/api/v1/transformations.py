@@ -23,9 +23,9 @@ async def transform_to_gold():
 
         result = await TransformationService.process_transformation(
             user_id=user_id,
-            amount=euro_amount,
+            euro_amount=euro_amount,
             fixing_price=fixing_price,
-            direction="to_gold"
+            to_gold=True #Added flag to indicate gold conversion
         )
 
         return jsonify(result)

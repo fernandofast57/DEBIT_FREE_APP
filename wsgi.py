@@ -3,7 +3,7 @@ from app import create_app
 from config import ProductionConfig
 import os
 
-app = create_app(ProductionConfig())
+app = create_app(ProductionConfig)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))

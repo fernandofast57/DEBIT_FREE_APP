@@ -12,7 +12,6 @@ from app.models.models import User, MoneyAccount, GoldAccount
 from app.utils.monitoring.blockchain_monitor import BlockchainMonitor
 from app.services.blockchain_service import BlockchainService
 from app.services.gold.weekly_distribution import WeeklyGoldDistribution
-from flask import Flask
 
 # Add the project root to the path
 sys.path.insert(0,
@@ -29,21 +28,21 @@ def event_loop():
     loop.close()
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture
 def app():
-    app = Flask(__name__)
+    app = create_app()
     app.config.update({
         'TESTING': True,
         'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:',
-        'SQLALCHEMY_TRACK_MODIFICATIONS': False,
-        'SECRET_KEY': 'test-key'
+        'SECRET_KEY': 'test-secret-key',
+        'JWT_SECRET_KEY': 'test-jwt-secret-key',
+        'BLOCKCHAIN_ENABLED': True
     })
-
-    db.init_app(app)
 
     with app.app_context():
         db.create_all()
         yield app
+        db.session.remove()
         db.drop_all()
 
 
@@ -57,13 +56,14 @@ def runner(app):
     return app.test_cli_runner()
 
 
-@pytest.fixture(scope='session')
-def test_db(app):
-    with app.app_context():
-        db.create_all()
+@pytest.fixture
+async def test_db(app):
+    """Provide test database session"""
+    async with app.app_context():
+        await db.create_all()
         yield db
-        db.session.remove()
-        db.drop_all()
+        await db.session.remove()
+        await db.drop_all()
 
 
 @pytest.fixture
@@ -101,7 +101,7 @@ def auth_token(app, test_user):
         'iat': datetime.utcnow()
     }
     token = jwt.encode(payload,
-                       app.config['SECRET_KEY'],
+                       app.config['JWT_SECRET_KEY'],
                        algorithm='HS256')
     return f'Bearer {token}'
 
@@ -147,10 +147,19 @@ def mock_w3():
 
 
 @pytest.fixture
-async def blockchain_service():
-    """Servizio blockchain configurato per i test usando il mock service"""
-    from app.services.mock_blockchain_service import MockBlockchainService
-    return MockBlockchainService()
+async def blockchain_service(mock_w3):
+    """Servizio blockchain configurato per i test"""
+    service = BlockchainService()
+    service.w3 = mock_w3
+    service.contract = Mock()
+    service.contract.functions = Mock()
+    service.contract.functions.transfer = Mock()
+    service.contract.functions.transfer().transact = Mock(
+        return_value=b'0x123')
+    service.account = Mock(
+        address='0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+        privateKey=b'0x123')
+    return service
 
 
 @pytest.fixture
