@@ -206,7 +206,7 @@ class TransformationService:
 
     @staticmethod
     async def transform_to_euro(user_id: int, gold_amount: Decimal, fixing_price: Decimal) -> Dict[str, Any]:
-        """Transform gold to euros"""
+        """Transform gold to euros with 3% conversion fee. No affiliate bonuses in this direction."""
         logger.info(f"Starting gold to euro transformation - User: {user_id} - Gold: {gold_amount}g")
 
         try:
@@ -221,7 +221,7 @@ class TransformationService:
                 # Calculate euro amount before fee
                 euro_amount = gold_amount * fixing_price
 
-                # Apply conversion fee
+                # Apply 3% conversion fee (no affiliate bonuses in Gold->Euro direction)
                 fee_amount = euro_amount * TransformationService.GOLD_TO_EURO_FEE
                 net_euro_amount = euro_amount - fee_amount
 
@@ -235,7 +235,8 @@ class TransformationService:
                 return {
                     "status": "success",
                     "euro_amount": float(net_euro_amount),
-                    "fee_amount": float(fee_amount)
+                    "fee_amount": float(fee_amount),
+                    "conversion_rate": float(fixing_price)
                 }
 
         except Exception as e:
