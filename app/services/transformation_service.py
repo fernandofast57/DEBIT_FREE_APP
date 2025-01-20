@@ -218,12 +218,13 @@ class TransformationService:
                 if user.gold_account.balance < gold_amount:
                     raise ValueError("Insufficient gold balance")
 
-                # Calculate euro amount before fee
-                euro_amount = gold_amount * fixing_price
+                # Calculate gross euro amount
+                gross_euro_amount = gold_amount * fixing_price
 
-                # Apply 3% conversion fee (no affiliate bonuses in Gold->Euro direction)
-                fee_amount = euro_amount * TransformationService.GOLD_TO_EURO_FEE
-                net_euro_amount = euro_amount - fee_amount
+                # Calculate net euro amount by dividing by (1 + fee)
+                # This ensures the 3% fee is calculated sul netto da trasferire
+                net_euro_amount = gross_euro_amount / (1 + TransformationService.GOLD_TO_EURO_FEE)
+                fee_amount = gross_euro_amount - net_euro_amount
 
                 # Update accounts
                 user.gold_account.balance -= gold_amount
