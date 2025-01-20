@@ -1,3 +1,18 @@
+
+class BankTransfer(db.Model):
+    __tablename__ = 'bank_transfers'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    amount = db.Column(db.Numeric(20, 8), nullable=False)
+    iban = db.Column(db.String(34), nullable=False)
+    status = db.Column(db.String(20), default='pending')  # pending, completed, failed
+    description = db.Column(db.String(255))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    completed_at = db.Column(db.DateTime, nullable=True)
+    
+    user = db.relationship('User', backref='bank_transfers')
+
 from datetime import datetime
 from decimal import Decimal
 from flask_sqlalchemy import SQLAlchemy

@@ -226,18 +226,28 @@ class TransformationService:
                 net_euro_amount = gross_euro_amount / (1 + TransformationService.GOLD_TO_EURO_FEE)
                 fee_amount = gross_euro_amount - net_euro_amount
 
-                # Update accounts
+                # Update gold account
                 user.gold_account.balance -= gold_amount
-                user.money_account.balance += net_euro_amount
-                user.money_account.last_update = datetime.utcnow()
-
+                
+                # Create bank transfer record
+                bank_transfer = BankTransfer(
+                    user_id=user_id,
+                    amount=net_euro_amount,
+                    iban=user.bank_account.iban,
+                    status='pending',
+                    description=f'Gold conversion: {gold_amount}g to EUR'
+                )
+                
+                db.session.add(bank_transfer)
                 await session.commit()
 
                 return {
                     "status": "success",
                     "euro_amount": float(net_euro_amount),
                     "fee_amount": float(fee_amount),
-                    "conversion_rate": float(fixing_price)
+                    "conversion_rate": float(fixing_price),
+                    "transfer_id": bank_transfer.id,
+                    "iban": user.bank_account.iban
                 }
 
         except Exception as e:
