@@ -254,3 +254,39 @@ class TransformationService:
             logger.error(f"Gold to euro transformation error: {str(e)}")
             await session.rollback()
             raise
+from decimal import Decimal
+from datetime import datetime
+from app.models.models import MoneyAccount, GoldAccount, Transaction
+from app.database import db
+
+class TransformationService:
+    STRUCTURE_FEE = Decimal('0.05')  # 5%
+    NETWORK_FEE = Decimal('0.017')   # 1.7%
+    
+    async def execute_weekly_transformation(self, fixing_price: Decimal):
+        accounts = await MoneyAccount.query.filter(MoneyAccount.balance > 0).all()
+        
+        for account in accounts:
+            euro_amount = account.balance
+            total_fee = euro_amount * (self.STRUCTURE_FEE + self.NETWORK_FEE)
+            net_amount = euro_amount - total_fee
+            gold_grams = net_amount / fixing_price
+            
+            # Update accounts
+            account.balance = Decimal('0')
+            account.user.gold_account.balance += gold_grams
+            
+            # Record transaction
+            transaction = Transaction(
+                user_id=account.user_id,
+                type='transformation',
+                euro_amount=euro_amount,
+                gold_amount=gold_grams,
+                fee_amount=total_fee,
+                fixing_price=fixing_price,
+                timestamp=datetime.utcnow()
+            )
+            
+            db.session.add(transaction)
+        
+        await db.session.commit()

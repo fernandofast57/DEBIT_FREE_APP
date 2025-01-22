@@ -72,3 +72,26 @@ def generate_network_report(self, noble_id: int):
         "total_volume": total_volume,
         "performance_score": calculate_performance_score(total_volume, network_growth)
     }
+from decimal import Decimal
+from app.models.models import User, NobleRank, Transaction
+from app.database import db
+
+class NobleRankService:
+    RANK_THRESHOLDS = {
+        'Knight': Decimal('100'),
+        'Baron': Decimal('500'),
+        'Count': Decimal('1000'),
+        'Duke': Decimal('5000'),
+        'King': Decimal('10000')
+    }
+    
+    async def update_user_rank(self, user_id: int):
+        user = await User.query.get(user_id)
+        total_gold = user.gold_account.balance
+        
+        for rank, threshold in self.RANK_THRESHOLDS.items():
+            if total_gold >= threshold:
+                user.noble_rank = rank
+                break
+                
+        await db.session.commit()
