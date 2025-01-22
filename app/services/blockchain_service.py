@@ -43,10 +43,12 @@ class BlockchainService:
     async def _connect_to_rpc(self) -> bool:
         # Modalità offline/test
         if os.getenv('BLOCKCHAIN_MODE') == 'offline':
-            from app.services.mock_blockchain_service import MockBlockchainService
-            mock_service = MockBlockchainService()
-            self.w3 = mock_service.w3
-            self.contract = mock_service.contract
+            if not hasattr(self, '_mock_initialized'):
+                from app.services.mock_blockchain_service import MockBlockchainService
+                mock_service = MockBlockchainService()
+                self.w3 = mock_service.w3
+                self.contract = mock_service.contract
+                self._mock_initialized = True
             return True
             
         if not self.rpc_endpoints or not any(endpoint.strip() for endpoint in self.rpc_endpoints):
