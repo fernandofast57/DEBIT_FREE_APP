@@ -5,7 +5,7 @@
 
 #### 1.1 Authentication System
 - Implemented 2FA
-- KYC verification
+- KYC verification 
 - Session management
 - Rate limiting
 - Security logging
