@@ -41,18 +41,19 @@ class BlockchainService:
 
     @retry_with_backoff(max_retries=3)
     async def _connect_to_rpc(self) -> bool:
-        if not self.rpc_endpoints or all(not endpoint.strip() for endpoint in self.rpc_endpoints):
-            logger.error("No valid RPC endpoints configured")
-            raise ValueError("No valid RPC endpoints configured")
+        if not self.rpc_endpoints or not any(endpoint.strip() for endpoint in self.rpc_endpoints):
+            logger.error("Nessun endpoint RPC valido configurato")
+            raise ValueError("Configurazione RPC mancante o non valida")
 
         for endpoint in self.rpc_endpoints:
             endpoint = endpoint.strip()
             if not endpoint:
                 continue
-                
+
             try:
+                logger.info(f"Tentativo di connessione a: {endpoint}")
                 provider = Web3.HTTPProvider(endpoint, 
-                    request_kwargs={'timeout': 30})
+                    request_kwargs={'timeout': 60, 'verify': True})
                 self.w3 = Web3(provider)
                 self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
@@ -60,14 +61,14 @@ class BlockchainService:
                 if self.w3.eth.block_number:
                     self._setup_contract()
                     self._setup_account()
-                    logger.info(f"Connected to blockchain node: {endpoint}")
+                    logger.info(f"Connesso al nodo blockchain: {endpoint}")
                     return True
 
             except Exception as e:
-                logger.warning(f"Failed to connect to {endpoint}: {e}")
+                logger.warning(f"Connessione fallita a {endpoint}: {e}")
                 continue
 
-        raise ConnectionError("Failed to connect to any RPC endpoint - please check your RPC_ENDPOINTS configuration")
+        raise ConnectionError("Connessione fallita a tutti gli endpoint RPC - verificare la configurazione RPC_ENDPOINTS")
 
     def _setup_contract(self) -> None:
         contract_address = os.getenv('CONTRACT_ADDRESS')
