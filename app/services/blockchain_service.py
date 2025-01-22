@@ -12,12 +12,12 @@ from app.utils.logging_config import get_logger
 logger = get_logger(__name__)
 
 class BlockchainService:
-    def __init__(self):
+    async def __init__(self):
         self.w3: Optional[Web3] = None
         self.contract = None
         self.account = None
         self.monitor = None
-        self._setup_web3()
+        await self._setup_web3()
 
     @lru_cache(maxsize=32)
     def _get_contract_abi(self) -> dict:
@@ -28,12 +28,12 @@ class BlockchainService:
             logger.error(f"Failed to load contract ABI: {e}")
             raise
 
-    def _setup_web3(self) -> None:
+    async def _setup_web3(self) -> None:
         self.rpc_endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
         if not self.rpc_endpoints:
             raise ValueError("No RPC endpoints configured")
 
-        self._connect_to_rpc()
+        await self._connect_to_rpc()
         if self.w3:
             self.monitor = BlockchainMonitor(self.w3)
 
