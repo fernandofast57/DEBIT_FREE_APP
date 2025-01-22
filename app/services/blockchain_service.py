@@ -31,7 +31,7 @@ class BlockchainService:
         await self._setup_web3()
 
     async def _setup_web3(self) -> None:
-        if os.getenv('BLOCKCHAIN_MODE') == 'offline':
+        if os.getenv('BLOCKCHAIN_MODE', 'offline') == 'offline':
             from app.services.mock_blockchain_service import MockBlockchainService
             mock_service = MockBlockchainService()
             self.w3 = mock_service.w3
@@ -40,8 +40,7 @@ class BlockchainService:
             self.monitor = BlockchainMonitor(self.w3)
             return
 
-        self.rpc_endpoints = []  # In modalità offline, non configuriamo gli endpoint
-
+        self.rpc_endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
         await self._connect_to_rpc()
         if self.w3:
             self.monitor = BlockchainMonitor(self.w3)
