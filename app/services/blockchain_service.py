@@ -40,15 +40,24 @@ class BlockchainService:
             self.monitor = BlockchainMonitor(self.w3)
 
     @retry_with_backoff(max_retries=3)
-    def _connect_to_rpc(self) -> bool:
+    async def _connect_to_rpc(self) -> bool:
+        if not self.rpc_endpoints or all(not endpoint.strip() for endpoint in self.rpc_endpoints):
+            logger.error("No valid RPC endpoints configured")
+            raise ValueError("No valid RPC endpoints configured")
+
         for endpoint in self.rpc_endpoints:
+            endpoint = endpoint.strip()
+            if not endpoint:
+                continue
+                
             try:
-                provider = Web3.HTTPProvider(endpoint.strip(), 
-                    request_kwargs={'timeout': 10})
+                provider = Web3.HTTPProvider(endpoint, 
+                    request_kwargs={'timeout': 30})
                 self.w3 = Web3(provider)
                 self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
-                if self.w3.is_connected():
+                # Test connection with eth_blockNumber
+                if self.w3.eth.block_number:
                     self._setup_contract()
                     self._setup_account()
                     logger.info(f"Connected to blockchain node: {endpoint}")
@@ -58,7 +67,7 @@ class BlockchainService:
                 logger.warning(f"Failed to connect to {endpoint}: {e}")
                 continue
 
-        raise ConnectionError("Failed to connect to any RPC endpoint")
+        raise ConnectionError("Failed to connect to any RPC endpoint - please check your RPC_ENDPOINTS configuration")
 
     def _setup_contract(self) -> None:
         contract_address = os.getenv('CONTRACT_ADDRESS')
