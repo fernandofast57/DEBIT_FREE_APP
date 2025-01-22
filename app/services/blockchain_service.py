@@ -12,12 +12,11 @@ from app.utils.logging_config import get_logger
 logger = get_logger(__name__)
 
 class BlockchainService:
-    async def __init__(self):
+    def __init__(self):
         self.w3: Optional[Web3] = None
         self.contract = None
         self.account = None
         self.monitor = None
-        await self._setup_web3()
 
     @lru_cache(maxsize=32)
     def _get_contract_abi(self) -> dict:
@@ -27,6 +26,9 @@ class BlockchainService:
         except Exception as e:
             logger.error(f"Failed to load contract ABI: {e}")
             raise
+
+    async def initialize(self) -> None:
+        await self._setup_web3()
 
     async def _setup_web3(self) -> None:
         self.rpc_endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
