@@ -1,19 +1,8 @@
+
 import time
 import functools
 from typing import Dict, List, Any, Callable
 from datetime import datetime
-
-import asyncio
-
-def monitor_performance(func: Callable) -> Callable:
-    @functools.wraps(func)
-    async def wrapper(*args, **kwargs):
-        start_time = time.time()
-        result = await func(*args, **kwargs) if asyncio.iscoroutinefunction(func) else func(*args, **kwargs)
-        execution_time = time.time() - start_time
-        print(f"Performance monitoring: {func.__name__} took {execution_time:.2f} seconds")
-        return result
-    return wrapper
 
 class PerformanceMonitor:
     def __init__(self):
@@ -43,6 +32,18 @@ class PerformanceMonitor:
             }
             for category, values in self.metrics.items()
         }
+
+    def track_time(self, category: str):
+        def decorator(func):
+            @functools.wraps(func)
+            async def wrapper(*args, **kwargs):
+                start_time = time.time()
+                result = await func(*args, **kwargs)
+                execution_time = time.time() - start_time
+                self.record_metric(category, execution_time)
+                return result
+            return wrapper
+        return decorator
 
 performance_monitor = PerformanceMonitor()
 
