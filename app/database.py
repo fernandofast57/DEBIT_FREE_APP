@@ -2,11 +2,12 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker, declarative_base
+from flask_sqlalchemy import SQLAlchemy
 from contextlib import asynccontextmanager, contextmanager
 import logging
 from typing import Generator
 
-Base = declarative_base()
+db = SQLAlchemy()
 
 class DatabaseManager:
     def __init__(self, db_url: str):
@@ -67,7 +68,7 @@ class DatabaseManager:
 
     async def create_all(self) -> None:
         async with self.async_engine.begin() as conn:
-            await conn.run_sync(Base.metadata.create_all)
+            await conn.run_sync(db.Model.metadata.create_all)
 
     async def check_connection(self) -> bool:
         try:
@@ -78,4 +79,4 @@ class DatabaseManager:
             self.logger.error(f"Connection check failed: {str(e)}")
             return False
 
-db = DatabaseManager("sqlite:///instance/gold_investment.db")
+db_manager = DatabaseManager("sqlite:///instance/gold_investment.db")

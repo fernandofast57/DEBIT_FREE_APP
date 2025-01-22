@@ -1,6 +1,6 @@
 # app/models/kyc.py
 from enum import Enum
-from app.database import db
+from app.database import db as flask_db
 from datetime import datetime
 
 
@@ -11,7 +11,7 @@ class KYCStatus(Enum):
     INCOMPLETE = "incomplete"
 
 
-class KYCDetail(db.Model):
+class KYCDetail(flask_db.Model):
     __tablename__ = 'kyc_details'
     __table_args__ = {'extend_existing': True}
 
