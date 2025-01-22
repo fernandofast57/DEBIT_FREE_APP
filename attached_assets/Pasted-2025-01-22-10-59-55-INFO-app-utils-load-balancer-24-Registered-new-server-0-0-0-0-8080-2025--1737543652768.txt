@@ -1,0 +1,74 @@
+2025-01-22 10:59:55] [INFO] [app.utils.load_balancer:24] Registered new server: 0.0.0.0:8080
+[2025-01-22 10:59:55] [INFO] [app.utils.load_balancer:24] Registered new server: 0.0.0.0:8081
+2025-01-22 10:59:55,875 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+[2025-01-22 10:59:55] [INFO] [sqlalchemy.engine.Engine:2699] BEGIN (implicit)
+2025-01-22 10:59:55,876 INFO sqlalchemy.engine.Engine PRAGMA journal_mode=WAL
+[2025-01-22 10:59:55] [INFO] [sqlalchemy.engine.Engine:1846] PRAGMA journal_mode=WAL
+2025-01-22 10:59:55,876 INFO sqlalchemy.engine.Engine [generated in 0.00035s] ()
+[2025-01-22 10:59:55] [INFO] [sqlalchemy.engine.Engine:1846] [generated in 0.00035s] ()
+[2025-01-22 10:59:55] [INFO] [app.utils.optimization:23] Successfully executed: PRAGMA journal_mode=WAL
+2025-01-22 10:59:55,877 INFO sqlalchemy.engine.Engine PRAGMA synchronous=NORMAL
+[2025-01-22 10:59:55] [INFO] [sqlalchemy.engine.Engine:1846] PRAGMA synchronous=NORMAL
+2025-01-22 10:59:55,877 INFO sqlalchemy.engine.Engine [generated in 0.00019s] ()
+[2025-01-22 10:59:55] [INFO] [sqlalchemy.engine.Engine:1846] [generated in 0.00019s] ()
+[2025-01-22 10:59:55] [INFO] [app.utils.optimization:23] Successfully executed: PRAGMA synchronous=NORMAL
+2025-01-22 10:59:55,878 INFO sqlalchemy.engine.Engine PRAGMA cache_size=10000
+[2025-01-22 10:59:55] [INFO] [sqlalchemy.engine.Engine:1846] PRAGMA cache_size=10000
+2025-01-22 10:59:55,878 INFO sqlalchemy.engine.Engine [generated in 0.00019s] ()
+[2025-01-22 10:59:55] [INFO] [sqlalchemy.engine.Engine:1846] [generated in 0.00019s] ()
+[2025-01-22 10:59:55] [INFO] [app.utils.optimization:23] Successfully executed: PRAGMA cache_size=10000
+2025-01-22 10:59:55,878 INFO sqlalchemy.engine.Engine PRAGMA temp_store=MEMORY
+[2025-01-22 10:59:55] [INFO] [sqlalchemy.engine.Engine:1846] PRAGMA temp_store=MEMORY
+2025-01-22 10:59:55,878 INFO sqlalchemy.engine.Engine [generated in 0.00022s] ()
+[2025-01-22 10:59:55] [INFO] [sqlalchemy.engine.Engine:1846] [generated in 0.00022s] ()
+[2025-01-22 10:59:55] [INFO] [app.utils.optimization:23] Successfully executed: PRAGMA temp_store=MEMORY
+2025-01-22 10:59:55,879 INFO sqlalchemy.engine.Engine COMMIT
+[2025-01-22 10:59:55] [INFO] [sqlalchemy.engine.Engine:2705] COMMIT
+[2025-01-22 10:59:55] [INFO] [app.utils.optimization:27] Query optimization completed successfully
+[2025-01-22 10:59:56] [ERROR] [app.services.blockchain_service:62] Nessun endpoint RPC valido configurato
+[2025-01-22 10:59:56] [WARNING] [app.utils.retry:20] Attempt 1 failed: Configurazione RPC mancante o non valida
+[2025-01-22 10:59:57] [ERROR] [app.services.blockchain_service:62] Nessun endpoint RPC valido configurato
+[2025-01-22 10:59:57] [WARNING] [app.utils.retry:20] Attempt 2 failed: Configurazione RPC mancante o non valida
+[2025-01-22 10:59:59] [ERROR] [app.services.blockchain_service:62] Nessun endpoint RPC valido configurato
+[2025-01-22 10:59:59] [WARNING] [app.utils.retry:20] Attempt 3 failed: Configurazione RPC mancante o non valida
+[2025-01-22 10:59:59] [ERROR] [app.utils.retry:25] All 3 attempts failed
+[2025-01-22 10:59:59] [ERROR] [__main__:122] Failed to start application: Configurazione RPC mancante o non valida
+[2025-01-22 10:59:59] [INFO] [root:53] Saving metrics before shutdown: {'response_time': {'average': 0.0, 'count': 0, 'latest': 0}, 'database_query_times': {'average': 0.0, 'count': 0, 'latest': 0}, 'blockchain_operation_times': {'average': 0.0, 'count': 0, 'latest': 0}}
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 130, in <module>
+    application.run()
+  File "/home/runner/workspace/main.py", line 80, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 84, in create_app
+    from app.routes import auth_bp, main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 5, in <module>
+    from app.routes.main import bp as main_bp
+  File "/home/runner/workspace/app/routes/main.py", line 11, in <module>
+    asyncio.run(accounting_service.initialize())
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/clx0mcir7qw8zk36zbr4jra789g3knf6-python3-3.11.10/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/services/accounting_service.py", line 19, in initialize
+    await self.blockchain_service.initialize()
+  File "/home/runner/workspace/app/services/blockchain_service.py", line 31, in initialize
+    await self._setup_web3()
+  File "/home/runner/workspace/app/services/blockchain_service.py", line 45, in _setup_web3
+    await self._connect_to_rpc()
+  File "/home/runner/workspace/app/utils/retry.py", line 26, in wrapper
+    raise last_exception
+  File "/home/runner/workspace/app/utils/retry.py", line 17, in wrapper
+    return await func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/services/blockchain_service.py", line 63, in _connect_to_rpc
+    raise ValueError("Configurazione RPC mancante o non valida")
+ValueError: Configurazione RPC mancante o non valida
