@@ -33,6 +33,8 @@ class MockBlockchainService:
         self.w3.eth.account.sign_transaction = Mock(
             return_value=Mock(rawTransaction=b'0x456', hash=b'0x123'))
         self.contract = Mock()
+        self.account = Mock(address='0x742d35Cc6634C0532925a3b844Bc454e4438f44e', 
+                          privateKey=b'0x123')
 
     def is_connected(self) -> bool:
         return True
