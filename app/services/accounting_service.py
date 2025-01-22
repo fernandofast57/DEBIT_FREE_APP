@@ -13,7 +13,12 @@ logger = get_logger(__name__)
 
 class AccountingService:
     def __init__(self, blockchain_service: Optional[BlockchainService] = None):
-        self.blockchain_service = blockchain_service or BlockchainService()
+        self.blockchain_service = None
+        self._blockchain_service_param = blockchain_service
+
+    async def initialize(self):
+        if self.blockchain_service is None:
+            self.blockchain_service = self._blockchain_service_param or await BlockchainService()
         
     async def record_gold_transaction(self, 
                                     user_id: int, 

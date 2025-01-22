@@ -7,6 +7,7 @@ from app.services.notification_service import NotificationService
 
 bp = Blueprint('main', __name__)
 accounting_service = AccountingService()
+asyncio.run(accounting_service.initialize())
 notification_service = NotificationService()
 
 @bp.route('/')
