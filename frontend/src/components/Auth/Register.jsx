@@ -1,12 +1,9 @@
 
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-import { useAuth } from '../../contexts/AuthContext';
-
-export default function Login() {
-  const { login } = useAuth();
+export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -15,11 +12,10 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('/api/v1/auth/login', { email, password });
-      localStorage.setItem('token', data.token);
-      navigate('/dashboard');
+      await axios.post('/api/v1/auth/register', { email, password });
+      navigate('/login');
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
+      setError(err.response?.data?.message || 'Registration failed');
     }
   };
 
@@ -27,7 +23,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
         <h2 className="text-center text-3xl font-extrabold text-gray-900">
-          Login to Your Account
+          Create your account
         </h2>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <input
@@ -50,7 +46,7 @@ export default function Login() {
             type="submit"
             className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
           >
-            Sign in
+            Sign up
           </button>
           {error && <p className="text-red-500 text-center">{error}</p>}
         </form>
