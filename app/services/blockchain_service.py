@@ -31,6 +31,12 @@ class BlockchainService:
         await self._setup_web3()
 
     async def _setup_web3(self) -> None:
+        if os.getenv('BLOCKCHAIN_MODE') == 'offline':
+            await self._connect_to_rpc()
+            if self.w3:
+                self.monitor = BlockchainMonitor(self.w3)
+            return
+
         self.rpc_endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
         if not self.rpc_endpoints:
             raise ValueError("No RPC endpoints configured")
