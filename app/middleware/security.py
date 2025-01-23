@@ -8,10 +8,10 @@ from app.utils.security.rate_limiter import RobustRateLimiter
 from app.utils.security.jwt_manager import JWTManager
 
 class SecurityMiddleware:
-    def __init__(self, redis_client: Optional[Redis] = None):
+    def __init__(self, redis_client: Optional[Redis] = None, secret_key: str = None):
         self.redis = redis_client or Redis()
         self.rate_limiter = RobustRateLimiter()
-        self.jwt_manager = JWTManager()
+        self.jwt_manager = JWTManager(secret_key=secret_key)
         self.rate_limits: Dict[str, int] = {
             'default': 100,    # requests per minute
             'auth': 5,         # login attempts per minute

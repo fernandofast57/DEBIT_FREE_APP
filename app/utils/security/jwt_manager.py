@@ -5,9 +5,9 @@ from typing import Dict, Optional
 from flask import current_app
 
 class JWTManager:
-    def __init__(self):
-        self.secret_key = current_app.config.get('SECRET_KEY', 'default-secret-key')
-        self.token_expire_hours = current_app.config.get('JWT_TOKEN_EXPIRE_HOURS', 24)
+    def __init__(self, secret_key: str = None, token_expire_hours: int = 24):
+        self.secret_key = secret_key or 'default-secret-key'
+        self.token_expire_hours = token_expire_hours
 
     def create_token(self, user_id: int, role: str = 'user') -> str:
         payload = {
