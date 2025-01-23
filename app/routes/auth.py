@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash
 from decimal import Decimal
 from functools import wraps
 
-from app import db
+from app.models import db
 from app.models import User, MoneyAccount, GoldAccount, Transaction
 from app.utils.auth import AuthManager
 from app.utils.security.rate_limiter import rate_limit
