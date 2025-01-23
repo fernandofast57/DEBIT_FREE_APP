@@ -1,4 +1,3 @@
-
 import time
 from functools import wraps
 from flask import request, abort, current_app, g
@@ -19,6 +18,8 @@ class SecurityMiddleware:
             'transform': 10,   # transformation requests per minute
             'sensitive': 3     # sensitive operations per minute
         }
+        self._max_retries = 3 # Added max retry attempts
+        self._retry_count = 0 # Added retry counter
 
     def require_auth(self, f):
         @wraps(f)
@@ -26,14 +27,14 @@ class SecurityMiddleware:
             token = request.headers.get('Authorization')
             if not token:
                 abort(401, description="No authorization token provided")
-            
+
             try:
                 payload = self.jwt_manager.verify_token(token)
                 g.user_id = payload['sub']
                 g.user_role = payload.get('role', 'user')
             except Exception as e:
                 abort(401, description=str(e))
-                
+
             return f(*args, **kwargs)
         return decorated
 
@@ -42,8 +43,14 @@ class SecurityMiddleware:
             @wraps(f)
             def decorated(*args, **kwargs):
                 key = f"{request.remote_addr}:{limit_type}"
+                if self._retry_count >= self._max_retries:
+                    self._retry_count = 0
+                    abort(429, description="Rate limit exceeded, too many retries") #Abort after max retries
                 if self.rate_limiter.is_rate_limited(key, self.rate_limits[limit_type]):
-                    abort(429, description="Rate limit exceeded")
+                    self._retry_count += 1
+                    time.sleep(1) # Introduce delay before retrying
+                    return decorated(*args, **kwargs) #Retry the function
+                self._retry_count = 0
                 return f(*args, **kwargs)
             return decorated
         return decorator
