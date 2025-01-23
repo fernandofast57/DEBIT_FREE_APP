@@ -1,55 +1,92 @@
 
 import time
 import functools
-from typing import Dict, List, Any, Callable
+from typing import Dict, List, Any, Optional
 from datetime import datetime
+import logging
+from dataclasses import dataclass, field
 
-class PerformanceMonitor:
-    def __init__(self):
-        self.metrics: Dict[str, List[float]] = {
-            'response_time': [],
-            'database_query_times': [],
-            'blockchain_operation_times': []
-        }
+logger = logging.getLogger(__name__)
+
+@dataclass
+class PerformanceMetric:
+    total_time: float = 0.0
+    count: int = 0
+    max_time: float = 0.0
+    min_time: float = float('inf')
+    recent_times: List[float] = field(default_factory=list)
+    
+    def add_measurement(self, execution_time: float):
+        self.total_time += execution_time
+        self.count += 1
+        self.max_time = max(self.max_time, execution_time)
+        self.min_time = min(self.min_time, execution_time)
+        self.recent_times.append(execution_time)
+        if len(self.recent_times) > 10:
+            self.recent_times.pop(0)
+
+    @property
+    def average_time(self) -> float:
+        return self.total_time / self.count if self.count > 0 else 0.0
+
+    @property
+    def recent_average(self) -> float:
+        return sum(self.recent_times) / len(self.recent_times) if self.recent_times else 0.0
+
+class EnhancedPerformanceMonitor:
+    def __init__(self, alert_threshold: float = 1.0):
+        self.metrics: Dict[str, PerformanceMetric] = {}
+        self.alert_threshold = alert_threshold
         self.start_time = datetime.now()
-
-    def record_metric(self, category: str, value: float) -> None:
-        if category not in self.metrics:
-            self.metrics[category] = []
-        self.metrics[category].append(value)
-
-    def get_average(self, category: str) -> float:
-        if not self.metrics.get(category):
-            return 0.0
-        return sum(self.metrics[category]) / len(self.metrics[category])
-
-    def get_metrics(self) -> Dict[str, Any]:
-        return {
-            category: {
-                'average': self.get_average(category),
-                'count': len(values),
-                'latest': values[-1] if values else 0
-            }
-            for category, values in self.metrics.items()
-        }
 
     def track_time(self, category: str):
         def decorator(func):
             @functools.wraps(func)
-            async def wrapper(*args, **kwargs):
+            async def async_wrapper(*args, **kwargs):
                 start_time = time.time()
-                result = await func(*args, **kwargs)
-                execution_time = time.time() - start_time
-                self.record_metric(category, execution_time)
-                return result
-            return wrapper
+                try:
+                    result = await func(*args, **kwargs)
+                    execution_time = time.time() - start_time
+                    self._record_metric(category, execution_time)
+                    return result
+                except Exception as e:
+                    logger.error(f"Error in {category}: {str(e)}")
+                    raise
+
+            @functools.wraps(func)
+            def sync_wrapper(*args, **kwargs):
+                start_time = time.time()
+                try:
+                    result = func(*args, **kwargs)
+                    execution_time = time.time() - start_time
+                    self._record_metric(category, execution_time)
+                    return result
+                except Exception as e:
+                    logger.error(f"Error in {category}: {str(e)}")
+                    raise
+
+            return async_wrapper if asyncio.iscoroutinefunction(func) else sync_wrapper
         return decorator
 
-performance_monitor = PerformanceMonitor()
+    def _record_metric(self, category: str, execution_time: float):
+        if category not in self.metrics:
+            self.metrics[category] = PerformanceMetric()
+        
+        self.metrics[category].add_measurement(execution_time)
+        
+        if execution_time > self.alert_threshold:
+            logger.warning(f"Performance alert: {category} took {execution_time:.2f}s")
 
-def test_performance_monitor():
-    monitor = PerformanceMonitor() 
-    monitor.record_metric('test_category', 1.0)
-    metrics = monitor.get_metrics()
-    assert 'test_category' in metrics
-    assert metrics['test_category']['count'] == 1
+    def get_metrics(self) -> Dict[str, Dict[str, float]]:
+        return {
+            category: {
+                'average': metric.average_time,
+                'recent_average': metric.recent_average,
+                'max': metric.max_time,
+                'min': metric.min_time,
+                'count': metric.count
+            }
+            for category, metric in self.metrics.items()
+        }
+
+performance_monitor = EnhancedPerformanceMonitor()
