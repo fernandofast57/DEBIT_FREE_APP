@@ -1,56 +1,73 @@
 
 # Project Glossary
 
-## Core Models
+## Core Models & Services
 
-### User Related
-- `User`: Main user entity with authentication details and relationships to accounts
-- `MoneyAccount`: User's fiat currency account with decimal precision (10,2)
-- `GoldAccount`: User's gold balance account with decimal precision (10,4)
-- `NobleRelation`: User's noble rank and verification status
+### Account Related
+- `User`: Main user entity containing authentication and profile details
+- `MoneyAccount`: Euro currency account with precision(10,2)
+- `GoldAccount`: Gold balance account with precision(10,4)
+- `AccountStatus`: ['active', 'suspended', 'pending_verification']
 
 ### Noble System
-- `NobleRank`: Defines rank levels and bonus rates
-- `NobleRelation`: Manages user noble ranks with verification
-- `BonusTransaction`: Records noble system bonus distributions
+- `NobleRank`: ['bronze', 'silver', 'gold', 'platinum']
+- `NobleRelation`: Links users to their noble ranks
+- `NobleStatus`: ['to_be_verified', 'verified', 'rejected']
+- `NobleVerification`: Noble rank verification process
 
 ### Gold Management
-- `GoldBar`: Physical gold bar tracking with serial number
-- `GoldAllocation`: Links gold bars to user accounts
-- `GoldTransformation`: Records money to gold conversion transactions
-- `GoldReward`: Tracks gold rewards/bonuses
+- `GoldBar`: Physical gold tracking entity
+- `GoldBarStatus`: ['available', 'reserved', 'distributed']
+- `GoldTransformation`: Euro to gold conversion record
+- `GoldFixingPrice`: Daily gold price from fixing API
+- `TransformationStatus`: ['initiated', 'validated', 'processed', 'completed']
 
-## Database Configuration
-- `precision`: Decimal precision settings (10,2 for money, 10,4 for gold)
-- `SQLAlchemy`: ORM for database operations
-- `Alembic`: Database migration tool
+### Transaction & Operations
+- `TransactionType`: ['purchase', 'sale', 'transfer', 'transformation']
+- `TransactionStatus`: ['pending', 'processing', 'completed', 'failed']
+- `OperationType`: ['user_action', 'system_event', 'time_based', 'condition_based']
+- `ValidationStatus`: ['pending', 'approved', 'rejected']
 
-## Testing Environment
-- `pytest`: Testing framework with async support
-- `pytest.ini`: Test configuration file
-- `conftest.py`: Test fixtures and setup
-- `test_*.py`: Test modules for different components
+### Security & Authentication
+- `AuthToken`: JWT authentication token
+- `TokenExpiration`: Token validity duration in hours
+- `SecurityLevel`: ['standard', 'enhanced', 'maximum']
+- `RateLimit`: Requests per minute limit
+- `KycStatus`: ['pending', 'verified', 'rejected']
 
-## Security Functions
-- `sanitize_input`: Utility function that cleanses user input by stripping whitespace and handling nested data structures recursively. Used throughout the application for input validation.
+### Performance & Analytics
+- `MetricsType`: ['daily_performance', 'weekly_performance', 'monthly_performance']
+- `RiskMetrics`: ['market_risk', 'operational_risk', 'compliance_risk']
+- `AnalyticsField`: ['roi', 'current_value', 'purchase_price', 'holding_period']
+- `ReportType`: ['performance_summary', 'risk_report', 'trend_analysis']
 
-## Status Codes
-- `to_be_verified`: Initial verification status
-- `verified`: Confirmed verification status
-- `rejected`: Failed verification status
-- `available`: Gold bar status
-- `reserved`: Gold bar allocation status
-- `distributed`: Gold bar distribution status
+### Service Names
+- `AccountingService`: Handles financial accounting operations
+- `TransformationService`: Manages gold conversion processes
+- `BlockchainService`: Handles blockchain interactions
+- `NobleSystemService`: Manages noble ranks and verifications
+- `BonusDistributionService`: Handles bonus calculations and distribution
+- `KycService`: Manages Know Your Customer processes
+- `NotificationService`: Handles system notifications
+- `SecurityService`: Manages authentication and authorization
+- `MonitoringService`: System monitoring and metrics collection
 
-## Service Names
-- `NobleSystem`: Noble rank management
-- `TransformationService`: Gold conversion handling
-- `BonusDistributionService`: Bonus calculation and distribution
-- `BlockchainService`: Blockchain integration service
+### Database Configuration
+- `MoneyPrecision`: Decimal(10,2) for euro amounts
+- `GoldPrecision`: Decimal(10,4) for gold amounts
+- `DatabaseUrl`: Connection string format
+- `MigrationVersion`: Database migration version format
 
-## File Structure
-- `models/`: Database models and schemas
-- `services/`: Business logic implementation
-- `api/v1/`: API endpoints version 1
-- `tests/`: Test suite directory
-- `migrations/`: Database migration scripts
+### API Endpoints
+- `auth_bp`: Authentication endpoints '/auth/*'
+- `gold_bp`: Gold operations '/gold/*'
+- `noble_bp`: Noble system '/noble/*'
+- `transformations_bp`: Transformations '/transformations/*'
+- `accounting_bp`: Accounting '/accounting/*'
+- `system_bp`: System operations '/system/*'
+
+### Logging & Monitoring
+- `LogLevel`: ['debug', 'info', 'warning', 'error', 'critical']
+- `LogFormat`: Standard log entry format
+- `MetricsFormat`: Performance metrics format
+- `AlertType`: ['system', 'security', 'performance']

@@ -1,3 +1,28 @@
+
+def validate_glossary_compliance(self) -> Dict[str, bool]:
+    """Validates that all code files follow glossary nomenclature"""
+    with open('docs/GLOSSARY.md', 'r') as f:
+        glossary_content = f.read().lower()
+        
+    compliance_results = {}
+    
+    # Check all Python files
+    for root, _, files in os.walk('.'):
+        for file in files:
+            if file.endswith('.py'):
+                file_path = os.path.join(root, file)
+                with open(file_path, 'r') as f:
+                    try:
+                        content = f.read()
+                        # Extract variable names and class names
+                        names = re.findall(r'(?:class|def|var)\s+([a-zA-Z_][a-zA-Z0-9_]*)', content)
+                        compliance = all(name.lower() in glossary_content for name in names)
+                        compliance_results[file_path] = compliance
+                    except Exception as e:
+                        compliance_results[file_path] = False
+                        
+    return compliance_results
+
 from typing import Dict, Any
 from web3 import Web3
 import os
