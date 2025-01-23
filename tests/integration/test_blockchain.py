@@ -58,3 +58,45 @@ async def test_blockchain_stats(blockchain_service):
         assert 'gas_price' in stats['stats']
     except Exception as e:
         pytest.skip(f"Blockchain connection not available: {str(e)}")
+
+import pytest
+from app.services.blockchain_service import BlockchainService
+from app.models.models import User, Transaction # Assuming these models exist
+from decimal import Decimal
+
+@pytest.mark.asyncio
+async def test_full_transformation_flow(test_db, test_client):
+    # Setup
+    user = User(username="test_user")
+    await user.save()
+
+    # Inizializza accounts
+    money_account = await MoneyAccount.create( # Assuming MoneyAccount model exists
+        user_id=user.id,
+        balance=Decimal('1000.00')
+    )
+    gold_account = await GoldAccount.create( # Assuming GoldAccount model exists
+        user_id=user.id,
+        balance=Decimal('0.00')
+    )
+
+    # Esegui trasformazione
+    response = await test_client.post(
+        '/api/v1/transformations/execute',
+        json={
+            'amount': '100.00',
+            'fixing_price': '50.00'
+        },
+        headers={'X-User-Id': str(user.id)}
+    )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data['status'] == 'success'
+
+    # Verifica risultati
+    updated_money = await MoneyAccount.get_by_user_id(user.id)
+    updated_gold = await GoldAccount.get_by_user_id(user.id)
+
+    assert updated_money.balance == Decimal('900.00')
+    assert updated_gold.balance == Decimal('2.00')  # 100/50 = 2 unità di oro

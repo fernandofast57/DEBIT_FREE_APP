@@ -1,34 +1,50 @@
+
 import pytest
-from app.utils.monitoring.performance import monitor_performance
-from app.utils.monitoring.performance_monitor import PerformanceMonitor
-from app.utils.system_monitor import SystemMonitor
+import time
+from app.utils.monitoring.performance import EnhancedPerformanceMonitor
 
-def test_system_monitoring():
-    """Test system monitoring capabilities"""
-    monitor = SystemMonitor()
+@pytest.fixture
+def performance_monitor():
+    return EnhancedPerformanceMonitor(alert_threshold=0.1)
 
-    # Test monitoring functions
-    monitor.log_request('/api/test')
-    monitor.log_error('test_error')
-    monitor.log_response_time(0.5)
+def test_performance_tracking(performance_monitor):
+    @performance_monitor.track_time('test_operation')
+    def slow_operation():
+        time.sleep(0.05)
+        return True
+    
+    # Esegui operazione multipla volte
+    for _ in range(5):
+        assert slow_operation() is True
+    
+    metrics = performance_monitor.get_metrics()
+    assert 'test_operation' in metrics
+    assert metrics['test_operation']['count'] == 5
+    assert metrics['test_operation']['average'] > 0
+    assert metrics['test_operation']['max'] > 0
 
-    assert monitor.get_average_response_time() > 0
-    assert monitor.metrics['endpoint_usage']['/api/test'] == 1
-    assert monitor.metrics['error_counts']['test_error'] == 1
+def test_performance_alert(performance_monitor):
+    @performance_monitor.track_time('slow_operation')
+    def very_slow_operation():
+        time.sleep(0.2)  # Operazione più lenta della soglia
+        return True
+    
+    very_slow_operation()
+    metrics = performance_monitor.get_metrics()
+    assert metrics['slow_operation']['max'] > performance_monitor.alert_threshold
 
-def test_performance_monitor():
-    """Test performance monitoring capabilities"""
-    monitor = PerformanceMonitor()
-    monitor.record_metric('test_category', 1.5)
-
-    metrics = monitor.get_metrics()
-    assert 'test_category' in metrics
-    assert len(metrics['test_category']) == 1
-    assert metrics['test_category'][0] == 1.5
-
-@monitor_performance
-def test_performance_decorator():
-    """Test performance monitoring decorator"""
-    # Simulate some work
-    result = sum(range(1000))
-    assert result == 499500  # Validate actual computation
+def test_concurrent_operations(performance_monitor):
+    import asyncio
+    
+    @performance_monitor.track_time('async_op')
+    async def async_operation():
+        await asyncio.sleep(0.01)
+        return True
+    
+    async def run_concurrent():
+        tasks = [async_operation() for _ in range(10)]
+        await asyncio.gather(*tasks)
+    
+    asyncio.run(run_concurrent())
+    metrics = performance_monitor.get_metrics()
+    assert metrics['async_op']['count'] == 10

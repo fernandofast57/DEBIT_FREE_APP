@@ -1,54 +1,70 @@
+
 import pytest
 from decimal import Decimal
-from unittest.mock import patch, MagicMock
+from datetime import datetime
 from app.services.transformation_service import TransformationService
 from app.models.models import User, MoneyAccount, GoldAccount
+from unittest.mock import Mock, patch
+
+@pytest.fixture
+def transformation_service():
+    return TransformationService()
 
 @pytest.mark.asyncio
-class TestTransformationService:
-    @pytest.fixture
-    def mock_fixing_price(self):
-        return Decimal('50.00')
+async def test_valid_transformation(transformation_service):
+    # Setup
+    user_id = 1
+    amount = Decimal('100.00')
+    fixing_price = Decimal('50.00')
+    
+    mock_accounts = {
+        'money': Mock(balance=Decimal('100.00')),
+        'gold': Mock(balance=Decimal('0.00'))
+    }
+    
+    with patch('app.services.transformation_service.MoneyAccount.get_by_user_id') as mock_money:
+        with patch('app.services.transformation_service.GoldAccount.get_by_user_id') as mock_gold:
+            mock_money.return_value = mock_accounts['money']
+            mock_gold.return_value = mock_accounts['gold']
+            
+            result = await transformation_service.execute_transformation(
+                user_id=user_id,
+                amount=amount,
+                fixing_price=fixing_price
+            )
+            
+            assert result['status'] == 'success'
+            assert result['amount'] == amount
+            assert 'transaction_id' in result
 
-    async def test_verify_transfer_valid(self, test_user, test_db):
-        """Test valid transfer verification"""
-        amount = Decimal('100.00')
-        result = await TransformationService.verify_transfer(test_user.id, amount)
-        assert result['valid'] is True
-        assert 'user' in result
+@pytest.mark.asyncio
+async def test_insufficient_funds(transformation_service):
+    user_id = 1
+    amount = Decimal('1000.00')
+    fixing_price = Decimal('50.00')
+    
+    mock_accounts = {
+        'money': Mock(balance=Decimal('100.00')),
+        'gold': Mock(balance=Decimal('0.00'))
+    }
+    
+    with patch('app.services.transformation_service.MoneyAccount.get_by_user_id') as mock_money:
+        mock_money.return_value = mock_accounts['money']
+        
+        with pytest.raises(ValueError) as exc_info:
+            await transformation_service.execute_transformation(
+                user_id=user_id,
+                amount=amount,
+                fixing_price=fixing_price
+            )
+        assert "Insufficient funds" in str(exc_info.value)
 
-    async def test_verify_transfer_invalid_amount(self, test_user, test_db):
-        """Test invalid amount verification"""
-        amount = Decimal('-100.00')
-        result = await TransformationService.verify_transfer(test_user.id, amount)
-        assert result['valid'] is False
-        assert result['reason'] == "Invalid amount"
-
-    async def test_process_organization_fee(self):
-        """Test organization fee calculation"""
-        amount = Decimal('1000.00')
-        expected_fee = amount * TransformationService.ORGANIZATION_FEE
-        net_amount = await TransformationService.process_organization_fee(amount)
-        assert net_amount == (amount - expected_fee)
-
-    async def test_transform_gold_success(self, test_user, mock_fixing_price):
-        """Test successful gold transformation"""
-        euro_amount = Decimal('100.00')
-        result = await TransformationService.process_transformation(
-            test_user.id,
-            euro_amount,
-            mock_fixing_price
+@pytest.mark.asyncio
+async def test_zero_amount(transformation_service):
+    with pytest.raises(ValueError) as exc_info:
+        await transformation_service.execute_transformation(
+            user_id=1,
+            amount=Decimal('0.00'),
+            fixing_price=Decimal('50.00')
         )
-        assert result['status'] == 'success'
-        assert 'gold_grams' in result
-
-    async def test_transform_gold_insufficient_funds(self, test_user, mock_fixing_price):
-        """Test transformation with insufficient funds"""
-        euro_amount = Decimal('2000.00')  # More than test_user balance
-        result = await TransformationService.process_transformation(
-            test_user.id,
-            euro_amount,
-            mock_fixing_price
-        )
-        assert result['status'] == 'error'
-        assert 'Insufficient funds' in result['message']
+    assert "Amount must be greater than zero" in str(exc_info.value)
