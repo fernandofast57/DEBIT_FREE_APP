@@ -1,10 +1,49 @@
-
 from datetime import datetime
 from decimal import Decimal
+from enum import Enum
+from sqlalchemy.orm import validates
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from . import db
 from .user import User
+
+class TransactionType(Enum):
+    DEPOSIT = "deposit"
+    WITHDRAWAL = "withdrawal"
+    TRANSFER = "transfer"
+    GOLD_PURCHASE = "gold_purchase"
+    GOLD_SALE = "gold_sale"
+
+class Transaction(db.Model):
+    __tablename__ = 'transactions'
+    __table_args__ = {'extend_existing': True}
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    amount = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
+    transaction_type = db.Column(db.Enum(TransactionType), nullable=False)
+    status = db.Column(db.String(20), default='pending')
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    description = db.Column(db.String(200))
+
+    user = db.relationship('User', back_populates='transactions')
+
+    @validates('amount')
+    def validate_amount(self, key, amount):
+        if amount <= 0:
+            raise ValueError('L\'importo deve essere maggiore di zero')
+        return amount
+
+    @validates('transaction_type')
+    def validate_transaction_type(self, key, trans_type):
+        if trans_type not in TransactionType:
+            raise ValueError('Tipo transazione non valido')
+        return trans_type
+
+    def __repr__(self):
+        return f"<Transaction {self.amount} ({self.transaction_type})>"
+
 
 class BankTransfer(db.Model):
     __tablename__ = 'bank_transfers'
@@ -19,25 +58,6 @@ class BankTransfer(db.Model):
     completed_at = db.Column(db.DateTime, nullable=True)
     
     user = db.relationship('User', backref='bank_transfers')
-
-class Transaction(db.Model):
-    __tablename__ = 'transactions'
-    __table_args__ = {'extend_existing': True}
-
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    amount = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
-    transaction_type = db.Column(db.String(50), nullable=False)
-    status = db.Column(db.String(20), default='pending')
-    date = db.Column(db.DateTime, default=datetime.utcnow)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    description = db.Column(db.String(200))
-
-    user = db.relationship('User', back_populates='transactions')
-
-    def __repr__(self):
-        return f"<Transaction {self.amount} ({self.transaction_type})>"
-
 
 class Parameter(db.Model):
     __tablename__ = 'parameters'
