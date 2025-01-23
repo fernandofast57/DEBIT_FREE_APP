@@ -2,7 +2,9 @@
 from enum import Enum
 from datetime import datetime
 from sqlalchemy.orm import validates
-from app.models import db
+from app.database import db
+from sqlalchemy.exc import SQLAlchemyError
+from app.utils.logging_config import logger
 
 class KYCStatus(Enum):
     PENDING = "pending"

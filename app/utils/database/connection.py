@@ -24,10 +24,10 @@ class DatabaseManager:
     def _setup_logging(self):
         handler = logging.FileHandler('logs/database.log')
         handler.setFormatter(logging.Formatter(
-            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+            '%(asctime)s - %(name)s - %(levelname)s - %(filename)s - %(lineno)d - %(message)s'
         ))
         self.logger.addHandler(handler)
-        self.logger.setLevel(logging.INFO)
+        self.logger.setLevel(logging.DEBUG) # Increased logging level for more granular detail
 
     def _create_engine(self):
         """Crea engine SQLAlchemy con configurazione ottimizzata"""
@@ -42,7 +42,7 @@ class DatabaseManager:
                 pool_pre_ping=True
             )
         except SQLAlchemyError as e:
-            self.logger.error(f"Failed to create database engine: {str(e)}")
+            self.logger.exception(f"Failed to create database engine: {str(e)}") # Use exception for traceback
             raise
 
     @contextmanager
@@ -54,7 +54,7 @@ class DatabaseManager:
             session.commit()
         except Exception as e:
             session.rollback()
-            self.logger.error(f"Database session error: {str(e)}")
+            self.logger.exception(f"Database session error: {str(e)}") # Use exception for traceback
             raise
         finally:
             session.close()
@@ -66,8 +66,8 @@ class DatabaseManager:
                 session.execute("SELECT 1")
                 return True
         except OperationalError as e:
-            self.logger.error(f"Database connection check failed: {str(e)}")
+            self.logger.exception(f"Database connection check failed: {str(e)}") # Use exception for traceback
             return False
         except Exception as e:
-            self.logger.error(f"Unexpected error: {str(e)}")
+            self.logger.exception(f"Unexpected error: {str(e)}") # Use exception for traceback
             return False
