@@ -1,6 +1,7 @@
 
 # app/__init__.py
 from flask import Flask
+from app.routes.transformations import transform_bp
 from flask_sqlalchemy import SQLAlchemy
 from flask_caching import Cache
 from flask_login import LoginManager

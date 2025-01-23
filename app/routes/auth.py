@@ -76,7 +76,7 @@ def register():
 
 
 @auth_bp.route('/login', methods=['POST'])
-@rate_limit(max_requests=5, window_size=60)
+@security.rate_limit('auth')
 def login():
     data = request.get_json()
     user_id = data.get('user_id')
