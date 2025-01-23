@@ -3,7 +3,7 @@ from functools import wraps
 from flask import request, abort, current_app, g
 from typing import Dict, Optional
 from redis import Redis
-from app.utils.security.rate_limiter import RobustRateLimiter
+from app.utils.security.robust_rate_limiter import RobustRateLimiter
 from app.utils.security.jwt_manager import JWTManager
 
 class SecurityMiddleware:

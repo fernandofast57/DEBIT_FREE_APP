@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from app.middleware.security import SecurityMiddleware
 from app.utils.load_balancer import load_balancer
-from app.utils.rate_limiter import RobustRateLimiter
+from app.utils.robust_rate_limiter import RobustRateLimiter
 from app.utils.monitoring import setup_monitoring
 import logging
 from logging.handlers import RotatingFileHandler
@@ -15,7 +15,7 @@ cache = Cache()
 login_manager = LoginManager()
 migrate = Migrate()
 security_middleware = SecurityMiddleware()
-rate_limiter = RateLimiter()
+rate_limiter = RobustRateLimiter()
 
 def setup_logging(app, config_name):
     if not os.path.exists('logs'):
