@@ -50,3 +50,29 @@ class NotificationService:
         except Exception as e:
             logger.error(f"Error fetching notifications: {str(e)}")
             return []
+from typing import List
+from datetime import datetime
+from app.models import User, Notification
+from app.database import db
+
+class NotificationService:
+    @staticmethod
+    async def send_notification(user_id: int, message: str, type: str = "info"):
+        notification = Notification(
+            user_id=user_id,
+            message=message,
+            type=type,
+            created_at=datetime.utcnow()
+        )
+        db.session.add(notification)
+        await db.session.commit()
+
+    @staticmethod
+    async def get_user_notifications(user_id: int, limit: int = 10) -> List[dict]:
+        notifications = await db.session.query(Notification)\
+            .filter(Notification.user_id == user_id)\
+            .order_by(Notification.created_at.desc())\
+            .limit(limit)\
+            .all()
+        
+        return [n.to_dict() for n in notifications]
