@@ -4,7 +4,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from app.middleware.security import SecurityMiddleware
 from app.utils.load_balancer import load_balancer
-from app.utils.rate_limiter import RateLimiter
+from app.utils.rate_limiter import RobustRateLimiter
 from app.utils.monitoring import setup_monitoring
 import logging
 from logging.handlers import RotatingFileHandler
