@@ -14,6 +14,7 @@ from .models import (
     Parameter,
     BonusTransaction
 )
+from .notification import Notification
 
 __all__ = [
     'db',
