@@ -2,6 +2,10 @@ from datetime import datetime
 import psutil
 import logging
 
+from .monitoring_setup import setup_monitoring
+from .performance import monitor_performance
+from .performance_monitor import PerformanceMonitor
+
 logger = logging.getLogger(__name__)
 
 
@@ -31,6 +35,5 @@ def monitor_performance():
     return None
 
 
-# Assicurati che la funzione sia disponibile per l'import
-__all__ = ['monitor_performance']
+__all__ = ['setup_monitoring', 'monitor_performance', 'PerformanceMonitor']
 # Monitoring package initialization
