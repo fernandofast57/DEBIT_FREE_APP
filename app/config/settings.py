@@ -33,6 +33,8 @@ class Config:
     PASSWORD_SALT = os.getenv('PASSWORD_SALT', 'dev-salt') #Added from SecurityConfig
     REDIS_URL = "redis://0.0.0.0:6379/0" #Updated Redis URL.  May still require further network configuration.
     CACHE_TYPE = "simple" # Enabled simple caching
+    CACHE_DEFAULT_TIMEOUT = 300
+
 
 class DevelopmentConfig(Config):
     DEBUG = True
