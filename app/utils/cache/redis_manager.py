@@ -4,8 +4,20 @@ import pickle
 import logging
 import asyncio
 from datetime import timedelta
+from app.config.settings import Config
 
 logger = logging.getLogger(__name__)
+
+def get_redis_client():
+    try:
+        if Config.REDIS_ENABLED:
+            return redis.Redis(host=Config.REDIS_HOST, 
+                             port=Config.REDIS_PORT, 
+                             decode_responses=True)
+        return None
+    except Exception as e:
+        logger.warning(f"Redis connection failed: {e}")
+        return None
 
 class CacheManager:
     _instance = None

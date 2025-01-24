@@ -2,9 +2,9 @@
 from flask import Blueprint, jsonify
 from app.utils.auth import auth_required
 
-async_bp = Blueprint('async', __name__)
+bp = Blueprint('async', __name__, url_prefix='/api/v1/async')
 
-@async_bp.route('/async_operation', methods=['GET'])
+@bp.route('/operation', methods=['GET'])
 @auth_required
 def check_async_operation():
     """Check status of async operations"""
