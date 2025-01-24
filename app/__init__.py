@@ -1,4 +1,3 @@
-
 from flask import Flask
 from flask_caching import Cache
 from flask_migrate import Migrate
@@ -98,6 +97,10 @@ def create_app(config_name='production'):
         with app.app_context():
             db.create_all()
             app.logger.info("Database initialized successfully")
+
+    #Added dependency check
+    from app.utils.monitoring.dependency_monitor import check_dependencies
+    check_dependencies(app)
 
     return app
 
