@@ -2,7 +2,7 @@
 from decimal import Decimal
 import logging
 from datetime import datetime
-from typing import Optional, Dict
+from typing import Optional, Dict, Any
 
 from app.utils.validation_report import ValidationReport
 from app.models import db
