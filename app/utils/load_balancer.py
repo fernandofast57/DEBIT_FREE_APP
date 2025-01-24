@@ -124,7 +124,8 @@ class LoadBalancer:
                 avg_time = sum(server['response_times']) / len(server['response_times'])
                 metrics['average_response_time'][f"{server['host']}:{server['port']}"] = avg_time
                 
-        await self.redis.hset(self.metrics_key, mapping=metrics)
+        if hasattr(self, 'redis') and self.redis is not None:
+            await self.redis.hset(self.metrics_key, mapping=metrics)
         return metrics
 
 load_balancer = LoadBalancer()
