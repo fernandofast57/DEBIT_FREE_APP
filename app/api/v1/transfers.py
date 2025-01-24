@@ -35,7 +35,7 @@ def process_transfer():
     return jsonify(result)
 
 @bp.route('/batch/process', methods=['POST'])
-async def process_batch():
+def process_batch():
     """
     Processa un batch di bonifici
     {
@@ -97,7 +97,7 @@ def add_to_batch():
     })
 
 @bp.route('/fixing/purchase', methods=['POST'])
-async def process_fixing_purchase():
+def process_fixing_purchase():
     """Processa l'acquisto dell'oro al fixing"""
     data = request.get_json()
     

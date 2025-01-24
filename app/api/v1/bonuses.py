@@ -19,9 +19,9 @@ def get_referral_bonuses():
 @bonuses_bp.route('/noble', methods=['GET'])
 @auth_required
 @rate_limit(max_requests=10, window_size=60)
-async def get_noble_bonuses():
+def get_noble_bonuses():
     try:
-        result = await bonus_service.get_noble_bonuses(request.user_id)
+        result = asyncio.run(bonus_service.get_noble_bonuses(request.user_id))
         return jsonify(result), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
