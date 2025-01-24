@@ -48,5 +48,16 @@ def get_logger(name="GoldInvestment"):
     """
     return logging.getLogger(name)
 
+class GlossaryComplianceLogger:
+    def __init__(self):
+        self.logger = get_logger('glossary_compliance')
+        
+    def log_validation(self, component: str, results: dict):
+        """Log validation results for a component"""
+        status = 'PASS' if all(results.values()) else 'FAIL'
+        self.logger.info(f"Component: {component} - Status: {status}")
+        for check, result in results.items():
+            self.logger.debug(f"{component}.{check}: {'PASS' if result else 'FAIL'}")
+
 # Setup logging when module is imported
 setup_logging()
