@@ -119,5 +119,11 @@ class LoadBalancer:
         return metrics
 
 load_balancer = LoadBalancer()
-# Registrazione server di default con peso 2 per maggiore priorità
-asyncio.create_task(load_balancer.register_server('0.0.0.0', 8080, weight=2))
+
+async def init_load_balancer():
+    await load_balancer.register_server('0.0.0.0', 8080, weight=2)
+
+# Initialize the event loop and run the registration
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
+loop.run_until_complete(init_load_balancer())
