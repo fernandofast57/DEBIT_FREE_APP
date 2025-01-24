@@ -110,7 +110,7 @@ def process_fixing_purchase():
             'message': 'Parametri non validi'
         }), 400
 
-    result = await transformation_service.process_fixing_purchase(technician_id, fixing_price)
+    result = asyncio.run(transformation_service.process_fixing_purchase(technician_id, fixing_price))
     
     if result['status'] == 'error':
         return jsonify(result), 400
