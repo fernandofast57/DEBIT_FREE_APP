@@ -86,7 +86,11 @@ class ApplicationManager:
             use_reloader = False
 
             from app.utils.load_balancer import load_balancer
-            server = load_balancer.get_next_server()
+            server = {'host': '0.0.0.0', 'port': 8080}  # Default server config
+            try:
+                server = await load_balancer.get_next_server() or server
+            except Exception as e:
+                logger.warning(f"Load balancer error, using default server: {e}")
 
             logger.info(
                 f"Starting application on {server['host']}:{server['port']} in production mode"
