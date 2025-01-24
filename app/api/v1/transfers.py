@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from decimal import Decimal, InvalidOperation
 from app.services.batch_collection_service import BatchCollectionService
+from app.middleware.transaction_validator_middleware import validate_transaction_flow
 
 bp = Blueprint('transfers', __name__, url_prefix='/api/v1/transfers')
 transfer_service = BatchCollectionService()

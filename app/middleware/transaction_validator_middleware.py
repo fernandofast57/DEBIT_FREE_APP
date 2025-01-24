@@ -61,3 +61,40 @@ def verify_account_balances():
             'reason': str(e),
             'response': {'error': 'Errore nella verifica dei saldi'}, 'status': 500
         }
+from functools import wraps
+from flask import request, jsonify
+from app.utils.audit_logger import audit_logger
+
+def validate_transaction_flow():
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            try:
+                # Basic validation
+                if not request.is_json:
+                    return jsonify({
+                        'status': 'error',
+                        'message': 'Content-Type must be application/json'
+                    }), 400
+
+                # Log transaction attempt
+                audit_logger.log_action(
+                    'TRANSACTION_START',
+                    'system',
+                    f"Transaction validation started for {request.path}"
+                )
+                
+                return f(*args, **kwargs)
+            except Exception as e:
+                audit_logger.log_action(
+                    'TRANSACTION_ERROR',
+                    'system',
+                    f"Transaction validation failed: {str(e)}"
+                )
+                return jsonify({
+                    'status': 'error',
+                    'message': 'Transaction validation failed'
+                }), 500
+                
+        return decorated_function
+    return decorator
