@@ -10,12 +10,14 @@ main_bp = Blueprint('main', __name__)
 accounting_service = AccountingService()
 notification_service = NotificationService()
 
-@main_bp.before_app_first_request
+@main_bp.before_app_request
 def initialize_services():
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(accounting_service.initialize())
-    loop.close()
+    if not hasattr(accounting_service, '_initialized'):
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(accounting_service.initialize())
+        loop.close()
+        setattr(accounting_service, '_initialized', True)
 
 @main_bp.route('/')
 def index():

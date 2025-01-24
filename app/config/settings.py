@@ -31,7 +31,8 @@ class Config:
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30) #Added from SecurityConfig
     RATE_LIMIT_DEFAULT = "50 per minute" #Added from SecurityConfig
     PASSWORD_SALT = os.getenv('PASSWORD_SALT', 'dev-salt') #Added from SecurityConfig
-
+    REDIS_URL = "redis://0.0.0.0:6379/0" #Updated Redis URL.  May still require further network configuration.
+    CACHE_TYPE = "simple" # Enabled simple caching
 
 class DevelopmentConfig(Config):
     DEBUG = True
