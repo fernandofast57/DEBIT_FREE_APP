@@ -5,7 +5,7 @@ from typing import Optional, Dict
 
 from app.models import db
 from app.models.models import User, Transaction, GoldAccount, MoneyAccount
-from app.utils.blockchain_service import BlockchainService
+from app.services.blockchain_service import BlockchainService
 from app.utils.validation_report import ValidationReport
 
 logger = logging.getLogger(__name__)
