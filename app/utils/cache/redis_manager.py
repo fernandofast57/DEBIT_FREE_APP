@@ -1,4 +1,3 @@
-
 import redis.asyncio as redis
 from typing import Any, Optional, Union, List
 import pickle
@@ -10,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 class CacheManager:
     _instance = None
-    
+
     def __new__(cls, redis_url: str = None):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
