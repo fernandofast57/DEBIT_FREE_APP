@@ -1,7 +1,7 @@
 from decimal import Decimal
 from datetime import datetime
 from typing import Dict, List, Any
-from app import db
+from app.models import db
 from app.models.models import User, MoneyAccount, Transaction
 from app.services.blockchain_service import BlockchainService
 from app.services.validators.blockchain_validator import BlockchainValidator

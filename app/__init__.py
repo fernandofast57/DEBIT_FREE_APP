@@ -1,3 +1,4 @@
+
 from flask import Flask
 from flask_caching import Cache
 from flask_migrate import Migrate
@@ -6,6 +7,7 @@ from app.middleware.security import SecurityMiddleware
 from app.utils.load_balancer import load_balancer
 from app.utils.robust_rate_limiter import RobustRateLimiter
 from app.utils.monitoring import setup_monitoring
+from app.models import db
 import logging
 from logging.handlers import RotatingFileHandler
 import os
@@ -55,51 +57,49 @@ def create_app(config_name='production'):
     setup_logging(app, config_name)
 
     # Initialize extensions with app context
-    with app.app_context():
-        from app.models import db
-        db.init_app(app)
-        cache.init_app(app)
-        login_manager.init_app(app)
-        migrate.init_app(app, db)
+    db.init_app(app)
+    cache.init_app(app)
+    login_manager.init_app(app)
+    migrate.init_app(app, db)
 
-        # Setup login manager
-        from app.models.models import User
-        @login_manager.user_loader
-        def load_user(user_id):
-            return User.query.get(int(user_id))
+    # Setup login manager
+    from app.models.models import User
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
 
-        login_manager.login_view = 'auth.login'
-        login_manager.login_message = "Please log in to access this page."
+    login_manager.login_view = 'auth.login'
+    login_manager.login_message = "Please log in to access this page."
 
-        # Register blueprints
-        from app.routes.auth import auth_bp
-        from app.routes.main import main_bp
-        from app.routes.transformations import transform_bp
-        from app.api.v1.transformations import transformations_bp
-        from app.api.v1.accounting import bp as accounting_bp
-        from app.api.v1.system import bp as system_bp
-        from app.admin.views import admin_bp
+    # Register blueprints
+    from app.routes.auth import auth_bp
+    from app.routes.main import main_bp
+    from app.routes.transformations import transform_bp
+    from app.api.v1.transformations import transformations_bp
+    from app.api.v1.accounting import bp as accounting_bp
+    from app.api.v1.system import bp as system_bp
+    from app.admin.views import admin_bp
 
-        app.register_blueprint(auth_bp)
-        app.register_blueprint(main_bp)
-        app.register_blueprint(admin_bp)
-        app.register_blueprint(transformations_bp, url_prefix='/api/v1/transformations')
-        app.register_blueprint(accounting_bp, url_prefix='/api/v1/accounts')
-        app.register_blueprint(system_bp, url_prefix='/api/v1')
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(main_bp)
+    app.register_blueprint(admin_bp)
+    app.register_blueprint(transformations_bp, url_prefix='/api/v1/transformations')
+    app.register_blueprint(accounting_bp, url_prefix='/api/v1/accounts')
+    app.register_blueprint(system_bp, url_prefix='/api/v1')
 
+    # Setup production services
+    if config_name == 'production':
+        load_balancer.register_server('0.0.0.0', 8080)
+        load_balancer.register_server('0.0.0.0', 8081)
+        setup_monitoring(app)
 
-        # Setup production services
-        if config_name == 'production':
-            load_balancer.register_server('0.0.0.0', 8080)
-            load_balancer.register_server('0.0.0.0', 8081)
-            setup_monitoring(app)
-
-        # Initialize database
-        if not os.path.exists(app.config['SQLALCHEMY_DATABASE_URI']):
+    # Initialize database
+    if not os.path.exists(app.config['SQLALCHEMY_DATABASE_URI']):
+        with app.app_context():
             db.create_all()
             app.logger.info("Database initialized successfully")
 
-        return app
+    return app
 
 # Configurazione per l'esecuzione diretta
 if __name__ == '__main__':
