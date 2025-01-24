@@ -41,7 +41,8 @@ def app():
         'JWT_SECRET_KEY': 'test-jwt-secret-key',
         'BLOCKCHAIN_ENABLED': True
     })
-
+    
+    db.init_app(app)
     with app.app_context():
         db.create_all()
         yield app
