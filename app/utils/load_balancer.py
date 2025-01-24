@@ -124,11 +124,17 @@ class LoadBalancer:
                 avg_time = sum(server['response_times']) / len(server['response_times'])
                 metrics['average_response_time'][f"{server['host']}:{server['port']}"] = avg_time
                 
-        if hasattr(self, 'redis') and self.redis is not None:
-            await self.redis.hset(self.metrics_key, mapping=metrics)
+        try:
+            if hasattr(self, 'redis') and self.redis is not None:
+                await self.redis.hset(self.metrics_key, mapping=metrics)
+        except Exception as e:
+            logger.warning(f"Redis metrics storage failed: {e}")
         return metrics
 
+from app.utils.cache.redis_manager import get_redis_client
+
 load_balancer = LoadBalancer()
+load_balancer.redis = get_redis_client()
 
 async def init_load_balancer():
     await load_balancer.register_server('0.0.0.0', 8080, weight=2)
