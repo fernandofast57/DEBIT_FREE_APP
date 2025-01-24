@@ -7,9 +7,8 @@ from datetime import datetime
 class PerformanceMonitor:
     def __init__(self, alert_threshold: float = 0.1):
         self.alert_threshold = alert_threshold
-        self.metrics: Dict[str, List[float]] = {
-            'response_time': [],
-            'database_query_times': [],
+        self.metrics: Dict[str, Dict[str, Any]] = {}
+        self.cache_hits: Dict[str, int] = {}
             'blockchain_operation_times': [],
             'memory_usage': [],
             'cache_performance': [],
@@ -30,19 +29,54 @@ class PerformanceMonitor:
             return 0.0
         return sum(self.metrics[category]) / len(self.metrics[category])
 
-    def get_metrics(self) -> Dict[str, Any]:
-        return {
-            category: {
-                'average': self.get_average(category),
-                'count': len(values),
-                'latest': values[-1] if values else 0
+    def get_metrics(self) -> Dict[str, Dict[str, Any]]:
+        return self.metrics
+
+    def _init_operation_metrics(self, operation: str):
+        if operation not in self.metrics:
+            self.metrics[operation] = {
+                'count': 0,
+                'total_time': 0,
+                'max': 0,
+                'average': 0,
+                'memory_usage': 0,
+                'cache_hits': 0
             }
-            for category, values in self.metrics.items()
-        }
+            self.cache_hits[operation] = 0
 
     def track_time(self, category: str):
         def decorator(func):
             @functools.wraps(func)
+            async def async_wrapper(*args, **kwargs):
+                self._init_operation_metrics(category)
+                start_time = time.time()
+                result = await func(*args, **kwargs)
+                execution_time = time.time() - start_time
+                
+                self.metrics[category]['count'] += 1
+                self.metrics[category]['total_time'] += execution_time
+                self.metrics[category]['max'] = max(self.metrics[category]['max'], execution_time)
+                self.metrics[category]['average'] = self.metrics[category]['total_time'] / self.metrics[category]['count']
+                self.metrics[category]['cache_hits'] = self.cache_hits[category]
+                
+                return result
+
+            @functools.wraps(func)
+            def sync_wrapper(*args, **kwargs):
+                self._init_operation_metrics(category)
+                start_time = time.time()
+                result = func(*args, **kwargs)
+                execution_time = time.time() - start_time
+                
+                self.metrics[category]['count'] += 1
+                self.metrics[category]['total_time'] += execution_time
+                self.metrics[category]['max'] = max(self.metrics[category]['max'], execution_time)
+                self.metrics[category]['average'] = self.metrics[category]['total_time'] / self.metrics[category]['count']
+                self.metrics[category]['cache_hits'] = self.cache_hits[category]
+                
+                return result
+
+            return async_wrapper if asyncio.iscoroutinefunction(func) else sync_wrapper
             async def wrapper(*args, **kwargs):
                 start_time = time.time()
                 result = await func(*args, **kwargs)
