@@ -5,6 +5,9 @@ from datetime import timedelta
 class Config:
     HOST = "0.0.0.0"
     PORT = int(os.getenv('PORT', 8080))
+    PREFERRED_URL_SCHEME = 'https'
+    SERVER_NAME = os.getenv('REPL_SLUG', None)
+    PROPAGATE_EXCEPTIONS = True
     
     # Redis Configuration
     REDIS_HOST = "0.0.0.0"

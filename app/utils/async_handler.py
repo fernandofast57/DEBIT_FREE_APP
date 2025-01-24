@@ -22,14 +22,20 @@ class AsyncEventHandler:
 
     async def emit(self, event_name: str, *args, **kwargs):
         if event_name in self._event_handlers:
+            results = []
             for handler in self._event_handlers[event_name]:
                 try:
                     if asyncio.iscoroutinefunction(handler):
-                        await handler(*args, **kwargs)
+                        result = await asyncio.wait_for(handler(*args, **kwargs), timeout=10.0)
                     else:
-                        self.get_loop().run_in_executor(None, handler, *args, **kwargs)
+                        result = await self.get_loop().run_in_executor(None, handler, *args, **kwargs)
+                    results.append(result)
+                except asyncio.TimeoutError:
+                    logger.error(f"Handler timeout for event {event_name}")
                 except Exception as e:
                     logger.error(f"Error in event handler: {str(e)}")
+                    continue
+            return results
 
     def on(self, event_name: str):
         def decorator(f):

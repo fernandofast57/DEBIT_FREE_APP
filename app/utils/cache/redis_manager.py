@@ -26,7 +26,7 @@ class CacheManager:
             self._retry_delay = 1  # seconds
 
     async def ensure_connection(self):
-        if self.redis is None:
+        if self.redis is None or not await self._test_connection():
             for attempt in range(self._connection_retries):
                 try:
                     self.redis = redis.from_url(
@@ -34,7 +34,9 @@ class CacheManager:
                         encoding="utf-8",
                         decode_responses=False,
                         socket_timeout=5,
-                        socket_connect_timeout=5
+                        socket_connect_timeout=5,
+                        retry_on_timeout=True,
+                        health_check_interval=30
                     )
                     await self.redis.ping()
                     break
