@@ -6,16 +6,16 @@ from app.utils.auth import admin_required, operator_required
 from app.services.accounting_service import AccountingService
 from app.services.notification_service import NotificationService
 
-bp = Blueprint('main', __name__)
+main_bp = Blueprint('main', __name__)
 accounting_service = AccountingService()
 asyncio.run(accounting_service.initialize())
 notification_service = NotificationService()
 
-@bp.route('/')
+@main_bp.route('/')
 def index():
     return render_template('index.html')
 
-@bp.route('/dashboard')
+@main_bp.route('/dashboard')
 @login_required
 def dashboard():
     try:
@@ -28,7 +28,7 @@ def dashboard():
         current_app.logger.error(f"Dashboard error: {str(e)}")
         return render_template('errors/500.html'), 500
 
-@bp.route('/client/dashboard')
+@main_bp.route('/client/dashboard')
 @login_required
 def client_dashboard():
     transactions = accounting_service.get_user_transactions(current_user.id)
@@ -42,7 +42,7 @@ def client_dashboard():
                          euro_balance=euro_balance,
                          rewards=rewards)
 
-@bp.route('/operator/dashboard')
+@main_bp.route('/operator/dashboard')
 @login_required
 @operator_required
 def operator_dashboard():
@@ -52,7 +52,7 @@ def operator_dashboard():
                          pending_transfers=pending_transfers,
                          weekly_gold_stats=weekly_gold_stats)
 
-@bp.route('/admin/dashboard')
+@main_bp.route('/admin/dashboard')
 @login_required
 @admin_required
 def admin_dashboard():
