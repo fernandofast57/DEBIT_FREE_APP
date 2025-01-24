@@ -6,7 +6,7 @@ import json
 from datetime import datetime
 from app.models import db, User, Transaction, Parameter
 from app.services.blockchain_service import BlockchainService
-from app.utils.cache.redis_manager import RedisManager
+from app.utils.cache.redis_manager import CacheManager
 from app.services.noble_rank_service import NobleRankService
 
 admin_bp = Blueprint('custom_admin', __name__, url_prefix='/admin')

@@ -1,4 +1,4 @@
 
-from .redis_manager import RedisManager
+from .redis_manager import CacheManager
 
-__all__ = ['RedisManager']
+__all__ = ['CacheManager']
