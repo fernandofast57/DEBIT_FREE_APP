@@ -1,0 +1,50 @@
+The error message you're encountering indicates that Dict is not defined in app/utils/structure_validator.py. This usually happens when the Dict type hint from the typing module is not imported.
+
+Proposed Fix:
+You need to import Dict from the typing module in your structure_validator.py file.
+
+Updated Code
+Open the file app/utils/structure_validator.py and add the necessary import statement at the beginning:
+
+from typing import Dict  # Add this line to import Dict
+import os
+import re
+import json
+import logging
+from app.models import db
+from web3 import Web3
+from app.utils.errors import ValidationError
+from sqlalchemy import inspect
+class StructureValidator:
+    def __init__(self):
+        self.logger = logging.getLogger('structure_validator')
+        with open('app/config/project_structure.json') as f:
+            self.config = json.load(f)
+        with open('docs/GLOSSARY.md', 'r') as f:
+            self.glossary = f.read()
+    
+    def validate_glossary_compliance(self) -> Dict[str, bool]:
+        """Validates that all code files follow glossary nomenclature"""
+        with open('docs/GLOSSARY.md', 'r') as f:
+            glossary_content = f.read().lower()
+            
+        compliance_results = {}
+        
+        # Check all Python files
+        for root, _, files in os.walk('.'):
+            for file in files:
+                if file.endswith('.py'):
+                    file_path = os.path.join(root, file)
+                    with open(file_path, 'r') as f:
+                        try:
+                            content = f.read()
+                            # Extract variable names and class names
+                            names = re.findall(r'(?:class|def|var)\s+([a-zA-Z_][a-zA-Z0-9_]*)', content)
+                            compliance = all(name.lower() in glossary_content for name in names)
+                            compliance_results[file_path] = compliance
+                        except Exception as e:
+                            compliance_results[file_path] = False
+                            
+        return compliance_results
+    # Other methods...
+After making this change, save the file and try running your application again. This should resolve the NameError regarding Dict.
