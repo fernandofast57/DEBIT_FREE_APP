@@ -101,9 +101,9 @@ class PerformanceMonitor:
         metrics = self.metrics[category]
         metrics['count'] += 1
         metrics['total_time'] += execution_time
-        metrics['max_time'] = max(metrics['max_time'], execution_time)
-        metrics['min_time'] = min(metrics['min_time'], execution_time)
-        metrics['average_time'] = metrics['total_time'] / metrics['count']
+        metrics['max'] = max(metrics.get('max_time', 0), execution_time)
+        metrics['min'] = min(metrics.get('min_time', float('inf')), execution_time)
+        metrics['average'] = metrics['total_time'] / metrics['count']
         metrics['last_execution'] = datetime.now()
 
     def get_metrics(self) -> Dict[str, Dict[str, Any]]:
