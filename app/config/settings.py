@@ -1,4 +1,3 @@
-
 from decimal import Decimal
 from datetime import timedelta
 import os
@@ -29,6 +28,10 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'jwt-secret-change-in-production')
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)
+    JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30) #Added from SecurityConfig
+    RATE_LIMIT_DEFAULT = "50 per minute" #Added from SecurityConfig
+    PASSWORD_SALT = os.getenv('PASSWORD_SALT', 'dev-salt') #Added from SecurityConfig
+
 
 class DevelopmentConfig(Config):
     DEBUG = True

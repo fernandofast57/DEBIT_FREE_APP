@@ -3,7 +3,13 @@ from logging.config import fileConfig
 
 from flask import current_app
 
+import os
+import sys
+from logging.config import fileConfig
 from alembic import context
+from app import create_app, db
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 from app.models.models import User, Transaction, Parameter, MoneyAccount, GoldAccount, NobleRank, GoldTransformation, GoldAllocation, GoldBar, BonusTransaction, GoldReward, NobleRelation
 
 config = context.config
