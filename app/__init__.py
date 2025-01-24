@@ -1,106 +1,31 @@
-from flask import Flask
-from flask_caching import Cache
-from flask_migrate import Migrate
-from flask_login import LoginManager
-from app.middleware.security import SecurityMiddleware
-from app.utils.load_balancer import load_balancer
-from app.utils.robust_rate_limiter import RobustRateLimiter
-from app.utils.monitoring import setup_monitoring
-from app.models import db
-import logging
-from logging.handlers import RotatingFileHandler
-import os
+from flask import Flask, render_template
+from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
+from app.config.settings import Config
+from app.utils.monitoring.performance_monitor import PerformanceMonitor
 
-# Initialize extensions
-cache = Cache()
-login_manager = LoginManager()
-migrate = Migrate()
-security_middleware = SecurityMiddleware()
-rate_limiter = RobustRateLimiter()
+db = SQLAlchemy()
 
-def setup_logging(app, config_name):
-    if not os.path.exists('logs'):
-        os.mkdir('logs')
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
 
-    log_level = logging.DEBUG if config_name == 'development' else logging.INFO
-    formatter = logging.Formatter(
-        '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
-    )
-
-    handlers = {
-        'app': RotatingFileHandler('logs/app.log', maxBytes=10240, backupCount=10),
-        'error': RotatingFileHandler('logs/error.log', maxBytes=10240, backupCount=10),
-        'security': RotatingFileHandler('logs/security.log', maxBytes=10240, backupCount=10)
-    }
-
-    for handler in handlers.values():
-        handler.setFormatter(formatter)
-        handler.setLevel(log_level)
-        app.logger.addHandler(handler)
-
-    app.logger.setLevel(log_level)
-    app.logger.info(f'Gold Investment App startup in {config_name} mode')
-
-def create_app(config_name='production'):
-    app = Flask(__name__, instance_relative_config=True)
-
-    # Import config after initializing app
-    from app.config.settings import ProductionConfig, DevelopmentConfig, TestingConfig
-    config_classes = {
-        'development': DevelopmentConfig,
-        'testing': TestingConfig,
-        'production': ProductionConfig
-    }
-    app.config.from_object(config_classes.get(config_name, ProductionConfig))
-
-    setup_logging(app, config_name)
-
-    # Initialize extensions with app context
+    CORS(app)
     db.init_app(app)
-    cache.init_app(app)
-    login_manager.init_app(app)
-    migrate.init_app(app, db)
 
-    # Setup login manager
-    from app.models.models import User
-    @login_manager.user_loader
-    def load_user(user_id):
-        return User.query.get(int(user_id))
-
-    login_manager.login_view = 'auth.login'
-    login_manager.login_message = "Please log in to access this page."
-
-    # Register blueprints
-    from app.routes.auth import auth_bp
     from app.routes.main import main_bp
-    from app.routes.transformations import transform_bp
-    from app.api.v1.transformations import transformations_bp
-    from app.api.v1.accounting import bp as accounting_bp
-    from app.api.v1.system import bp as system_bp
-    from app.admin.views import admin_bp
-
-    app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
-    app.register_blueprint(admin_bp)
-    app.register_blueprint(transformations_bp, url_prefix='/api/v1/transformations')
-    app.register_blueprint(accounting_bp, url_prefix='/api/v1/accounts')
-    app.register_blueprint(system_bp, url_prefix='/api/v1')
 
-    # Setup production services
-    if config_name == 'production':
-        load_balancer.register_server('0.0.0.0', 8080)
-        load_balancer.register_server('0.0.0.0', 8081)
-        setup_monitoring(app)
+    from app.api.v1.index import api_v1
+    app.register_blueprint(api_v1)
 
-    # Initialize database
-    if not os.path.exists(app.config['SQLALCHEMY_DATABASE_URI']):
-        with app.app_context():
-            db.create_all()
-            app.logger.info("Database initialized successfully")
+    @app.errorhandler(404)
+    def not_found_error(error):
+        return render_template('errors/404.html'), 404
 
-    #Added dependency check
-    from app.utils.monitoring.dependency_monitor import check_dependencies
-    check_dependencies(app)
+    @app.errorhandler(500)
+    def internal_error(error):
+        return render_template('errors/500.html'), 500
 
     return app
 

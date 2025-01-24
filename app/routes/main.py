@@ -23,6 +23,10 @@ def initialize_services():
 def index():
     return render_template('index.html')
 
+@main_bp.route('/health')
+def health():
+    return {"status": "ok"}, 200
+
 @main_bp.route('/dashboard')
 @login_required
 def dashboard():
