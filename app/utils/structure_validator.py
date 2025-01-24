@@ -1,4 +1,3 @@
-
 from typing import Dict, Any
 import os
 import re
@@ -6,7 +5,7 @@ import json
 import logging
 from app.models import db
 from web3 import Web3
-from app.utils.errors import ValidationError
+from app.utils.error_handler import ValidationError # Updated import path
 from sqlalchemy import inspect
 
 
@@ -14,9 +13,9 @@ def validate_glossary_compliance(self) -> Dict[str, bool]:
     """Validates that all code files follow glossary nomenclature"""
     with open('docs/GLOSSARY.md', 'r') as f:
         glossary_content = f.read().lower()
-        
+
     compliance_results = {}
-    
+
     # Check all Python files
     for root, _, files in os.walk('.'):
         for file in files:
@@ -31,13 +30,13 @@ def validate_glossary_compliance(self) -> Dict[str, bool]:
                         compliance_results[file_path] = compliance
                     except Exception as e:
                         compliance_results[file_path] = False
-                        
+
     return compliance_results
 
 from typing import Dict, Any
 from web3 import Web3
 import os
-from app.utils.errors import ValidationError
+from app.utils.error_handler import ValidationError # Updated import path
 import json
 import logging
 from app.models.models import NobleRelation, Transaction, GoldTransformation
@@ -50,19 +49,19 @@ class StructureValidator:
             self.config = json.load(f)
         with open('docs/GLOSSARY.md', 'r') as f:
             self.glossary = f.read()
-    
+
     def validate_model_names(self) -> Dict[str, bool]:
         """Validates model names against glossary definitions"""
         results = {}
         inspector = inspect(NobleRelation)
-        
+
         # Check core models
         model_checks = {
             'NobleRelation': ['noble_relations', 'verification_status'],
             'Transaction': ['transactions', 'status'],
             'GoldTransformation': ['gold_transformations', 'fixing_price']
         }
-        
+
         for model_name, attributes in model_checks.items():
             table_name = attributes[0]
             status_field = attributes[1]
@@ -70,7 +69,7 @@ class StructureValidator:
                 'table_name_valid': table_name in self.glossary.lower(),
                 'status_field_valid': status_field in self.glossary.lower()
             }
-            
+
         return results
 
     def validate_status_codes(self, status: str) -> bool:
@@ -80,11 +79,11 @@ class StructureValidator:
             'available', 'reserved', 'distributed'
         ]
         return status in valid_statuses
-    
+
     def validate_modification(self, file_path: str) -> bool:
         """Validates if a file can be modified"""
         return file_path in self.config['allowed_modifications']['allowed_modules']
-    
+
     def validate_bonus_rate(self, level: int, rate: float) -> bool:
         """Validates bonus rates"""
         rates = self.config['allowed_modifications']['bonus_system']['rates']
@@ -107,7 +106,7 @@ class StructureValidator:
             'batch_collection': 'batch_collection_service',
             'bonus_distribution': 'bonus_distribution_service'
         }
-        
+
         results = {}
         for glossary_name, service_name in service_names.items():
             results[service_name] = glossary_name in self.glossary.lower()
@@ -125,7 +124,7 @@ class StructureValidator:
             'bonuses_bp': '/bonuses',
             'system_bp': '/system'
         }
-        
+
         results = {}
         for blueprint_name, endpoint in endpoint_checks.items():
             results[blueprint_name] = blueprint_name in self.glossary.lower()
@@ -138,7 +137,7 @@ class StructureValidator:
             'noble_verification': ['noble_id', 'status', 'timestamp'],
             'gold_transformation': ['euro_amount', 'gold_grams', 'fixing_price']
         }
-        
+
         results = {}
         for tx_type, fields in transaction_types.items():
             results[tx_type] = all(field in self.glossary.lower() for field in fields)
@@ -153,7 +152,7 @@ class StructureValidator:
             'Transaction': ['amount', 'status', 'transaction_type'],
             'GoldTransformation': ['euro_amount', 'gold_grams', 'fixing_price']
         }
-        
+
         results = {}
         for model_name, fields in schema_checks.items():
             results[model_name] = {
@@ -170,7 +169,7 @@ class StructureValidator:
             'noble_verification': ['kyc_status', 'verification_level'],
             'transaction_security': ['signature', 'nonce', 'timestamp']
         }
-        
+
         results = {}
         for component, requirements in security_checks.items():
             results[component] = all(req in self.glossary.lower() for req in requirements)
@@ -208,7 +207,7 @@ class StructureValidator:
             'commission_types': ['fixed', 'percentage', 'tiered'],
             'transaction_limits': ['daily_limit', 'monthly_limit', 'minimum_amount']
         }
-        
+
         results = {}
         for rule_type, terms in business_rules.items():
             results[rule_type] = all(term in self.glossary.lower() for term in terms)
@@ -222,12 +221,12 @@ class StructureValidator:
             'processes': ['rank_upgrade', 'bonus_calculation', 'verification_workflow'],
             'documentation': ['document_type', 'document_number', 'verification_date']
         }
-        
+
         results = {}
         for check_type, requirements in noble_checks.items():
             results[check_type] = all(req in self.glossary.lower() for req in requirements)
         return results
-        
+
     def validate_bonus_system(self) -> Dict[str, bool]:
         """Validates bonus distribution system and rates"""
         bonus_checks = {
@@ -236,11 +235,11 @@ class StructureValidator:
             'calculations': ['volume_based', 'rank_based', 'time_based'],
             'conditions': ['minimum_volume', 'active_status', 'kyc_verified']
         }
-        
+
         results = {}
         for check_type, requirements in bonus_checks.items():
             results[check_type] = all(req in self.glossary.lower() for req in requirements)
-            
+
         # Validate bonus rates from config
         try:
             for level in range(1, self.config['allowed_modifications']['bonus_system']['levels'] + 1):
@@ -250,7 +249,7 @@ class StructureValidator:
                     break
         except KeyError:
             results['rates'] = False
-            
+
         return results
 
     def validate_transaction_processes(self) -> Dict[str, bool]:
@@ -261,7 +260,7 @@ class StructureValidator:
             'status_flow': ['pending', 'processing', 'completed', 'failed'],
             'security': ['signature_check', 'double_spend_check', 'rate_limit_check']
         }
-        
+
         results = {}
         for check_type, requirements in transaction_checks.items():
             results[check_type] = all(req in self.glossary.lower() for req in requirements)
@@ -275,12 +274,12 @@ class StructureValidator:
             'roles': ['user', 'admin', 'noble', 'system'],
             'triggers': ['user_action', 'system_event', 'time_based', 'condition_based']
         }
-        
+
         results = {}
         for check_type, requirements in workflow_checks.items():
             results[check_type] = all(req in self.glossary.lower() for req in requirements)
         return results
-        
+
     def validate_investment_tracking(self) -> Dict[str, bool]:
         """Validates investment tracking and performance metrics"""
         investment_checks = {
@@ -289,7 +288,7 @@ class StructureValidator:
             'analytics': ['market_price', 'volume_weighted_price', 'price_trends'],
             'reporting': ['investment_history', 'performance_report', 'tax_report']
         }
-        
+
         results = {}
         for check_type, requirements in investment_checks.items():
             results[check_type] = all(req in self.glossary.lower() for req in requirements)
@@ -303,7 +302,7 @@ class StructureValidator:
             'benchmarks': ['market_comparison', 'peer_comparison', 'historical_performance'],
             'reporting': ['performance_summary', 'risk_report', 'trend_analysis']
         }
-        
+
         results = {}
         for check_type, requirements in performance_checks.items():
             results[check_type] = all(req in self.glossary.lower() for req in requirements)
@@ -317,7 +316,7 @@ class StructureValidator:
             'compliance_risk': ['regulatory_changes', 'reporting_requirements', 'aml_compliance'],
             'investment_risk': ['concentration_risk', 'counterparty_risk', 'settlement_risk']
         }
-        
+
         results = {}
         for check_type, requirements in risk_checks.items():
             results[check_type] = all(req in self.glossary.lower() for req in requirements)
@@ -331,7 +330,7 @@ class StructureValidator:
             'monitoring': ['batch_status', 'completion_rate', 'error_rate'],
             'notifications': ['success_notification', 'failure_notification', 'retry_notification']
         }
-        
+
         results = {}
         for check_type, requirements in batch_checks.items():
             results[check_type] = all(req in self.glossary.lower() for req in requirements)
