@@ -11,8 +11,11 @@ accounting_service = AccountingService()
 notification_service = NotificationService()
 
 @main_bp.before_app_first_request
-async def initialize_services():
-    await accounting_service.initialize()
+def initialize_services():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(accounting_service.initialize())
+    loop.close()
 
 @main_bp.route('/')
 def index():

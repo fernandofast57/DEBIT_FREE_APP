@@ -75,7 +75,7 @@ class ApplicationManager:
         signal.signal(signal.SIGTERM, handle_shutdown)
         signal.signal(signal.SIGINT, handle_shutdown)
 
-    async def run(self):
+    def run(self):
         try:
             self.app = self.initialize_app()
             self.setup_signal_handlers()
@@ -85,13 +85,7 @@ class ApplicationManager:
             debug = False
             use_reloader = False
 
-            from app.utils.load_balancer import load_balancer
             server = {'host': '0.0.0.0', 'port': 8080}  # Default server config
-            try:
-                next_server = await load_balancer.get_next_server()
-                server = next_server if next_server else server
-            except Exception as e:
-                logger.warning(f"Load balancer error, using default server: {e}")
 
             logger.info(
                 f"Starting application on {server['host']}:{server['port']} in production mode"
@@ -131,6 +125,5 @@ class ApplicationManager:
 
 
 if __name__ == '__main__':
-    import asyncio
     application = ApplicationManager()
-    asyncio.run(application.run())
+    application.run()
