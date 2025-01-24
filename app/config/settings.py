@@ -6,7 +6,7 @@ class Config:
     HOST = "0.0.0.0"
     PORT = int(os.getenv('PORT', 8080))
     PREFERRED_URL_SCHEME = 'https'
-    SERVER_NAME = os.getenv('REPL_SLUG', 'workspace')
+    SERVER_NAME = os.getenv('REPL_ID', None)  # Allow dynamic Replit domain
     REDIS_ENABLED = os.getenv('REDIS_ENABLED', 'false').lower() == 'true'
     PROPAGATE_EXCEPTIONS = True
     
