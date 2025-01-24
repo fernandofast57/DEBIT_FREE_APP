@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from app.services.bonus_distribution_service import BonusDistributionService
 from app.utils.auth import auth_required
 from app.utils.security.rate_limiter import rate_limit
+import asyncio
 
 bonuses_bp = Blueprint('bonuses_bp', __name__)
 bonus_service = BonusDistributionService()
@@ -11,7 +12,10 @@ bonus_service = BonusDistributionService()
 @rate_limit(max_requests=10, window_size=60)
 def get_referral_bonuses():
     try:
-        result = asyncio.run(bonus_service.get_referral_bonuses(request.user_id))
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        result = loop.run_until_complete(bonus_service.get_referral_bonuses(request.user_id))
+        loop.close()
         return jsonify(result), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500

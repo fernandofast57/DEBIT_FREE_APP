@@ -58,8 +58,9 @@ class BatchCollectionService:
         """Processa un batch di bonifici"""
         try:
             transactions = []
-            for transfer in batch_transfers:
-                transaction = Transaction(
+            async with self.session_lock:
+                for transfer in batch_transfers:
+                    transaction = Transaction(
                     user_id=transfer['user_id'],
                     amount=Decimal(str(transfer['amount'])),
                     type='bank_transfer',
