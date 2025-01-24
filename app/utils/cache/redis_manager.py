@@ -26,7 +26,7 @@ class CacheManager:
             self._retry_delay = 1  # seconds
 
     async def ensure_connection(self):
-        if self.redis is None or not await self._test_connection():
+        if self.redis is None or not self.redis.ping(): #This line is changed
             for attempt in range(self._connection_retries):
                 try:
                     self.redis = redis.from_url(

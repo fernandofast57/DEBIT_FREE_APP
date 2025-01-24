@@ -118,8 +118,8 @@ class ApplicationManager:
             StandaloneApplication(self.app, options).run()
 
         except Exception as e:
-            logger.error(f"Failed to start application: {e}")
-            raise
+            logger.error(f"Failed to start application: {str(e)}", exc_info=True)
+            raise SystemExit(1)
         finally:
             self.performance_monitor.save_metrics()
 

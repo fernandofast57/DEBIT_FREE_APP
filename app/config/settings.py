@@ -10,9 +10,9 @@ class Config:
     PROPAGATE_EXCEPTIONS = True
     
     # Redis Configuration
-    REDIS_HOST = "0.0.0.0"
-    REDIS_PORT = 6379
-    REDIS_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/0"
+    REDIS_HOST = os.getenv('REDIS_HOST', '0.0.0.0')
+    REDIS_PORT = int(os.getenv('REDIS_PORT', 6379))
+    REDIS_URL = os.getenv('REDIS_URL', f"redis://{REDIS_HOST}:{REDIS_PORT}/0")
     
     # Cache Configuration
     CACHE_TYPE = "simple"
