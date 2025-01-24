@@ -1,38 +1,64 @@
-
-import os
+# gunicorn.conf.py
 import multiprocessing
+import os
 
-# Server socket
+# Configurazioni base
 bind = '0.0.0.0:8080'
-backlog = 2048
-
-# Worker processes
 workers = multiprocessing.cpu_count() * 2 + 1
 worker_class = 'sync'
-worker_connections = 1000
-timeout = 30
-keepalive = 2
+
+# Timeouts e limiti
+timeout = 120
+keepalive = 5
+max_requests = 1000
+max_requests_jitter = 50
 
 # Logging
-accesslog = 'logs/gunicorn-access.log'
 errorlog = 'logs/gunicorn-error.log'
-loglevel = 'error'  # Mostra solo errori
-capture_output = True
-enable_stdio_inheritance = True
+accesslog = 'logs/gunicorn-access.log'
+loglevel = 'info'
+access_log_format = '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s" %(L)s'
 
-# Gestione segnali
-ignore_winch = True  # Ignora i segnali di ridimensionamento finestra
+# Performance
+worker_connections = 1000
+threads = 2
+backlog = 2048
 
-# Process naming
-proc_name = 'gold-investment'
+# Sicurezza
+limit_request_line = 4096
+limit_request_fields = 100
+limit_request_field_size = 8190
 
-# Server mechanics
-daemon = False
-pidfile = 'gunicorn.pid'
-user = None
-group = None
-tmp_upload_dir = None
 
-# SSL
-keyfile = None
-certfile = None
+# Hooks per gestione eventi
+def on_starting(server):
+    """Eseguito quando il server si avvia"""
+    server.log.info("Starting Gunicorn server...")
+    # Inizializzazione cache o connessioni
+
+
+def on_exit(server):
+    """Eseguito quando il server si ferma"""
+    server.log.info("Shutting down Gunicorn server...")
+    # Pulizia risorse
+
+
+def post_fork(server, worker):
+    """Eseguito dopo il fork di ogni worker"""
+    server.log.info(f"Worker spawned (pid: {worker.pid})")
+
+
+def worker_exit(server, worker):
+    """Eseguito quando un worker esce"""
+    server.log.info(f"Worker exited (pid: {worker.pid})")
+
+
+def pre_exec(server):
+    """Eseguito poco prima di exec() per un worker"""
+    server.log.info("Forked child, re-executing.")
+
+
+# Configurazioni SSL/TLS (se necessario)
+keyfile = 'path/to/keyfile'
+certfile = 'path/to/certfile'
+ssl_version = 'TLS'
