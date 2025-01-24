@@ -1,6 +1,7 @@
 # main.py
 import os
 import logging
+import sys
 from logging.config import dictConfig
 from flask import Flask
 from flask_cors import CORS
@@ -69,11 +70,18 @@ class ApplicationManager:
     def setup_signal_handlers(self):
 
         def handle_shutdown(signum, frame):
-            logger.info(f"Received shutdown signal. Performing cleanup...")
+            logger.info(f"Received shutdown signal {signum}. Performing cleanup...")
             self.performance_monitor.save_metrics()
+            # Perform graceful shutdown
+            if hasattr(self, 'app'):
+                with self.app.app_context():
+                    db.session.remove()
+                    db.engine.dispose()
+            sys.exit(0)
 
         signal.signal(signal.SIGTERM, handle_shutdown)
         signal.signal(signal.SIGINT, handle_shutdown)
+        signal.signal(signal.SIGQUIT, handle_shutdown)
 
     def run(self):
         try:
