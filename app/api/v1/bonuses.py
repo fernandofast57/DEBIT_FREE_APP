@@ -9,9 +9,9 @@ bonus_service = BonusDistributionService()
 @bonuses_bp.route('/referral', methods=['GET'])
 @auth_required
 @rate_limit(max_requests=10, window_size=60)
-async def get_referral_bonuses():
+def get_referral_bonuses():
     try:
-        result = await bonus_service.get_referral_bonuses(request.user_id)
+        result = asyncio.run(bonus_service.get_referral_bonuses(request.user_id))
         return jsonify(result), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500

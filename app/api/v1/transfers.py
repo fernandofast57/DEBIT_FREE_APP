@@ -8,7 +8,7 @@ transfer_service = BatchCollectionService()
 
 @bp.route('/process', methods=['POST'])
 @validate_transaction_flow()
-async def process_transfer():
+def process_transfer():
     """
     Processa un singolo bonifico
     {
