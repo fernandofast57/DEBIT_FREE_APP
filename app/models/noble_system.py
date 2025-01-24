@@ -15,6 +15,6 @@ class NobleSystem:
 class NobleRelation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    noble_rank_id = db.Column(db.Integer, db.ForeignKey('noble_rank.id'))
+    noble_rank_id = db.Column(db.Integer, db.ForeignKey('noble_ranks.id'))
     verification_status = db.Column(db.String(50))
     status = db.Column(db.String(50))
