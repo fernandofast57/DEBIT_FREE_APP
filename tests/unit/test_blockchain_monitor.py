@@ -1,4 +1,5 @@
 import pytest
+import asyncio
 from unittest.mock import Mock, patch
 from datetime import datetime
 from web3.exceptions import BlockNotFound, TransactionNotFound

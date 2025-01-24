@@ -1,4 +1,5 @@
 import pytest
+import asyncio
 from unittest.mock import Mock
 from app.services.blockchain_service import BlockchainService
 from decimal import Decimal
