@@ -8,7 +8,7 @@ from functools import wraps
 from app.models import db
 from app.models import User, MoneyAccount, GoldAccount, Transaction
 from app.utils.auth import AuthManager
-from app.utils.security.rate_limiter import rate_limit
+from app.middleware.security import security
 from app.services.two_factor_service import TwoFactorService
 from app.services.kyc_service import KYCService
 from config import Config
