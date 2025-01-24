@@ -4,6 +4,7 @@ import logging
 from datetime import datetime
 from typing import Optional, Dict
 
+from app.utils.validation_report import ValidationReport
 from app.models import db
 from app.models.models import User, Transaction, GoldAccount, MoneyAccount
 from app.services.blockchain_service import BlockchainService
