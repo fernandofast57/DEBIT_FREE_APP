@@ -3,10 +3,19 @@ from datetime import datetime, timedelta
 import logging
 from typing import Dict, List
 from web3 import Web3
+from dataclasses import dataclass
 from app.models import db
 from app.models.models import Transaction
 
 logger = logging.getLogger(__name__)
+
+@dataclass
+class BlockchainEvent:
+    event_type: str
+    block_number: int
+    transaction_hash: str
+    timestamp: datetime
+    data: dict
 
 class BlockchainMonitor:
     def __init__(self, web3_provider: str):
