@@ -1,7 +1,7 @@
 
 from flask import Blueprint
 from .transformations import transformations_bp
-from .async_operations import async_bp
+from .async_operations import bp as async_bp
 from .accounting import bp as account_bp
 
 # Main blueprint for API v1
