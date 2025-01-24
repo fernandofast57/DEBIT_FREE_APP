@@ -1,3 +1,4 @@
+
 import time
 import functools
 import logging
@@ -9,6 +10,7 @@ class PerformanceMonitor:
         self.alert_threshold = alert_threshold
         self.metrics: Dict[str, Dict[str, Any]] = {}
         self.cache_hits: Dict[str, int] = {}
+        self.metrics = {
             'blockchain_operation_times': [],
             'memory_usage': [],
             'cache_performance': [],
@@ -77,13 +79,6 @@ class PerformanceMonitor:
                 return result
 
             return async_wrapper if asyncio.iscoroutinefunction(func) else sync_wrapper
-            async def wrapper(*args, **kwargs):
-                start_time = time.time()
-                result = await func(*args, **kwargs)
-                execution_time = time.time() - start_time
-                self.record_metric(category, execution_time)
-                return result
-            return wrapper
         return decorator
 
     def save_metrics(self) -> None:
