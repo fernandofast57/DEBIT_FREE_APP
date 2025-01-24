@@ -31,6 +31,15 @@ cache_hits = Counter(
     'Total number of cache hits'
 )
 
+def get_performance_metrics():
+    """Get current performance metrics."""
+    return {
+        'concurrent_users': concurrent_users._value.get(),
+        'memory_usage': memory_usage._value.get(),
+        'cache_hits': cache_hits._value.get(),
+        'db_errors': db_errors._value.get()
+    }
+
 def monitor_db_operation(operation_type: str) -> Callable:
     def decorator(func: Callable) -> Callable:
         @wraps(func)
