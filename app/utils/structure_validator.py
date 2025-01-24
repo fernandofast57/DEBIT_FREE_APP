@@ -1,4 +1,15 @@
 
+from typing import Dict, Any
+import os
+import re
+import json
+import logging
+from app.models import db
+from web3 import Web3
+from app.utils.errors import ValidationError
+from sqlalchemy import inspect
+
+
 def validate_glossary_compliance(self) -> Dict[str, bool]:
     """Validates that all code files follow glossary nomenclature"""
     with open('docs/GLOSSARY.md', 'r') as f:
