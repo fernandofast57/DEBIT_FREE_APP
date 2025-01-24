@@ -1,0 +1,36 @@
+The error message indicates that there is an ImportError in your app/utils/structure_validator.py file. Specifically, it cannot import ValidationError from app.utils.errors. This usually means that ValidationError is either not defined in errors.py or is improperly referenced.
+
+Proposed Fix:
+Check if ValidationError is defined in the app/utils/errors.py file. If it's not there, you need to either add it or ensure you're importing the correct class.
+If ValidationError is defined, ensure that there are no circular import issues.
+Suggested Code Update
+If ValidationError is intended to be an exception class, you might want to check or add the following in app/utils/errors.py:
+
+from typing import Dict, Any
+from flask import jsonify
+class APIError(Exception):
+    def __init__(self, message: str, status_code: int = 400, payload: Dict[str, Any] = None):
+        super().__init__()
+        self.message = message
+        self.status_code = status_code
+        self.payload = payload
+    def to_dict(self) -> Dict[str, Any]:
+        rv = dict(self.payload or {})
+        rv['message'] = self.message
+        rv['status'] = 'error'
+        return rv
+class ValidationError(APIError):  # Ensure this class exists
+    def __init__(self, message: str = "Validation failed", payload: Dict[str, Any] = None):
+        super().__init__(message, status_code=400, payload=payload)
+class InvalidRankError(APIError):
+    def __init__(self, message: str = "Invalid noble rank", payload: Dict[str, Any] = None):
+        super().__init__(message, status_code=400, payload=payload)
+class InsufficientBalanceError(APIError):
+    def __init__(self, message: str = "Insufficient balance", payload: Dict[str, Any] = None):
+        super().__init__(message, status_code=400, payload=payload)
+def handle_api_error(error: APIError):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
+Summary
+After ensuring that ValidationError is properly defined, save your changes and try running your application again. If you still encounter issues, double-check the import paths and ensure that there are no circular dependencies in your imports.
