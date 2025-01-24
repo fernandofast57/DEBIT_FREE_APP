@@ -1,5 +1,5 @@
 
-from prometheus_client import Counter, Histogram
+from prometheus_client import Counter, Histogram, Gauge
 import time
 from functools import wraps
 from typing import Callable
@@ -12,6 +12,9 @@ db_operation_duration = Histogram(
 
 db_errors = Counter(
     'db_errors_total',
+    'Total number of database errors',
+    ['error_type']
+)
 
 concurrent_users = Gauge(
     'concurrent_users',
@@ -26,10 +29,6 @@ memory_usage = Gauge(
 cache_hits = Counter(
     'cache_hits_total',
     'Total number of cache hits'
-)
-
-    'Total number of database errors',
-    ['error_type']
 )
 
 def monitor_db_operation(operation_type: str) -> Callable:
