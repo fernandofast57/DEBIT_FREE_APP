@@ -8,8 +8,11 @@ from app.services.notification_service import NotificationService
 
 main_bp = Blueprint('main', __name__)
 accounting_service = AccountingService()
-asyncio.run(accounting_service.initialize())
 notification_service = NotificationService()
+
+@main_bp.before_app_first_request
+async def initialize_services():
+    await accounting_service.initialize()
 
 @main_bp.route('/')
 def index():
