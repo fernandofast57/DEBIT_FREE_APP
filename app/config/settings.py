@@ -43,6 +43,8 @@ class DevelopmentConfig(Config):
 class ProductionConfig(Config):
     DEBUG = False
     TESTING = False
+    TEMPLATES_AUTO_RELOAD = True
+    PREFERRED_URL_SCHEME = 'https'
 
 class TestingConfig(Config):
     TESTING = True
