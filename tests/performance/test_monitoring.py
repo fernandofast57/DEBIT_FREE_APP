@@ -33,7 +33,8 @@ def test_performance_alert(performance_monitor):
     metrics = performance_monitor.get_metrics()
     assert metrics['slow_operation']['max'] > performance_monitor.alert_threshold
 
-def test_concurrent_operations(performance_monitor):
+@pytest.mark.asyncio
+async def test_concurrent_operations(performance_monitor):
     import asyncio
     
     @performance_monitor.track_time('async_op')
@@ -42,7 +43,12 @@ def test_concurrent_operations(performance_monitor):
         return True
     
     async def run_concurrent():
-
+        tasks = [async_operation() for _ in range(10)]
+        await asyncio.gather(*tasks)
+    
+    await run_concurrent()
+    metrics = performance_monitor.get_metrics()
+    assert metrics['async_op']['count'] == 10
 
 def test_memory_usage_tracking(performance_monitor):
     @performance_monitor.track_time('memory_intensive_op')
@@ -65,10 +71,3 @@ def test_cache_performance(performance_monitor):
     
     metrics = performance_monitor.get_metrics()
     assert metrics['cached_operation']['cache_hits'] >= 0
-
-        tasks = [async_operation() for _ in range(10)]
-        await asyncio.gather(*tasks)
-    
-    asyncio.run(run_concurrent())
-    metrics = performance_monitor.get_metrics()
-    assert metrics['async_op']['count'] == 10
