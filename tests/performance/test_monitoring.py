@@ -42,6 +42,30 @@ def test_concurrent_operations(performance_monitor):
         return True
     
     async def run_concurrent():
+
+
+def test_memory_usage_tracking(performance_monitor):
+    @performance_monitor.track_time('memory_intensive_op')
+    def memory_operation():
+        large_list = [i for i in range(1000000)]
+        return sum(large_list)
+    
+    memory_operation()
+    metrics = performance_monitor.get_metrics()
+    assert 'memory_intensive_op' in metrics
+    assert metrics['memory_intensive_op']['memory_usage'] > 0
+
+def test_cache_performance(performance_monitor):
+    @performance_monitor.track_time('cached_operation')
+    def cached_op():
+        return "result"
+    
+    for _ in range(10):
+        cached_op()
+    
+    metrics = performance_monitor.get_metrics()
+    assert metrics['cached_operation']['cache_hits'] >= 0
+
         tasks = [async_operation() for _ in range(10)]
         await asyncio.gather(*tasks)
     

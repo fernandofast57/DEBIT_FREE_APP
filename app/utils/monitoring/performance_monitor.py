@@ -9,8 +9,13 @@ class PerformanceMonitor:
         self.metrics: Dict[str, List[float]] = {
             'response_time': [],
             'database_query_times': [],
-            'blockchain_operation_times': []
+            'blockchain_operation_times': [],
+            'memory_usage': [],
+            'cache_performance': [],
+            'concurrent_users': [],
+            'error_rates': []
         }
+        self.cache_hits = {}
         self.start_time = datetime.now()
         self._shutdown_flag = False
 

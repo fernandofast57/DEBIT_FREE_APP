@@ -12,6 +12,22 @@ db_operation_duration = Histogram(
 
 db_errors = Counter(
     'db_errors_total',
+
+concurrent_users = Gauge(
+    'concurrent_users',
+    'Number of concurrent users'
+)
+
+memory_usage = Gauge(
+    'memory_usage_bytes',
+    'Current memory usage in bytes'
+)
+
+cache_hits = Counter(
+    'cache_hits_total',
+    'Total number of cache hits'
+)
+
     'Total number of database errors',
     ['error_type']
 )
