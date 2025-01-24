@@ -1,3 +1,4 @@
+
 from decimal import Decimal
 import logging
 from datetime import datetime
@@ -6,7 +7,6 @@ from typing import Optional, Dict
 from app.models import db
 from app.models.models import User, Transaction, GoldAccount, MoneyAccount
 from app.services.blockchain_service import BlockchainService
-from app.utils.validation_report import ValidationReport
 
 logger = logging.getLogger(__name__)
 
@@ -16,6 +16,7 @@ class TransformationService:
 
     async def process_transformation(self, user_id: int, amount: Decimal) -> Dict:
         """Process a gold transformation with validation and blockchain recording"""
+        from app.utils.validation_report import ValidationReport
         try:
             # Validate transformation
             validation = self._validate_transformation(user_id, amount)
@@ -77,6 +78,7 @@ class TransformationService:
 
     def _validate_transformation(self, user_id: int, amount: Decimal) -> ValidationReport:
         """Validate transformation request"""
+        from app.utils.validation_report import ValidationReport
         validation = ValidationReport()
 
         money_account = MoneyAccount.query.filter_by(user_id=user_id).first()
