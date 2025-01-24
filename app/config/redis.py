@@ -7,7 +7,7 @@ logger = get_logger(__name__)
 
 class RedisConfig:
     def __init__(self, redis_url: Optional[str] = None):
-        self.redis_url = redis_url or "redis://localhost:6379/0"
+        self.redis_url = redis_url or "redis://0.0.0.0:6379/0"
         
     async def get_connection(self) -> redis.Redis:
         try:

@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 class CacheManager:
     def __init__(self, redis_url: str = None):
-        self.redis = redis.from_url(redis_url or "redis://localhost:6379/0")
+        self.redis = redis.from_url(redis_url or "redis://0.0.0.0:6379/0")
         self.default_ttl = 3600
         self._cache_hits = 0
         self._cache_misses = 0
