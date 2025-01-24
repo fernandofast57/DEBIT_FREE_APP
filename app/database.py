@@ -26,19 +26,11 @@ class DatabaseManager:
         self.logger.setLevel(logging.INFO)
 
     def _setup_engines(self, db_url: str) -> None:
-        engine_config = {
-            'echo': True,
-            'pool_pre_ping': True,
-            'pool_size': 5,
-            'max_overflow': 10,
-            'pool_timeout': 30,
-            'pool_recycle': 1800
-        }
+        self.sync_engine = create_engine(db_url, pool_pre_ping=True, echo=True)
         
-        self.sync_engine = create_engine(db_url, **engine_config)
         self.async_engine = create_async_engine(
-            f"sqlite+aiosqlite://{db_url.split('sqlite://')[-1]}", 
-            **engine_config
+            f"sqlite+aiosqlite://{db_url.split('sqlite://')[-1]}",
+            echo=True
         )
         
         self.SessionLocal = scoped_session(
