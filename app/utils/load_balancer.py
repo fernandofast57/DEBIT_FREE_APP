@@ -13,7 +13,12 @@ logger = logging.getLogger(__name__)
 class LoadBalancer:
     def __init__(self):
         self.servers: List[Dict] = []
-        self.redis = cache_manager.redis
+        try:
+            self.redis = cache_manager.redis
+            self.use_redis = True
+        except Exception as e:
+            logger.warning(f"Redis not available, using in-memory storage: {e}")
+            self.use_redis = False
         self.health_check_interval = 30
         self.metrics_key = "load_balancer:metrics"
         
@@ -28,10 +33,14 @@ class LoadBalancer:
             'response_times': []
         }
         self.servers.append(server)
-        await self.redis.hset(
-            f"server:{host}:{port}",
-            mapping={"health": "1", "load": "0"}
-        )
+        if self.use_redis:
+            try:
+                await self.redis.hset(
+                    f"server:{host}:{port}",
+                    mapping={"health": "1", "load": "0"}
+                )
+            except Exception as e:
+                logger.error(f"Redis operation failed: {e}")
         logger.info(f"Registered new server {host}:{port} with weight {weight}")
 
     async def health_check(self, server: Dict) -> bool:
