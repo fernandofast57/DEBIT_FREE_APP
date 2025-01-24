@@ -45,3 +45,5 @@ class LoadBalancer:
                 break
 
 load_balancer = LoadBalancer()
+# Register default server
+load_balancer.register_server(host='0.0.0.0', port=8080)
