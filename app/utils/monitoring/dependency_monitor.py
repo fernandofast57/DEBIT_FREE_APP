@@ -31,6 +31,20 @@ def check_outdated_dependencies() -> Dict[str, List[str]]:
         
     return outdated
 
+def check_dependencies(app):
+    """Check application dependencies and log results"""
+    logger.info("Checking application dependencies...")
+    try:
+        outdated = check_outdated_dependencies()
+        if outdated:
+            logger.warning(f"Found {len(outdated)} outdated packages")
+            for pkg, versions in outdated.items():
+                logger.warning(f"{pkg}: current={versions[0]}, latest={versions[1]}")
+        else:
+            logger.info("All dependencies are up to date")
+    except Exception as e:
+        logger.error(f"Error during dependency check: {str(e)}")
+
 def log_dependency_check():
     """Log dependency check results"""
     logger.info(f"Running dependency check at {datetime.now()}")
