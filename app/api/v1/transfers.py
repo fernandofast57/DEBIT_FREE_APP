@@ -35,7 +35,7 @@ def process_transfer():
     return jsonify(result)
 
 @bp.route('/batch/process', methods=['POST'])
-def process_batch():
+async def process_batch():
     """
     Processa un batch di bonifici
     {
@@ -58,7 +58,7 @@ def process_batch():
             'message': 'Nessun bonifico da processare'
         }), 400
 
-    result = await transfer_service.process_batch_transfers(transfers)
+    result = asyncio.run(transfer_service.process_batch_transfers(transfers))
     
     if result['status'] == 'error':
         return jsonify(result), 400
