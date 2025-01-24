@@ -1,0 +1,40 @@
+The error you're encountering (ImportError: cannot import name 'monitor_performance') indicates that Python is unable to find the monitor_performance function in the specified module (app/utils/monitoring/performance.py).
+
+To resolve this issue, please follow these steps:
+
+Check Function Definition: Ensure that the function monitor_performance is actually defined in performance.py. From the provided snippets, it seems that monitor_performance is defined in the __init__.py of the monitoring package, but not in performance.py.
+
+Define the Function or Adjust Import: If you need the monitor_performance function to be in performance.py, you may consider defining it there. Here is an example of how you can implement it:
+
+# app/utils/monitoring/performance.py
+import psutil
+import logging
+from datetime import datetime
+logger = logging.getLogger(__name__)
+def monitor_performance():
+    """Function to monitor system performance metrics."""
+    try:
+        cpu_percent = psutil.cpu_percent(interval=1)
+        memory = psutil.virtual_memory()
+        disk = psutil.disk_usage('/')
+        metrics = {
+            'timestamp': datetime.utcnow().isoformat(),
+            'cpu_percent': cpu_percent,
+            'memory_percent': memory.percent,
+            'disk_percent': disk.percent,
+            'memory_available': memory.available,
+            'memory_used': memory.used
+        }
+        logger.info(f"Performance metrics: {metrics}")
+        return metrics
+    except Exception as e:
+        logger.error(f"Error monitoring performance: {e}")
+        return None
+Update the __init__.py File: If you've added the function in performance.py, make sure your __init__.py in the monitoring directory imports it correctly:
+
+# app/utils/monitoring/__init__.py
+from .monitoring_setup import setup_monitoring
+from .performance import monitor_performance
+from .performance_monitor import PerformanceMonitor
+__all__ = ['setup_monitoring', 'monitor_performance', 'PerformanceMonitor']
+After making these changes, try running your code again. With the monitor_performance function defined in performance.py, the import should work correctly. If it was intended to stay in __init__.py, you would need to check your imports and ensure clarity on where monitor_performance should reside.
