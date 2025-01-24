@@ -32,8 +32,8 @@ class RobustRateLimiter:
     def __init__(self):
         if not hasattr(self, '_initialized') or not self._initialized:
             self.local_storage: Dict[str, Dict] = defaultdict(dict)
-            self.window_size = 60  # 1 minute window
-            self.max_requests = 50  # 50 requests per minute
+            self.window_size = 60  # 1 minute window as per glossary
+            self.max_requests = 50  # Default RateLimit value from glossary
             self._initialized = True
 
     def is_rate_limited(self, key: str, max_requests: int = None, window_size: int = None) -> bool:

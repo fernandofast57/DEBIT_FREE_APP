@@ -72,13 +72,15 @@ class StructureValidator:
 
         return results
 
-    def validate_status_codes(self, status: str) -> bool:
+    def validate_status_codes(self, status: str, status_type: str = 'noble') -> bool:
         """Validates status codes against glossary definitions"""
-        valid_statuses = [
-            'to_be_verified', 'verified', 'rejected',
-            'available', 'reserved', 'distributed'
-        ]
-        return status in valid_statuses
+        status_types = {
+            'noble': ['to_be_verified', 'verified', 'rejected'],
+            'gold_bar': ['available', 'reserved', 'distributed'],
+            'transaction': ['pending', 'processing', 'completed', 'failed'],
+            'account': ['active', 'suspended', 'pending_verification']
+        }
+        return status in status_types.get(status_type, [])
 
     def validate_modification(self, file_path: str) -> bool:
         """Validates if a file can be modified"""

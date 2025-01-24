@@ -1,4 +1,3 @@
-
 # Project Glossary
 
 ## Core Models & Services
@@ -8,6 +7,8 @@
 - `MoneyAccount`: Euro currency account with precision(10,2)
 - `GoldAccount`: Gold balance account with precision(10,4)
 - `AccountStatus`: ['active', 'suspended', 'pending_verification']
+- `ValidationError`: Custom exception for validation failures
+- `APIError`: Base exception class for API errors
 
 ### Noble System
 - `NobleRank`: ['bronze', 'silver', 'gold', 'platinum']
@@ -20,7 +21,7 @@
 - `GoldBarStatus`: ['available', 'reserved', 'distributed']
 - `GoldTransformation`: Euro to gold conversion record
 - `GoldFixingPrice`: Daily gold price from fixing API
-- `TransformationStatus`: ['initiated', 'validated', 'processed', 'completed']
+- `TransformationStatus`: ['initiated', 'processing', 'completed', 'failed']
 
 ### Transaction & Operations
 - `TransactionType`: ['purchase', 'sale', 'transfer', 'transformation']
