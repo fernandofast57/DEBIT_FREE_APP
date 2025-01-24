@@ -7,6 +7,9 @@ import jwt
 from decimal import Decimal
 from web3 import Web3
 import asyncio
+
+# Add the project root to Python path
+sys.path.insert(0, os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
 from app.database import db
 from app.models.models import User, MoneyAccount, GoldAccount
 from app.utils.monitoring.blockchain_monitor import BlockchainMonitor
