@@ -5,7 +5,8 @@ from typing import Dict, List, Any, Callable
 from datetime import datetime
 
 class PerformanceMonitor:
-    def __init__(self):
+    def __init__(self, alert_threshold: float = 0.1):
+        self.alert_threshold = alert_threshold
         self.metrics: Dict[str, List[float]] = {
             'response_time': [],
             'database_query_times': [],
