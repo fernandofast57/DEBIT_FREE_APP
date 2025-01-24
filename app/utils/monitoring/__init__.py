@@ -8,6 +8,8 @@ from .performance_monitor import PerformanceMonitor
 
 logger = logging.getLogger(__name__)
 
+logger = logging.getLogger(__name__)
+
 
 def monitor_performance():
   """
