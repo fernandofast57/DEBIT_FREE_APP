@@ -73,6 +73,10 @@ class Parameter(db.Model):
 class MoneyAccount(db.Model):
     __tablename__ = 'money_accounts'
 
+    @classmethod
+    def get_by_user_id(cls, user_id):
+        return cls.query.filter_by(user_id=user_id).first()
+
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     balance = db.Column(db.Numeric(precision=10, scale=2), default=0.00)

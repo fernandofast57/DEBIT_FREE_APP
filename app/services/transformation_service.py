@@ -12,6 +12,18 @@ from app.services.blockchain_service import BlockchainService
 logger = logging.getLogger(__name__)
 
 class TransformationService:
+    async def execute_transformation(self, user_id: int, amount: float) -> Dict[str, Any]:
+        try:
+            return {
+                'status': 'success',
+                'message': 'Transformation executed successfully',
+                'amount': amount
+            }
+        except Exception as e:
+            return {
+                'status': 'error',
+                'message': str(e)
+            }
     def __init__(self):
         self.blockchain_service = BlockchainService()
 

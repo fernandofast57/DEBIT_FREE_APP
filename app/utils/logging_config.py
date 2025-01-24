@@ -51,7 +51,7 @@ def get_logger(name="GoldInvestment"):
 class GlossaryComplianceLogger:
     def __init__(self):
         self.logger = get_logger('glossary_compliance')
-        
+
     def log_validation(self, component: str, results: dict):
         """Log validation results for a component"""
         status = 'PASS' if all(results.values()) else 'FAIL'
