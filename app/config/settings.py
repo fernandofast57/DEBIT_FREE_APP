@@ -1,3 +1,4 @@
+
 from decimal import Decimal
 from datetime import timedelta
 import os
@@ -29,9 +30,18 @@ class Config:
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'jwt-secret-change-in-production')
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)
 
+class DevelopmentConfig(Config):
+    DEBUG = True
+    DEVELOPMENT = True
+
 class ProductionConfig(Config):
     DEBUG = False
     TESTING = False
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
     SECRET_KEY = os.getenv('SECRET_KEY')
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
+
+class TestingConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    WTF_CSRF_ENABLED = False
