@@ -34,7 +34,7 @@ class NobleRankService:
                 return {'status': 'rejected', 'message': 'User not found'}
 
             user.noble_rank_id = new_rank_id
-            
+
             await self.db.commit()
             return {'status': 'verified', 'message': 'Rank updated successfully'}
 
@@ -50,6 +50,3 @@ from app.utils.logging_config import get_logger
 from typing import Dict, Any
 
 logger = get_logger(__name__)
-
-#This is removed because it conflicts with and is less complete than the edited version.
-#class NobleRankService: ... (original class definition removed)

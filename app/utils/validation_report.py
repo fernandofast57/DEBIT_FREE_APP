@@ -1,4 +1,3 @@
-
 import logging
 from datetime import datetime
 from app.utils.structure_validator import StructureValidator
@@ -8,6 +7,8 @@ from app.utils.logging_config import GlossaryComplianceLogger
 
 class ValidationReport:
     def __init__(self):
+        self.validation_status = None
+        self.validation_results = {}
         self.logger = logging.getLogger(__name__)
         self.structure_validator = StructureValidator()
         self.blockchain_service = BlockchainService()
@@ -15,17 +16,17 @@ class ValidationReport:
 
     async def generate_report(self):
         compliance_logger = GlossaryComplianceLogger()
-        
+
         # Validate components
         structure_results = self.structure_validator.validate_structure()
         blockchain_results = await self._validate_blockchain()
         batch_results = await self._validate_batch_system()
-        
+
         # Log compliance for each component
         compliance_logger.log_validation('structure', structure_results)
         compliance_logger.log_validation('blockchain', blockchain_results)
         compliance_logger.log_validation('batch_system', batch_results)
-        
+
         results = {
             'structure': structure_results,
             'blockchain': blockchain_results,
@@ -58,7 +59,7 @@ class ValidationReport:
     def __init__(self):
         self.validations = []
         self.timestamp = datetime.utcnow()
-        
+
     def add_validation(self, feature: str, result: bool, details: Dict[str, Any]):
         self.validations.append({
             "feature": feature,
@@ -66,7 +67,7 @@ class ValidationReport:
             "details": details,
             "timestamp": datetime.utcnow().isoformat()
         })
-        
+
     def generate_report(self) -> Dict[str, Any]:
         return {
             "report_id": str(self.timestamp.timestamp()),
@@ -77,7 +78,7 @@ class ValidationReport:
                 "failed": len([v for v in self.validations if not v["passed"]])
             }
         }
-        
+
     def save_report(self, filepath: str):
         with open(filepath, 'w') as f:
             json.dump(self.generate_report(), f, indent=2)
