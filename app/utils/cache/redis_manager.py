@@ -8,26 +8,43 @@ from app.config.settings import Config
 
 logger = logging.getLogger(__name__)
 
+class DictCache:
+    def __init__(self):
+        self._cache = {}
+        
+    async def get(self, key):
+        return self._cache.get(key)
+        
+    async def set(self, key, value, ex=None):
+        self._cache[key] = value
+        return True
+        
+    async def delete(self, *keys):
+        count = 0
+        for key in keys:
+            if key in self._cache:
+                del self._cache[key]
+                count += 1
+        return count
+        
+    async def ping(self):
+        return True
+
 def get_redis_client():
     try:
         if hasattr(Config, 'REDIS_ENABLED') and Config.REDIS_ENABLED:
-            return redis.Redis(
+            client = redis.Redis(
                 host=getattr(Config, 'REDIS_HOST', '0.0.0.0'),
                 port=getattr(Config, 'REDIS_PORT', 6379),
                 decode_responses=False,
                 socket_timeout=5,
                 retry_on_timeout=True
             )
-        return redis.Redis(
-            host='0.0.0.0',
-            port=6379,
-            decode_responses=False,
-            socket_timeout=5,
-            retry_on_timeout=True
-        )
+            client.ping()
+            return client
     except Exception as e:
-        logger.warning(f"Redis connection failed: {e}")
-        return None
+        logger.warning(f"Redis connection failed: {e}, using in-memory cache")
+        return DictCache()
 
 class CacheManager:
     _instance = None
