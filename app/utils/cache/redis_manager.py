@@ -62,9 +62,9 @@ class CacheManager:
 
     async def _init_redis(self):
         self.redis = await get_redis_client()
-            self.default_ttl = 3600
-            self._cache_hits = 0
-            self._cache_misses = 0
+        self.default_ttl = 3600
+        self._cache_hits = 0
+        self._cache_misses = 0
             self._connection_retries = 3
             self._retry_delay = 1  # seconds
 
