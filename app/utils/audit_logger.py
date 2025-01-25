@@ -91,3 +91,38 @@ class TransformationAuditLogger:
         with open('logs/detailed_transformations.json', 'a') as f:
             json.dump(log_data, f)
             f.write('\n')
+from decimal import Decimal
+import logging
+import json
+from datetime import datetime
+
+class DetailedAuditLogger:
+    def __init__(self):
+        self.logger = logging.getLogger('detailed_audit')
+        self.logger.setLevel(logging.INFO)
+        
+        handler = logging.FileHandler('logs/detailed_audit.log')
+        formatter = logging.Formatter(
+            '%(asctime)s - %(levelname)s - ID: %(transaction_id)s - %(message)s'
+        )
+        handler.setFormatter(formatter)
+        self.logger.addHandler(handler)
+    
+    def log_transformation(self, transaction_id: str, user_id: int, 
+                         euro_amount: Decimal, gold_grams: Decimal, 
+                         fixing_price: Decimal, noble_rank: str) -> None:
+        """Log dettagliato delle trasformazioni con tracking noble"""
+        log_data = {
+            'transaction_id': transaction_id,
+            'user_id': user_id,
+            'euro_amount': str(euro_amount),
+            'gold_grams': str(gold_grams),
+            'fixing_price': str(fixing_price),
+            'noble_rank': noble_rank,
+            'timestamp': datetime.utcnow().isoformat()
+        }
+        
+        self.logger.info(
+            f"Transformation: {json.dumps(log_data)}",
+            extra={'transaction_id': transaction_id}
+        )
