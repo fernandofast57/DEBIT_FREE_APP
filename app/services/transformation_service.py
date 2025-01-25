@@ -30,7 +30,10 @@ class TransformationService:
 
     async def process_transformation(self, user_id: int, euro_amount: Decimal) -> dict:
         """Process a gold transformation with enhanced validation and precision"""
+        start_time = datetime.utcnow()
         try:
+            from app.utils.monitoring.transformation_monitor import TransformationMonitor
+            monitor = TransformationMonitor()
             # Validazione preliminare
             if not isinstance(euro_amount, Decimal):
                 euro_amount = Decimal(str(euro_amount))
