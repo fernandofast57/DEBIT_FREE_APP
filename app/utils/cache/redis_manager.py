@@ -10,11 +10,21 @@ logger = logging.getLogger(__name__)
 
 def get_redis_client():
     try:
-        if Config.REDIS_ENABLED:
-            return redis.Redis(host=Config.REDIS_HOST, 
-                             port=Config.REDIS_PORT, 
-                             decode_responses=True)
-        return None
+        if hasattr(Config, 'REDIS_ENABLED') and Config.REDIS_ENABLED:
+            return redis.Redis(
+                host=getattr(Config, 'REDIS_HOST', '0.0.0.0'),
+                port=getattr(Config, 'REDIS_PORT', 6379),
+                decode_responses=False,
+                socket_timeout=5,
+                retry_on_timeout=True
+            )
+        return redis.Redis(
+            host='0.0.0.0',
+            port=6379,
+            decode_responses=False,
+            socket_timeout=5,
+            retry_on_timeout=True
+        )
     except Exception as e:
         logger.warning(f"Redis connection failed: {e}")
         return None
@@ -30,7 +40,7 @@ class CacheManager:
     def __init__(self, redis_url: str = None):
         if not hasattr(self, 'redis'):
             self.redis_url = redis_url or "redis://0.0.0.0:6379/0"
-            self.redis = None
+            self.redis = get_redis_client()
             self.default_ttl = 3600
             self._cache_hits = 0
             self._cache_misses = 0
