@@ -1,4 +1,3 @@
-
 from prometheus_client import Counter, Histogram, Gauge
 import time
 from functools import wraps
