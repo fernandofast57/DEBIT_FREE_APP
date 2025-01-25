@@ -28,7 +28,7 @@ class TransformationService:
         return (euro_amount / fixing_price) * Decimal('0.95') # Apply 5% spread
 
 
-    async def process_transformation(self, user_id: int, euro_amount: Decimal) -> dict:
+    async def execute_gold_transformation(self, user_id: int, euro_amount: Decimal) -> dict:
         """Process a gold transformation with enhanced validation and precision"""
         start_time = datetime.utcnow()
         try:
