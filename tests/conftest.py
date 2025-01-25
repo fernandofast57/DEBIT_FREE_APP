@@ -1,6 +1,7 @@
 import os
 import sys
 import pytest
+import asyncio
 from unittest.mock import Mock
 from datetime import datetime, timedelta
 import jwt
