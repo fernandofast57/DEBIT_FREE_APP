@@ -93,4 +93,8 @@ class EnhancedPerformanceMonitor:
 # Create and export a single instance
 performance_monitor = EnhancedPerformanceMonitor()
 
-__all__ = ['performance_monitor', 'EnhancedPerformanceMonitor', 'PerformanceMetric']
+class PerformanceMonitor(EnhancedPerformanceMonitor):
+    """Compatibility class that extends EnhancedPerformanceMonitor"""
+    pass
+
+__all__ = ['performance_monitor', 'EnhancedPerformanceMonitor', 'PerformanceMetric', 'PerformanceMonitor']

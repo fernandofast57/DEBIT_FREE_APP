@@ -3,6 +3,8 @@ import logging
 from logging.handlers import RotatingFileHandler
 import os
 
+APP_NAME = "GoldInvestment"
+
 def setup_logging():
     # Create logs directory if it doesn't exist
     if not os.path.exists('logs'):
