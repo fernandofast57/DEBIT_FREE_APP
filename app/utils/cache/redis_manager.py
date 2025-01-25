@@ -30,7 +30,7 @@ class DictCache:
     async def ping(self):
         return True
 
-def get_redis_client():
+async def get_redis_client():
     try:
         redis_client = redis.Redis(
             host=getattr(Config, 'REDIS_HOST', '0.0.0.0'),
@@ -40,7 +40,7 @@ def get_redis_client():
             retry_on_timeout=True,
             health_check_interval=30
         )
-        redis_client.ping()
+        await redis_client.ping()
         return redis_client
     except Exception as e:
         logger.warning(f"Redis connection failed: {e}, using fallback cache")

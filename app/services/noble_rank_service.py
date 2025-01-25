@@ -1,5 +1,5 @@
 from decimal import Decimal
-from typing import Optional
+from typing import Optional, Dict, Any
 from app.models import db, NobleRank, NobleRelation, User
 
 class NobleRankService:
