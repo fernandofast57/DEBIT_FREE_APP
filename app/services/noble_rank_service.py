@@ -1,6 +1,9 @@
 from decimal import Decimal
 from typing import Optional, Dict, Any
 from app.models import db, NobleRank, NobleRelation, User
+from app.utils.logging_config import get_logger
+
+logger = get_logger(__name__)
 
 class NobleRankService:
     """Service for managing noble ranks and bonuses as per glossary"""
@@ -28,7 +31,6 @@ class NobleRankService:
     async def update_user_rank(self, user_id: int, new_rank_id: int) -> Dict[str, Any]:
         """Update user noble rank with validation"""
         try:
-            #This part is adapted from original code, using the new db session management
             user = await self.db.query(User).get(user_id)
             if not user:
                 return {'status': 'rejected', 'message': 'User not found'}
@@ -43,10 +45,19 @@ class NobleRankService:
             logger.error(f"Failed to update user rank: {str(e)}")
             return {'status': 'rejected', 'message': str(e)}
 
-from app.models.models import User, db
-from app.models.noble_system import NobleRank
-from app.services.blockchain_service import BlockchainService
-from app.utils.logging_config import get_logger
-from typing import Dict, Any
+    async def verify_rank(self, user_id: int, noble_status: str) -> Dict[str, str]:
+        if noble_status not in ['to_be_verified', 'verified', 'rejected']:
+            return {'status': 'error', 'message': 'Invalid noble status'}
 
-logger = get_logger(__name__)
+        user = await self.db.get(User, user_id)
+        if not user:
+            return {'status': 'rejected', 'message': 'User not found'}
+
+        noble_relation = NobleRelation(
+            user_id=user_id,
+            status=noble_status
+        )
+        self.db.add(noble_relation)
+        await self.db.commit()
+
+        return {'status': 'verified', 'message': 'Noble rank verified successfully'}
