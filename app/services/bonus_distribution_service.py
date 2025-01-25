@@ -17,13 +17,17 @@ class BonusDistributionService:
         self._init_thresholds()
         
     def _init_bonus_rates(self):
-        """Initialize bonus rates with proper decimal precision"""
+        """Initialize bonus rates with maximum precision for gold calculations"""
         self.bonus_rates = {
-            'count': Decimal('0.007').quantize(Decimal('0.0001')),   # Level 1
-            'duke': Decimal('0.005').quantize(Decimal('0.0001')),    # Level 2
-            'prince': Decimal('0.005').quantize(Decimal('0.0001')),  # Level 3
-            'operational': Decimal('0.05').quantize(Decimal('0.0001'))
+            'count': Decimal('0.007').quantize(Decimal('0.00001')),   # Level 1 
+            'duke': Decimal('0.005').quantize(Decimal('0.00001')),    # Level 2
+            'prince': Decimal('0.005').quantize(Decimal('0.00001')),  # Level 3
+            'operational': Decimal('0.05').quantize(Decimal('0.00001'))
         }
+        
+        # Validazione tassi bonus
+        if not all(rate > 0 for rate in self.bonus_rates.values()):
+            raise ValueError("Tutti i tassi bonus devono essere positivi")
         
     def _init_thresholds(self):
         """Initialize achievement thresholds and rewards"""

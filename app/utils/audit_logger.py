@@ -51,3 +51,43 @@ def require_admin_approval(f: Callable):
         )
         return result
     return decorated
+from decimal import Decimal
+import logging
+import json
+from datetime import datetime
+
+class TransformationAuditLogger:
+    def __init__(self):
+        self.logger = logging.getLogger('transformation_audit')
+        self.logger.setLevel(logging.INFO)
+        
+        handler = logging.FileHandler('logs/transformations_audit.log')
+        formatter = logging.Formatter(
+            '%(asctime)s - %(levelname)s - Transaction ID: %(transaction_id)s - %(message)s'
+        )
+        handler.setFormatter(formatter)
+        self.logger.addHandler(handler)
+    
+    def log_transformation(self, transaction_id: str, user_id: int, 
+                         euro_amount: Decimal, gold_grams: Decimal, 
+                         fixing_price: Decimal) -> None:
+        """Log detailed transformation data"""
+        log_data = {
+            'transaction_id': transaction_id,
+            'user_id': user_id,
+            'euro_amount': str(euro_amount),
+            'gold_grams': str(gold_grams),
+            'fixing_price': str(fixing_price),
+            'timestamp': datetime.utcnow().isoformat()
+        }
+        
+        self.logger.info(
+            "Transformation executed",
+            extra={'transaction_id': transaction_id},
+            exc_info=True
+        )
+        
+        # Log dettagliato in formato JSON
+        with open('logs/detailed_transformations.json', 'a') as f:
+            json.dump(log_data, f)
+            f.write('\n')

@@ -29,10 +29,21 @@ class TransformationService:
 
 
     async def process_transformation(self, user_id: int, euro_amount: Decimal) -> dict:
-        """Process a gold transformation according to glossary specifications"""
+        """Process a gold transformation with enhanced validation and precision"""
         try:
-            # Validate transformation
+            # Validazione preliminare
+            if not isinstance(euro_amount, Decimal):
+                euro_amount = Decimal(str(euro_amount))
+            
+            # Arrotondamento a 2 decimali per gli euro
+            euro_amount = euro_amount.quantize(Decimal('0.01'), rounding=ROUND_DOWN)
+            
+            # Validazione completa
             validation = self._validate_transformation(user_id, euro_amount)
+            
+            # Doppio controllo limiti
+            if euro_amount < Decimal('0.01'):
+                raise TransformationError("Importo minimo non raggiunto")
             if not validation.is_valid:
                 raise TransformationError(validation.error_message)
 
