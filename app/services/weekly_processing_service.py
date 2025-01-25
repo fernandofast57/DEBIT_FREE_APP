@@ -68,3 +68,32 @@ class WeeklyProcessingService:
                 'processed_users': 0,
                 'total_gold_grams': 0
             }
+from decimal import Decimal
+import logging
+from datetime import datetime
+from app.utils.monitoring.transformation_monitor import TransformationMonitor
+
+logger = logging.getLogger(__name__)
+monitor = TransformationMonitor()
+
+class WeeklyProcessingService:
+    def __init__(self):
+        self.monitor = monitor
+        
+    async def process_weekly_transformations(self) -> dict:
+        """Elabora le trasformazioni settimanali con monitoraggio"""
+        start_time = datetime.utcnow()
+        try:
+            result = await self._execute_transformations()
+            performance_metrics = await self.monitor.monitor_performance(start_time, datetime.utcnow())
+            
+            return {
+                'status': 'success',
+                'transformations_processed': result['count'],
+                'total_amount': str(result['total_amount']),
+                'performance': performance_metrics
+            }
+            
+        except Exception as e:
+            logger.error(f"Errore elaborazione settimanale: {str(e)}")
+            return {'status': 'error', 'message': str(e)}

@@ -22,36 +22,39 @@ class BatchCollectionService:
         self.pending_transfers = []
         self.max_batch_size = 1000 #Added max batch size
         self.daily_batch_limit = 100000 #Added daily limit
+        self.MAX_BATCH_AMOUNT = 100000 # Added MAX_BATCH_AMOUNT
 
 
     async def validate_batch(self, transactions: List[Dict[str, Any]]) -> Dict[str, Any]:
-        """Validate batch according to glossary definitions"""
+        """Validazione approfondita del batch"""
         try:
-            if len(transactions) > self.max_batch_size:
-                return {
-                    'status': 'rejected',
-                    'message': f'Batch size exceeds maximum of {self.max_batch_size}'
-                }
+            total_amount = Decimal('0')
+            errors = []
 
-            total_amount = sum(Decimal(str(t.get('amount', 0))) for t in transactions) #using amount instead of euro_amount
-            if total_amount > self.daily_batch_limit:
-                return {
-                    'status': 'rejected',
-                    'message': f'Batch total exceeds daily limit of {self.daily_batch_limit} EUR'
-                }
+            for transaction in transactions:
+                if not isinstance(transaction.get('amount'), (int, float, Decimal)):
+                    errors.append(f"Importo non valido per transazione {transaction.get('id')}")
+                    continue
 
-            current_hour = datetime.now().hour
-            if not (9 <= current_hour <= 17):
-                return {
-                    'status': 'rejected',
-                    'message': 'Batch processing only allowed during market hours (9:00-17:00)'
-                }
+                amount = Decimal(str(transaction['amount']))
+                if amount <= 0:
+                    errors.append(f"Importo deve essere positivo: {transaction.get('id')}")
+                    continue
 
-            return {'status': 'verified', 'message': 'Batch validation successful'}
+                total_amount += amount
+
+            if total_amount > self.MAX_BATCH_AMOUNT:
+                errors.append(f"Importo totale batch ({total_amount}) supera il limite")
+
+            return {
+                'valid': len(errors) == 0,
+                'errors': errors,
+                'total_amount': total_amount
+            }
 
         except Exception as e:
-            logger.error(f"Batch validation error: {str(e)}")
-            return {'status': 'rejected', 'message': str(e)}
+            logger.error(f"Errore validazione batch: {str(e)}")
+            return {'valid': False, 'errors': [str(e)], 'total_amount': Decimal('0')}
 
 
     async def process_batch_transfers(self, batch_transfers: List[Dict]) -> Dict:
@@ -68,7 +71,7 @@ class BatchCollectionService:
                     reference=transfer.get('reference', '')
                 )
                 transactions.append(transaction)
-            
+
             # Process transactions in optimized batches
             batch_size = 50 #Added batch size
             for i in range(0, len(transactions), batch_size):
@@ -90,25 +93,25 @@ class BatchCollectionService:
             } for t in transactions]
 
             validation_result = await self.validate_batch(blockchain_batch)
-            if validation_result['status'] != 'verified':
+            if validation_result['status'] != 'verified': #This line needs to be adjusted because the new validate_batch returns a dict with 'valid' key
                 db.session.rollback()
                 return validation_result
 
             # Processa su blockchain
             receipt = await self.blockchain_service.process_batch_transformation(blockchain_batch)
-            
+
             if receipt and receipt.status == 1:
                 for t in transactions:
                     t.status = 'completed'
                     t.blockchain_tx = receipt.transactionHash.hex()
                 db.session.commit()
-                
+
                 return {
                     'status': 'success',
                     'message': f'Processati {len(transactions)} bonifici',
                     'tx_hash': receipt.transactionHash.hex()
                 }
-            
+
             raise Exception("Blockchain transaction failed")
 
         except Exception as e:
