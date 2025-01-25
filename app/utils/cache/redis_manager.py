@@ -11,14 +11,14 @@ logger = logging.getLogger(__name__)
 class DictCache:
     def __init__(self):
         self._cache = {}
-        
+
     async def get(self, key):
         return self._cache.get(key)
-        
+
     async def set(self, key, value, ex=None):
         self._cache[key] = value
         return True
-        
+
     async def delete(self, *keys):
         count = 0
         for key in keys:
@@ -26,24 +26,24 @@ class DictCache:
                 del self._cache[key]
                 count += 1
         return count
-        
+
     async def ping(self):
         return True
 
 def get_redis_client():
     try:
-        if hasattr(Config, 'REDIS_ENABLED') and Config.REDIS_ENABLED:
-            client = redis.Redis(
-                host=getattr(Config, 'REDIS_HOST', '0.0.0.0'),
-                port=getattr(Config, 'REDIS_PORT', 6379),
-                decode_responses=False,
-                socket_timeout=5,
-                retry_on_timeout=True
-            )
-            client.ping()
-            return client
+        redis_client = redis.Redis(
+            host=getattr(Config, 'REDIS_HOST', '0.0.0.0'),
+            port=getattr(Config, 'REDIS_PORT', 6379),
+            decode_responses=True,
+            socket_timeout=5,
+            retry_on_timeout=True,
+            health_check_interval=30
+        )
+        redis_client.ping()
+        return redis_client
     except Exception as e:
-        logger.warning(f"Redis connection failed: {e}, using in-memory cache")
+        logger.warning(f"Redis connection failed: {e}, using fallback cache")
         return DictCache()
 
 class CacheManager:
@@ -65,7 +65,7 @@ class CacheManager:
             self._retry_delay = 1  # seconds
 
     async def ensure_connection(self):
-        if self.redis is None or not self.redis.ping(): #This line is changed
+        if self.redis is None or not self.redis.ping():
             for attempt in range(self._connection_retries):
                 try:
                     self.redis = redis.from_url(
