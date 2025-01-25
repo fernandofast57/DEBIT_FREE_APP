@@ -85,23 +85,26 @@ logger = logging.getLogger(__name__)
 
 class MetricsCollector:
     def __init__(self):
-        self.db_operation_duration = db_operation_duration
-        self.db_errors = db_errors
-        self.concurrent_users = concurrent_users
-        self.memory_usage = memory_usage
-        self.cache_hits = cache_hits
+        self.daily_performance = daily_performance
+        self.weekly_performance = weekly_performance
+        self.monthly_performance = monthly_performance
+        self.market_risk = market_risk
+        self.operational_risk = operational_risk
 
-    def record_db_operation(self, operation_type: str, duration: float) -> None:
-        self.db_operation_duration.labels(operation_type=operation_type).observe(duration)
+    def record_daily_performance(self, metrics_data: Dict[str, float]) -> None:
+        self.daily_performance.labels(type="daily_performance").observe(metrics_data)
 
-    def record_error(self, error_type: str) -> None:
-        self.db_errors.labels(error_type=error_type).inc()
+    def record_weekly_performance(self, metrics_data: Dict[str, float]) -> None:
+        self.weekly_performance.labels(type="weekly_performance").observe(metrics_data)
 
-    def update_concurrent_users(self, count: int) -> None:
-        self.concurrent_users.set(count)
+    def record_monthly_performance(self, metrics_data: Dict[str, float]) -> None:
+        self.monthly_performance.labels(type="monthly_performance").observe(metrics_data)
 
-    def update_memory_usage(self, bytes_used: int) -> None:
-        self.memory_usage.set(bytes_used)
+    def update_risk_metrics(self, risk_type: str, value: float) -> None:
+        if risk_type == "market_risk":
+            self.market_risk.set(value)
+        elif risk_type == "operational_risk":
+            self.operational_risk.set(value)
 
     def record_cache_hit(self) -> None:
         self.cache_hits.inc()
