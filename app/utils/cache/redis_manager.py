@@ -65,8 +65,8 @@ class CacheManager:
         self.default_ttl = 3600
         self._cache_hits = 0
         self._cache_misses = 0
-            self._connection_retries = 3
-            self._retry_delay = 1  # seconds
+        self._connection_retries = 3
+        self._retry_delay = 1  # seconds
 
     async def ensure_connection(self):
         if self.redis is None or not self.redis.ping():
