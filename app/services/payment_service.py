@@ -1,4 +1,3 @@
-
 from decimal import Decimal
 from app.models.models import Transaction, db
 
@@ -22,10 +21,28 @@ class PaymentService:
             fee = PaymentService.calculate_processing_fee(transaction.amount, transaction.payment_method)
             transaction.processing_fee = fee
             transaction.calculate_net_amount()
-            
+
             db.session.add(transaction)
             await db.session.commit()
             return True
         except Exception as e:
             await db.session.rollback()
             raise e
+
+    @staticmethod # Added to match the original code style.  Instance method would require significant restructuring.
+    async def process_gold_payment(amount: Decimal, user_id: int) -> dict:
+        """Process gold payment transaction according to glossary definitions"""
+        #Implementation for gold payment processing would go here.  This is a placeholder.
+        #This needs to be fleshed out based on the actual glossary definitions.
+        try:
+          # Example:  Assume a gold transaction is a type of transaction.  Needs proper adaptation.
+          transaction = Transaction(amount=amount, user_id=user_id, payment_method='gold')
+          fee = PaymentService.calculate_processing_fee(transaction.amount, transaction.payment_method)
+          transaction.processing_fee = fee
+          transaction.calculate_net_amount()
+          db.session.add(transaction)
+          await db.session.commit()
+          return {"status": "success"}
+        except Exception as e:
+            await db.session.rollback()
+            return {"status": "failure", "error": str(e)}

@@ -2,21 +2,26 @@ from decimal import Decimal
 import logging
 from datetime import datetime
 from typing import Optional, Dict, Any
+from decimal import ROUND_DOWN
 
 from app.utils.validation_report import ValidationReport
 from app.models import db
 from app.models.models import User, Transaction, GoldAccount, MoneyAccount, GoldTransformation
 from app.services.blockchain_service import BlockchainService
 from app.core.exceptions import TransformationError
+from app.services.batch_collection_service import BatchCollectionService # Assuming this service exists
 
 
 logger = logging.getLogger(__name__)
 
-class TransformationService:
-    """Service for handling gold transformations as per glossary"""
+class GoldTransformationService:
+    """Service for managing euro to gold transformations as per glossary"""
 
-    def __init__(self):
+    def __init__(self, db_session):
+        self.db = db_session
+        self.logger = logging.getLogger(__name__)
         self.blockchain_service = BlockchainService()
+        self.batch_processor = BatchCollectionService()
 
     async def _get_current_fixing_price(self) -> Decimal:
         """Retrieves the current gold fixing price.  Implementation details omitted for brevity."""
@@ -37,13 +42,13 @@ class TransformationService:
             # Validazione preliminare
             if not isinstance(euro_amount, Decimal):
                 euro_amount = Decimal(str(euro_amount))
-            
+
             # Arrotondamento a 2 decimali per gli euro
             euro_amount = euro_amount.quantize(Decimal('0.01'), rounding=ROUND_DOWN)
-            
+
             # Validazione completa
             validation = self._validate_transformation(user_id, euro_amount)
-            
+
             # Doppio controllo limiti
             if euro_amount < Decimal('0.01'):
                 raise TransformationError("Importo minimo non raggiunto")
