@@ -1,6 +1,19 @@
+
 from decimal import Decimal
 from . import db
 from .models import User, NobleRelation, BonusTransaction
+
+class NobleRank(db.Model):
+    __tablename__ = 'noble_ranks'
+
+    id = db.Column(db.Integer, primary_key=True)
+    rank_name = db.Column(db.String(50), nullable=False)
+    bonus_rate = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
+    min_investment = db.Column(db.Numeric(precision=10, scale=2), nullable=False)
+    level = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return f"<NobleRank {self.rank_name} (Bonus Rate: {self.bonus_rate})>"
 
 class NobleSystem:
     def __init__(self, db_session):
@@ -11,10 +24,3 @@ class NobleSystem:
         if not user or not user.noble_rank:
             return Decimal('0')
         return transaction_amount * user.noble_rank.bonus_rate
-
-class NobleRelation(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    noble_rank_id = db.Column(db.Integer, db.ForeignKey('noble_ranks.id'))
-    verification_status = db.Column(db.String(50))
-    status = db.Column(db.String(50))

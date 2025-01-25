@@ -32,14 +32,14 @@ class DictCache:
 
 async def get_redis_client():
     try:
-        redis_client = redis.Redis(
+        redis_client = await redis.Redis(
             host=getattr(Config, 'REDIS_HOST', '0.0.0.0'),
             port=getattr(Config, 'REDIS_PORT', 6379),
             decode_responses=True,
             socket_timeout=5,
             retry_on_timeout=True,
             health_check_interval=30
-        )
+        ).initialize()
         await redis_client.ping()
         return redis_client
     except Exception as e:
