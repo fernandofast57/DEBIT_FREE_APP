@@ -57,7 +57,7 @@ class BatchCollectionService:
             return {'valid': False, 'errors': [str(e)], 'total_amount': Decimal('0')}
 
 
-    async def process_batch_transfers(self, batch_transfers: List[Dict]) -> Dict:
+    async def execute_batch_transfers(self, batch_transfers: List[Dict]) -> Dict:
         """Processa un batch di bonifici"""
         try:
             transactions = []

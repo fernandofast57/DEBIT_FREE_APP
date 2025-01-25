@@ -6,7 +6,7 @@ from app.services import BlockchainService
 
 class ValidationReport:
     def __init__(self):
-        self.validation_status = 'pending'  # ['pending', 'verified', 'rejected']
+        self.validation_status = 'pending'  # ['pending', 'completed', 'rejected']
         self.validation_results = {}
         self.timestamp = datetime.utcnow()
         self.logger = logging.getLogger(__name__)
