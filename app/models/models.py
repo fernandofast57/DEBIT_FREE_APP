@@ -22,10 +22,25 @@ class Transaction(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     amount = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
     transaction_type = db.Column(db.Enum(TransactionType), nullable=False)
+    payment_method = db.Column(db.String(50), default='bank_transfer')
+    processing_fee = db.Column(db.Numeric(precision=10, scale=4), default=0)
+    net_amount = db.Column(db.Numeric(precision=10, scale=4))
     status = db.Column(db.String(20), default='pending')
     date = db.Column(db.DateTime, default=datetime.utcnow)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     description = db.Column(db.String(200))
+
+    @validates('payment_method')
+    def validate_payment_method(self, key, method):
+        valid_methods = ['bank_transfer', 'credit_card', 'paypal']
+        if method not in valid_methods:
+            raise ValueError('Metodo di pagamento non valido')
+        return method
+
+    def calculate_net_amount(self):
+        """Calcola l'importo netto dopo le commissioni"""
+        self.net_amount = self.amount - self.processing_fee
+        return self.net_amount
 
     user = db.relationship('User', back_populates='transactions')
 
