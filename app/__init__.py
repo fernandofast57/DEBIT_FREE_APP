@@ -2,7 +2,14 @@ from flask import Flask, render_template
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from app.config.settings import Config
+import asyncio
 from app.utils.monitoring.performance_monitor import PerformanceMonitor
+from app.utils.cache.redis_manager import cache_manager
+
+# Initialize cache manager
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
+loop.run_until_complete(cache_manager.initialize())
 
 db = SQLAlchemy()
 

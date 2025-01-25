@@ -58,7 +58,12 @@ class CacheManager:
         if not hasattr(self, 'redis'):
             self.redis_url = redis_url or "redis://0.0.0.0:6379/0"
             self.redis = None
-            asyncio.create_task(self._init_redis())
+            self.initialized = False
+
+    async def initialize(self):
+        if not self.initialized:
+            await self._init_redis()
+            self.initialized = True
 
     async def _init_redis(self):
         self.redis = await get_redis_client()
