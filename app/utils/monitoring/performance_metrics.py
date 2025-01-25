@@ -55,3 +55,27 @@ def monitor_db_operation(operation_type: str) -> Callable:
                 db_operation_duration.labels(operation_type=operation_type).observe(duration)
         return wrapper
     return decorator
+
+class PerformanceMonitor:
+    def __init__(self):
+        self.metrics = {}
+
+    def record_metrics(self, metric_type: str, value: float):
+        """Record and analyze performance metrics"""
+        self.metrics.setdefault(metric_type, []).append(value)
+
+        # Calculate moving averages
+        window = min(10, len(self.metrics[metric_type]))
+        moving_avg = sum(self.metrics[metric_type][-window:]) / window if window > 0 else 0
+
+        # Alert on anomalies
+        if value > moving_avg * 1.5:  # 50% above moving average
+            logger.warning(f"Performance anomaly detected in {metric_type}")
+            self.alert_anomaly(metric_type, value, moving_avg)
+
+    def alert_anomaly(self, metric_type, value, moving_avg):
+        #Add your anomaly alert logic here
+        pass
+
+import logging
+logger = logging.getLogger(__name__)

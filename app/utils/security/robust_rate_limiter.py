@@ -12,22 +12,22 @@ class RobustRateLimiter:
         # Stricter rate limiting defaults
         self.window_size = 60  # 1 minute window
         self.max_requests = 50  # 50 requests per minute - more restrictive
-        
+
     def is_rate_limited(self, key: str, max_requests: int = None, window_size: int = None) -> bool:
         """Check if request should be rate limited"""
         current = time.time()
         window_size = window_size or self.window_size
         max_reqs = max_requests or self.max_requests
-        
+
         if key not in self.local_storage:
             self.local_storage[key] = {'count': 1, 'window_start': current}
             return False
-            
+
         window_start = self.local_storage[key]['window_start']
         if current - window_start > window_size:
             self.local_storage[key] = {'count': 1, 'window_start': current}
             return False
-            
+
         self.local_storage[key]['count'] += 1
         return self.local_storage[key]['count'] > max_reqs
 
@@ -43,3 +43,15 @@ def rate_limit(max_requests: int = 100, window_size: int = 60):
             return f(*args, **kwargs)
         return decorated_function
     return decorator
+
+RATE_LIMITS = {
+    'default': '50/minute',
+    'transformation': '10/minute',
+    'auth': '5/minute',
+    'blockchain': '20/minute',
+    'noble_operations': '15/minute'
+}
+
+# Add dynamic rate adjustment based on load
+BURST_MULTIPLIER = 2
+LOCKOUT_DURATION = 300  # 5 minutes in seconds

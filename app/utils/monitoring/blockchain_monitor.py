@@ -18,7 +18,7 @@ class BlockchainEvent:
     data: Dict[str, Any]
 
 class BlockchainMonitor:
-    def __init__(self, web3_provider):
+    def __init__(self, web3_provider, metrics): # Added metrics parameter
         self.w3 = web3_provider if isinstance(web3_provider, Web3) else Web3(Web3.HTTPProvider(web3_provider))
         self.last_block = 0
         self.pending_transactions: Dict[str, datetime] = {}
@@ -26,6 +26,7 @@ class BlockchainMonitor:
         self._running = False
         self.alert_threshold = 5
         self.latest_block = 0
+        self.metrics = metrics # Assign metrics
 
     async def start_monitoring(self):
         """Start blockchain monitoring process"""
@@ -115,9 +116,21 @@ class BlockchainMonitor:
         except Exception as e:
             return {'status': 'error', 'message': f'block not found: {str(e)}'}
 
-    async def monitor_transactions(self, tx_data: Optional[Dict] = None) -> Dict[str, Any]:
-        self.latest_block = self.w3.eth.block_number
-        return {'status': 'monitored', 'latest_block': self.latest_block}
+    async def monitor_transactions(self):
+        """Monitor blockchain transactions with enhanced error handling"""
+        try:
+            latest_block = await self.w3.eth.block_number
+            self.metrics.gauge('blockchain_latest_block', latest_block)
+
+            # Monitor pending transactions
+            pending_count = len(await self.w3.eth.get_block('pending')['transactions'])
+            self.metrics.gauge('blockchain_pending_transactions', pending_count)
+
+            return latest_block, pending_count
+        except Exception as e:
+            logger.error(f"Blockchain monitoring error: {str(e)}")
+            self.metrics.increment('blockchain_monitoring_errors')
+            return None, 0
 
     def send_alert(self, message: str) -> Dict[str, str]:
         logger.warning(f"Blockchain Alert: {message}")
