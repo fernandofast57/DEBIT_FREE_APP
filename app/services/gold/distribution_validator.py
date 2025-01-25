@@ -122,3 +122,6 @@ class DistributionValidator:
             # TODO: Implementare sistema di logging più robusto
         except:
             pass
+
+    async def validate_batch(self, batch_data):
+        pass
