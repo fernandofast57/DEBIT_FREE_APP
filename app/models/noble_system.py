@@ -1,19 +1,6 @@
-
 from decimal import Decimal
 from . import db
-from .models import User, NobleRelation, BonusTransaction
-
-class NobleRank(db.Model):
-    __tablename__ = 'noble_ranks'
-
-    id = db.Column(db.Integer, primary_key=True)
-    rank_name = db.Column(db.String(50), nullable=False)
-    bonus_rate = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
-    min_investment = db.Column(db.Numeric(precision=10, scale=2), nullable=False)
-    level = db.Column(db.Integer, nullable=False)
-
-    def __repr__(self):
-        return f"<NobleRank {self.rank_name} (Bonus Rate: {self.bonus_rate})>"
+from .models import User, NobleRelation, BonusTransaction, NobleRank
 
 class NobleSystem:
     def __init__(self, db_session):

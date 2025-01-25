@@ -62,7 +62,7 @@ class Transaction(db.Model):
 
 class BankTransfer(db.Model):
     __tablename__ = 'bank_transfers'
-    
+
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     amount = db.Column(db.Numeric(20, 8), nullable=False)
@@ -71,7 +71,7 @@ class BankTransfer(db.Model):
     description = db.Column(db.String(255))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     completed_at = db.Column(db.DateTime, nullable=True)
-    
+
     user = db.relationship('User', backref='bank_transfers')
 
 class Parameter(db.Model):
@@ -169,12 +169,12 @@ class KYCDetail(db.Model):
 
 class NobleRank(db.Model):
     __tablename__ = 'noble_ranks'
+    __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     rank_name = db.Column(db.String(50), nullable=False)
     bonus_rate = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
-    min_investment = db.Column(db.Numeric(precision=10, scale=2),
-                               nullable=False)
+    min_investment = db.Column(db.Numeric(precision=10, scale=2), nullable=False)
     level = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
