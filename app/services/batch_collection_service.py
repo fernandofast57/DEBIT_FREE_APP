@@ -92,8 +92,8 @@ class BatchCollectionService:
                 'timestamp': int(t.created_at.timestamp())
             } for t in transactions]
 
-            validation_result = await self.validate_batch(blockchain_batch)
-            if validation_result['status'] != 'verified': #This line needs to be adjusted because the new validate_batch returns a dict with 'valid' key
+            validation_result = await self.verify_batch(blockchain_batch)
+            if validation_result['status'] != 'completed': #This line needs to be adjusted because the new validate_batch returns a dict with 'valid' key
                 db.session.rollback()
                 return validation_result
 

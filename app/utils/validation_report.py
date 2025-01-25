@@ -24,7 +24,7 @@ class ValidationReport:
                 'timestamp': self.timestamp.isoformat()
             }
 
-            self.validation_status = 'approved' if all(self.validation_results.values()) else 'rejected'
+            self.validation_status = 'verified' if all(self.validation_results.values()) else 'rejected'
 
             return {
                 'status': self.validation_status,

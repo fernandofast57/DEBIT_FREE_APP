@@ -150,7 +150,7 @@ class BlockchainService:
                 raise ValueError("Transaction failed")
 
             return {
-                'status': 'verified',
+                'status': 'completed',
                 'transaction_hash': receipt.transactionHash.hex(),
                 'block_number': receipt.blockNumber
             }

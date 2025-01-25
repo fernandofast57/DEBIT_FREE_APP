@@ -27,27 +27,27 @@ class TransactionValidator:
             required_fields = ['amount', 'sender_id', 'receiver_id', 'transaction_type', 'timestamp']
 
             if not all(field in transaction for field in required_fields):
-                self.logger.error(f"Missing required fields in transaction: {transaction}")
+                self.logger.error(f"Transaction rejected: Missing required fields in transaction: {transaction}")
                 return False
 
             # Validate gold amount precision (4 decimali per i grammi)
             amount = Decimal(str(transaction['amount'])).quantize(Decimal('0.0001'))
             if amount <= Decimal('0'):
-                self.logger.error(f"Invalid gold amount: {amount}")
+                self.logger.error(f"Transaction rejected: Invalid gold amount: {amount}")
                 return False
 
             # Verifica duplicati nella stessa finestra temporale
             if self._is_duplicate_transaction(transaction):
-                self.logger.error("Duplicate transaction detected")
+                self.logger.error("Transaction rejected: Duplicate transaction detected")
                 return False
 
             # Verifica disponibilità oro
             if not self._verify_gold_availability(transaction['sender_id'], amount):
-                self.logger.error("Insufficient gold balance")
+                self.logger.error("Transaction rejected: Insufficient gold balance")
                 return False
 
             return True
 
         except Exception as e:
-            self.logger.critical(f"Transaction validation error: {str(e)}")
+            self.logger.critical(f"Transaction validation critical error: {str(e)}")
             return False
