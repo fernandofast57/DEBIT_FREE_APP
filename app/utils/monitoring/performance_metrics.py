@@ -78,4 +78,33 @@ class PerformanceMonitor:
         pass
 
 import logging
+from prometheus_client import Counter, Histogram, Gauge
+from typing import Dict, Any
+
 logger = logging.getLogger(__name__)
+
+class MetricsCollector:
+    def __init__(self):
+        self.db_operation_duration = db_operation_duration
+        self.db_errors = db_errors
+        self.concurrent_users = concurrent_users
+        self.memory_usage = memory_usage
+        self.cache_hits = cache_hits
+
+    def record_db_operation(self, operation_type: str, duration: float) -> None:
+        self.db_operation_duration.labels(operation_type=operation_type).observe(duration)
+
+    def record_error(self, error_type: str) -> None:
+        self.db_errors.labels(error_type=error_type).inc()
+
+    def update_concurrent_users(self, count: int) -> None:
+        self.concurrent_users.set(count)
+
+    def update_memory_usage(self, bytes_used: int) -> None:
+        self.memory_usage.set(bytes_used)
+
+    def record_cache_hit(self) -> None:
+        self.cache_hits.inc()
+
+    def get_current_metrics(self) -> Dict[str, Any]:
+        return get_performance_metrics()
