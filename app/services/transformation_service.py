@@ -7,7 +7,7 @@ from app.utils.validation_report import ValidationReport
 from app.models import db
 from app.models.models import User, Transaction, GoldAccount, MoneyAccount, GoldTransformation
 from app.services.blockchain_service import BlockchainService
-from app.exceptions import TransformationError
+from app.core.exceptions import TransformationError
 
 
 logger = logging.getLogger(__name__)
