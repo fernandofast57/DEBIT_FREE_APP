@@ -90,9 +90,68 @@ class EnhancedPerformanceMonitor:
             for category, metric in self.metrics.items()
         }
 
-performance_monitor = EnhancedPerformanceMonitor()
+performance_monitor_func = EnhancedPerformanceMonitor()
+
 
 import psutil
+import time
+from datetime import datetime
+import logging
+from dataclasses import dataclass
+from typing import Dict, List
+import asyncio
+
+logger = logging.getLogger(__name__)
+
+@dataclass
+class SystemMetrics:
+    cpu_percent: float
+    memory_percent: float
+    disk_usage: float
+    active_connections: int
+    response_times: List[float]
+
+class PerformanceMonitor:
+    def __init__(self):
+        self.metrics_history: List[SystemMetrics] = []
+        self.alert_thresholds = {
+            'cpu_percent': 80.0,
+            'memory_percent': 85.0,
+            'disk_usage': 90.0
+        }
+
+    async def collect_metrics(self) -> SystemMetrics:
+        """Collect system performance metrics"""
+        metrics = SystemMetrics(
+            cpu_percent=psutil.cpu_percent(),
+            memory_percent=psutil.virtual_memory().percent,
+            disk_usage=psutil.disk_usage('/').percent,
+            active_connections=len(psutil.net_connections()),
+            response_times=[]
+        )
+
+        self.metrics_history.append(metrics)
+        if len(self.metrics_history) > 1000:
+            self.metrics_history.pop(0)
+
+        await self._check_alerts(metrics)
+        return metrics
+
+    async def _check_alerts(self, metrics: SystemMetrics):
+        """Check if any metrics exceed thresholds"""
+        for metric_name, threshold in self.alert_thresholds.items():
+            value = getattr(metrics, metric_name)
+            if value > threshold:
+                logger.warning(f"Performance alert: {metric_name} at {value}% exceeds threshold of {threshold}%")
+
+    async def start_monitoring(self):
+        """Start continuous monitoring"""
+        while True:
+            await self.collect_metrics()
+            await asyncio.sleep(60)  # Collect metrics every minute
+
+performance_monitor_sys = PerformanceMonitor()
+
 import logging
 from datetime import datetime
 

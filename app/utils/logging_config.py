@@ -2,39 +2,36 @@ import logging
 from logging.handlers import RotatingFileHandler
 import os
 
-APP_NAME = 'GoldInvestment'
-
-# Create and configure the root logger
-logger = logging.getLogger(APP_NAME)
-
 def setup_logging():
     # Create logs directory if it doesn't exist
     if not os.path.exists('logs'):
         os.makedirs('logs')
 
-    # Configure the root logger
-    logger.setLevel(logging.INFO)
+    # Configure log handlers with rotation
+    handlers = {
+        'app': RotatingFileHandler('logs/app.log', maxBytes=1024*1024, backupCount=10),
+        'error': RotatingFileHandler('logs/error.log', maxBytes=1024*1024, backupCount=10),
+        'security': RotatingFileHandler('logs/security.log', maxBytes=1024*1024, backupCount=10),
+        'performance': RotatingFileHandler('logs/performance.log', maxBytes=1024*1024, backupCount=5),
+        'audit': RotatingFileHandler('logs/audit.log', maxBytes=1024*1024, backupCount=30)
+    }
 
-    # Create handlers
-    file_handler = RotatingFileHandler(
-        'logs/app.log',
-        maxBytes=1024 * 1024,  # 1MB
-        backupCount=10
+    # Configure formatters
+    formatter = logging.Formatter(
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
-    console_handler = logging.StreamHandler()
 
-    # Create formatters and add it to handlers
-    log_format = '%(asctime)s [%(levelname)s] [%(name)s:%(lineno)d] %(message)s'
-    formatter = logging.Formatter(log_format)
-    file_handler.setFormatter(formatter)
-    console_handler.setFormatter(formatter)
+    # Apply formatter to all handlers
+    for handler in handlers.values():
+        handler.setFormatter(formatter)
 
-    # Add handlers to the logger if they haven't been added already
-    if not logger.handlers:
-        logger.addHandler(file_handler)
-        logger.addHandler(console_handler)
+    # Configure root logger
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.INFO)
+    for handler in handlers.values():
+        root_logger.addHandler(handler)
 
-    return logger
+    return handlers
 
 def get_logger(name="GoldInvestment"):
     """
