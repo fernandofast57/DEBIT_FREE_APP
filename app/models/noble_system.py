@@ -1,11 +1,19 @@
 from decimal import Decimal
 from . import db
-from .models import User, NobleRank, NobleRelation, BonusTransaction
+from .models import User, NobleRelation, BonusTransaction
+
+class NobleRank(db.Model):
+    """Noble rank system as defined in glossary"""
+    __tablename__ = 'noble_ranks'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True, nullable=False)
+    bonus_rate = db.Column(db.Numeric(precision=10, scale=2), nullable=False)
+
 
 class NobleSystem:
     def __init__(self, db_session):
         self.db = db_session
-        
+
     async def calculate_bonus(self, user_id: int, transaction_amount: Decimal) -> Decimal:
         user = await self.db.query(User).filter_by(id=user_id).first()
         if not user or not user.noble_rank:
