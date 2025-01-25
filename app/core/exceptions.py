@@ -1,6 +1,18 @@
 
-class DistributionError(Exception):
-    """Exception raised for errors in the distribution process."""
-    def __init__(self, message="An error occurred during distribution"):
-        self.message = message
-        super().__init__(self.message)
+from typing import Dict, Any
+
+class GoldInvestmentError(Exception):
+    """Base exception class as defined in glossary"""
+    pass
+
+class TransformationError(GoldInvestmentError):
+    """Error during gold transformation process"""
+    pass
+
+class NobleSystemError(GoldInvestmentError):
+    """Error in noble system operations"""
+    pass
+
+class SecurityError(GoldInvestmentError):
+    """Security related errors"""
+    pass
