@@ -10,8 +10,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class WeeklyBatchService:
-    """Service for managing weekly gold transformation batches according to glossary"""
+class BatchCollectionService:
+    """Service for managing batch collection operations according to glossary"""
     VALID_TRANSACTION_TYPES = ['gold_transfer', 'noble_verification', 'gold_transformation']
     def __init__(self):
         self.blockchain_service = BlockchainService()
