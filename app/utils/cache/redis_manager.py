@@ -65,13 +65,17 @@ class CacheManager:
             await self._init_redis()
             self.initialized = True
 
+    DEFAULT_TTL = 3600
+    MAX_RETRIES = 3
+    RETRY_DELAY = 1
+    
     async def _init_redis(self):
         self.redis = await get_redis_client()
-        self.default_ttl = 3600
+        self.default_ttl = self.DEFAULT_TTL
         self._cache_hits = 0
         self._cache_misses = 0
-        self._connection_retries = 3
-        self._retry_delay = 1  # seconds
+        self._connection_retries = self.MAX_RETRIES
+        self._retry_delay = self.RETRY_DELAY  # seconds
 
     async def ensure_connection(self):
         if self.redis is None or not self.redis.ping():
