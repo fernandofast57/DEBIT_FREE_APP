@@ -8,6 +8,7 @@ from functools import lru_cache
 from app.utils.monitoring.blockchain_monitor import BlockchainMonitor
 from app.utils.retry import retry_with_backoff
 from app.utils.logging_config import get_logger
+from app.utils.monitoring.performance_metrics import MetricsCollector
 
 logger = get_logger(__name__)
 
@@ -37,13 +38,15 @@ class BlockchainService:
             self.w3 = mock_service.w3
             self.contract = mock_service.contract
             self.account = mock_service.account
-            self.monitor = BlockchainMonitor(self.w3)
+            metrics = MetricsCollector()
+            self.monitor = BlockchainMonitor(self.w3, metrics)
             return
 
         self.rpc_endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
         await self._connect_to_rpc()
         if self.w3:
-            self.monitor = BlockchainMonitor(self.w3)
+            metrics = MetricsCollector()
+            self.monitor = BlockchainMonitor(self.w3, metrics)
 
     @retry_with_backoff(max_retries=3)
     async def _connect_to_rpc(self) -> bool:
@@ -56,7 +59,7 @@ class BlockchainService:
                 self.contract = mock_service.contract
                 self._mock_initialized = True
             return True
-            
+
         if not self.rpc_endpoints or not any(endpoint.strip() for endpoint in self.rpc_endpoints):
             logger.error("Nessun endpoint RPC valido configurato")
             raise ValueError("Configurazione RPC mancante o non valida")
