@@ -22,6 +22,7 @@
 
 ### Gold System: 100% Complete
 - ✅ Weekly transformations
+- ✅ Weekly amount tracking
 - ✅ Fixing price integration
 - ✅ Spread calculation (5% + 1.7%)
 - ✅ Transaction tracking

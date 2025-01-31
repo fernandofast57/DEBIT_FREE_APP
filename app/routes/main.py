@@ -1,4 +1,3 @@
-
 import asyncio
 from flask import Blueprint, render_template, redirect, url_for, current_app
 from flask_login import login_required, current_user
@@ -47,7 +46,7 @@ def client_dashboard():
     gold_balance = current_user.gold_account.balance
     euro_balance = current_user.money_account.balance
     rewards = accounting_service.get_user_rewards(current_user.id)
-    
+
     return render_template('client/dashboard.html',
                          transactions=transactions,
                          gold_balance=gold_balance,

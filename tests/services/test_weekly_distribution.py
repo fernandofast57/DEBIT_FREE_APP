@@ -18,14 +18,14 @@ from app import create_app
 
 pytestmark = [pytest.mark.asyncio]
 
-class TestWeeklyDistribution:
+class TestDistribuzioneSettimanale:
     @pytest.fixture(autouse=True)
-    async def setup(self, async_session, distribution_service):
+    async def setup(self, sessione_async, servizio_distribuzione):
         self.app = create_app()
         self.app_context = self.app.app_context()
         self.app_context.push()
-        self.session = async_session
-        self.service = distribution_service
+        self.sessione = sessione_async
+        self.servizio = servizio_distribuzione
         yield
         self.app_context.pop()
 

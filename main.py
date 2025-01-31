@@ -1,4 +1,3 @@
-# main.py
 import os
 import logging
 import sys
@@ -7,18 +6,14 @@ from flask import Flask
 from flask_cors import CORS
 from app import create_app
 from app.config.settings import Config
-from app.utils.monitoring.performance_monitor import PerformanceMonitor
-from app.utils.security.circuit_breaker import CircuitBreaker
-import signal
-import resource
+from app.utils.monitoring.performance_monitor import SystemPerformanceMonitor
 
-# Configurazione logging avanzata
+# Logging Configuration
 LOGGING_CONFIG = {
     'version': 1,
     'formatters': {
         'default': {
-            'format':
-            '[%(asctime)s] [%(levelname)s] [%(name)s:%(lineno)d] %(message)s',
+            'format': '[%(asctime)s] [%(levelname)s] [%(name)s:%(lineno)d] %(message)s',
             'datefmt': '%Y-%m-%d %H:%M:%S'
         }
     },
@@ -45,63 +40,46 @@ LOGGING_CONFIG = {
 dictConfig(LOGGING_CONFIG)
 logger = logging.getLogger(__name__)
 
-
 class ApplicationManager:
-
     def __init__(self):
         self.app = None
-        self.performance_monitor = PerformanceMonitor()
+        self.performance_monitor = SystemPerformanceMonitor()
 
     def initialize_app(self):
-        """Inizializza l'applicazione Flask con le tue configurazioni esistenti"""
+        """Initialize Flask application with configurations"""
         self.app = create_app(Config())
         CORS(self.app, resources={r"/api/*": {"origins": "*"}})
 
         @self.app.after_request
         def after_request(response):
-            response.headers.add('Access-Control-Allow-Headers',
-                                 'Content-Type,Authorization')
-            response.headers.add('Access-Control-Allow-Methods',
-                                 'GET,PUT,POST,DELETE,OPTIONS')
+            response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+            response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
             return response
 
         return self.app
 
     def setup_signal_handlers(self):
-
+        """Setup graceful shutdown handlers"""
         def handle_shutdown(signum, frame):
             logger.info(f"Received shutdown signal {signum}. Performing cleanup...")
             self.performance_monitor.save_metrics()
-            # Perform graceful shutdown
-            if hasattr(self, 'app'):
-                with self.app.app_context():
-                    db.session.remove()
-                    db.engine.dispose()
             sys.exit(0)
 
+        import signal
         signal.signal(signal.SIGTERM, handle_shutdown)
         signal.signal(signal.SIGINT, handle_shutdown)
         signal.signal(signal.SIGQUIT, handle_shutdown)
 
     def run(self):
+        """Run the application"""
         try:
             self.app = self.initialize_app()
             self.setup_signal_handlers()
 
-            port = int(os.getenv('PORT', 8080))
-            env = os.getenv('FLASK_ENV', 'development')
-            debug = False
-            use_reloader = False
+            server = {'host': '0.0.0.0', 'port': int(os.getenv('PORT', 8080))}
+            logger.info(f"Starting application on {server['host']}:{server['port']} in production mode")
 
-            server = {'host': '0.0.0.0', 'port': 8080}  # Default server config
-
-            logger.info(
-                f"Starting application on {server['host']}:{server['port']} in production mode"
-            )
-
-            with self.app.app_context():
-                # Use Gunicorn for production
-                from gunicorn.app.base import BaseApplication
+            from gunicorn.app.base import BaseApplication
 
             class StandaloneApplication(BaseApplication):
                 def __init__(self, app, options=None):
@@ -117,7 +95,7 @@ class ApplicationManager:
                     return self.application
 
             options = {
-                'bind': f"0.0.0.0:{server['port']}",
+                'bind': f"{server['host']}:{server['port']}",
                 'workers': 4,
                 'worker_class': 'sync',
                 'timeout': 30
@@ -131,7 +109,10 @@ class ApplicationManager:
         finally:
             self.performance_monitor.save_metrics()
 
-
 if __name__ == '__main__':
-    application = ApplicationManager()
-    application.run()
+    try:
+        application = ApplicationManager()
+        application.run()
+    except Exception as e:
+        logging.error(f"Application startup error: {str(e)}", exc_info=True)
+        sys.exit(1)

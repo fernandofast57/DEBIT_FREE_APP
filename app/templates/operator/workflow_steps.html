@@ -1,0 +1,63 @@
+
+{% extends "operator/base.html" %}
+{% block content %}
+<div class="workflow-container">
+    <h2>Transaction Approval Workflow</h2>
+    <div class="workflow-steps">
+        <div class="step {% if workflow.current_step == 'document_validation' %}active{% endif %}">
+            <h3>Document Validation</h3>
+            <div class="step-actions">
+                <button class="btn btn-success" onclick="processStep('document_validation', 'approve')">Approve</button>
+                <button class="btn btn-danger" onclick="processStep('document_validation', 'reject')">Reject</button>
+            </div>
+        </div>
+        
+        <div class="step {% if workflow.current_step == 'kyc_verification' %}active{% endif %}">
+            <h3>KYC Verification</h3>
+            <div class="step-actions">
+                <button class="btn btn-success" onclick="processStep('kyc_verification', 'approve')">Approve</button>
+                <button class="btn btn-danger" onclick="processStep('kyc_verification', 'reject')">Reject</button>
+            </div>
+        </div>
+        
+        <div class="step {% if workflow.current_step == 'financial_check' %}active{% endif %}">
+            <h3>Financial Check</h3>
+            <div class="step-actions">
+                <button class="btn btn-success" onclick="processStep('financial_check', 'approve')">Approve</button>
+                <button class="btn btn-danger" onclick="processStep('financial_check', 'reject')">Reject</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="workflow-history mt-4">
+        <h4>Workflow History</h4>
+        <ul id="workflowHistory">
+        {% for step in workflow.steps_completed %}
+            <li>{{ step.step }} - {{ step.action }} ({{ step.timestamp }})</li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<script>
+async function processStep(step, action) {
+    try {
+        const response = await fetch(`/api/v1/admin/approvals/workflow/${transactionId}/step/${step}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ action })
+        });
+        
+        if (response.ok) {
+            location.reload();
+        } else {
+            alert('Error processing step');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+</script>
+{% endblock %}

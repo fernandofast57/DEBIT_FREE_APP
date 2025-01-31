@@ -9,7 +9,7 @@ class UserRole(Enum):
     MANAGER = "manager"
     USER = "user"
 
-class RoleManager:
+class ServizioRuoli:
     @staticmethod
     async def assign_role(user_id: int, role: UserRole):
         user = await db.session.query(User).get(user_id)

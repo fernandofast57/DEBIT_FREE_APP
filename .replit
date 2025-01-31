@@ -15,3 +15,21 @@ externalPort = 80
 
 [nix]
 channel = "stable-24_05"
+
+[workflows]
+
+[[workflows.workflow]]
+name = "Run"
+author = 31077556
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python main.py"
+
+[[workflows.workflow]]
+name = "Gold Investment"
+author = 31077556
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python main.py"

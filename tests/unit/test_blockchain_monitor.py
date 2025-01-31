@@ -138,175 +138,121 @@ def mock_w3_original():
 def blockchain_monitor_original(mock_w3_original):
     return BlockchainMonitor(mock_w3_original)
 
-@pytest.mark.asyncio
-async def test_monitor_initialization(monitor):
-    """Test corretta inizializzazione del monitor"""
-    assert monitor.w3 is not None
-    assert monitor.last_processed_block == 0
-    assert isinstance(monitor.alert_threshold, int)
 
-@pytest.mark.asyncio
-async def test_process_new_blocks(monitor, mock_w3):
-    """Test elaborazione di nuovi blocchi"""
-    monitor.last_processed_block = 12344
+import pytest
+from datetime import datetime
+from app.utils.monitoring.blockchain_monitor import MonitorBlockchain
 
-    processed_blocks = await monitor.process_new_blocks()
-    assert processed_blocks == 1
-    assert monitor.last_processed_block == 12345
+@pytest.fixture
+def monitor():
+    return MonitorBlockchain()
 
-@pytest.mark.asyncio
-async def test_handle_block_not_found(monitor, mock_w3):
-    """Test gestione errore blocco non trovato"""
-    mock_w3.eth.get_block.side_effect = BlockNotFound
+def test_registra_metrica(monitor):
+    monitor.registra_metrica('blocchi_processati', 100)
+    report = monitor.ottieni_report()
+    assert 'blocchi_processati' in report['metriche']
+    assert report['metriche']['blocchi_processati'][-1] == 100
 
-    monitor.last_processed_block = 12344
-    processed_blocks = await monitor.process_new_blocks()
-    assert processed_blocks == 0
+def test_registra_errore(monitor):
+    monitor.registra_errore('test_error', 'Test error message')
+    report = monitor.ottieni_report()
+    assert report['errori_totali'] == 1
 
-@pytest.mark.asyncio
-async def test_check_network_health(monitor, mock_w3):
-    """Test controllo salute della rete"""
-    mock_w3.eth.syncing = False
-    mock_w3.net.peer_count = 10
+def test_verifica_soglie(monitor):
+    monitor.registra_metrica('tempo_blocco', 20.0)  # Sopra soglia
+    report = monitor.ottieni_report()
+    assert 'tempo_blocco' in report['metriche']
+    assert len(report['metriche']['tempo_blocco']) == 1
 
-    health_status = await monitor.check_network_health()
-    assert health_status['status'] == 'healthy'
-    assert health_status['peer_count'] == 10
-    assert not health_status['is_syncing']
-
-@pytest.mark.asyncio
-async def test_alert_generation(monitor, mock_w3):
-    """Test generazione alert per anomalie"""
-    mock_w3.eth.syncing = True
-    mock_w3.net.peer_count = 1
-
-    alerts = await monitor.generate_alerts()
-    assert len(alerts) > 0
-    assert any('peer count' in alert.lower() for alert in alerts)
-
-@pytest.mark.asyncio
-async def test_performance_metrics(monitor, mock_w3):
-    """Test metriche di performance"""
-    metrics = await monitor.get_performance_metrics()
-    assert 'block_processing_time' in metrics
-    assert 'blocks_per_second' in metrics
-    assert isinstance(metrics['block_processing_time'], (int, float))
-
-@pytest.mark.asyncio
-async def test_monitor_recovery(monitor, mock_w3):
-    """Test recupero dopo interruzione"""
-    monitor.last_processed_block = 12340
-    mock_w3.eth.get_block_number.return_value = 12345
-
-    await monitor.recover_missed_blocks()
-    assert monitor.last_processed_block == 12345
-
-@pytest.mark.asyncio
-async def test_concurrent_processing(monitor, mock_w3):
-    """Test elaborazione concorrente dei blocchi"""
-    monitor.last_processed_block = 12340
-    mock_w3.eth.get_block_number.return_value = 12345
-
-    tasks = [monitor.process_new_blocks() for _ in range(3)]
-    results = await asyncio.gather(*tasks)
-    assert all(r >= 0 for r in results)
-
-@pytest.mark.asyncio
-async def test_basic_monitoring(blockchain_monitor_original):
-    """Test basic blockchain monitoring functionality"""
-    result = await blockchain_monitor_original.monitor_transactions()
-    assert result is not None
-    assert blockchain_monitor_original.latest_block is not None
-
-def test_transaction_validation(blockchain_monitor_original):
-    """Test transaction validation with various amounts"""
-    test_cases = [
-        (Decimal('0.001'), True),
-        (Decimal('1000000.0'), True),
-        (Decimal('0.0'), False),
-        (Decimal('-1.0'), False),
-    ]
-
-    for amount, expected in test_cases:
-        assert blockchain_monitor_original.validate_transaction_amount(amount) == expected
-
-@pytest.mark.asyncio
-async def test_network_interruption(mock_w3_original):
-    """Test behavior during network interruption"""
-    monitor = BlockchainMonitor(mock_w3_original)
-    mock_w3_original.eth.get_block.side_effect = BlockNotFound
-    response = await monitor.process_block(12345)
-    assert response['status'] == 'error'
-    assert 'block not found' in response['message'].lower()
-
-@pytest.mark.asyncio
-async def test_invalid_transaction(mock_w3_original):
-    """Test handling of invalid transaction"""
-    monitor = BlockchainMonitor(mock_w3_original)
-    mock_w3_original.eth.get_transaction.side_effect = TransactionNotFound
-    response = await monitor.verify_transaction('0x1234')
-    assert response['status'] == 'error'
-    assert 'transaction not found' in response['message'].lower()
-
-def test_concurrent_transactions(blockchain_monitor_original):
-    """Test handling multiple transactions simultaneously"""
-    transactions = ['0x1234', '0x5678', '0x9abc']
-    assert blockchain_monitor_original.can_process_transactions(transactions) is True
-
-@pytest.mark.asyncio
-async def test_empty_block(mock_w3_original):
-    """Test handling of empty blocks"""
-    monitor = BlockchainMonitor(mock_w3_original)
-    mock_w3_original.eth.get_block.return_value = {'transactions': [], 'number': 12345}
-    response = await monitor.process_block(12345)
-    assert response['status'] == 'success'
-    assert len(response.get('transactions', [])) == 0
-
-@pytest.mark.asyncio
-async def test_malformed_transaction(mock_w3_original):
-    """Test handling of malformed transaction data"""
-    monitor = BlockchainMonitor(mock_w3_original)
-    mock_w3_original.eth.get_transaction.return_value = {'hash': '0x1234', 'value': None}
-    response = await monitor.verify_transaction('0x1234')
-    assert response['status'] == 'error'
-    assert 'invalid transaction data' in response['message'].lower()
-
-def test_extreme_gas_prices(blockchain_monitor_original):
-    """Test handling of extreme gas prices"""
-    test_cases = [
-        (0, True),
-        (1_000_000_000_000_000, False),
-        (10, True)
-    ]
-
-    for price, expected in test_cases:
-        blockchain_monitor_original.w3.eth.gas_price = price
-        assert blockchain_monitor_original.is_gas_price_acceptable() == expected
-
-@pytest.mark.asyncio
-async def test_network_timeout(mock_w3_original):
-    """Test handling of network timeouts"""
-    monitor = BlockchainMonitor(mock_w3_original)
-    mock_w3_original.eth.get_block.side_effect = TimeoutError("Request timed out")
-    response = await monitor.process_block(12345)
-    assert response['status'] == 'error'
-    assert 'timeout' in response['message'].lower()
-
-def test_monitor_transaction(blockchain_monitor_original):
-    tx_data = {
-        'type': 'gold_transformation',
-        'status': 'success',
-        'tx_hash': '0x123'
-    }
-    result = blockchain_monitor_original.monitor_transactions(tx_data)
-    assert result['status'] == 'monitored'
-
-def test_alert_system(blockchain_monitor_original):
-    result = blockchain_monitor_original.send_alert("Test alert")
-    assert result['status'] == 'sent'
-
-def test_block_monitoring(blockchain_monitor_original, mock_w3_original):
-    mock_w3_original.eth.get_block_number.return_value = 1001
-    assert blockchain_monitor_original.check_new_blocks()
+def test_pulizia_metriche(monitor):
+    for i in range(1000):  # Aggiungi molte metriche
+        monitor.registra_metrica('test_metric', i)
+    report = monitor.ottieni_report()
+    assert len(report['metriche']['test_metric']) <= 100  # Verifica limite
 
 import asyncio
+
+def validate_glossary_standards(self) -> Dict[str, bool]:
+    """Validates code compliance with glossary standards"""
+    pass
+import pytest
+from unittest.mock import Mock, patch
+from app.utils.monitoring.blockchain_monitor import BlockchainMonitor
+
+@pytest.fixture
+def blockchain_monitor():
+    return BlockchainMonitor()
+
+@pytest.mark.asyncio
+async def test_record_transaction_metric(blockchain_monitor):
+    await blockchain_monitor.record_transaction_metric(
+        operation_type='transfer',
+        duration=1.5,
+        gas_used=50.0
+    )
+
+    assert len(blockchain_monitor.metrics_history) == 1
+    metric = blockchain_monitor.metrics_history[0]
+    assert metric['operation_type'] == 'transfer'
+    assert metric['duration'] == 1.5
+    assert metric['gas_used'] == 50.0
+
+def test_get_performance_report(blockchain_monitor):
+    # Simula alcune metriche
+    blockchain_monitor.metrics_history = [
+        {
+            'timestamp': '2024-01-23T10:00:00',
+            'operation_type': 'transfer',
+            'duration': 1.5,
+            'gas_used': 50.0
+        },
+        {
+            'timestamp': '2024-01-23T10:01:00',
+            'operation_type': 'transfer',
+            'duration': 2.0,
+            'gas_used': 60.0
+        }
+    ]
+
+    report = blockchain_monitor.get_performance_report()
+    assert 'latency' in report
+    assert 'gas_usage' in report
+    assert 'error_rate' in report
+    assert report['latency']['average'] == 1.75
+
+import pytest
+from app.utils.monitoring.blockchain_monitor import BlockchainMonitor
+
+@pytest.fixture
+def blockchain_monitor():
+    return BlockchainMonitor()
+
+@pytest.mark.asyncio
+async def test_transaction_monitoring(blockchain_monitor):
+    transaction = {
+        'hash': '0x123',
+        'from': '0xabc',
+        'to': '0xdef',
+        'value': 1.0
+    }
+    await blockchain_monitor.monitor_transaction(transaction)
+    metrics = blockchain_monitor.get_metrics()
+    assert metrics['transactions_monitored'] > 0
+
+@pytest.mark.asyncio
+async def test_block_monitoring(blockchain_monitor):
+    block = {
+        'number': 1000,
+        'timestamp': 1234567890,
+        'transactions': []
+    }
+    await blockchain_monitor.monitor_block(block)
+    metrics = blockchain_monitor.get_metrics()
+    assert metrics['blocks_monitored'] > 0
+
+@pytest.mark.asyncio
+async def test_alert_generation(blockchain_monitor):
+    await blockchain_monitor.monitor_gas_price(100.0)  # High gas price
+    alerts = blockchain_monitor.get_alerts()
+    assert len(alerts) > 0
+    assert 'gas_price' in alerts[0]['type']

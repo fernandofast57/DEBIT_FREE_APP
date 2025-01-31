@@ -1,36 +1,25 @@
-"""creazione delle tabelle mancanti
+
+"""create_missing_tables
 
 Revision ID: 3135a7000c3b
-Revises: dc45cb3ac83f
-Create Date: 2024-01-10 13:53:00.000000
+Revises: c564559997be
+Create Date: 2024-01-24 10:00:00.000000
 """
 from alembic import op
 import sqlalchemy as sa
 
 revision = '3135a7000c3b'
-down_revision = 'dc45cb3ac83f'
+down_revision = 'c564559997be'
 branch_labels = None
 depends_on = None
 
 def upgrade():
-    # Verifica se le tabelle esistono prima di crearle
-    conn = op.get_bind()
-    inspector = sa.inspect(conn)
-    existing_tables = inspector.get_table_names()
-
-    if 'transactions' not in existing_tables:
-        op.create_table(
-            'transactions',
-            sa.Column('id', sa.Integer(), nullable=False),
-            sa.Column('user_id', sa.Integer(), nullable=True),
-            sa.Column('amount', sa.Float(), nullable=False),
-            sa.Column('created_at', sa.DateTime(), nullable=True),
-            sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
-            sa.PrimaryKeyConstraint('id')
-        )
-
-    # Procedi con le altre tabelle...
+    # Create missing tables
+    with op.batch_alter_table('gold_transformations') as batch_op:
+        batch_op.add_column(sa.Column('blockchain_tx_hash', sa.String(66), nullable=True))
+        batch_op.add_column(sa.Column('blockchain_status', sa.String(20), server_default='pending'))
 
 def downgrade():
-    # Il downgrade rimane invariato poiché drop_table fallisce silenziosamente se la tabella non esiste
-    op.drop_table('transactions')
+    with op.batch_alter_table('gold_transformations') as batch_op:
+        batch_op.drop_column('blockchain_tx_hash')
+        batch_op.drop_column('blockchain_status')

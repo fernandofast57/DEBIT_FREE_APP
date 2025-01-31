@@ -1,53 +1,88 @@
-from decimal import Decimal
-from typing import Dict
+from datetime import datetime
+from typing import Dict, Any
 import logging
+from decimal import Decimal
+from app.core.exceptions import TransformationError
 
-class TransactionValidator:
+class ValidatoreTransazione:
     def __init__(self):
         self.logger = logging.getLogger('transaction_validator')
-        # Add a database connection or other mechanism to check gold availability and prevent duplicates here.  This is a placeholder.
-        self.gold_database = None # Placeholder for database connection
-
-
-    def _is_duplicate_transaction(self, transaction: Dict) -> bool:
-        """Check for duplicate transactions within a time window (e.g., last minute).  This is a placeholder."""
-        # Implement logic to check for duplicates using transaction details and timestamp.  This requires database interaction.
-        return False # Placeholder: replace with actual duplicate check
-
-
-    def _verify_gold_availability(self, sender_id: str, amount: Decimal) -> bool:
-        """Verify if the sender has sufficient gold balance. This is a placeholder."""
-        # Implement logic to check gold balance in the database. This requires database interaction.
-        return True # Placeholder: replace with actual balance check
-
-
-    def validate_transaction(self, transaction: Dict) -> bool:
-        """Validate transaction structure and amounts with enhanced security"""
+        
+    def validate_transaction_workflow(self, transaction: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Procedura guidata di validazione in più fasi
+        """
+        validation_result = {
+            'status': 'pending',
+            'checks': {},
+            'certification': None,
+            'timestamp': datetime.utcnow().isoformat(),
+            'validator_id': None
+        }
+        
+        # Fase 1: Controlli preliminari
+        validation_result['checks']['preliminary'] = self._preliminary_checks(transaction)
+        if not validation_result['checks']['preliminary']['valid']:
+            validation_result['status'] = 'rejected'
+            return validation_result
+            
+        # Fase 2: Validazione dati
+        validation_result['checks']['data'] = self._validate_data(transaction)
+        if not validation_result['checks']['data']['valid']:
+            validation_result['status'] = 'correction_needed'
+            return validation_result
+            
+        # Fase 3: Controlli di sicurezza
+        validation_result['checks']['security'] = self._security_checks(transaction)
+        if not validation_result['checks']['security']['valid']:
+            validation_result['status'] = 'security_review'
+            return validation_result
+            
+        validation_result['status'] = 'ready_for_certification'
+        return validation_result
+        
+    def certify_transaction(self, validation_result: Dict, validator_id: str) -> Dict:
+        """
+        Certificazione finale della validità della transazione
+        """
+        if validation_result['status'] != 'ready_for_certification':
+            return {'error': 'Transaction not ready for certification'}
+            
+        validation_result['certification'] = {
+            'validator_id': validator_id,
+            'timestamp': datetime.utcnow().isoformat(),
+            'status': 'certified'
+        }
+        
+        return validation_result
+    
+    def _preliminary_checks(self, transaction: Dict) -> Dict:
+        # Implementazione controlli preliminari
         try:
-            required_fields = ['amount', 'sender_id', 'receiver_id', 'transaction_type', 'timestamp']
+            TransactionValidator.validate_transformation(Decimal(transaction['amount']), transaction['user_data'])
+            return {'valid': True, 'messages': []}
+        except TransformationError as e:
+            return {'valid': False, 'messages': [str(e)]}
+        
+    def _validate_data(self, transaction: Dict) -> Dict:
+        # Implementazione validazione dati
+        return {'valid': True, 'messages': []}
+        
+    def _security_checks(self, transaction: Dict) -> Dict:
+        # Implementazione controlli di sicurezza
+        return {'valid': True, 'messages': []}
 
-            if not all(field in transaction for field in required_fields):
-                self.logger.error(f"Transaction rejected: Missing required fields in transaction: {transaction}")
-                return False
 
-            # Validate gold amount precision (4 decimali per i grammi)
-            amount = Decimal(str(transaction['amount'])).quantize(Decimal('0.0001'))
-            if amount <= Decimal('0'):
-                self.logger.error(f"Transaction rejected: Invalid gold amount: {amount}")
-                return False
+class TransactionValidator:
+    MIN_AMOUNT = Decimal('100')
+    MAX_AMOUNT = Decimal('100000')
 
-            # Verifica duplicati nella stessa finestra temporale
-            if self._is_duplicate_transaction(transaction):
-                self.logger.error("Transaction rejected: Duplicate transaction detected")
-                return False
+    @staticmethod
+    def validate_transformation(amount: Decimal, user_data: Dict[str, Any]) -> bool:
+        if not (TransactionValidator.MIN_AMOUNT <= amount <= TransactionValidator.MAX_AMOUNT):
+            raise TransformationError(f"Amount must be between {TransactionValidator.MIN_AMOUNT} and {TransactionValidator.MAX_AMOUNT}")
 
-            # Verifica disponibilità oro
-            if not self._verify_gold_availability(transaction['sender_id'], amount):
-                self.logger.error("Transaction rejected: Insufficient gold balance")
-                return False
+        if user_data['kyc_status'] != 'verified':
+            raise TransformationError("KYC verification required")
 
-            return True
-
-        except Exception as e:
-            self.logger.critical(f"Transaction validation critical error: {str(e)}")
-            return False
+        return True

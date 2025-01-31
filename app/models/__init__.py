@@ -3,29 +3,36 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 from .user import User
+from .noble_system import NobleRank
 from .models import (
-    MoneyAccount,
+    EuroAccount,
     GoldAccount,
     Transaction,
-    NobleRank,
     NobleRelation,
     GoldBar,
-    GoldAllocation,
     Parameter,
-    BonusTransaction
+    BonusTransaction,
+    KYCDetail,
+    GoldTracking,
+    BonusRate,
+    GoldReward
 )
 from .notification import Notification
 
 __all__ = [
     'db',
     'User',
-    'MoneyAccount',
+    'EuroAccount',
     'GoldAccount',
     'Transaction',
     'NobleRank',
     'NobleRelation',
     'GoldBar',
-    'GoldAllocation',
     'Parameter',
-    'BonusTransaction'
+    'BonusTransaction',
+    'KYCDetail',
+    'GoldTracking',
+    'Notification',
+    'BonusRate',
+    'GoldReward'
 ]

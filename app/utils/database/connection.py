@@ -9,8 +9,8 @@ from sqlalchemy.pool import QueuePool
 from sqlalchemy.exc import SQLAlchemyError, OperationalError
 from app.utils.logging_config import logger
 
-class DatabaseManager:
-    """Gestore connessioni database con retry e pool"""
+class GestoreDatabase:
+    """Gestore connessioni database con retry e pool secondo glossario"""
 
     def __init__(self, uri: str, pool_size: int = 5, max_overflow: int = 10):
         self.uri = uri

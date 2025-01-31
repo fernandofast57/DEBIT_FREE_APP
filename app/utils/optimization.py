@@ -5,8 +5,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def optimize_queries():
-    """Apply database query optimizations"""
+def optimize_database_queries():
+    """Apply standardized database query optimizations"""
     try:
         with db.get_sync_session() as session:
             # Set pragmas with error handling

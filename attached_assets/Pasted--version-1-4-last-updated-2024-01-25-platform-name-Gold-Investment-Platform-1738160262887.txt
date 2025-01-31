@@ -1,0 +1,201 @@
+
+  "version": "1.4",
+  "last_updated": "2024-01-25",
+  "platform_name": "Gold Investment Platform",
+  "standard_definitions": {
+    "core_entities": {
+      "User": {
+        "description": "Main user entity with authentication details",
+        "required_fields": ["email", "password_hash", "kyc_status", "two_factor_enabled"]
+      },
+      "EuroAccount": {
+        "description": "Euro balance management",
+        "precision": "Decimal(10,2)",
+        "validation_rules": {
+          "min_balance": 0,
+          "max_transaction": 100000
+        }
+      },
+      "GoldAccount": {
+        "description": "Gold balance management",
+        "precision": "Decimal(10,4)",
+        "validation_rules": {
+          "min_balance": 0,
+          "max_transaction": 1000
+        }
+      },
+      "TracciatoOro": "Gold-Euro conversion registry",
+      "AllocazioneOro": "User gold allocation management",
+      "BarraOro": "Physical gold bars registry",
+      "TransazioneBonus": "Gestione bonus e premi",
+      "PremioOro": "Sistema premi in oro",
+      "RelazioneNobile": "Gestione ranghi nobiliari",
+      "DettaglioKYC": {
+        "description": "User identity verification",
+        "document_types": ["passport", "id_card", "drivers_license"],
+        "status_types": ["pending", "approved", "rejected"]
+      },
+      "Parameter": "System configuration parameters"
+    },
+    "monitoring": {
+      "PerformanceMonitor": "System performance and metrics monitoring",
+      "BlockchainMonitor": "Blockchain transactions and gas monitoring",
+      "TransformationMonitor": "Gold-to-euro transformations monitoring",
+      "AsyncMonitor": "Asynchronous operations monitoring",
+      "DependencyMonitor": "System dependencies monitoring",
+      "SecurityMonitor": "System security monitoring"
+    },
+    "metrics": {
+      "performance": {
+        "database_response": "50ms",
+        "api_response": "150ms",
+        "transaction_processing": "1.5s",
+        "security_checks": "30ms",
+        "weekly_transformation": "5m"
+      },
+      "spread": {
+        "base": "5.0",
+        "additional": "1.7"
+      },
+      "noble_bonus": {
+        "bronzo": "0.7",
+        "argento": "0.5",
+        "oro": "0.5"
+      }
+    },
+    "states_and_types": {
+      "AccountStatus": ["active", "suspended", "verifying"],
+      "OperationType": ["gold_purchase", "gold_sale", "gold_transfer"],
+      "OperationStatus": ["started", "processing", "completed", "failed"],
+      "ValidationStatus": ["pending", "approved", "rejected"],
+      "NobleRank": ["bronze", "silver", "gold"]
+    },
+    "services": {
+      "core": {
+        "ServizioContabilita": "Gestione operazioni contabili",
+        "ServizioTrasformazione": "Gestione conversioni euro-oro",
+        "ServizioBlockchain": "Gestione transazioni blockchain",
+        "ServizioNobile": "Gestione sistema nobiliare",
+        "ServizioNotifiche": "Sistema notifiche",
+        "ServizioKYC": "Verifica identità clienti",
+        "ServizioAnalytics": "Analisi metriche sistema"
+      },
+      "validators": {
+        "ValidatoreTransazione": "Validazione operazioni finanziarie",
+        "ValidatoreBlockchain": "Validazione transazioni blockchain",
+        "ValidatoreBonus": "Validazione calcolo bonus",
+        "ValidatoreNobile": "Validazione ranghi nobiliari",
+        "ValidatoreKYC": "Validazione documenti identità",
+        "ValidatoreStruttura": "Validazione struttura dati"
+      }
+    },
+    "monitors": {
+      "MonitorPerformance": "Monitoring system performance and metrics",
+      "MonitorBlockchain": "Monitoraggio transazioni blockchain",
+      "MonitorAsync": "Monitoraggio operazioni asincrone",
+      "MonitorDipendenze": "Monitoraggio dipendenze sistema",
+      "MonitorSicurezza": "Monitoraggio sicurezza sistema",
+      "MetricsCollector": {
+        "description": "Raccolta metriche standardizzate",
+        "metrics": {
+          "tempi_risposta": "Tempi di risposta sistema",
+          "conteggio_transazioni": "Conteggio transazioni",
+          "tasso_errori": "Tasso errori sistema",
+          "uso_gas": "Consumo gas blockchain",
+          "tempi_blocco": "Tempi conferma blocchi",
+          "uso_memoria": "Consumo memoria sistema",
+          "carico_cpu": "Metriche utilizzo CPU"
+        }
+      }
+    },
+    "formats": {
+      "PrecisioneOro": "Decimal(10,4)",
+      "PrecisioneEuro": "Decimal(10,2)",
+      "FormatoIBAN": "String(27)",
+      "FormatoCodiceCliente": "String(10)",
+      "FormatoTimestamp": "ISO-8601"
+    },
+    "system_constants": {
+      "LimitiOperazione": {
+        "minimo_acquisto": 100,
+        "massimo_acquisto": 100000,
+        "minimo_vendita": 1,
+        "massimo_vendita": 50000
+      },
+      "IntervalliBatch": {
+        "elaborazione": 3600,
+        "backup": 86400,
+        "pulizia": 604800
+      }
+    },
+    "security_standards": {
+      "password_policy": {
+        "min_length": 12,
+        "require_special": true,
+        "require_numbers": true,
+        "require_uppercase": true
+      },
+      "due_diligence": {
+        "document_types": ["id_card_front", "id_card_back", "fiscal_code", "utility_bill"],
+        "verification_timeframe": {
+          "document_review": 48,
+          "iban_verification": 72,
+          "contract_processing": 48
+        },
+        "iban_validation": {
+          "test_transfer_required": true,
+          "min_test_amount": 0.01,
+          "max_test_amount": 1.00
+        },
+        "pao_settings": {
+          "min_monthly_amount": 100,
+          "max_monthly_amount": 10000,
+          "sepa_required": true
+        }
+      },
+      "rate_limits": {
+        "api_requests": 50,
+        "login_attempts": 5,
+        "window_seconds": 60,
+        "implementation": "RobustRateLimiter",
+        "fallback": "local_storage",
+        "storage": "redis_primary"
+      }
+    },
+    "noble_system": {
+      "ranks": {
+        "bronzo": {
+          "commission": 0.7,
+          "requirements": {
+            "min_referrals": 2,
+            "min_volume": 1000
+          }
+        },
+        "argento": {
+          "commission": 0.5,
+          "requirements": {
+            "min_referrals": 5,
+            "min_volume": 5000
+          }
+        },
+        "oro": {
+          "commission": 0.5,
+          "requirements": {
+            "min_referrals": 10,
+            "min_volume": 10000
+          }
+        }
+      }
+    },
+    "transformation_rules": {
+      "weekly_schedule": "Sunday 23:59 UTC",
+      "spread": {
+        "base": 5.0,
+        "operational": 1.7
+      },
+      "minimum_amount": 100,
+      "maximum_amount": 100000
+    }
+  },
+  "checksum": "SHA256"
+}

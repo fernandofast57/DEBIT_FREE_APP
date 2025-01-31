@@ -1,35 +1,35 @@
-from app import create_app, db
 from decimal import Decimal
-from app.models.models import User # Assuming User model exists
-
-# Assuming a NobleRank model exists or needs to be created.  This is a placeholder.  Replace with your actual database model.
-class NobleRank:
-    def __init__(self, rank_name, bonus_rate, min_investment, level):
-        self.rank_name = rank_name
-        self.bonus_rate = bonus_rate
-        self.min_investment = min_investment
-        self.level = level
-
+from app import create_app, db
+from app.models.models import NobleRank
 
 def init_noble_ranks():
     app = create_app()
     with app.app_context():
-        # Ensure tables exist (assuming a NobleRank table is created)
         db.create_all()
 
-        # Initialize default noble ranks with bonus rates
         ranks = [
-            NobleRank(rank_name='baron', bonus_rate=Decimal('0.000'), min_investment=Decimal('1000.00'), level=1),
-            NobleRank(rank_name='count', bonus_rate=Decimal('0.007'), min_investment=Decimal('5000.00'), level=2),
-            NobleRank(rank_name='duke', bonus_rate=Decimal('0.005'), min_investment=Decimal('10000.00'), level=3),
-            NobleRank(rank_name='prince', bonus_rate=Decimal('0.005'), min_investment=Decimal('25000.00'), level=4)
+            NobleRank(
+                level=1,
+                bonus_rate=Decimal('0.007'),
+                description='Premio del 0.7% in grammi dell\'oro acquisito dai referral diretti'
+            ),
+            NobleRank(
+                level=2,
+                bonus_rate=Decimal('0.005'),
+                description='Premio del 0.5% in grammi dell\'oro acquisito dai referral indiretti'
+            ),
+            NobleRank(
+                level=3,
+                bonus_rate=Decimal('0.005'),
+                description='Premio del 0.5% in grammi dell\'oro acquisito dai referral di terzo livello'
+            )
         ]
+
         for rank in ranks:
-            # Assuming appropriate database interaction for NobleRank.  Replace with your actual code.
-            print(f"Initializing {rank.rank_name} rank with {rank.bonus_rate:.1%} bonus...")
-            # Example database interaction (replace with your ORM):
-            # new_rank = NobleRankModel(rank_name=rank.rank_name, bonus_rate=rank.bonus_rate, min_investment=rank.min_investment, level=rank.level)
-            # db.session.add(new_rank)
+            existing = NobleRank.query.filter_by(rank_name=rank.rank_name).first()
+            if not existing:
+                db.session.add(rank)
+                print(f"Initializing {rank.rank_name} rank with {float(rank.bonus_rate)*100:.1f}% bonus rate and minimum investment of €{float(rank.min_investment):,.2f}")
 
         db.session.commit()
 

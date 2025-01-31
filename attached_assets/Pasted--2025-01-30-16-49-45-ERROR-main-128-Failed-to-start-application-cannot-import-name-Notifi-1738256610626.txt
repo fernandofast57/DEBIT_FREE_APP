@@ -1,0 +1,55 @@
+[2025-01-30 16:49:45] [ERROR] [__main__:128] Failed to start application: cannot import name 'Notification' from 'app.models.models' (/home/runner/workspace/app/models/models.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 10, in <module>
+    from .notification_service import NotificationService
+  File "/home/runner/workspace/app/services/notification_service.py", line 5, in <module>
+    from app.models.models import User, Notification
+ImportError: cannot import name 'Notification' from 'app.models.models' (/home/runner/workspace/app/models/models.py)
+[2025-01-30 16:49:45] [ERROR] [root:139] Errore durante l'avvio dell'applicazione: 'SystemPerformanceMonitor' object has no attribute 'save_metrics'
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 10, in <module>
+    from .notification_service import NotificationService
+  File "/home/runner/workspace/app/services/notification_service.py", line 5, in <module>
+    from app.models.models import User, Notification
+ImportError: cannot import name 'Notification' from 'app.models.models' (/home/runner/workspace/app/models/models.py)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 129, in run
+    raise SystemExit(1)
+SystemExit: 1
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 137, in <module>
+    application.run()
+  File "/home/runner/workspace/main.py", line 131, in run
+    self.performance_monitor.save_metrics()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'SystemPerformanceMonitor' object has no attribute 'save_metrics'

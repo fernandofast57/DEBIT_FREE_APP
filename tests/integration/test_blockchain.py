@@ -19,9 +19,9 @@ async def blockchain_service():
 async def test_batch_transformation_process(blockchain_service):
     try:
         blockchain_service.w3.eth.get_block_number() #Check for connection
-        batch_data = [
-            {"user_id": 1, "amount": Decimal('100.0'), "timestamp": 1645564800},
-            {"user_id": 2, "amount": Decimal('200.0'), "timestamp": 1645564800}
+        dati_batch = [
+            {"id_utente": 1, "quantita": Decimal('100.0'), "timestamp": 1645564800},
+            {"id_utente": 2, "quantita": Decimal('200.0'), "timestamp": 1645564800}
         ]
 
         blockchain_service.contract.functions.processBatchTransformation.return_value.transact.return_value = '0x123'
@@ -71,7 +71,7 @@ async def test_full_transformation_flow(test_db, test_client):
     await user.save()
 
     # Inizializza accounts
-    money_account = await MoneyAccount.create( # Assuming MoneyAccount model exists
+    euro_account = await EuroAccount.create(
         user_id=user.id,
         balance=Decimal('1000.00')
     )
@@ -95,7 +95,7 @@ async def test_full_transformation_flow(test_db, test_client):
     assert data['status'] == 'success'
 
     # Verifica risultati
-    updated_money = await MoneyAccount.get_by_user_id(user.id)
+    updated_money = await EuroAccount.get_by_user_id(user.id)
     updated_gold = await GoldAccount.get_by_user_id(user.id)
 
     assert updated_money.balance == Decimal('900.00')

@@ -8,19 +8,25 @@ from functools import lru_cache
 from app.utils.monitoring.blockchain_monitor import BlockchainMonitor
 from app.utils.retry import retry_with_backoff
 from app.utils.logging_config import get_logger
-from app.utils.monitoring.performance_metrics import MetricsCollector
+from app.utils.monitoring.monitoring_manager import get_performance_monitor
 
 logger = get_logger(__name__)
 
 class BlockchainService:
-    """Service for handling blockchain operations according to glossary"""
     def __init__(self):
-        self.web3_client: Optional[Web3] = None
+        self.web3_client = None
         self.noble_contract = None
         self.initialization_status = False
         self.monitor = None
         self.logger = logging.getLogger(__name__)
+        self._performance_monitor = None
 
+    @property
+    def performance_monitor(self):
+        if self._performance_monitor is None:
+            from app.utils.monitoring.monitoring_manager import get_performance_monitor
+            self._performance_monitor = get_performance_monitor()
+        return self._performance_monitor
 
     @lru_cache(maxsize=32)
     def _get_contract_abi(self) -> dict:
@@ -34,40 +40,24 @@ class BlockchainService:
     async def initialize(self) -> None:
         await self._setup_web3()
 
-    async def _setup_web3(self) -> None:
+    async def initialize_web3(self) -> None:
         if os.getenv('BLOCKCHAIN_MODE', 'offline') == 'offline':
             from app.services.mock_blockchain_service import MockBlockchainService
             mock_service = MockBlockchainService()
             self.web3_client = mock_service.w3
             self.noble_contract = mock_service.contract
             self.account = mock_service.account
-            metrics = MetricsCollector()
-            self.monitor = BlockchainMonitor(self.web3_client, metrics)
             self.initialization_status = True
             return
 
         self.rpc_endpoints = os.getenv('RPC_ENDPOINTS', '').split(',')
         await self._connect_to_rpc()
-        if self.web3_client:
-            metrics = MetricsCollector()
-            self.monitor = BlockchainMonitor(self.web3_client, metrics)
-            self.initialization_status = True
 
     @retry_with_backoff(max_retries=3)
     async def _connect_to_rpc(self) -> bool:
-        # Modalità offline/test
-        if os.getenv('BLOCKCHAIN_MODE') == 'offline':
-            if not hasattr(self, '_mock_initialized'):
-                from app.services.mock_blockchain_service import MockBlockchainService
-                mock_service = MockBlockchainService()
-                self.web3_client = mock_service.w3
-                self.noble_contract = mock_service.contract
-                self._mock_initialized = True
-            return True
-
-        if not self.rpc_endpoints or not any(endpoint.strip() for endpoint in self.rpc_endpoints):
-            self.logger.error("Nessun endpoint RPC valido configurato")
-            raise ValueError("Configurazione RPC mancante o non valida")
+        if not self.rpc_endpoints:
+            self.logger.error("No valid RPC endpoints configured")
+            raise ValueError("Missing or invalid RPC configuration")
 
         for endpoint in self.rpc_endpoints:
             endpoint = endpoint.strip()
@@ -75,24 +65,25 @@ class BlockchainService:
                 continue
 
             try:
-                self.logger.info(f"Tentativo di connessione a: {endpoint}")
-                provider = Web3.HTTPProvider(endpoint, 
-                    request_kwargs={'timeout': 60, 'verify': True})
+                self.logger.info(f"Attempting connection to: {endpoint}")
+                provider = Web3.HTTPProvider(endpoint, request_kwargs={
+                    'timeout': 60, 
+                    'verify': True
+                })
                 self.web3_client = Web3(provider)
                 self.web3_client.middleware_onion.inject(geth_poa_middleware, layer=0)
 
-                # Test connection with eth_blockNumber
                 if self.web3_client.eth.block_number:
                     self._setup_contract()
                     self._setup_account()
-                    self.logger.info(f"Connesso al nodo blockchain: {endpoint}")
+                    self.logger.info(f"Connected to blockchain node: {endpoint}")
                     return True
 
             except Exception as e:
-                self.logger.warning(f"Connessione fallita a {endpoint}: {e}")
+                self.logger.warning(f"Connection failed to {endpoint}: {e}")
                 continue
 
-        raise ConnectionError("Connessione fallita a tutti gli endpoint RPC - verificare la configurazione RPC_ENDPOINTS")
+        raise ConnectionError("Failed to connect to all RPC endpoints")
 
     def _setup_contract(self) -> None:
         contract_address = os.getenv('CONTRACT_ADDRESS')
@@ -159,24 +150,6 @@ class BlockchainService:
             self.logger.error(f"Transaction failed: {e}")
             return {'status': 'error', 'message': str(e)}
 
-    async def update_noble_rank(self, address: str, rank: int):
-        if not self.web3_client.is_address(address):
-            raise ValueError("Invalid Ethereum address")
-
-        return await self.send_transaction(
-            self.noble_contract.functions.updateNobleRank(address, rank)
-        )
-
-    async def record_gold_transaction(self, address: str, euro_amount: float, 
-                                    gold_grams: float) -> Dict[str, Any]:
-        return await self.send_transaction(
-            self.noble_contract.functions.transformGold(
-                address,
-                int(euro_amount * 100),
-                int(gold_grams * 10000)
-            )
-        )
-
     def is_connected(self) -> bool:
         return bool(self.web3_client and self.web3_client.is_connected() and 
                    self.account and self.noble_contract)
@@ -200,3 +173,31 @@ class BlockchainService:
         except Exception as e:
             self.logger.error(f"Failed to get stats: {e}")
             return {'status': 'error', 'message': str(e)}
+
+    async def update_noble_rank(self, address: str, rank: int):
+        if not self.web3_client.is_address(address):
+            raise ValueError("Invalid Ethereum address")
+
+        self.performance_monitor.start_timer('update_noble_rank')
+        result = await self.send_transaction(
+            self.noble_contract.functions.updateNobleRank(address, rank)
+        )
+        self.performance_monitor.stop_timer('update_noble_rank')
+        return result
+
+    async def record_gold_transaction(self, address: str, euro_amount: float, 
+                                    gold_grams: float, validation_status: str = None) -> Dict[str, Any]:
+        if not validation_status or validation_status != 'approved':
+            self.logger.error("Transaction not approved by administrator")
+            return {'status': 'error', 'message': 'Transaction requires approval before blockchain recording'}
+
+        self.performance_monitor.start_timer('record_gold_transaction')
+        result = await self.send_transaction(
+            self.noble_contract.functions.transformGold(
+                address,
+                int(euro_amount * 100),
+                int(gold_grams * 10000)
+            )
+        )
+        self.performance_monitor.stop_timer('record_gold_transaction')
+        return result

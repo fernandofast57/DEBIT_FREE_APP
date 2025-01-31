@@ -5,7 +5,7 @@ from typing import Dict
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import db
 from app.models.models import User, MoneyAccount, GoldAccount, Transaction
-from app.utils.monitoring.performance import performance_monitor
+from app.utils.monitoring.performance_monitor import performance_monitor
 
 class WeeklyGoldDistribution:
     def __init__(self):
@@ -47,9 +47,18 @@ class WeeklyGoldDistribution:
                         "SELECT * FROM users WHERE money_account_balance > 0")
 
                     for user in users:
-                        # Calcola oro al netto delle fee
-                        net_amount = user.money_account_balance * (1 - self.total_fee)
-                        gold_amount = net_amount / fixing_price
+                        # Calcola importo netto dopo la fee di struttura (5%)
+                        structure_fee_amount = user.money_account_balance * self.structure_fee
+                        net_amount = user.money_account_balance - structure_fee_amount
+
+                        # Calcola il totale di oro disponibile dal netto
+                        total_gold = net_amount / fixing_price  # Es: 11.1594g da 950€
+
+                        # Calcola la quota per i bonus (1.7% del totale oro)
+                        affiliate_bonus_gold = total_gold * Decimal('0.017')  # Es: 0.18971g
+
+                        # Il resto va al cliente
+                        gold_amount = total_gold - affiliate_bonus_gold  # Es: 10.96969g
 
                         # Aggiorna i bilanci
                         await session.execute(
@@ -59,7 +68,7 @@ class WeeklyGoldDistribution:
                             {'gold': gold_amount, 'user_id': user.id})
 
                         await session.execute(
-                            """UPDATE money_accounts 
+                            """UPDATE euro_accounts 
                                SET balance = 0 
                                WHERE user_id = :user_id""",
                             {'user_id': user.id})
@@ -90,15 +99,14 @@ class WeeklyGoldDistribution:
 
             except Exception as e:
                 if backup_id:
-                    await self.restore_backup(session, backup_id) #This function is missing in the edited code, but needed for completeness.  I'll add a placeholder.
+                    await self.restore_backup(session, backup_id)
                 raise Exception(f"Distribution failed: {str(e)}")
 
     async def restore_backup(self, session: AsyncSession, backup_id: str):
-        # Placeholder for restore logic.  Implementation details missing from edited code.
         if backup_id in self._backup_state:
             for user_id, balances in self._backup_state[backup_id].items():
                 await session.execute(
-                    """UPDATE money_accounts 
+                    """UPDATE euro_accounts 
                        SET balance = :money_balance 
                        WHERE user_id = :user_id""",
                     {'money_balance': balances['money_balance'], 'user_id': user_id})
@@ -108,4 +116,4 @@ class WeeklyGoldDistribution:
                        WHERE user_id = :user_id""",
                     {'gold_balance': balances['gold_balance'], 'user_id': user_id})
             await session.commit()
-            print(f"Restored backup: {backup_id}")  #Temporary logging for testing.  Remove in production
+            print(f"Restored backup: {backup_id}")

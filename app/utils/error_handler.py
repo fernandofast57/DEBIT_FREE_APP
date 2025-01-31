@@ -1,9 +1,7 @@
-
-from functools import wraps
 import logging
-import traceback
-from typing import Callable, Any, Optional, Dict
-from flask import jsonify, current_app
+from functools import wraps
+from typing import Callable, Any, Dict
+from flask import jsonify
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
@@ -23,11 +21,25 @@ class ValidationError(BusinessError):
     def __init__(self, message: str, error_code: str = 'VALIDATION_ERROR'):
         super().__init__(message, error_code, status_code=400)
 
+class SystemError(Exception):
+    def __init__(self, message: str, error_code: str, status_code: int = 500):
+        self.message = message
+        self.error_code = error_code
+        self.status_code = status_code
+        super().__init__(self.message)
+
 def handle_errors(func: Callable) -> Callable:
     @wraps(func)
-    async def wrapper(*args, **kwargs) -> Any:
+    def wrapper(*args, **kwargs) -> Any:
         try:
-            return await func(*args, **kwargs) if asyncio.iscoroutinefunction(func) else func(*args, **kwargs)
+            return func(*args, **kwargs)
+        except SystemError as e:
+            logger.error(f"System error: {str(e)}")
+            return jsonify({
+                'error': e.error_code,
+                'message': e.message,
+                'timestamp': datetime.utcnow().isoformat()
+            }), e.status_code
         except BusinessError as e:
             error_details = {
                 'error': e.error_code,
@@ -37,28 +49,19 @@ def handle_errors(func: Callable) -> Callable:
             logger.error(f"Business error: {error_details}")
             return jsonify(error_details), e.status_code
         except Exception as e:
-            error_id = str(int(time.time()))
-            error_details = {
+            logger.critical(f"Critical error: {str(e)}", exc_info=True)
+            return jsonify({
                 'error': 'INTERNAL_ERROR',
-                'error_id': error_id,
-                'message': 'Un errore interno è occorso'
-            }
-            logger.critical(
-                f"Critical error {error_id}: {str(e)}\n"
-                f"Traceback: {traceback.format_exc()}"
-            )
-            return jsonify(error_details), 500
+                'message': 'Si è verificato un errore interno',
+                'timestamp': datetime.utcnow().isoformat()
+            }), 500
     return wrapper
 
-def log_error(error: Exception, context: Optional[Dict] = None):
-    """Utility per logging centralizzato degli errori"""
+def log_error(error: Exception, context: Dict = None):
     error_details = {
         'error_type': error.__class__.__name__,
         'message': str(error),
         'timestamp': datetime.utcnow().isoformat(),
         'context': context or {}
     }
-    if isinstance(error, BusinessError):
-        logger.error(f"Business error: {error_details}")
-    else:
-        logger.critical(f"System error: {error_details}\n{traceback.format_exc()}")
+    logger.error(f"Error details: {error_details}")

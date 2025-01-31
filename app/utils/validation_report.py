@@ -1,8 +1,8 @@
+
 import logging
 from datetime import datetime
 from typing import Dict, Any
 from app.utils.structure_validator import StructureValidator
-from app.services import BlockchainService
 
 class ValidationReport:
     def __init__(self):
@@ -11,16 +11,13 @@ class ValidationReport:
         self.timestamp = datetime.utcnow()
         self.logger = logging.getLogger(__name__)
         self.structure_validator = StructureValidator()
-        self.blockchain_service = BlockchainService()
 
     async def generate_report(self) -> Dict[str, Any]:
         try:
             structure_results = await self.structure_validator.validate_structure()
-            blockchain_results = await self.blockchain_service.validate_chain()
-
+            
             self.validation_results = {
                 'structure': structure_results,
-                'blockchain': blockchain_results,
                 'timestamp': self.timestamp.isoformat()
             }
 

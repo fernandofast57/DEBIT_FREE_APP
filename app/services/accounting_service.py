@@ -21,8 +21,9 @@ class AccountingService:
     async def record_gold_transaction(self, 
                                     user_id: int, 
                                     amount: Decimal, 
-                                    transaction_type: str) -> Dict[str, Any]:
-        """Record a gold transaction with improved validation and error handling"""
+                                    transaction_type: str,
+                                    referral_level: Optional[int] = None) -> Dict[str, Any]:
+        """Record a gold transaction with multi-level referral tracking"""
         try:
             if amount <= 0:
                 raise ValueError("Transaction amount must be positive")
@@ -31,6 +32,7 @@ class AccountingService:
                 user_id=user_id,
                 amount=amount,
                 transaction_type=transaction_type,
+                referral_level=referral_level,
                 timestamp=datetime.utcnow()
             )
 

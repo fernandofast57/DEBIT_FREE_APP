@@ -12,7 +12,7 @@ branch_labels = None
 depends_on = None
 
 def upgrade():
-    # Verifichiamo se le colonne esistono già prima di aggiungerle
+    # Check if columns already exist before adding them
     with op.batch_alter_table('gold_transformations') as batch_op:
         batch_op.add_column(sa.Column('blockchain_tx_hash', sa.String(66), nullable=True))
         batch_op.add_column(sa.Column('blockchain_status', sa.String(20), server_default='pending'))

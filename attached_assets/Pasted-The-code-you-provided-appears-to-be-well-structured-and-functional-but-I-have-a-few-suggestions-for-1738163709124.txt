@@ -1,0 +1,104 @@
+The code you provided appears to be well-structured and functional, but I have a few suggestions for improvement:
+
+1. Optimize Database Queries:
+
+In _create_indirect_relations, you are using a recursive CTE to get all upline relations. While this is generally efficient, you can further optimize it by adding an index to the referred_id column in the noble_relations table. This will speed up the initial lookup in the CTE.
+2. Error Handling:
+
+In create_referral, you are catching a generic Exception. It's generally better to catch specific exceptions to handle different error scenarios more effectively. For example, you could catch IntegrityError to handle database constraint violations.
+3. Code Style:
+
+Consider adding type hints to the relation variable in _create_indirect_relations to improve readability.
+4. Documentation:
+
+Add docstrings to the _create_indirect_relations method to explain its purpose and how it works.
+Here's the modified code with the suggested improvements:
+
+Python
+
+from app.models import db, NobleRelation, User
+from app.utils.logging_config import get_logger
+from sqlalchemy import text
+from sqlalchemy.exc import IntegrityError
+
+logger = get_logger(__name__)
+
+class ReferralService:
+    MAX_LEVEL = 3  # Maximum level for bonus calculations
+    
+    async def create_referral(self, referrer_id: int, referred_id: int) -> bool:
+        """Create a new referral relationship and calculate levels"""
+        try:
+            if referrer_id == referred_id:
+                return False
+            
+            # Check if referral already exists
+            existing = await NobleRelation.query.filter_by(
+                referrer_id=referrer_id,
+                referred_id=referred_id
+            ).first()
+            
+            if existing:
+                return False
+            
+            # Create direct referral
+            relation = NobleRelation(
+                referrer_id=referrer_id,
+                referred_id=referred_id,
+                level=1
+            )
+            db.session.add(relation)
+            
+            # Create indirect relations up to MAX_LEVEL
+            await self._create_indirect_relations(referrer_id, referred_id)
+            
+            await db.session.commit()
+            return True
+        
+        except IntegrityError as e:
+            logger.error(f"Database integrity error creating referral: {str(e)}")
+            await db.session.rollback()
+            return False
+        
+        except Exception as e:
+            logger.error(f"Error creating referral: {str(e)}")
+            await db.session.rollback()
+            return False
+    
+    async def _create_indirect_relations(self, original_referrer_id: int, new_user_id: int) -> None:
+        """
+        Create indirect referral relationships up to MAX_LEVEL using a recursive CTE.
+
+        Args:
+            original_referrer_id: The ID of the original referrer.
+            new_user_id: The ID of the newly referred user.
+        """
+        # Use recursive CTE to get all upline relations efficiently
+        query = text("""
+            WITH RECURSIVE upline AS (
+                SELECT referrer_id, referred_id, 1 as level
+                FROM noble_relations
+                WHERE referred_id = :referrer_id
+                UNION ALL
+                SELECT nr.referrer_id, nr.referred_id, upline.level + 1
+                FROM noble_relations nr
+                JOIN upline ON nr.referred_id = upline.referrer_id
+                WHERE upline.level < :max_level
+            )
+            SELECT DISTINCT referrer_id, level + 1 as new_level
+            FROM upline
+            WHERE level + 1 <= :max_level
+        """)
+        
+        result = await db.session.execute(
+            query,
+            {"referrer_id": original_referrer_id, "max_level": self.MAX_LEVEL}
+        )
+        
+        for row in result:
+            relation: NobleRelation = NobleRelation(  # Type hint added
+                referrer_id=row.referrer_id,
+                referred_id=new_user_id,
+                level=row.new_level
+            )
+            db.session.add(relation)

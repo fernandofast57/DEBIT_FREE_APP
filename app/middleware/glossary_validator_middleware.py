@@ -1,34 +1,32 @@
 
 from functools import wraps
-from flask import abort
+from flask import abort, request
 from app.utils.structure_validator import StructureValidator
 import logging
 
 logger = logging.getLogger(__name__)
 validator = StructureValidator()
 
-def enforce_glossary_compliance():
+def validate_glossary_terms():
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
-            validation_results = validator.validate_structure()
-            
-            # Verifica tutti i risultati della validazione
-            all_valid = all(
-                all(result if isinstance(result, bool) else all(result.values())
-                    for result in section.values())
-                for section in validation_results.values()
-            )
-            
-            if not all_valid:
-                logger.error("Glossary compliance check failed")
-                # Log dettagliato dei fallimenti
-                for section, results in validation_results.items():
-                    for check, result in results.items():
-                        if not result:
-                            logger.error(f"Validation failed: {section}.{check}")
-                abort(500, description="Application naming violates glossary standards")
+            if request.is_json:
+                data = request.get_json()
                 
+                # Validate states and types
+                if 'operation_type' in data and data['operation_type'] not in ['gold_purchase', 'gold_sale', 'gold_transfer']:
+                    logger.error(f"Invalid operation type: {data['operation_type']}")
+                    abort(400, "Operation type not compliant with glossary")
+                    
+                if 'operation_status' in data and data['operation_status'] not in ['started', 'processing', 'completed', 'failed']:
+                    logger.error(f"Invalid operation status: {data['operation_status']}")
+                    abort(400, "Operation status not compliant with glossary")
+                    
+                if 'noble_rank' in data and data['noble_rank'] not in ['bronze', 'silver', 'gold']:
+                    logger.error(f"Invalid noble rank: {data['noble_rank']}")
+                    abort(400, "Noble rank not compliant with glossary")
+                    
             return f(*args, **kwargs)
         return decorated_function
     return decorator

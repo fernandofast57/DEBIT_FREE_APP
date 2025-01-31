@@ -1,29 +1,22 @@
 
+import logging
 from typing import Optional
-import redis.asyncio as redis
 from app.utils.logging_config import get_logger
 
 logger = get_logger(__name__)
 
 class RedisConfig:
-    DEFAULT_HOST = '0.0.0.0'
-    DEFAULT_PORT = 6379
-    DEFAULT_DB = 0
-    DEFAULT_TIMEOUT = 5
+    CACHE_HOST = 'localhost'
+    CACHE_PORT = 6379
+    CACHE_DB = 0
+    CACHE_TIMEOUT = 3600  # Allineato con MetricsType.CACHE_TIMEOUT
+    CACHE_PREFIX = 'gold_investment'
+    MAX_RETRY_ATTEMPTS = 3  # Allineato con SecurityLevel
+    RETRY_INTERVAL = 1  # Allineato con OperationType
     
     def __init__(self, redis_url: Optional[str] = None):
-        self.redis_url = redis_url or f"redis://{self.DEFAULT_HOST}:{self.DEFAULT_PORT}/{self.DEFAULT_DB}"
-        
-    async def get_connection(self) -> redis.Redis:
-        try:
-            return redis.from_url(
-                self.redis_url,
-                encoding="utf-8",
-                decode_responses=True,
-                socket_timeout=self.DEFAULT_TIMEOUT,
-                retry_on_timeout=True,
-                health_check_interval=30
-            )
-        except Exception as e:
-            logger.error(f"Redis connection error: {str(e)}")
-            raise
+        self.redis_url = redis_url or f"redis://{self.CACHE_HOST}:{self.CACHE_PORT}/{self.CACHE_DB}"
+        self.initialized = False
+
+    def get_connection_url(self) -> str:
+        return self.redis_url

@@ -1,34 +1,46 @@
-from decimal import Decimal
+
+from decimal import Decimal, ROUND_DOWN
 from typing import Optional, Dict, Any
 from app.models import db, NobleRank, NobleRelation, User
 from app.utils.logging_config import get_logger
 
 logger = get_logger(__name__)
 
-class NobleRankService:
-    """Service for managing noble ranks and bonuses as per glossary"""
-
+class NobleService: 
     def __init__(self, db_session):
         self.db = db_session
 
-    async def calculate_noble_bonus(self, user_id: int, transaction_amount: Decimal) -> Decimal:
-        """Calculate noble bonus based on rank and transaction amount"""
-        user = await self.db.query(User).get(user_id)
-        if not user or not hasattr(user, 'noble_relation'):
-            return Decimal('0')
+    async def calcola_bonus_nobile(self, user_id: int, gold_weight: Decimal) -> Dict[str, Any]:
+        try:
+            user = await self.db.query(User).get(user_id)
+            if not user or not hasattr(user, 'noble_relation'):
+                return {"bonus": Decimal('0'), "status": "no_noble_rank"}
 
-        noble_rank = await self.db.query(NobleRank).get(user.noble_relation.noble_rank_id)
-        if not noble_rank:
-            return Decimal('0')
+            level = user.noble_relation.level
+            premio_referral = {
+                1: Decimal('0.007'),  # 0.7% in grammi dell'oro acquisito
+                2: Decimal('0.005'),  # 0.5% in grammi dell'oro acquisito
+                3: Decimal('0.005')   # 0.5% in grammi dell'oro acquisito
+            }
 
-        return transaction_amount * noble_rank.bonus_rate
+            bonus = (gold_weight * premio_referral.get(level, Decimal('0'))).quantize(Decimal('0.0001'))
 
-    async def verify_noble_status(self, user_id: int) -> bool:
-        """Verify noble status according to glossary requirements"""
+            return {
+                "bonus": bonus,
+                "status": "calculated",
+                "level": level,
+                "percentage": premio_referral.get(level, Decimal('0')) * 100
+            }
+        except Exception as e:
+            logger.error(f"Errore nel calcolo del bonus nobile: {str(e)}")
+            return {"bonus": Decimal('0'), "status": "error"}
+
+    async def verifica_stato_nobile(self, user_id: int) -> bool: 
+        """Verifica lo stato del rango nobile"""
         noble_relation = await self.db.query(NobleRelation).filter_by(user_id=user_id).first()
         return noble_relation is not None and noble_relation.verification_status == 'verified'
 
-    async def update_user_rank(self, user_id: int, new_rank_id: int) -> Dict[str, Any]:
+    async def aggiorna_rango_utente(self, user_id: int, new_rank_id: int) -> Dict[str, Any]: 
         """Update user noble rank with validation"""
         try:
             user = await self.db.query(User).get(user_id)
@@ -45,9 +57,9 @@ class NobleRankService:
             logger.error(f"Failed to update user rank: {str(e)}")
             return {'status': 'rejected', 'message': str(e)}
 
-    async def verify_rank(self, user_id: int, noble_status: str) -> Dict[str, str]:
-        if noble_status not in ['to_be_verified', 'verified', 'rejected']:
-            return {'status': 'error', 'message': 'Invalid noble status'}
+    async def verifica_rango(self, user_id: int, noble_status: str) -> Dict[str, str]: 
+        if noble_status not in ['in_verifica', 'verificato', 'respinto']:
+            return {'status': 'errore', 'message': 'Stato RangoNobile non valido'}
 
         user = await self.db.get(User, user_id)
         if not user:

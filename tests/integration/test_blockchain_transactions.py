@@ -1,4 +1,3 @@
-
 import pytest
 from app.services.blockchain_service import BlockchainService
 from decimal import Decimal

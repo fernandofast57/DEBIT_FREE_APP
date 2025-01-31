@@ -1,0 +1,9 @@
+from app.middleware.class_validator_middleware import validate_class_names
+
+# ... other imports ...
+
+@validate_class_names()
+class EuroAccount: 
+    # ... class definition ...
+
+# ... rest of the file ...

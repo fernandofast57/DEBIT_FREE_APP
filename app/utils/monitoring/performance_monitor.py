@@ -1,117 +1,79 @@
 
-import time
-import asyncio
-import functools
 import logging
-import psutil
-from typing import Dict, Any, Optional
+import asyncio
 from datetime import datetime
+from typing import Dict, Any
+import psutil
 
-class PerformanceMonitor:
-    def __init__(self, alert_threshold: float = 0.1):
-        self.alert_threshold = alert_threshold
-        self.metrics: Dict[str, Dict[str, Any]] = {}
-        self.cache_hits: Dict[str, int] = {}
-        self.start_time = datetime.now()
-        self._shutdown_flag = False
-        self.logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
-    def _init_operation_metrics(self, operation: str) -> None:
-        if operation not in self.metrics:
-            self.metrics[operation] = {
-                'count': 0,
-                'total_time': 0.0,
-                'max_time': 0.0,
-                'min_time': float('inf'),
-                'average_time': 0.0,
-                'memory_usage': 0,
-                'cache_hits': 0,
-                'last_execution': None,
-                'alerts': [],
-                'performance_score': 100.0
-            }
-            self.cache_hits[operation] = 0
+class SystemPerformanceMonitor:
+    def __init__(self):
+        self.metrics: Dict[str, Any] = {
+            'response_times_ms': [],
+            'cpu_usage': [],
+            'memory_usage': [],
+            'timestamps': [],
+            'total_errors': 0
+        }
+        self.thresholds = {
+            'max_response_time_ms': 1000,
+            'max_cpu_percent': 80,
+            'max_memory_mb': 512,
+            'max_network_latency_ms': 100
+        }
+        self.is_monitoring = False
 
-    def record_cache_hit(self, operation: str) -> None:
-        if operation not in self.cache_hits:
-            self.cache_hits[operation] = 0
-        self.cache_hits[operation] += 1
-        if operation in self.metrics:
-            self.metrics[operation]['cache_hits'] = self.cache_hits[operation]
+    async def monitor_resources(self):
+        while self.is_monitoring:
+            self.metrics['timestamp'] = datetime.utcnow()
+            self.metrics['memory_usage'].append(psutil.virtual_memory().percent)
+            self.metrics['cpu_usage'].append(psutil.cpu_percent())
+            logger.info(f"System metrics: {self.metrics}")
+            await asyncio.sleep(60)
 
-    def track_memory_usage(self, operation: str) -> None:
-        process = psutil.Process()
-        memory_info = process.memory_info()
-        self.metrics[operation]['memory_usage'] = memory_info.rss
+    def start_monitoring(self):
+        self.is_monitoring = True
+        asyncio.create_task(self.monitor_resources())
 
-    def track_time(self, category: str):
+    def stop_monitoring(self):
+        self.is_monitoring = False
+
+    def record_metrics(self, response_time_ms: float):
+        self.metrics['response_times_ms'].append(response_time_ms)
+        self.metrics['timestamps'].append(datetime.now())
+
+    def get_metrics(self) -> Dict[str, Any]:
+        return {
+            'timestamp': datetime.utcnow().isoformat(),
+            'metrics': self.metrics,
+            'status': 'critical' if self.metrics['total_errors'] > 10 else 'normal'
+        }
+
+    def track_time(self, operation_name: str):
         def decorator(func):
-            @functools.wraps(func)
-            async def async_wrapper(*args, **kwargs):
-                self._init_operation_metrics(category)
-                start_time = time.time()
-                
-                try:
-                    result = await func(*args, **kwargs)
-                    execution_time = time.time() - start_time
-                    
-                    self._update_metrics(category, execution_time)
-                    self.track_memory_usage(category)
-                    
-                    if execution_time > self.alert_threshold:
-                        self.metrics[category]['alerts'].append({
-                            'timestamp': datetime.now(),
-                            'execution_time': execution_time,
-                            'threshold': self.alert_threshold
-                        })
-                    
-                    return result
-                except Exception as e:
-                    self.logger.error(f"Error in {category}: {str(e)}")
-                    raise
-
-            @functools.wraps(func)
-            def sync_wrapper(*args, **kwargs):
-                self._init_operation_metrics(category)
-                start_time = time.time()
-                
-                try:
-                    result = func(*args, **kwargs)
-                    execution_time = time.time() - start_time
-                    
-                    self._update_metrics(category, execution_time)
-                    self.track_memory_usage(category)
-                    
-                    if execution_time > self.alert_threshold:
-                        self.metrics[category]['alerts'].append({
-                            'timestamp': datetime.now(),
-                            'execution_time': execution_time,
-                            'threshold': self.alert_threshold
-                        })
-                    
-                    return result
-                except Exception as e:
-                    self.logger.error(f"Error in {category}: {str(e)}")
-                    raise
-
-            return async_wrapper if asyncio.iscoroutinefunction(func) else sync_wrapper
+            async def wrapper(*args, **kwargs):
+                start_time = datetime.now()
+                result = await func(*args, **kwargs)
+                end_time = datetime.now()
+                execution_time = (end_time - start_time).total_seconds() * 1000
+                self.record_metrics(execution_time)
+                return result
+            return wrapper
         return decorator
 
-    def _update_metrics(self, category: str, execution_time: float) -> None:
-        metrics = self.metrics[category]
-        metrics['count'] += 1
-        metrics['total_time'] += execution_time
-        metrics['max'] = max(metrics.get('max_time', 0), execution_time)
-        metrics['min'] = min(metrics.get('min_time', float('inf')), execution_time)
-        metrics['average'] = metrics['total_time'] / metrics['count']
-        metrics['last_execution'] = datetime.now()
+    def save_metrics(self):
+        try:
+            logger.info("Saving performance metrics: %s", self.metrics)
+            return True
+        except Exception as e:
+            logger.error("Failed to save metrics: %s", str(e))
+            return False
 
-    def get_metrics(self) -> Dict[str, Dict[str, Any]]:
-        return self.metrics
+system_performance_monitor = SystemPerformanceMonitor()
 
-    def save_metrics(self) -> None:
-        if not self._shutdown_flag:
-            self._shutdown_flag = True
-            self.logger.info(f"Saving metrics before shutdown: {self.metrics}")
+def init_performance_monitor():
+    """Initialize and return the performance monitor instance"""
+    return system_performance_monitor
 
-performance_monitor = PerformanceMonitor()
+__all__ = ['SystemPerformanceMonitor', 'system_performance_monitor', 'init_performance_monitor']

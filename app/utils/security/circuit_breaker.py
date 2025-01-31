@@ -13,30 +13,29 @@ class CircuitBreaker:
                  failure_threshold: int = 5,
                  recovery_timeout: int = 30,
                  monitor: Optional[Any] = None):
-        self.failure_threshold = failure_threshold
-        self.recovery_timeout = recovery_timeout
-        self.failures = 0
-        self.last_failure_time = 0
-        self.monitor = monitor
-        self.state = "CLOSED"  # CLOSED, OPEN, HALF-OPEN
+        self.max_failures = failure_threshold
+        self.recovery_interval = recovery_timeout
+        self.failure_count = 0
+        self.last_failure_timestamp = 0
+        self.performance_monitor = monitor
+        self.circuit_state = "CLOSED"  # CLOSED, OPEN, HALF-OPEN
 
     def __call__(self, func: Callable):
 
         @wraps(func)
         def wrapper(*args, **kwargs):
-            if self.state == "OPEN":
-                if time.time(
-                ) - self.last_failure_time > self.recovery_timeout:
-                    self.state = "HALF-OPEN"
+            if self.circuit_state == "OPEN":
+                if time.time() - self.last_failure_timestamp > self.recovery_interval:
+                    self.circuit_state = "HALF-OPEN"
                     logger.info("Circuit breaker entering HALF-OPEN state")
                 else:
                     raise Exception("Circuit breaker is OPEN")
 
             try:
                 result = func(*args, **kwargs)
-                if self.state == "HALF-OPEN":
-                    self.state = "CLOSED"
-                    self.failures = 0
+                if self.circuit_state == "HALF-OPEN":
+                    self.circuit_state = "CLOSED"
+                    self.failure_count = 0
                     logger.info("Circuit breaker reset to CLOSED state")
                 return result
             except Exception as e:
@@ -46,16 +45,16 @@ class CircuitBreaker:
         return wrapper
 
     def _handle_failure(self):
-        self.failures += 1
-        self.last_failure_time = time.time()
+        self.failure_count += 1
+        self.last_failure_timestamp = time.time()
 
-        if self.failures >= self.failure_threshold:
-            self.state = "OPEN"
+        if self.failure_count >= self.max_failures:
+            self.circuit_state = "OPEN"
             logger.warning(
-                f"Circuit breaker OPEN after {self.failures} failures")
+                f"Circuit breaker OPEN after {self.failure_count} consecutive failures")
 
-        if self.monitor:
-            self.monitor.record_metrics({
-                'circuit_breaker_state': self.state,
-                'failures': self.failures
+        if self.performance_monitor:
+            self.performance_monitor.record_metrics({
+                'circuit_state': self.circuit_state,
+                'failure_count': self.failure_count
             })

@@ -1,0 +1,128 @@
+Master Blueprint: Piattaforma di Investimento in Oro - Versione Consolidata
+1. Visione e Obiettivi
+Visione: Creare una piattaforma di investimento in oro accessibile e trasparente, che permetta agli utenti di accumulare oro fisico in modo semplice e sicuro, sfruttando la potenza della blockchain e un sistema di affiliazione motivante.
+
+Obiettivi Primari:
+
+Offrire un metodo di investimento in oro semplice e accessibile tramite bonifici ricorrenti.
+Implementare un sistema di affiliazione multilivello con incentivi e titoli nobiliari (NOBLE_RANK_NAMES).
+Garantire la trasparenza e la sicurezza delle transazioni tramite l'integrazione della blockchain.
+Assicurare la conformità GDPR e gli standard di sicurezza bancari.
+2. Funzionalità Chiave
+2.1 Sistema di Autenticazione (AuthVerification)
+Registrazione Utente e KYC: Raccolta dei dati personali degli utenti (USER_MODEL_FIELDS) e implementazione del processo KYC (Know Your Customer) per la verifica dell'identità, utilizzando i tipi di documenti accettati (KYC_DOCUMENT_TYPES).
+Due Diligence: Procedura di verifica approfondita per la valutazione del rischio di riciclaggio di denaro e finanziamento del terrorismo. Utilizzo del template "Due_Diligence_Template ITALIANO.txt" come base.
+Verifica Documenti: Integrazione di un servizio di verifica documenti per automatizzare il controllo dei documenti d'identità.
+Autenticazione a Due Fattori (2FA) Obbligatoria: Implementazione di 2FA tramite SMS o app di autenticazione, utilizzando la chiave segreta 2FA_SECRET_KEY per l'algoritmo di generazione dei codici.
+Sicurezza Avanzata: Misure di sicurezza come la crittografia delle password, il blocco degli account dopo tentativi di accesso falliti, la protezione da attacchi brute-force e la gestione sicura delle sessioni.
+2.2 Dashboard Principale (GoldInvestmentDashboard)
+Panoramica Investimenti: Visualizzazione chiara e intuitiva del saldo in oro (GoldAccount), del suo valore attuale basato sul fixing (FIXING_API_URL) e della cronologia delle transazioni (Transaction).
+Tracciamento Oro Accumulato: Grafici interattivi per monitorare l'accumulo di oro nel tempo, con la possibilità di visualizzare l'andamento del prezzo e il guadagno/perdita.
+Statistiche Principali: Visualizzazione di metriche chiave come l'investimento totale, lo spread applicato (TRANSACTION_FEE_PERCENTAGE) e il rendimento.
+Stato Affiliazione: Sezione dedicata al sistema di affiliazione, con visualizzazione del livello, dei referral (AFFILIATE_BONUS_LEVELS), delle commissioni e dei titoli nobiliari (NOBLE_RANK_NAMES).
+Sezione Lingotti: Visualizzazione dettagliata dei lingotti (GoldBar) presenti in magazzino, con il relativo numero seriale e stato, e la possibilità per l'utente di vedere la frazione di lingotto posseduta (GoldAllocation).
+2.3 Sistema di Bonifici (GoldPurchaseInterface)
+Gestione Bonifici Ricorrenti: Configurazione di bonifici ricorrenti con frequenza personalizzabile (es. mensile). Implementare la validazione IBAN per garantire l'accuratezza dei dati bancari e la verifica del conto bancario per prevenire problemi di riciclaggio di denaro.
+Processo di Trasformazione Euro-Oro:Il sistema elabora i bonifici in arrivo, verificando l'identificativo cliente unico per associare il pagamento all'utente corretto.
+Ogni martedì, alle ore 15:00, il sistema acquisisce il fixing dell'oro (FIXING_API_URL) e calcola la quantità di oro corrispondente al saldo in euro del MoneyAccount di ciascun utente.
+Il sistema esegue la conversione euro-oro, applicando lo spread del 6,7% (5% per l'organizzazione, 1,7% per il sistema di affiliazione).
+L'oro viene accreditato sul GoldAccount dell'utente, e viene registrata una transazione (Transaction) con il dettaglio dell'operazione.
+Conferme Automatiche: Invio di notifiche email e/o SMS agli utenti per confermare l'avvenuto bonifico, l'acquisizione del fixing e l'accredito dell'oro.
+Notifiche Scadenze: Invio di promemoria automatici agli utenti prima della scadenza dei bonifici ricorrenti.
+2.4 Gestione Trasformazioni (GoldTransformationService)
+Automazione del Processo: Sviluppare un sistema automatizzato (BATCH_TRANSFORMATION_CRON) per eseguire le trasformazioni settimanali euro-oro in base al fixing delle 15:00.
+Gestione Conti Separati: Ciascun utente avrà due conti:
+MoneyAccount: Per i bonifici in euro in attesa di trasformazione.
+GoldAccount: Per l'oro accumulato.
+Calcolo Preciso dei Grammi: Utilizzare una libreria Python per la gestione dei numeri decimali (es. decimal) per garantire la precisione nel calcolo dei grammi d'oro.
+Tracciamento Dettagliato: Registrare ogni trasformazione (GoldTransformation) con:
+ID utente
+Data e ora
+Saldo euro iniziale
+Fixing dell'oro
+Spread applicato
+Grammi d'oro accreditati
+2.5 Sistema Affiliati (AffiliateManagement)
+Struttura Multilivello: Definizione dei livelli di affiliazione e delle relative percentuali di bonus (AFFILIATE_BONUS_LEVELS).
+Titoli Nobiliari: Assegnazione di titoli nobiliari (NOBLE_RANK_NAMES) agli affiliati in base al raggiungimento di determinati obiettivi (es. numero di referral, volume di investimenti generati).
+Calcolo Automatico delle Commissioni: Sviluppare un sistema per calcolare e distribuire automaticamente le commissioni agli affiliati in base alle transazioni dei loro referral. Le commissioni saranno registrate come BonusTransaction.
+Genealogia Completa della Rete: Visualizzazione grafica della rete di affiliazione, mostrando le relazioni tra gli utenti e i loro livelli.
+3. Implementazione Blockchain
+Piattaforma: Polygon Network (soluzione Layer 2 di Ethereum) per ottimizzare i costi (GOLD_TRANSFORMATION_GAS_LIMIT) e la scalabilità.
+Smart Contract: Sviluppare smart contract per:
+Gestione del Processo di Conversione Euro-Oro: Registrazione sulla blockchain delle trasformazioni settimanali, garantendo trasparenza e immutabilità.
+Tracciamento dei Bilanci in Oro: Memorizzazione dei saldi in oro degli utenti sulla blockchain.
+Calcolo e Distribuzione Automatica delle Commissioni agli Affiliati: Esecuzione automatica dei pagamenti delle commissioni tramite smart contract.
+3.1 Ottimizzazione Costi Blockchain
+Elaborazione Batch: Raggruppare più transazioni (GoldTransformation) in un unico batch per ridurre i costi del gas.
+Archiviazione Ibrida: Memorizzare i dati sensibili off-chain e registrare solo gli hash delle transazioni e i saldi sulla blockchain.
+Ottimizzazione del Gas: Scrivere smart contract efficienti per minimizzare il consumo di gas.
+Monitoraggio dei Costi: Implementare un sistema di monitoraggio per tracciare i costi delle transazioni blockchain.
+4. Sicurezza e Compliance
+Security Framework: Definire un framework di sicurezza completo che includa:
+Analisi del Rischio: Identificare e valutare le potenziali minacce alla piattaforma.
+Misure di Sicurezza: Implementare le misure di sicurezza elencate nel documento "Documento di Progetto".
+Test di Penetrazione: Eseguire test di penetrazione regolari per identificare le vulnerabilità.
+4.1 Data Protection
+Crittografia a Riposo: Crittografare i dati sensibili memorizzati nel database.
+Comunicazioni Sicure: Utilizzare TLS per crittografare le comunicazioni tra il frontend, il backend e la blockchain.
+Logging di Sicurezza: Registrare tutti gli eventi di sicurezza, inclusi tentativi di accesso non autorizzati, modifiche ai dati e transazioni sospette.
+Controllo degli Accessi: Implementare controlli di accesso basati sui ruoli per limitare l'accesso alle funzionalità e ai dati sensibili.
+Backup Regolari: Eseguire backup regolari dei dati per garantire la possibilità di ripristino in caso di incidenti.
+4.2 Conformità GDPR
+Minimizzazione dei Dati: Raccogliere solo i dati personali degli utenti necessari per il funzionamento della piattaforma.
+Consenso Esplicito: Ottenere il consenso esplicito degli utenti per il trattamento dei loro dati.
+Diritto all'Oblio: Implementare procedure per consentire agli utenti di richiedere la cancellazione dei loro dati.
+Data Protection Impact Assessment (DPIA): Condurre una DPIA per valutare l'impatto sulla privacy del trattamento dei dati.
+5. Metodologia di Sviluppo
+Agile: Utilizzare un approccio di sviluppo Agile, con sprint di 2-3 settimane, per garantire flessibilità e adattarsi alle nuove esigenze.
+Test-Driven Development (TDD): Scrivere i test prima del codice per garantire la qualità del software.
+5.1 Approccio Formativo
+Comprensione dei Concetti: Dedica del tempo alla comprensione approfondita dei concetti tecnici, come la blockchain, la sicurezza e lo sviluppo web.
+Implementazione Guidata: Sviluppo guidato passo passo, con spiegazioni dettagliate del codice e test immediati delle funzionalità.
+Documentazione Continua: Creazione progressiva della documentazione per consolidare gli apprendimenti e facilitare la manutenzione del sistema.
+Revisione e Consolidamento: Sessioni di riepilogo e discussione per chiarire eventuali dubbi e consolidare le conoscenze acquisite.
+6. Strumenti e Risorse
+Sviluppo:Replit Pro: Piattaforma online per lo sviluppo collaborativo, con hosting integrato e funzionalità avanzate.
+GitHub: Sistema di version control per la gestione del codice sorgente.
+VS Code: Editor di codice con supporto per Python, JavaScript e Solidity.
+TailwindUI: Libreria di componenti UI per React, con design moderno e professionale.
+Database:PostgreSQL: Database relazionale affidabile e performante.
+MongoDB Atlas: Database cloud NoSQL per la gestione dei dati non strutturati.
+Redis: Database in-memory per la gestione della cache.
+Blockchain:Solidity: Linguaggio di programmazione per lo sviluppo di smart contract.
+Polygon Network: Rete blockchain per l'implementazione degli smart contract.
+Web3.js/Web3.py: Librerie per interagire con la blockchain da JavaScript e Python.
+Sicurezza:Sentry: Piattaforma per il monitoraggio degli errori e delle performance dell'applicazione.
+WAF (Web Application Firewall): Servizio cloud per la protezione da attacchi web.
+Monitoraggio:Grafana: Piattaforma per la visualizzazione dei dati di monitoraggio.
+Prometheus: Sistema di monitoraggio open source per la raccolta di metriche.
+7. Roadmap di Sviluppo
+7.1 Fase 1: Setup Iniziale (2-3 Settimane)
+Setup Ambiente: Configurazione di Replit Pro, creazione del repository GitHub e installazione degli strumenti necessari.
+Definizione Modelli Database: Creazione dei modelli SQLAlchemy (User, MoneyAccount, GoldAccount, Transaction, GoldBar, GoldAllocation, BonusTransaction, NobleRelation, etc.) in base ai requisiti del sistema.
+Sviluppo API Base: Implementazione degli endpoint API per l'autenticazione, la gestione degli utenti e i bonifici ricorrenti.
+Integrazione Blockchain Base: Setup della connessione alla Polygon Network e deploy di un primo smart contract di test.
+7.2 Fase 2: Funzionalità Core (6-8 Settimane)
+Sviluppo Dashboard Principale: Implementazione del dashboard utente con visualizzazione del saldo in oro, della cronologia delle transazioni e delle statistiche.
+Completamento Sistema Bonifici: Finalizzazione della gestione dei bonifici ricorrenti, con validazione IBAN, conferma dei pagamenti e notifiche.
+Implementazione Logica Conversione Euro-Oro: Sviluppo della logica di business per la conversione euro-oro in base al fixing giornaliero e l'accredito dell'oro sul GoldAccount.
+Integrazione Blockchain Avanzata: Sviluppo degli smart contract per la gestione delle trasformazioni euro-oro, il tracciamento dei bilanci e la distribuzione delle commissioni.
+Test Unitari e di Integrazione: Creazione di test completi per i componenti backend e l'integrazione con la blockchain.
+7.3 Fase 3: Funzionalità Avanzate (6-8 Settimane)
+Sviluppo Sistema Affiliati: Implementazione del sistema di affiliazione multilivello, con calcolo delle commissioni, assegnazione dei titoli nobiliari e visualizzazione della rete.
+Ottimizzazione Blockchain: Implementazione delle strategie per ridurre i costi delle transazioni blockchain, come l'elaborazione batch e l'archiviazione ibrida.
+Implementazione Sicurezza Avanzata: Integrazione di MFA, WAF e SIEM per rafforzare la sicurezza della piattaforma.
+Test di Penetrazione: Esecuzione di test di penetrazione per identificare e correggere le vulnerabilità.
+7.4 Fase 4: Rifinitura e Deployment (4-6 Settimane)
+Sviluppo Frontend: Creazione dell'interfaccia utente con React, TailwindUI e Web3.js, integrando tutte le funzionalità del backend e della blockchain.
+Test End-to-End: Esecuzione di test end-to-end per verificare il corretto funzionamento di tutti i componenti del sistema.
+Deployment: Deployment dell'applicazione su un ambiente di produzione, utilizzando container Docker e Kubernetes.
+Monitoraggio: Configurazione del monitoraggio delle performance e dei log dell'applicazione.
+8. Documentazione
+Development Journal: Diario di sviluppo dettagliato, contenente note tecniche, decisioni progettuali, problemi incontrati e soluzioni adottate. Utilizzo di Replit per il diario, con la possibilità di incorporare codice e commenti.
+Knowledge Base: Creazione di una knowledge base con documentazione tecnica, guide pratiche e FAQ per gli utenti e gli sviluppatori. Utilizzo di GitHub Wiki o Notion per la gestione della knowledge base.
+Documentazione API: Documentazione completa delle API RESTful, con descrizione degli endpoint, dei parametri e degli esempi di utilizzo. Utilizzo di Swagger o Postman per la documentazione API.
+9. Glossario dei Termini Chiave (vedi glossario precedente)
+10. Conclusione
+Questo Master Blueprint fornisce una guida completa per lo sviluppo della piattaforma Gold Investment. La combinazione di un sistema di investimento accessibile, un sistema di affiliazione motivante, la trasparenza della blockchain e l'attenzione alla sicurezza ha il potenziale per creare una soluzione innovativa nel mercato dell'investimento in oro. L'approccio formativo integrato allo sviluppo garantirà una comprensione approfondita del sistema e la capacità di gestirlo in modo autonomo a lungo termine.

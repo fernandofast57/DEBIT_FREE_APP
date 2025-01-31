@@ -1,0 +1,2 @@
+class TransactionAnalytics:
+    pass

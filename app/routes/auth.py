@@ -6,7 +6,7 @@ from decimal import Decimal
 from functools import wraps
 
 from app.models import db
-from app.models import User, MoneyAccount, GoldAccount, Transaction
+from app.models import User, EuroAccount, GoldAccount, Transaction
 from app.utils.auth import AuthManager
 from app.middleware.security import security
 from app.services.two_factor_service import TwoFactorService
@@ -54,7 +54,7 @@ def register():
         db.session.add(user)
         db.session.flush()
 
-        money_account = MoneyAccount(user_id=user.id, balance=Decimal('0'))
+        money_account = EuroAccount(user_id=user.id, balance=Decimal('0'))
         gold_account = GoldAccount(user_id=user.id, balance=Decimal('0'))
 
         db.session.add_all([money_account, gold_account])

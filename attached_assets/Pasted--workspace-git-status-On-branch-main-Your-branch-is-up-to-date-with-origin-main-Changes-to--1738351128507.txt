@@ -1,0 +1,209 @@
+/workspace$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        modified:   .env.example
+        modified:   .replit
+        modified:   MASTER_PROJECT.md
+        modified:   app/__init__.py
+        modified:   app/admin/views.py
+        modified:   app/api/v1/__init__.py
+        modified:   app/api/v1/accounting.py
+        modified:   app/api/v1/admin_approvals.py
+        modified:   app/api/v1/analytics.py
+        new file:   app/api/v1/blockchain.py
+        modified:   app/api/v1/bonuses.py
+        modified:   app/api/v1/index.py
+        modified:   app/api/v1/noble.py
+        modified:   app/api/v1/system.py
+        modified:   app/api/v1/transfers.py
+        modified:   app/api/v1/transformations.py
+        new file:   app/api/v1/workflow.py
+        modified:   app/config/constants.py
+        modified:   app/config/redis.py
+        modified:   app/database.py
+        modified:   app/init_db.py
+        new file:   app/middleware/audit_log.py
+        new file:   app/middleware/class_validator_middleware.py
+        modified:   app/middleware/code_standardization_middleware.py
+        modified:   app/middleware/glossary_validator_middleware.py
+        new file:   app/middleware/rate_limit.py
+        modified:   app/middleware/security.py
+        new file:   app/middleware/standards_enforcer_middleware.py
+        modified:   app/models/__init__.py
+        modified:   app/models/accounting.py
+        new file:   app/models/contract.py
+        modified:   app/models/init_noble_ranks.py
+        modified:   app/models/kyc.py
+        modified:   app/models/models.py
+        modified:   app/models/noble_system.py
+        modified:   app/models/notification.py
+        new file:   app/models/ticket.py
+        new file:   app/models/transaction.py
+        modified:   app/models/user.py
+        new file:   app/models/weekly_amount.py
+        modified:   app/routes/auth.py
+        modified:   app/routes/gold.py
+        modified:   app/routes/main.py
+        modified:   app/services/__init__.py
+        modified:   app/services/accounting_service.py
+        new file:   app/services/analytics_service.py
+        modified:   app/services/auth_service.py
+        modified:   app/services/batch_collection_service.py
+        modified:   app/services/blockchain_noble_service.py
+        modified:   app/services/blockchain_service.py
+        modified:   app/services/bonus_distribution_service.py
+        new file:   app/services/contract_service.py
+        modified:   app/services/gold/weekly_distribution.py
+        modified:   app/services/kyc_service.py
+        modified:   app/services/noble_rank_service.py
+        modified:   app/services/notification_service.py
+        new file:   app/services/referral_service.py
+        modified:   app/services/role_manager.py
+        new file:   app/services/ticket_analytics_service.py
+        modified:   app/services/transformation_service.py
+        modified:   app/services/validators/blockchain_validator.py
+        modified:   app/services/validators/bonus_validator.py
+        modified:   app/services/validators/noble_validator.py
+        modified:   app/services/validators/transaction_validator.py
+        new file:   app/services/validators/workflow_validator.py
+        new file:   app/services/weekly_amount_service.py
+        modified:   app/services/weekly_processing_service.py
+        new file:   app/services/workflow_service.py
+        modified:   app/templates/admin/dashboard.html
+        modified:   app/templates/base.html
+        modified:   app/templates/operator/dashboard.html
+        new file:   app/templates/operator/validation_workflow.html
+        new file:   app/templates/operator/workflow_steps.html
+        new file:   app/utils/analytics/distribution_analytics.py
+        new file:   app/utils/analytics/market_analysis.py
+        new file:   app/utils/analytics/system_analytics.py
+        new file:   app/utils/analytics/transaction_analytics.py
+        modified:   app/utils/analytics/user_analytics.py
+        modified:   app/utils/async_handler.py
+        modified:   app/utils/auth.py
+        modified:   app/utils/auto_recovery.py
+        modified:   app/utils/blockchain_monitor.py
+        modified:   app/utils/cache/__init__.py
+        modified:   app/utils/cache/redis_manager.py
+        modified:   app/utils/database/connection.py
+        modified:   app/utils/error_handler.py
+        deleted:    app/utils/monitoring.py
+        modified:   app/utils/monitoring/__init__.py
+        new file:   app/utils/monitoring/alert_system.py
+        new file:   app/utils/monitoring/analytics_collector.py
+        new file:   app/utils/monitoring/analytics_dashboard.py
+        modified:   app/utils/monitoring/async_monitor.py
+        new file:   app/utils/monitoring/audit_system.py
+        new file:   app/utils/monitoring/automated_reports.py
+        modified:   app/utils/monitoring/blockchain_monitor.py
+        modified:   app/utils/monitoring/dependency_monitor.py
+        new file:   app/utils/monitoring/gold_metrics.py
+        new file:   app/utils/monitoring/health_check.py
+        new file:   app/utils/monitoring/incident_manager.py
+        new file:   app/utils/monitoring/logging_manager.py
+        new file:   app/utils/monitoring/metrics_aggregator.py
+        new file:   app/utils/monitoring/metrics_collector.py
+        new file:   app/utils/monitoring/monitoring_manager.py
+        modified:   app/utils/monitoring/monitoring_setup.py
+        new file:   app/utils/monitoring/operator_notifications.py
+        deleted:    app/utils/monitoring/performance.py
+        modified:   app/utils/monitoring/performance_metrics.py
+        modified:   app/utils/monitoring/performance_monitor.py
+        new file:   app/utils/monitoring/performance_monitor.py,
+        new file:   app/utils/monitoring/performance_profiler.py
+        new file:   app/utils/monitoring/resource_monitor.py
+        new file:   app/utils/monitoring/service_monitor.py
+        new file:   app/utils/monitoring/system_health.py
+        new file:   app/utils/monitoring/system_monitor.py
+        new file:   app/utils/monitoring/telemetry.py
+        modified:   app/utils/monitoring/transformation_monitor.py
+        new file:   app/utils/monitoring/transparency_validator.py
+        modified:   app/utils/optimization.py
+        modified:   app/utils/pre_commit_hook.py
+        new file:   app/utils/rate_limiter.py
+        deleted:    app/utils/robust_rate_limiter.py
+        modified:   app/utils/security/__init__.py
+        new file:   app/utils/security/auth_manager.py
+        modified:   app/utils/security/circuit_breaker.py
+        modified:   app/utils/security/config_manager.py
+        modified:   app/utils/security/jwt_manager.py
+        new file:   app/utils/security/jwt_validator.py
+        modified:   app/utils/security/rate_limiter.py
+        modified:   app/utils/security/robust_rate_limiter.py
+        modified:   app/utils/security/security_manager.py
+        new file:   app/utils/security/security_utils.py
+        new file:   app/utils/security/token_manager.py
+        new file:   app/utils/standards_checker.py
+        modified:   app/utils/structure_validator.py
+        modified:   app/utils/system_monitor.py
+        modified:   app/utils/validation_report.py
+        new file:   attached_assets/Due_Diligence_Template_English_Translation.docx
+        new file:   attached_assets/Ecco il programma di lavoro esploso.txt
+        deleted:    attached_assets/Glossario.txt
+        modified:   attached_assets/MASTER_PROJECT 19Gennaio2025.md
+        new file:   attached_assets/Pasted--2025-01-28-17-05-37-ERROR-main-128-Failed-to-start-application-cannot-import-name-Securi-1738083963464.txt
+        new file:   attached_assets/Pasted--2025-01-30-16-49-45-ERROR-main-128-Failed-to-start-application-cannot-import-name-Notifi-1738256610626.txt
+        new file:   attached_assets/Pasted--Core-Models-User-Related-User-Main-user-entity-with-authentication-details-and-relat-1737814117258.txt
+        new file:   attached_assets/Pasted--Core-Models-User-Related-User-Main-user-entity-with-authentication-details-and-relat-1737814351896.txt
+        new file:   attached_assets/Pasted--version-1-4-last-updated-2024-01-25-platform-name-Gold-Investment-Platform-1738159750019.txt
+        new file:   attached_assets/Pasted--version-1-4-last-updated-2024-01-25-platform-name-Gold-Investment-Platform-1738160262887.txt
+        new file:   attached_assets/Pasted-Master-Blueprint-Piattaforma-di-Investimento-in-Oro-Versione-Consolidata-1-Visione-e-Obiettivi--1738161242622.txt
+        new file:   attached_assets/Pasted-Sono-uno-sviluppatore-e-sto-lavorando-a-una-piattaforma-di-investimento-in-oro-come-descritto-nel-m-1737984714124.txt
+        new file:   attached_assets/Pasted-Sono-uno-sviluppatore-e-sto-lavorando-a-una-piattaforma-di-investimento-in-oro-come-descritto-nel-m-1737985131701.txt
+        new file:   attached_assets/Pasted-The-code-seems-to-be-well-structured-and-functional-but-I-can-offer-some-suggestions-for-improvemen-1738163399063.txt
+        new file:   attached_assets/Pasted-The-code-you-provided-appears-to-be-well-structured-and-functional-but-I-have-a-few-suggestions-for-1738163709124.txt
+        new file:   attached_assets/Pasted-Yes-you-re-right-The-document-needs-to-be-revised-to-accurately-reflect-the-bonus-system-we-discus-1738248154208.txt
+        new file:   attached_assets/Pasted-from-decimal-import-Decimal-from-app-models-import-db-NobleRelation-BonusRate-User-GoldAccount--1738163167732.txt
+        new file:   attached_assets/__init__.py
+        new file:   attached_assets/admin.zip
+        new file:   attached_assets/database.py
+        new file:   attached_assets/due-diligence-workflow.md
+        new file:   attached_assets/init_db.py
+        new file:   attached_assets/prometheus_config.py
+        new file:   attached_assets/views.py
+        new file:   debug_app.py
+        new file:   docs/ADMIN_APPROVAL.md
+        modified:   docs/API_DOCUMENTATION.md
+        modified:   docs/DEVELOPMENT_STANDARDS.md
+        modified:   docs/GLOSSARY.md
+        new file:   docs/OFFICIAL_STANDARDS.json
+        new file:   docs/SECURITY_AUDIT.md
+        modified:   docs/USAGE.md
+        new file:   home/runner/workspace/app/middleware/class_validator_middleware.py
+        new file:   home/runner/workspace/app/middleware/rate_limit.py
+        new file:   home/runner/workspace/app/models/__init__.py
+        new file:   home/runner/workspace/app/models/models.py
+        new file:   home/runner/workspace/app/utils/monitoring/performance_monitor.py
+        new file:   home/runner/workspace/main.py
+        modified:   main.py
+        modified:   migrations/versions/3135a7000c3b_creazione_delle_tabelle_mancanti.py
+        modified:   migrations/versions/add_blockchain_fields.py
+        new file:   migrations/versions/create_notifications_table.py
+        new file:   migrations/versions/rename_prize_to_bonus.py
+        new file:   migrations/versions/update_service_names.py
+        new file:   scripts/validate_codebase.py
+        new file:   scripts/validate_standards.py
+        modified:   tests/conftest.py
+        new file:   tests/integration/test_admin_approval.py
+        modified:   tests/integration/test_blockchain.py
+        modified:   tests/integration/test_blockchain_transactions.py
+        new file:   tests/integration/test_workflow_e2e.py
+        modified:   tests/pytest.ini
+        modified:   tests/security/test_security.py
+        modified:   tests/services/test_weekly_distribution.py
+        new file:   tests/unit/test_analytics_endpoints.py
+        modified:   tests/unit/test_blockchain_monitor.py
+        new file:   tests/unit/test_bonus_distribution.py
+        modified:   tests/unit/test_bonus_service.py
+        new file:   tests/unit/test_gold_purchase_calculations.py
+        modified:   tests/unit/test_noble_system.py
+        new file:   tests/unit/test_performance_metrics.py
+        modified:   tests/unit/test_performance_monitor.py
+        modified:   tests/unit/test_transformation.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        gold_investment_backend/

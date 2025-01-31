@@ -1,22 +1,22 @@
-
-from typing import Optional, Type, TypeVar, List
-from contextlib import asynccontextmanager, contextmanager
-from sqlalchemy import create_engine, text
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker, scoped_session
+from typing import Generator, Optional, Type, TypeVar, List
+from contextlib import asynccontextmanager
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy.exc import SQLAlchemyError, OperationalError
-from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
 import logging
-from typing import Generator
 
+Base = declarative_base()
 T = TypeVar('T')
-db = SQLAlchemy()
 
 class DatabaseManager:
-    def __init__(self, db_url: str):
+    def __init__(self, database_url: str):
         self.logger = logging.getLogger(__name__)
-        self._setup_engines(db_url)
         self._setup_logging()
+        self.engine = create_async_engine(database_url, echo=True)
+        self.async_session = sessionmaker(
+            self.engine, class_=AsyncSession, expire_on_commit=False
+        )
 
     def _setup_logging(self):
         handler = logging.FileHandler('logs/database.log')
@@ -25,83 +25,28 @@ class DatabaseManager:
         self.logger.addHandler(handler)
         self.logger.setLevel(logging.INFO)
 
-    def _setup_engines(self, db_url: str) -> None:
-        self.sync_engine = create_engine(db_url, pool_pre_ping=True, echo=True)
-        
-        self.async_engine = create_async_engine(
-            f"sqlite+aiosqlite://{db_url.split('sqlite://')[-1]}",
-            echo=True
-        )
-        
-        self.SessionLocal = scoped_session(
-            sessionmaker(
-                autocommit=False,
-                autoflush=False,
-                bind=self.sync_engine
-            )
-        )
-        
-        self.AsyncSessionLocal = sessionmaker(
-            class_=AsyncSession,
-            autocommit=False,
-            autoflush=False,
-            bind=self.async_engine,
-            expire_on_commit=False
-        )
-
-    async def create_all(self) -> None:
-        """Create all database tables"""
-        try:
-            async with self.async_engine.begin() as conn:
-                await conn.run_sync(db.Model.metadata.create_all)
-            self.logger.info("Database tables created successfully")
-        except Exception as e:
-            self.logger.error(f"Failed to create database tables: {str(e)}")
-            raise
-
-    async def drop_all(self) -> None:
-        """Drop all database tables"""
-        try:
-            async with self.async_engine.begin() as conn:
-                await conn.run_sync(db.Model.metadata.drop_all)
-            self.logger.info("Database tables dropped successfully")
-        except Exception as e:
-            self.logger.error(f"Failed to drop database tables: {str(e)}")
-            raise
 
     @asynccontextmanager
     async def get_async_session(self) -> Generator[AsyncSession, None, None]:
-        """Get async database session"""
-        session = self.AsyncSessionLocal()
+        session = self.async_session()
         try:
             yield session
             await session.commit()
-        except SQLAlchemyError as e:
+        except Exception as e:
             await session.rollback()
             self.logger.error(f"Database error: {str(e)}")
             raise
         finally:
             await session.close()
 
-    @contextmanager
-    def get_sync_session(self) -> Generator[scoped_session, None, None]:
-        """Get sync database session"""
-        session = self.SessionLocal()
-        try:
-            yield session
-            session.commit()
-        except SQLAlchemyError as e:
-            session.rollback()
-            self.logger.error(f"Database error: {str(e)}")
-            raise
-        finally:
-            session.close()
+    async def create_all(self) -> None:
+        async with self.engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
 
     async def check_connection(self) -> bool:
-        """Check database connection"""
         try:
             async with self.get_async_session() as session:
-                await session.execute(text("SELECT 1"))
+                await session.execute("SELECT 1")
                 return True
         except Exception as e:
             self.logger.error(f"Connection check failed: {str(e)}")
@@ -149,5 +94,4 @@ class DatabaseManager:
                 return True
             return False
 
-# Initialize database manager with SQLite
-db_manager = DatabaseManager("sqlite:///instance/gold_investment.db")
+db = DatabaseManager("sqlite+aiosqlite:///instance/gold_investment.db")

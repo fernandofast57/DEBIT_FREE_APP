@@ -1,11 +1,10 @@
-
 from datetime import datetime, timedelta
 import jwt
 from flask import current_app
 
-class AuthService:
+class ServizioAutenticazione:
     @staticmethod
-    def generate_token(user_id: int) -> str:
+    def genera_token(user_id: int) -> str:
         payload = {
             'exp': datetime.utcnow() + timedelta(days=1),
             'iat': datetime.utcnow(),
@@ -18,7 +17,7 @@ class AuthService:
         )
 
     @staticmethod
-    def validate_token(token: str) -> dict:
+    def valida_token(token: str) -> dict:
         try:
             return jwt.decode(
                 token,

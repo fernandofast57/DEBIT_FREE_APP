@@ -1,44 +1,14 @@
+{% extends "operator/base.html" %}
 
-{% extends "admin/base.html" %}
 {% block content %}
-<div class="container mt-4">
-    <h2>Dashboard Operatore</h2>
-    
+<div class="container my-4">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-12">
+            <h2>Operator Dashboard</h2>
+
             <div class="card mb-4">
                 <div class="card-header">
-                    <h4>Nuova Transazione</h4>
-                </div>
-                <div class="card-body">
-                    <form id="newTransactionForm">
-                        <div class="mb-3">
-                            <label class="form-label">Cliente</label>
-                            <select class="form-select" name="user_id" required>
-                                <!-- Popolato via JavaScript -->
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Tipo Operazione</label>
-                            <select class="form-select" name="type" required>
-                                <option value="buy_gold">Acquisto Oro</option>
-                                <option value="sell_gold">Vendita Oro</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Importo (€)</label>
-                            <input type="number" class="form-control" name="amount" step="0.01" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Invia per Approvazione</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h4>Transazioni in Attesa</h4>
+                    <h4>Pending Validations</h4>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -46,13 +16,25 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Cliente</th>
-                                    <th>Tipo</th>
-                                    <th>Importo</th>
-                                    <th>Stato</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="pendingTransactions">
+                            {% for tx in transactions %}
+                                <tr>
+                                    <td>{{ tx.id }}</td>
+                                    <td>{{ tx.type }}</td>
+                                    <td>{{ tx.amount }}</td>
+                                    <td>{{ tx.status }}</td>
+                                    <td>
+                                        <a href="{{ url_for('operator.workflow_steps', tx_id=tx.id) }}" 
+                                           class="btn btn-primary btn-sm">Process</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -60,73 +42,108 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Alert System -->
+    <div class="alert-container mb-4">
+        <div id="activeIncidents" class="alert alert-warning" style="display: none;">
+        </div>
+    </div>
+
+    <!-- Real-time Notifications -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Notifiche in Tempo Reale</h4>
+                </div>
+                <div class="card-body">
+                    <div id="realTimeNotifications" style="max-height: 300px; overflow-y: auto;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Incident Management</h4>
+                </div>
+                <div class="card-body">
+                    <div id="incidentList"></div>
+                    <button class="btn btn-primary mt-2" onclick="refreshIncidents()">
+                        Aggiorna Incidenti
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Monitoraggio Trasformazioni</h4>
+                </div>
+                <div class="card-body">
+                    <div id="transformationStats"></div>
+                    <div id="weeklyAmountStats"></div>
+                    <div class="mt-3">
+                        <button class="btn btn-primary" onclick="refreshStats()">Aggiorna</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Gestione Utenti</h4>
+                </div>
+                <div class="card-body">
+                    <div id="userList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Log Sistema</h4>
+                </div>
+                <div class="card-body">
+                    <div id="systemLogs" style="max-height: 300px; overflow-y: auto;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    loadUsers();
-    loadPendingTransactions();
-    setInterval(loadPendingTransactions, 30000);
-    
-    document.getElementById('newTransactionForm').addEventListener('submit', submitTransaction);
+function refreshStats() {
+    fetch('/api/v1/system/stats')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('transformationStats').innerHTML = `
+                <p>Trasformazioni totali: ${data.total_transformations}</p>
+                <p>In attesa: ${data.pending_transformations}</p>
+                <p>Completate oggi: ${data.completed_today}</p>
+            `;
+
+            document.getElementById('weeklyAmountStats').innerHTML = `
+                <h5 class="mt-4">Importi Settimanali</h5>
+                <p>Importi in attesa: ${data.pending_weekly_amounts}</p>
+                <p>Totale questa settimana: €${data.total_weekly_amount}</p>
+                <p>Ultima trasformazione: ${data.last_transformation_time || 'N/A'}</p>
+            `;
+        });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    refreshStats();
+    setInterval(refreshStats, 30000);
 });
-
-function loadUsers() {
-    fetch('/api/v1/users/list')
-        .then(response => response.json())
-        .then(data => {
-            const select = document.querySelector('select[name="user_id"]');
-            data.users.forEach(user => {
-                const option = document.createElement('option');
-                option.value = user.id;
-                option.textContent = `${user.username} (${user.email})`;
-                select.appendChild(option);
-            });
-        });
-}
-
-function loadPendingTransactions() {
-    fetch('/api/v1/transactions/operator/pending')
-        .then(response => response.json())
-        .then(data => {
-            const tbody = document.getElementById('pendingTransactions');
-            tbody.innerHTML = '';
-            
-            data.transactions.forEach(tx => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${tx.id}</td>
-                    <td>${tx.user_name}</td>
-                    <td>${tx.type}</td>
-                    <td>${tx.amount} €</td>
-                    <td><span class="badge bg-warning">In Attesa</span></td>
-                `;
-                tbody.appendChild(row);
-            });
-        });
-}
-
-function submitTransaction(e) {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    
-    fetch('/api/v1/transactions/operator/create', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(Object.fromEntries(formData))
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            alert('Transazione inviata per approvazione');
-            e.target.reset();
-            loadPendingTransactions();
-        } else {
-            alert('Errore: ' + data.error);
-        }
-    });
-}
 </script>
 {% endblock %}

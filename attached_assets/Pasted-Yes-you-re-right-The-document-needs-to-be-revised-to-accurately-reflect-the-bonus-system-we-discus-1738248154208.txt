@@ -1,0 +1,186 @@
+Yes, you're right. The document needs to be revised to accurately reflect the bonus system we discussed. Here's the corrected version, ready for you to copy and paste:
+
+```
+# Gold Investment Platform API Documentation
+
+## Authentication
+
+### Register [POST /api/v1/auth/register]
+
+*   Description: Registers a new user.
+*   Authentication: Not required.
+*   Request Body:
+
+```json
+{
+    "email": "user@example.com",
+    "password": "securePassword123",
+    "name": "Mario Rossi",
+    "tax_code": "RSSMRA80A01H501U"
+}
+```
+
+*   Response (200):
+
+```json
+{
+    "success": true,
+    "data": {
+        "user_id": "123",
+        "email": "user@example.com",
+        "name": "Mario Rossi",
+        "created_at": "2024-01-29T10:00:00Z"
+    }
+}
+```
+
+### Login [POST /api/v1/auth/login]
+
+*   Description: Authenticates an existing user.
+*   Authentication: Not required.
+*   Request Body:
+
+```json
+{
+    "email": "user@example.com",
+    "password": "securePassword123"
+}
+```
+
+*   Response (200):
+
+```json
+{
+    "success": true,
+    "data": {
+        "access_token": "eyJhbGciOiJ...",
+        "refresh_token": "eyJhbGciOiJ...",
+        "expires_in": 3600
+    }
+}
+```
+
+## Gold Operations
+
+### Purchase Gold [POST /api/v1/gold/purchase]
+
+*   Description: Purchase physical gold.
+*   Authentication: Required (Bearer Token).
+*   Rate Limit: 50 requests/hour.
+*   Request Body:
+
+```json
+{
+    "amount": 500.00,
+    "currency": "EUR"
+}
+```
+
+*   Response (200):
+
+```json
+{
+    "success": true,
+    "data": {
+        "transaction_id": "tr_123456",
+        "gold_grams": 8.45,
+        "price_per_gram": 59.17,
+        "total_cost": 500.0,
+        "status": "completed",
+        "timestamp": "2024-01-29T10:15:00Z"
+    }
+}
+```
+
+### Get Noble Rank [GET /api/v1/noble/rank]
+
+*   Description: Gets the user's current noble rank and related information.
+*   Authentication: Required (Bearer Token).
+*   Response (200):
+
+```json
+{
+    "success": true,
+    "data": {
+        "current_rank": "bronzo",
+        "commission_rate": 0.7,
+        "referrals_count": 3,
+        "total_volume": 1500.0,
+        "next_rank": "argento",
+        "requirements_for_next": {
+            "referrals_needed": 2,
+            "volume_needed": 3500.0
+        }
+    }
+}
+```
+
+## Bonus System
+
+The platform implements a multi-level affiliate marketing system where users are rewarded based on the gold purchases made within their network.
+
+**Key features:**
+
+*   Unlimited levels: The affiliate network can have an unlimited number of levels.
+*   Three bonus levels:
+    *   Bronze: Level 1 (direct referrals), 0.7% bonus.
+    *   Silver: Level 2 (referrals of referrals), 0.5% bonus.
+    *   Gold: Level 3 (referrals of referrals of referrals), 0.5% bonus.
+*   Unlimited direct referrals: Each user can have an unlimited number of direct referrals.
+*   Bonus calculation: Bonuses are calculated based on the gold purchased by users within the network, up to the third level.
+*   Dual role of users: Each user is both an affiliate and a network leader. When a user buys gold, they contribute to the bonuses of their referrers (up to three levels above them) and receive bonuses from their affiliates' purchases (up to three levels below them).
+
+**Example:**
+
+If Mario invites Luigi and Luigi invites Gianni, when Gianni buys gold:
+
+*   Luigi receives a Bronze level bonus (0.7%).
+*   Mario receives a Silver level bonus (0.5%).
+
+## Error Responses
+
+### 400 Bad Request
+
+```json
+{
+    "success": false,
+    "error": {
+        "code": "VALIDATION_ERROR",
+        "message": "Invalid input parameters",
+        "details": ["Amount must be greater than 100 EUR"]
+    }
+}
+```
+
+### 401 Unauthorized
+
+```json
+{
+    "success": false,
+    "error": {
+        "code": "UNAUTHORIZED",
+        "message": "Authentication required"
+    }
+}
+```
+
+### 429 Too Many Requests
+
+```json
+{
+    "success": false,
+    "error": {
+        "code": "RATE_LIMIT_EXCEEDED",
+        "message": "Too many requests",
+        "retry_after": 3600
+    }
+}
+```
+
+## Best Practices
+
+1.  Use HTTPS for all requests.
+2.  Include the JWT token in the Authorization header.
+3.  Handle errors correctly.
+4.  Respect rate limits.
+5.  Implement retry with exponential backoff.

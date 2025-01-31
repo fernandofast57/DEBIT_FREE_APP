@@ -1,45 +1,47 @@
 
 import time
+import logging
 from collections import defaultdict
-from typing import Dict, Tuple
-from functools import wraps
-from flask import request
+from typing import Dict, Optional
+from datetime import datetime
 
-class RobustRateLimiter:
-    def __init__(self, redis_url: str = None):
-        """Redis-backed rate limiting component"""
-        self.redis_url = redis_url
-        self.local_storage: Dict[str, Dict[str, Tuple[int, float]]] = defaultdict(dict)
-        self.window_size = 60  # 1 minute window
-        self.max_requests = 50  # 50 requests per minute
-        
-    def is_rate_limited(self, key: str, max_requests: int = None, window_size: int = None) -> bool:
-        """Check if request should be rate limited"""
-        current = time.time()
-        window_size = window_size or self.window_size
-        max_reqs = max_requests or self.max_requests
-        
-        if key not in self.local_storage:
-            self.local_storage[key] = {'count': 1, 'window_start': current}
-            return False
-            
-        window_start = self.local_storage[key]['window_start']
-        if current - window_start > window_size:
-            self.local_storage[key] = {'count': 1, 'window_start': current}
-            return False
-            
-        self.local_storage[key]['count'] += 1
-        return self.local_storage[key]['count'] > max_reqs
+logger = logging.getLogger(__name__)
 
-def rate_limit(max_requests: int = 100, window_size: int = 60):
-    """Decorator for endpoint-specific rate limiting"""
-    def decorator(f):
-        @wraps(f)
-        def decorated_function(*args, **kwargs):
-            limiter = RobustRateLimiter()
-            key = f"{request.remote_addr}:{f.__name__}"
-            if limiter.is_rate_limited(key, max_requests, window_size):
-                return {'error': 'Rate limit exceeded'}, 429
-            return f(*args, **kwargs)
-        return decorated_function
-    return decorator
+class RateLimiter:
+    def __init__(self):
+        self._requests: Dict[str, list] = defaultdict(list)
+        self._blocked: Dict[str, datetime] = {}
+
+    def is_allowed(self, key: str, max_requests: int, window_size: int) -> bool:
+        now = time.time()
+        
+        # Check if key is blocked
+        if self._is_blocked(key):
+            return False
+
+        # Clean old requests
+        self._clean_old_requests(key, window_size)
+        
+        # Check rate limit
+        if len(self._requests[key]) >= max_requests:
+            self._block_key(key)
+            logger.warning(f"Rate limit exceeded for {key}")
+            return False
+
+        self._requests[key].append(now)
+        return True
+
+    def _is_blocked(self, key: str) -> bool:
+        if key in self._blocked:
+            if datetime.now() > self._blocked[key]:
+                del self._blocked[key]
+                return False
+            return True
+        return False
+
+    def _block_key(self, key: str):
+        self._blocked[key] = datetime.now().replace(minute=datetime.now().minute + 5)
+
+    def _clean_old_requests(self, key: str, window_size: int):
+        now = time.time()
+        self._requests[key] = [t for t in self._requests[key] if t > now - window_size]

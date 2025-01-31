@@ -35,9 +35,10 @@ class CodeStandardizationMiddleware:
                 
         return issues
 
-    def _validate_name(self, name: str, category: str, issues: Dict[str, List[str]]) -> None:
-        if not self._matches_glossary(name):
-            issues[category].append(f"'{name}' non conforme al glossario")
+    def validate_name(self, name: str, category: str, issues: Dict[str, List[str]]) -> None:
+        """Validates if a name follows glossary standards"""
+        if not self.matches_glossary_term(name):
+            issues[category].append(f"'{name}' does not comply with glossary standards")
 
     def _matches_glossary(self, name: str) -> bool:
         return name.lower() in self.glossary_terms

@@ -21,5 +21,43 @@
             </div>
         </div>
     </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Weekly Amounts</h5>
+                <p class="card-text">Pending Amounts: {{ stats.pending_weekly_amounts }}</p>
+                <p class="card-text">Total This Week: €{{ stats.total_weekly_amount }}</p>
+                <a href="{{ url_for('admin.weekly_amounts') }}" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4>System Overview</h4>
+                </div>
+                <div class="card-body">
+                    <div class="stats">
+                        <p>Total Users: {{ stats.total_users }}</p>
+                        <p>Total Transactions: {{ stats.total_transactions }}</p>
+                        <p>Active Transactions: {{ stats.active_transactions }}</p>
+                        <p>System Health: 
+                            {% if stats.system_health %}
+                            <span class="badge bg-success">Online</span>
+                            {% else %}
+                            <span class="badge bg-danger">Offline</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

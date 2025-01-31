@@ -5,10 +5,10 @@ from decimal import Decimal
 
 bp = Blueprint('gold', __name__)
 
-@bp.route('/balance', methods=['GET'])
+@bp.route('/saldo', methods=['GET'])
 @auth_required
 def get_balance():
-    """Get user's gold balance."""
+    """Ottieni il saldo in oro dell'utente."""
     user_id = request.user_id
     
     # Get user's gold account

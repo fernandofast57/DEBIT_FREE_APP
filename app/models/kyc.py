@@ -6,11 +6,11 @@ from app.database import db
 from sqlalchemy.exc import SQLAlchemyError
 from app.utils.logging_config import logger
 
-class KYCStatus(Enum):
-    PENDING = "pending"
-    APPROVED = "approved"
-    REJECTED = "rejected"
-    INCOMPLETE = "incomplete"
+class StatoKYC(Enum):
+    IN_ATTESA = "in_attesa"
+    APPROVATO = "approvato"
+    RIFIUTATO = "rifiutato"
+    INCOMPLETO = "incompleto"
 
 class DocumentType(Enum):
     PASSPORT = "passport"

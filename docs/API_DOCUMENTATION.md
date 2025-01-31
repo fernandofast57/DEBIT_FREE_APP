@@ -1,135 +1,158 @@
 
-# 📚 Gold Investment Platform API Documentation
+# Gold Investment Platform API Documentation
 
-## 🚀 Core Endpoints
+## Authentication
 
-### 🛡️ Authentication
-
-#### 1. Register User
-- `POST /api/v1/auth/register`
-- Request:
+### Register [POST /api/v1/auth/register]
+- Description: Register a new user
+- Authentication: Not required
+- Request Body:
 ```json
 {
-    "username": "john_doe",
-    "email": "john@example.com",
+    "email": "user@example.com",
+    "password": "securePassword123",
+    "name": "Mario Rossi",
+    "tax_code": "RSSMRA80A01H501U"
+}
+```
+- Response (200):
+```json
+{
+    "success": true,
+    "data": {
+        "user_id": "123",
+        "email": "user@example.com",
+        "name": "Mario Rossi",
+        "created_at": "2024-01-29T10:00:00Z"
+    }
+}
+```
+
+### Login [POST /api/v1/auth/login]
+- Description: Authenticate an existing user
+- Authentication: Not required
+- Request Body:
+```json
+{
+    "email": "user@example.com",
     "password": "securePassword123"
 }
 ```
-
-#### 2. Login User
-- `POST /api/v1/auth/login`
-- Request:
+- Response (200):
 ```json
 {
-    "email": "john@example.com",
-    "password": "securePassword123"
+    "success": true,
+    "data": {
+        "access_token": "eyJhbGciOiJ...",
+        "refresh_token": "eyJhbGciOiJ...",
+        "expires_in": 3600
+    }
 }
 ```
 
-#### 3. Verify 2FA
-- `POST /api/v1/auth/verify-2fa`
-- Request:
+## Gold Operations
+### Purchase Gold [POST /api/v1/gold/purchase]
+- Description: Purchase physical gold
+- Authentication: Required (Bearer Token)
+- Rate Limit: 50 requests/hour
+- Request Body:
 ```json
 {
-    "user_id": 123,
-    "code": "123456"
-}
-```
-
-### 💰 Transformations
-
-#### Weekly Gold Transformation
-- `POST /api/v1/transformations/transform`
-- **Description:** Transforms user's money into gold at Tuesday's 15:00 fixing price
-- **Authentication:** Required (JWT Token)
-- **Request Body:**
-```json
-{
-    "user_id": 123,
-    "amount": 500.0,
+    "amount": 500.00,
     "currency": "EUR"
 }
 ```
-- **Response:**
+- Response (200):
 ```json
 {
     "success": true,
     "data": {
         "transaction_id": "tr_123456",
         "gold_grams": 8.45,
-        "fixing_price": 59.17,
-        "fee_amount": 33.5,
+        "price_per_gram": 59.17,
+        "total_cost": 500.0,
         "status": "completed",
-        "timestamp": "2024-01-23T15:00:00Z"
-    },
-    "message": "Transformation completed successfully"
-}
-```
-- **Error Responses:**
-  - 400: Invalid amount or currency
-  - 401: Unauthorized
-  - 403: Insufficient balance
-  - 429: Rate limit exceeded
-  - 500: Processing error
-
-#### Get Transformation Status
-- `GET /api/v1/transformations/status/{transaction_id}`
-- **Description:** Retrieves the status of a specific transformation
-- **Authentication:** Required
-- **Response:**
-```json
-{
-    "success": true,
-    "data": {
-        "transaction_id": "tr_123456",
-        "status": "completed",
-        "details": {
-            "gold_grams": 8.45,
-            "fixing_price": 59.17
-        }
+        "timestamp": "2024-01-29T10:15:00Z"
     }
 }
 ```
 
-### 👑 Noble System
-
-#### Get Current Rank
-- `GET /api/v1/noble/rank`
-- Query: `user_id=123`
-
-#### Get Bonus History
-- `GET /api/v1/noble/bonuses`
-- Query: `user_id=123`
-
-### 🧾 Accounting
-
-#### Get Balance
-- `GET /api/v1/accounting/balance`
-- Query: `user_id=123`
-
-#### Get Transactions
-- `GET /api/v1/accounting/transactions`
-- Query: `user_id=123`
-
-## Response Format
+### Get Noble Rank [GET /api/v1/noble/rank]
+- Description: Gets the user's current noble rank
+- Authentication: Required (Bearer Token)
+- Response (200):
 ```json
 {
-    "success": boolean,
-    "data": object,
-    "message": string
+    "success": true,
+    "data": {
+        "current_rank": "bronze",
+        "commission_rate": 0.7,
+        "referrals_count": 3,
+        "total_volume": 1500.0,
+        "next_rank": "silver"
+    }
 }
 ```
 
-## Error Codes
-- 400: Bad Request
-- 401: Unauthorized
-- 403: Forbidden
-- 404: Not Found
-- 429: Too Many Requests
-- 500: Internal Server Error
+## Noble System
+
+The platform implements a multi-level affiliate marketing system where users are rewarded based on the gold purchases made within their network.
+
+### Key Features:
+- Unlimited levels in the affiliate network structure
+- Three bonus tiers:
+  - Bronze: Level 1 (direct referrals) - 0.7% bonus
+  - Silver: Level 2 (referrals of referrals) - 0.5% bonus
+  - Gold: Level 3 (referrals of referrals of referrals) - 0.5% bonus
+- Unlimited direct referrals per user
+- Bonuses calculated on gold purchases up to the third level
+- Dual role system: Users act as both affiliates and network leaders
+
+### Example Scenario:
+When a Level 3 user purchases gold:
+- Their direct referrer (Level 1) receives 0.7% bonus
+- Level 2 referrer receives 0.5% bonus
+- Level 3 referrer receives 0.5% bonus
+
+## Error Responses
+### 400 Bad Request
+```json
+{
+    "success": false,
+    "error": {
+        "code": "VALIDATION_ERROR",
+        "message": "Invalid input parameters",
+        "details": ["Amount must be greater than 100 EUR"]
+    }
+}
+```
+
+### 401 Unauthorized
+```json
+{
+    "success": false,
+    "error": {
+        "code": "UNAUTHORIZED",
+        "message": "Authentication required"
+    }
+}
+```
+
+### 429 Too Many Requests
+```json
+{
+    "success": false,
+    "error": {
+        "code": "RATE_LIMIT_EXCEEDED",
+        "message": "Too many requests",
+        "retry_after": 3600
+    }
+}
+```
 
 ## Best Practices
-1. Use JWT token in Authorization header
-2. Respect rate limits
+1. Use HTTPS for all requests
+2. Include the JWT token in the Authorization header
 3. Handle errors appropriately
-4. Use HTTPS for all requests
+4. Respect rate limits
+5. Implement retry with exponential backoff

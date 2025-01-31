@@ -3,30 +3,44 @@ import logging
 from datetime import datetime
 from typing import Dict
 from app.database import db
-from app.models.models import User, MoneyAccount, GoldAccount, GoldTransformation
-from app.utils.monitoring.performance_monitor import performance_monitor
+from app.models.models import User, EuroAccount, GoldAccount, GoldTransformation
+from app.utils.monitoring.performance_monitor import system_performance_monitor
 
 logger = logging.getLogger(__name__)
 
-class WeeklyProcessingService:
+@system_performance_monitor.track_time('transformation_service')
+class WeeklyProcessor:
     def __init__(self):
         self.structure_fee = Decimal('0.05')  # 5%
+        self.referral_rates = {
+            1: Decimal('0.007'),  # Livello 1: 0.7%
+            2: Decimal('0.005'),  # Livello 2: 0.5%
+            3: Decimal('0.005')   # Livello 3: 0.5%
+        }
+        self.max_referral_level = 3
 
-    @performance_monitor.track_time('weekly_processing')
+    @system_performance_monitor.track_time('weekly_processing')
     async def process_weekly_transformations(self, fixing_price: Decimal) -> Dict:
         try:
+            from app.services.weekly_amount_service import WeeklyAmountService
+
             processed_count = 0
             total_gold = Decimal('0')
+            weekly_amounts = await WeeklyAmountService.get_pending_amounts()
 
             async with db.session.begin():
-                users = await User.query.join(MoneyAccount).filter(
-                    MoneyAccount.balance > 0
+                users = await User.query.join(EuroAccount).filter(
+                    EuroAccount.balance > 0
                 ).all()
 
                 for user in users:
                     euro_amount = user.money_account.balance
-                    net_amount = euro_amount * (1 - self.structure_fee)
-                    gold_grams = net_amount / fixing_price
+                    gold_grams = (euro_amount / fixing_price).quantize(Decimal('0.01'))
+                    if gold_grams * 100 != int(gold_grams * 100):
+                        raise ValueError("La quantità di oro deve essere in centesimi di grammo pieni")
+                    net_gold_grams = (gold_grams * (1 - self.structure_fee)).quantize(Decimal('0.01'))
+                    if net_gold_grams * 100 != int(net_gold_grams * 100):
+                        raise ValueError("La quantità netta di oro deve essere in centesimi di grammo pieni")
 
                     # Create transformation record
                     transformation = GoldTransformation(
@@ -40,7 +54,7 @@ class WeeklyProcessingService:
                     )
 
                     # Update accounts
-                    user.money_account.balance = Decimal('0')
+                    user.euro_account.balance = Decimal('0')
                     user.gold_account.balance += gold_grams
                     user.gold_account.last_update = datetime.utcnow()
 
@@ -82,7 +96,7 @@ class WeeklyProcessingService:
         self.monitor = monitor
 
     async def process_weekly_transformations(self) -> dict:
-        """Elabora le trasformazioni settimanali con monitoraggio"""
+        """Process weekly transformations with monitoring"""
         start_time = datetime.utcnow()
         try:
             result = await self._execute_transformations() #Further refactoring needed here to resolve inconsistencies.

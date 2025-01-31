@@ -1,41 +1,45 @@
-
 import pytest
-import asyncio
-from app.utils.monitoring.performance import PerformanceMonitor
+from datetime import datetime
+from app.utils.monitoring.performance_monitor import SystemPerformanceMonitor
 
 @pytest.fixture
-def monitor():
-    return PerformanceMonitor()
+def performance_monitor():
+    return SystemPerformanceMonitor()
 
-@pytest.mark.asyncio
-async def test_collect_metrics(monitor):
-    metrics = await monitor.collect_metrics()
-    
-    assert hasattr(metrics, 'cpu_percent')
-    assert hasattr(metrics, 'memory_percent')
-    assert hasattr(metrics, 'disk_usage')
-    assert hasattr(metrics, 'active_connections')
-    assert isinstance(metrics.cpu_percent, float)
-    assert isinstance(metrics.memory_percent, float)
-    assert isinstance(metrics.disk_usage, float)
-    assert isinstance(metrics.active_connections, int)
+def test_metric_recording(performance_monitor):
+    performance_monitor.record_metric('response_time', 100.0)
+    metrics = performance_monitor.get_metrics()
+    assert 'response_time' in metrics
+    assert metrics['response_time']['count'] == 1
 
-@pytest.mark.asyncio
-async def test_metrics_history(monitor):
-    await monitor.collect_metrics()
-    await monitor.collect_metrics()
-    
-    assert len(monitor.metrics_history) == 2
-    assert len(monitor.metrics_history) <= 1000  # Max history limit
+def test_alert_threshold(performance_monitor):
+    performance_monitor.record_metric('cpu_usage', 95.0)  # Above typical threshold
+    alerts = performance_monitor.get_alerts()
+    assert len(alerts) > 0
+    assert 'cpu_usage' in alerts[0]['metric']
 
-@pytest.mark.asyncio
-async def test_alert_thresholds(monitor):
-    # Override thresholds for testing
-    monitor.alert_thresholds = {
-        'cpu_percent': 0.0,  # Set to 0 to trigger alert
-        'memory_percent': 0.0,
-        'disk_usage': 0.0
+def test_metrics_cleanup(performance_monitor):
+    performance_monitor.record_metric('memory_usage', 75.0)
+    performance_monitor.cleanup_old_metrics()
+    metrics = performance_monitor.get_metrics()
+    assert 'memory_usage' in metrics
+
+def test_multiple_metrics(performance_monitor):
+    metrics = {
+        'cpu_usage': 60.0,
+        'memory_usage': 512.0,
+        'network_latency': 50.0
     }
-    
-    metrics = await monitor.collect_metrics()
-    assert metrics is not None
+    for metric_type, value in metrics.items():
+        performance_monitor.record_metric(metric_type, value)
+
+    recorded_metrics = performance_monitor.get_metrics()
+    for metric_type in metrics:
+        assert metric_type in recorded_metrics
+
+
+def test_report_format(performance_monitor):
+    report = performance_monitor.get_report()
+    assert 'timestamp' in report
+    assert 'metrics' in report
+    assert 'alerts' in report # Added based on the context of the edited code

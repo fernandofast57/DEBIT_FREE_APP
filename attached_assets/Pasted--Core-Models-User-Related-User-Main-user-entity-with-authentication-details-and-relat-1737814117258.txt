@@ -1,0 +1,53 @@
+## Core Models
+
+### User Related
+- `User`: Main user entity with authentication details and relationships to accounts
+- `MoneyAccount`: User's fiat currency account with decimal precision (10,2)
+- `GoldAccount`: User's gold balance account with decimal precision (10,4)
+- `NobleRelation`: User's noble rank and verification status
+
+### Noble System
+- `NobleRank`: Defines rank levels and bonus rates
+- `NobleRelation`: Manages user noble ranks with verification
+- `BonusTransaction`: Records noble system bonus distributions
+
+### Gold Management
+- `GoldBar`: Physical gold bar tracking with serial number
+- `GoldAllocation`: Links gold bars to user accounts
+- `GoldTransformation`: Records money to gold conversion transactions
+- `GoldReward`: Tracks gold rewards/bonuses
+
+## Database Configuration
+- `precision`: Decimal precision settings (10,2 for money, 10,4 for gold)
+- `SQLAlchemy`: ORM for database operations
+- `Alembic`: Database migration tool
+
+## Testing Environment
+- `pytest`: Testing framework with async support
+- `pytest.ini`: Test configuration file
+- `conftest.py`: Test fixtures and setup
+- `test_*.py`: Test modules for different components
+
+## Security Functions
+- `sanitize_input`: Utility function that cleanses user input by stripping whitespace and handling nested data structures recursively. Used throughout the application for input validation.
+
+## Status Codes
+- `to_be_verified`: Initial verification status
+- `verified`: Confirmed verification status
+- `rejected`: Failed verification status
+- `available`: Gold bar status
+- `reserved`: Gold bar allocation status
+- `distributed`: Gold bar distribution status
+
+## Service Names
+- `NobleSystem`: Noble rank management
+- `TransformationService`: Gold conversion handling
+- `BonusDistributionService`: Bonus calculation and distribution
+- `BlockchainService`: Blockchain integration service
+
+## File Structure
+- `models/`: Database models and schemas
+- `services/`: Business logic implementation
+- `api/v1/`: API endpoints version 1
+- `tests/`: Test suite directory
+- `migrations/`: Database migration scripts

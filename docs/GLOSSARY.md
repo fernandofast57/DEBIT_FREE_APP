@@ -1,74 +1,86 @@
-# Project Glossary
+# Gold Investment Platform Glossary
 
-## Core Models & Services
+## Core Entities
+- MoneyAccount: Euro balance management system for user accounts
+- GoldTracking: Transaction tracking system for gold-related operations with full audit capabilities
+- GoldAllocation: System for managing user gold allocations and tracking physical gold distribution
+- User: Main user entity with authentication and profile data
+- Transaction: Transaction entity for managing all financial operations and movements
+- GoldTransformation: Manages the transformation of Euro to Gold with precision tracking and blockchain validation
+- EuroAccount: Euro balance management with real-time conversion tracking
+- GoldAccount: Gold balance management system with blockchain verification
+- GoldAccount: Gold balance management with physical allocation tracking
+- GoldTrace: Gold-Euro conversion registry with full audit trail
+- GoldAllocation: User gold allocation management with batch tracking
+- GoldBar: Physical gold bars registry with certification details
+- Parameter: System configuration parameters with versioning
+- KYCDetail: User identity verification with document management
+- BonusTransaction: Bonus reward transactions with user association and tracking
+- GoldReward: Gold-based reward management with precision tracking and user allocation
+- NobleRelation: Management of noble rank relationships and hierarchies
+- BonusRate: Bonus rate configuration for different noble levels
+- Transaction: Core transaction entity for all financial operations
+- GoldBar: Physical gold bar tracking and management system
 
-### Account Related
-- `User`: Main user entity containing authentication and profile details
-- `MoneyAccount`: Euro currency account with precision(10,2)
-- `GoldAccount`: Gold balance account with precision(10,4)
-- `AccountStatus`: ['active', 'suspended', 'pending_verification']
-- `ValidationError`: Custom exception for validation failures
-- `APIError`: Base exception class for API errors
+## Noble System
+- NobleRank: Noble rank management system
+  - Bronze: Direct referral level (0.7% bonus) - First tier
+  - Silver: Second level referrals (0.5% bonus) - Second tier
+  - Gold: Third level referrals (0.5% bonus) - Top tier
 
-### Noble System
-- `NobleRank`: ['bronze', 'silver', 'gold', 'platinum']
-- `NobleRelation`: Links users to their noble ranks
-- `NobleStatus`: ['to_be_verified', 'verified', 'rejected']
-- `NobleVerification`: Noble rank verification process
+## Operations
+- WeeklyTransformation: Weekly gold transformation process with price fixing
+- SpreadCalculation: Spread calculation (5% base + 1.7% operational)
+- NobleCommission: Noble system commission distribution with multi-level tracking
+- KYCValidation: User identity verification process with document validation
 
-### Gold Management
-- `GoldBar`: Physical gold tracking entity
-- `GoldBarStatus`: ['available', 'reserved', 'distributed']
-- `GoldTransformation`: Euro to gold conversion record
-- `GoldFixingPrice`: Daily gold price from fixing API
-- `TransformationStatus`: ['initiated', 'processing', 'completed', 'failed']
+## Security
+- AuthToken: JWT-based authentication token management
+- TwoFactorValidation: Two-factor authentication with time-based OTP
+- SecurityMonitoring: Real-time security monitoring system
+- RateControl: Robust rate limiting system with Redis persistence and local fallback
 
-### Transaction & Operations
-- `TransactionType`: ['purchase', 'sale', 'transfer', 'transformation']
-- `TransactionStatus`: ['pending', 'processing', 'completed', 'failed']
-- `OperationType`: ['user_action', 'system_event', 'time_based', 'condition_based']
-- `ValidationStatus`: ['pending', 'approved', 'rejected']
+## Monitoring
+- PerformanceMetrics: System performance metrics with alerts
+- TransactionTracking: Real-time transaction monitoring
+- AuditLog: Comprehensive system audit logging
+- BlockchainMonitor: Blockchain transaction verification
+- TransformationMonitor: Gold transformation monitoring
 
-### Security & Authentication
-- `AuthToken`: JWT authentication token
-- `TokenExpiration`: Token validity duration in hours
-- `SecurityLevel`: ['standard', 'enhanced', 'maximum']
-- `RateLimit`: Requests per minute limit
-- `KycStatus`: ['pending', 'verified', 'rejected']
+## States and Types
+- AccountStatus: ['active', 'suspended', 'verifying', 'to_verify']
+- OperationType: ['gold_purchase', 'gold_sale', 'gold_transfer']
+- OperationStatus: ['started', 'processing', 'completed', 'failed']
+- ValidationStatus: ['pending', 'approved', 'rejected']
+- KYCStatus: ['pending', 'approved', 'rejected']
+- ContractStatus: ['not_sent', 'sent', 'signed']
+- PAOStatus: ['inactive', 'activating', 'active']
+- SEPAStatus: ['not_sent', 'pending', 'active']
+- DocumentStatus: ['incomplete', 'verifying', 'verified', 'rejected']
 
-### Performance & Analytics
-- `MetricsType`: ['daily_performance', 'weekly_performance', 'monthly_performance']
-- `RiskMetrics`: ['market_risk', 'operational_risk', 'compliance_risk']
-- `AnalyticsField`: ['roi', 'current_value', 'purchase_price', 'holding_period']
-- `ReportType`: ['performance_summary', 'risk_report', 'trend_analysis']
+## Formats and Precision
+- GoldPrecision: Decimal(10,4)
+- EuroPrecision: Decimal(10,2)
+- IBANFormat: String(27)
+- CustomerCodeFormat: String(10)
+- TimestampFormat: ISO-8601
 
-### Service Names
-- `AccountingService`: Handles financial accounting operations
-- `TransformationService`: Manages gold conversion processes
-- `BlockchainService`: Handles blockchain interactions
-- `NobleSystemService`: Manages noble ranks and verifications
-- `BonusDistributionService`: Handles bonus calculations and distribution
-- `KycService`: Manages Know Your Customer processes
-- `NotificationService`: Handles system notifications
-- `SecurityService`: Manages authentication and authorization
-- `MonitoringService`: System monitoring and metrics collection
+## System Constants
+- OperationLimits: {
+    'min_purchase': 100,
+    'max_purchase': 100000,
+    'min_sale': 1,
+    'max_sale': 50000
+}
+- BatchIntervals: {
+    'processing': 3600,
+    'backup': 86400,
+    'cleanup': 604800
+}
 
-### Database Configuration
-- `MoneyPrecision`: Decimal(10,2) for euro amounts
-- `GoldPrecision`: Decimal(10,4) for gold amounts
-- `DatabaseUrl`: Connection string format
-- `MigrationVersion`: Database migration version format
-
-### API Endpoints
-- `auth_bp`: Authentication endpoints '/auth/*'
-- `gold_bp`: Gold operations '/gold/*'
-- `noble_bp`: Noble system '/noble/*'
-- `transformations_bp`: Transformations '/transformations/*'
-- `accounting_bp`: Accounting '/accounting/*'
-- `system_bp`: System operations '/system/*'
-
-### Logging & Monitoring
-- `LogLevel`: ['debug', 'info', 'warning', 'error', 'critical']
-- `LogFormat`: Standard log entry format
-- `MetricsFormat`: Performance metrics format
-- `AlertType`: ['system', 'security', 'performance']
+## Utility Functions
+- CurrencyConverter: Currency conversion utilities
+- RewardCalculator: System rewards calculation
+- DataValidator: Input data validation
+- ReportGenerator: System report generation
+- ErrorHandler: Centralized error handling

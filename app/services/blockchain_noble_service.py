@@ -11,7 +11,7 @@ from app.utils.monitoring.blockchain_monitor import BlockchainMonitor
 
 logger = get_logger(__name__)
 
-class BlockchainNobleService:
+class ServizioNobileBlockchain:
     """Service for handling noble-related blockchain operations"""
     
     def __init__(self, blockchain_service: Optional[BlockchainService] = None):
@@ -112,18 +112,17 @@ class BlockchainNobleService:
             if not status['is_valid']:
                 return {'bonus_amount': Decimal('0')}
 
-            rank_multipliers = {
-                1: Decimal('0.01'),  # Bronze
-                2: Decimal('0.02'),  # Silver
-                3: Decimal('0.03'),  # Gold
-                4: Decimal('0.05')   # Platinum
+            premio_referral = {
+                1: Decimal('0.007'),  # Livello 1: 0.7% del peso
+                2: Decimal('0.005'),  # Livello 2: 0.5% del peso
+                3: Decimal('0.005')   # Livello 3: 0.5% del peso
             }
 
-            multiplier = rank_multipliers.get(
-                status['current_rank'],
+            multiplier = premio_referral.get(
+                status['current_level'],
                 Decimal('0')
             )
-            bonus_amount = amount * multiplier
+            bonus_amount = (amount * multiplier).quantize(Decimal('0.01'), rounding=ROUND_DOWN)
 
             return {
                 'status': 'success',

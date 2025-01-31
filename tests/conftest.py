@@ -7,22 +7,20 @@ from datetime import datetime, timedelta
 import jwt
 from decimal import Decimal
 from web3 import Web3
-import asyncio
 
-# Add the project root to Python path
 sys.path.insert(0, os.path.abspath(os.path.dirname(os.path.dirname(__file__))))
-from app.database import db
-from app.models.models import User, MoneyAccount, GoldAccount
+
+from app.models.models import User, EuroAccount, GoldAccount, Transaction, GoldTracking
+from app.utils.monitoring.monitoring_manager import get_performance_monitor
 from app.utils.monitoring.blockchain_monitor import BlockchainMonitor
 from app.services.blockchain_service import BlockchainService
 from app.services.gold.weekly_distribution import WeeklyGoldDistribution
-
-# Add the project root to the path
-sys.path.insert(0,
-                os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from app import create_app
+from app.config.settings import TestConfig
 
+@pytest.fixture(scope="session")
+def performance_monitor():
+    return get_performance_monitor()
 
 @pytest.fixture(scope="session")
 def event_loop():
@@ -33,22 +31,23 @@ def event_loop():
 
 
 @pytest.fixture
-def app():
-    app = create_app({'TESTING': True,
-                      'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:',
-                      'SECRET_KEY': 'test-secret-key',
-                      'JWT_SECRET_KEY': 'test-jwt-secret-key',
-                      'BLOCKCHAIN_ENABLED': True})
-    with app.app_context():
-        db.create_all()
+async def app():
+    app = create_app(TestConfig)
+    async with app.app_context():
+        await _db.create_all()
         yield app
-        db.session.remove()
-        db.drop_all()
+        await _db.session.remove()
+        await _db.drop_all()
 
 
 @pytest.fixture
-def client(app):
+def test_client(app):
     return app.test_client()
+
+
+@pytest.fixture
+def test_db(app):
+    return _db
 
 
 @pytest.fixture
@@ -57,13 +56,11 @@ def runner(app):
 
 
 @pytest.fixture
-async def test_db(app):
-    """Provide test database session"""
+async def async_session(app):
+    """Provide async database session with application context"""
     async with app.app_context():
-        await db.create_all()
-        yield db
-        await db.session.remove()
-        await db.drop_all()
+        async with _db.session() as session:
+            yield session
 
 
 @pytest.fixture
@@ -71,7 +68,7 @@ async def test_user(app, test_db):
     """Crea un utente di test con account money e gold"""
     async with app.app_context():
         user = User(username='test_user', email='test@example.com')
-        user.money_account = MoneyAccount(balance=Decimal('1000.00'))
+        user.money_account = EuroAccount(balance=Decimal('1000.00'))
         user.gold_account = GoldAccount(balance=Decimal('0.00'))
         test_db.session.add(user)
         await test_db.session.commit()
@@ -82,14 +79,6 @@ async def test_user(app, test_db):
 def distribution_service():
     """Provide WeeklyGoldDistribution service"""
     return WeeklyGoldDistribution()
-
-
-@pytest.fixture
-async def async_session(app):
-    """Provide async database session with application context"""
-    async with app.app_context():
-        async with db.session() as session:
-            yield session
 
 
 @pytest.fixture
@@ -173,3 +162,5 @@ def blockchain_monitor(mock_w3):
 def get_test_rpc_url():
     """URL RPC per testing"""
     return "http://0.0.0.0:8545"
+
+from app.database import db as _db

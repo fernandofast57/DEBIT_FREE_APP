@@ -1,0 +1,201 @@
+from decimal import Decimal
+from app.models import db, NobleRelation, BonusRate, User, GoldAccount, GoldReward
+from app.utils.logging_config import get_logger
+from app.services.blockchain_service import BlockchainService
+from app.utils.errors import InvalidRankError, InsufficientBalanceError
+from datetime import datetime
+from typing import Dict
+
+logger = get_logger(__name__)
+
+class BonusDistributionService:
+    MAX_BONUS_LEVEL = 3
+
+    def __init__(self):
+        self._init_bonus_rates()
+
+    def _init_bonus_rates(self):
+        """Initialize or verify bonus rates"""
+        rates = [
+            (1, Decimal('0.007'), 'Bronze'),
+            (2, Decimal('0.005'), 'Silver'),
+            (3, Decimal('0.005'), 'Gold')
+        ]
+
+        for level, rate, name in rates:
+            existing = BonusRate.query.filter_by(level=level).first()
+            if not existing:
+                bonus_rate = BonusRate(level=level, rate=rate, name=name)
+                db.session.add(bonus_rate)
+        db.session.commit()
+
+    async def calculate_purchase_bonuses(self, user_id: int, purchase_amount: Decimal) -> dict:
+        """Calculate bonuses for a purchase through the network (both upline and downline)
+        
+        Args:
+            user_id: ID dell'utente che effettua l'acquisto
+            purchase_amount: Importo dell'acquisto in oro
+        
+        Returns:
+            Dictionary con i bonus calcolati per ogni utente della rete
+        """
+
+        @staticmethod
+        def validate_bonus_amount(amount: Decimal) -> bool:
+            """Validate bonus amount to ensure it meets minimum requirements
+            
+            Args:
+                amount: Importo del bonus da validare
+            
+            Returns:
+                True se l'importo è valido, False altrimenti
+            """
+            return amount > Decimal('0') and amount.quantize(Decimal('.0001')) == amount
+
+        bonuses = {}
+        
+        # Ottimizzazione: Carica utente e relazioni in una singola query
+        current_user = await db.session.execute(
+            select(User).options(
+                joinedload(User.noble_relations)
+            ).filter_by(id=user_id)
+        ).scalar_one_or_none()
+
+        if not current_user:
+            logger.warning(f"Utente {user_id} non trovato")
+            return bonuses
+
+        # Calculate upline bonuses (only first 3 levels receive bonuses)
+        current_level = 1
+        temp_user = current_user
+        while temp_user.referrer_id and current_level <= self.MAX_BONUS_LEVEL:
+            referrer = await User.query.get(temp_user.referrer_id)
+            if referrer:
+                rate = self._get_bonus_rate(current_level)
+                if rate > 0:
+                    bonus_amount = (purchase_amount * rate).quantize(Decimal('0.0001'))
+                    bonuses[referrer.id] = {
+                        'level': current_level,
+                        'amount': bonus_amount,
+                        'rate': rate,
+                        'type': 'upline'
+                    }
+            temp_user = referrer
+            current_level += 1
+
+        # Calculate downline bonuses (only from first 3 levels)
+        downline_relations = await NobleRelation.query.filter(
+            NobleRelation.referrer_id == user_id,
+            NobleRelation.level <= self.MAX_BONUS_LEVEL
+        ).all()
+
+        for relation in downline_relations:
+            rate = self._get_bonus_rate(relation.level)
+            if rate > 0:
+                bonus_amount = (purchase_amount * rate).quantize(Decimal('0.0001'))
+                bonuses[user_id] = {
+                    'level': relation.level,
+                    'amount': bonus_amount,
+                    'rate': rate,
+                    'type': 'downline'
+                }
+
+        return bonuses
+
+    def _get_bonus_rate(self, level: int) -> Decimal:
+        """Get bonus rate for a specific level"""
+        rates = {
+            1: Decimal('0.007'),  # Bronze - 0.7%
+            2: Decimal('0.005'),  # Silver - 0.5%
+            3: Decimal('0.005')  # Gold - 0.5%
+        }
+        return rates.get(level, Decimal('0'))
+
+    async def distribute_bonuses(self, bonuses: dict) -> bool:
+        """Distribute calculated bonuses to users"""
+        try:
+            async with db.session.begin_nested():
+                for user_id, bonus_info in bonuses.items():
+                    user = await User.query.get(user_id)
+                    if user:
+                        await self._credit_bonus(user, bonus_info['amount'])
+                        logger.info(f"Credited bonus {bonus_info['amount']} to user {user_id}")
+
+            await db.session.commit()
+            return True
+
+        except Exception as e:
+            logger.error(f"Error distributing bonuses: {str(e)}")
+            await db.session.rollback()
+            return False
+
+    async def _credit_bonus(self, user: User, amount: Decimal) -> None:
+        """Credit bonus to user's account"""
+        gold_account = await GoldAccount.query.filter_by(user_id=user.id).first()
+        if not gold_account:
+            raise ValueError("Gold account not found for user")
+        gold_account.balance += amount
+        gold_account.last_updated = datetime.utcnow()
+
+
+class PremiumDistributionService:
+    def __init__(self):
+        self.blockchain_service = BlockchainService()
+        self._init_premium_rates()
+        self._init_thresholds()
+
+    def _init_premium_rates(self):
+        """Initialize bonus rates with maximum precision for gold calculations"""
+        self.bonus_rates = {
+            'livello1': Decimal('0.007').quantize(Decimal('0.00001')),  # 0.7%
+            'livello2': Decimal('0.005').quantize(Decimal('0.00001')),  # 0.5%
+            'livello3': Decimal('0.005').quantize(Decimal('0.00001')),  # 0.5%
+            'operational': Decimal('0.05').quantize(Decimal('0.00001'))
+        }
+
+        # Validazione tassi bonus
+        if not all(rate > 0 for rate in self.bonus_rates.values()):
+            raise ValueError("Tutti i tassi bonus devono essere positivi")
+
+    def _init_thresholds(self):
+        """Initialize achievement thresholds and rewards"""
+        self.achievement_thresholds = {
+            'bronze': Decimal('5000'),
+            'silver': Decimal('10000'),
+            'gold': Decimal('25000'),
+            'platinum': Decimal('50000')
+        }
+
+        self.achievement_rewards = {
+            'bronze': Decimal('0.1000'),
+            'silver': Decimal('0.2500'),
+            'gold': Decimal('0.5000'),
+            'platinum': Decimal('1.0000')
+        }
+
+    @staticmethod
+    def validate_gold_amount(amount: Decimal) -> Decimal:
+        """Standardizza e valida l'importo in oro"""
+        # Forza 2 decimali per centesimi di grammo
+        validated_amount = Decimal(str(amount)).quantize(Decimal('0.01'))
+        if validated_amount <= 0:
+            raise ValueError("L'importo del bonus deve essere positivo")
+        if validated_amount * 100 != int(validated_amount * 100):
+            raise ValueError("L'importo deve essere in centesimi di grammo pieni")
+        return validated_amount
+
+    async def distribute_gold_bonus(self, user_id: int, amount: Decimal) -> Dict:
+        try:
+            amount = self.validate_gold_amount(amount)
+            gold_account = await GoldAccount.query.filter_by(user_id=user_id).first()
+
+            if not gold_account:
+                raise ValueError("Account oro non trovato")
+
+            previous_balance = gold_account.balance
+            gold_account.balance += amount
+            gold_account.last_updated = datetime.utcnow()
+
+            await db.session.commit()
+
+            logger.info(

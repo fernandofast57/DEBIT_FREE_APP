@@ -3,7 +3,12 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from app.config.settings import Config
 import asyncio
-from app.utils.monitoring.performance_monitor import PerformanceMonitor
+from flask import Flask, render_template
+from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
+from app.config.settings import Config
+import asyncio
+from app.utils.monitoring.monitoring_setup import setup_monitoring
 from app.utils.cache.redis_manager import cache_manager
 
 # Initialize cache manager
@@ -46,3 +51,5 @@ if __name__ == '__main__':
         use_reloader=False,
         threaded=True
     )
+# Package initialization
+# Package initialization

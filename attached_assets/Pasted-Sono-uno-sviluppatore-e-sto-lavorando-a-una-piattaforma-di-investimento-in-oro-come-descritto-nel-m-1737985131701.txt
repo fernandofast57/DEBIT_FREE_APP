@@ -1,0 +1,26 @@
+Sono uno sviluppatore e sto lavorando a una piattaforma di investimento in oro, come descritto nel mio MASTER_PROJECT 19Gennaio2025.md. La piattaforma include funzionalità come:
+
+Sistema di autenticazione a due fattori e KYC.
+Sistema di gestione dell'oro con trasformazioni settimanali e calcolo dello spread.
+Sistema Noble per la progressione di rango e la distribuzione delle commissioni.
+API RESTful con endpoint per l'autenticazione, le operazioni sull'oro, il sistema Noble e la gestione delle transazioni.
+Misure di sicurezza come la convalida dell'input, il limite di velocità e la protezione da SQL injection, XSS e CSRF.
+Framework di test con test unitari, di integrazione, delle prestazioni, di sicurezza e end-to-end.
+Monitoraggio delle metriche delle prestazioni, tracciamento degli errori e avvisi di sicurezza.
+Ho creato tre documenti per garantire la coerenza e prevenire errori nel mio codice:
+
+GLOSSARY.md: Definisce la terminologia standard del progetto.
+OFFICIAL_STANDARDS.json: Implementa la terminologia in un formato leggibile dal computer e definisce vincoli tecnici.
+USAGE.md: Fornisce linee guida pratiche sull'implementazione e l'utilizzo dei componenti.
+Vorrei che tu mi aiutassi a ottimizzare e migliorare questi documenti, considerando le specifiche del mio progetto, in modo che siano più efficaci nel prevenire errori e migliorare la qualità del codice.
+
+Ecco alcuni aspetti specifici su cui vorrei che ti concentrassi:
+
+Completezza: Assicurati che tutti i termini, i componenti e gli standard rilevanti per la mia piattaforma di investimento in oro (ad esempio, "trasformazione settimanale", "spread", "RangoNobile", "KYC", ecc.) siano definiti in modo chiaro e conciso.
+Coerenza: Verifica che i tre documenti siano coerenti tra loro e che non ci siano contraddizioni o ambiguità, in particolare per quanto riguarda l'uso della terminologia specifica del progetto.
+Formato: Controlla che il formato dei documenti sia corretto e facile da leggere, soprattutto per sviluppatori che lavorano su un progetto complesso come il mio. Suggerisci miglioramenti se necessario.
+Efficacia: Valuta se i documenti sono efficaci nel prevenire errori di codifica comuni in progetti simili al mio e nel promuovere buone pratiche di sviluppo specifiche per la gestione di sistemi finanziari e blockchain.
+Manutenibilità: Assicurati che i documenti siano facili da aggiornare e manutenere nel tempo, considerando la possibile evoluzione e crescita del progetto.
+Inoltre, vorrei che tu mi aiutassi a identificare eventuali middleware o strumenti che potrebbero essere utili per applicare automaticamente gli standard definiti nei documenti, in particolare per quanto riguarda la sicurezza e la conformità alle normative finanziarie.
+
+Infine, vorrei che tu mi dessi dei suggerimenti su come integrare questi documenti nel mio flusso di lavoro di sviluppo in modo da massimizzarne l'utilità, ad esempio attraverso l'uso di strumenti di controllo di versione, di revisione del codice e di integrazione continua.

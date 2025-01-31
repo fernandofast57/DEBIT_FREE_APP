@@ -5,6 +5,7 @@ from datetime import datetime
 from typing import Optional
 from enum import Enum
 import logging
+from app.utils.monitoring.performance_monitor import system_performance_monitor
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +23,7 @@ class KYCStatus(Enum):
     REJECTED = "rejected"
 
 
+@system_performance_monitor.track_time('kyc_service')
 class KYCService:
 
     @staticmethod

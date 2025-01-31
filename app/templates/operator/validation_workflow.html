@@ -1,0 +1,131 @@
+
+{% extends "operator/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Workflow di Validazione</h2>
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>Dettaglio Transazione #<span id="transactionId"></span></h4>
+        </div>
+        <div class="card-body">
+            <div id="workflowSteps" class="workflow-steps">
+                <!-- Steps will be populated dynamically -->
+            </div>
+            
+            <div class="mt-4">
+                <div class="alert alert-info" role="alert" id="currentStepInfo"></div>
+            </div>
+
+            <div class="validation-controls mt-4">
+                <button class="btn btn-success" id="approveStep" onclick="approveCurrentStep()">
+                    Approva Passaggio
+                </button>
+                <button class="btn btn-danger" id="rejectStep" onclick="rejectCurrentStep()">
+                    Rifiuta Passaggio
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentWorkflow = null;
+
+async function loadWorkflowData(transactionId) {
+    const response = await fetch(`/api/v1/admin/approvals/workflow/${transactionId}`);
+    const data = await response.json();
+    currentWorkflow = data;
+    updateWorkflowUI();
+}
+
+function updateWorkflowUI() {
+    const stepsContainer = document.getElementById('workflowSteps');
+    stepsContainer.innerHTML = '';
+    
+    currentWorkflow.steps_completed.forEach((step, index) => {
+        const stepElement = document.createElement('div');
+        stepElement.className = `workflow-step ${getStepStatusClass(step.valid)}`;
+        stepElement.innerHTML = `
+            <h5>${step.step}</h5>
+            <p>${step.messages.join(', ')}</p>
+            <small>${new Date(step.timestamp).toLocaleString()}</small>
+        `;
+        stepsContainer.appendChild(stepElement);
+    });
+    
+    updateCurrentStepInfo();
+}
+
+function getStepStatusClass(isValid) {
+    return isValid ? 'step-valid' : 'step-invalid';
+}
+
+function updateCurrentStepInfo() {
+    const currentStepInfo = document.getElementById('currentStepInfo');
+    const currentStep = currentWorkflow.current_step;
+    const totalSteps = currentWorkflow.total_steps;
+    
+    currentStepInfo.textContent = `Passaggio ${currentStep} di ${totalSteps}`;
+}
+
+async function approveCurrentStep() {
+    const response = await fetch(`/api/v1/admin/approvals/workflow/step/${currentWorkflow.id}/approve`, {
+        method: 'POST'
+    });
+    const result = await response.json();
+    if (result.success) {
+        await loadWorkflowData(currentWorkflow.id);
+    }
+}
+
+async function rejectCurrentStep() {
+    const response = await fetch(`/api/v1/admin/approvals/workflow/step/${currentWorkflow.id}/reject`, {
+        method: 'POST'
+    });
+    const result = await response.json();
+    if (result.success) {
+        await loadWorkflowData(currentWorkflow.id);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const transactionId = urlParams.get('id');
+    if (transactionId) {
+        document.getElementById('transactionId').textContent = transactionId;
+        loadWorkflowData(transactionId);
+    }
+});
+</script>
+
+<style>
+.workflow-steps {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.workflow-step {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    border-left: 4px solid #ccc;
+}
+
+.step-valid {
+    border-left-color: #28a745;
+    background-color: #f8fff8;
+}
+
+.step-invalid {
+    border-left-color: #dc3545;
+    background-color: #fff8f8;
+}
+
+.validation-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+</style>
+{% endblock %}

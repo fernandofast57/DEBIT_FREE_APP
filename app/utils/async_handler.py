@@ -37,7 +37,7 @@ class AsyncEventHandler:
                     continue
             return results
 
-    def on(self, event_name: str):
+    def register_event_handler(self, event_name: str):
         def decorator(f):
             if event_name not in self._event_handlers:
                 self._event_handlers[event_name] = []

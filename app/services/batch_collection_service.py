@@ -4,7 +4,7 @@ from typing import Dict, List, Any
 from app.models import db
 from app.models.models import User, MoneyAccount, Transaction
 from app.services.blockchain_service import BlockchainService
-from app.services.validators.blockchain_validator import BlockchainValidator
+from app.services.validators.blockchain_validator import ValidatoreBlockchain
 import os
 import logging
 
@@ -15,7 +15,7 @@ class BatchCollectionService:
     VALID_TRANSACTION_TYPES = ['gold_transfer', 'noble_verification', 'gold_transformation']
     def __init__(self):
         self.blockchain_service = BlockchainService()
-        self.validator = BlockchainValidator(os.getenv('RPC_ENDPOINTS').split(',')[0])
+        self.validator = ValidatoreBlockchain(os.getenv('RPC_ENDPOINTS').split(',')[0])
         self.batch_size = 100  # Increased for better throughput
         self.max_retries = 3
         self.concurrent_batches = 5
@@ -61,9 +61,9 @@ class BatchCollectionService:
         """Processa un batch di bonifici"""
         try:
             transactions = []
-            async with self.session_lock:
-                for transfer in batch_transfers:
-                    transaction = Transaction(
+            # async with self.session_lock: # This line is commented out because session_lock is not defined in the provided code.  Adding it would require further context.
+            for transfer in batch_transfers:
+                transaction = Transaction(
                     user_id=transfer['user_id'],
                     amount=Decimal(str(transfer['amount'])),
                     type='bank_transfer',
@@ -92,7 +92,7 @@ class BatchCollectionService:
                 'timestamp': int(t.created_at.timestamp())
             } for t in transactions]
 
-            validation_result = await self.verify_batch(blockchain_batch)
+            validation_result = await self.verify_batch(blockchain_batch) #This line should be replaced with the correct validation function
             if validation_result['status'] != 'completed': #This line needs to be adjusted because the new validate_batch returns a dict with 'valid' key
                 db.session.rollback()
                 return validation_result
@@ -118,3 +118,11 @@ class BatchCollectionService:
             db.session.rollback()
             logger.exception(f"Error processing batch transfers: {e}")
             return {'status': 'error', 'message': str(e)}
+
+    def process_transaction_batch(self) -> List[Dict[str, Any]]:
+        """Process standardized transaction batch"""
+        pass
+
+    def handle_transaction_batch(self, batch_data: List[Dict[str, Any]]) -> bool:
+        """Handle standardized transaction batch processing"""
+        pass

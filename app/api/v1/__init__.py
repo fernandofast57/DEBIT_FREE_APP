@@ -1,5 +1,6 @@
 
 from flask import Blueprint
+from app.middleware.glossary_validator_middleware import validate_glossary_terms
 from .transformations import transformations_bp
 from .async_operations import bp as async_bp
 from .accounting import bp as account_bp

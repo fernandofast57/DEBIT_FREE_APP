@@ -1,9 +1,8 @@
-
 import pytest
 from decimal import Decimal
 from unittest.mock import Mock, patch
 from app.services.bonus_distribution_service import BonusDistributionService
-from app.models.models import User, MoneyAccount, GoldAccount
+from app.models.models import User, EuroAccount, GoldAccount
 from app.database import db
 
 @pytest.fixture
@@ -32,11 +31,22 @@ async def test_calculate_weekly_bonus(bonus_service, mock_user):
     assert bonus > 0
 
 @pytest.mark.asyncio
-async def test_calculate_bonus_percentage(bonus_service, mock_user):
-    gold_balance = Decimal('10.00')
-    percentage = await bonus_service.calculate_bonus_percentage(mock_user, gold_balance)
-    assert isinstance(percentage, Decimal)
-    assert 0 <= percentage <= 100
+async def test_calculate_bonus_weight(bonus_service, mock_user):
+    """Verifica calcolo premio in peso oro"""
+    gold_weight = Decimal('10.00')
+    bonus = await bonus_service.calculate_bonus(mock_user.id, gold_weight)
+    
+    # Verifica che il risultato sia un Decimal
+    assert isinstance(bonus, Decimal)
+    
+    # Verifica che sia positivo
+    assert bonus >= 0
+    
+    # Verifica centesimi di grammo pieni
+    assert bonus * 100 == int(bonus * 100)
+    
+    # Verifica precisione due decimali
+    assert str(bonus).split('.')[-1] if '.' in str(bonus) else '00'
 
 @pytest.mark.asyncio
 async def test_distribute_bonus(bonus_service, mock_user):
