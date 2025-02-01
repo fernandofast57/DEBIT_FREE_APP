@@ -9,12 +9,14 @@ from .user import User
 from .notification import Notification
 from app.middleware.class_validator_middleware import validate_class_names
 
+
 class TransactionType(Enum):
     DEPOSIT = "deposit"
     WITHDRAWAL = "withdrawal"
     TRANSFER = "transfer"
     GOLD_PURCHASE = "gold_purchase"
     GOLD_SALE = "gold_sale"
+
 
 @validate_class_names()
 class EuroAccount(db.Model):
@@ -30,6 +32,7 @@ class EuroAccount(db.Model):
     def __repr__(self):
         return f"<EuroAccount User {self.user_id} Balance {self.balance}>"
 
+
 @validate_class_names()
 class GoldAccount(db.Model):
     __tablename__ = 'gold_accounts'
@@ -37,7 +40,8 @@ class GoldAccount(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    balance = db.Column(db.Numeric(precision=10, scale=4), default=Decimal('0.0000'))
+    balance = db.Column(db.Numeric(precision=10, scale=4),
+                        default=Decimal('0.0000'))
     last_updated = db.Column(db.DateTime, default=datetime.utcnow)
     blockchain_verified = db.Column(db.Boolean, default=False)
 
@@ -45,6 +49,7 @@ class GoldAccount(db.Model):
 
     def __repr__(self):
         return f"<GoldAccount User {self.user_id} Balance {self.balance}>"
+
 
 @validate_class_names()
 class Transaction(db.Model):
@@ -73,6 +78,7 @@ class Transaction(db.Model):
     def __repr__(self):
         return f"<Transaction {self.amount} ({self.transaction_type})>"
 
+
 @validate_class_names()
 class MoneyAccount(db.Model):
     __tablename__ = 'money_accounts'
@@ -86,6 +92,7 @@ class MoneyAccount(db.Model):
 
     def __repr__(self):
         return f"<MoneyAccount User {self.user_id} Balance {self.balance}>"
+
 
 @validate_class_names()
 class GoldTracking(db.Model):
@@ -102,6 +109,7 @@ class GoldTracking(db.Model):
 
     user = db.relationship('User', backref='gold_tracking')
 
+
 @validate_class_names()
 class KYCDetail(db.Model):
     __tablename__ = 'kyc_details'
@@ -114,11 +122,18 @@ class KYCDetail(db.Model):
     status = db.Column(db.String(20), default='pending')
     verification_date = db.Column(db.DateTime, nullable=True)
     submitted_date = db.Column(db.DateTime, default=datetime.utcnow)
-    verified_by = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+    verified_by = db.Column(db.Integer,
+                            db.ForeignKey('users.id'),
+                            nullable=True)
     notes = db.Column(db.Text)
 
-    user = db.relationship('User', foreign_keys=[user_id], back_populates='kyc_documents')
-    verifier = db.relationship('User', foreign_keys=[verified_by], backref='kyc_verifications')
+    user = db.relationship('User',
+                           foreign_keys=[user_id],
+                           back_populates='kyc_documents')
+    verifier = db.relationship('User',
+                               foreign_keys=[verified_by],
+                               backref='kyc_verifications')
+
 
 @validate_class_names()
 class GoldTransformation(db.Model):
@@ -136,6 +151,7 @@ class GoldTransformation(db.Model):
 
     user = db.relationship('User', back_populates='gold_transformations')
 
+
 @validate_class_names()
 class BonusRate(db.Model):
     __tablename__ = 'bonus_rates'
@@ -150,22 +166,32 @@ class BonusRate(db.Model):
         rate = BonusRate.query.filter_by(level=level).first()
         return Decimal(str(rate.rate)) if rate else Decimal('0')
 
+
 @validate_class_names()
 class NobleRelation(db.Model):
     __tablename__ = 'noble_relations'
 
     id = db.Column(db.Integer, primary_key=True)
-    referrer_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    referred_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    referrer_id = db.Column(db.Integer,
+                            db.ForeignKey('users.id'),
+                            nullable=False)
+    referred_id = db.Column(db.Integer,
+                            db.ForeignKey('users.id'),
+                            nullable=False)
     level = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    referrer = db.relationship('User', foreign_keys=[referrer_id], backref='referrals_made')
-    referred = db.relationship('User', foreign_keys=[referred_id], backref='referral_info')
+    referrer = db.relationship('User',
+                               foreign_keys=[referrer_id],
+                               backref='referrals_made')
+    referred = db.relationship('User',
+                               foreign_keys=[referred_id],
+                               backref='referral_info')
 
-    __table_args__ = (
-        db.UniqueConstraint('referrer_id', 'referred_id', name='unique_referral'),
-    )
+    __table_args__ = (db.UniqueConstraint('referrer_id',
+                                          'referred_id',
+                                          name='unique_referral'), )
+
 
 @validate_class_names()
 class Parameter(db.Model):
@@ -175,13 +201,14 @@ class Parameter(db.Model):
     key = db.Column(db.String(50), unique=True, nullable=False)
     value = db.Column(db.String(200), nullable=False)
 
+
 @validate_class_names()
 class GoldBar(db.Model):
     __tablename__ = 'gold_bars'
 
     id = db.Column(db.Integer, primary_key=True)
     serial_number = db.Column(db.String(50), unique=True, nullable=False)
-    weight = db.Column(db.Numeric(precision=10, scale=4), nullable=False) 
+    weight = db.Column(db.Numeric(precision=10, scale=4), nullable=False)
     purity = db.Column(db.Numeric(precision=5, scale=2), nullable=False)
     purchase_price = db.Column(db.Numeric(precision=10, scale=2),
                                nullable=False)
@@ -220,6 +247,36 @@ class GoldReward(db.Model):
 
     def __repr__(self):
         return f"<GoldReward User {self.user_id} Amount {self.reward_amount}>"
+
+
+@validate_class_names()
+class NobleRank(db.Model):
+    __tablename__ = 'noble_ranks'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(
+        db.String(50),
+        unique=True,
+        nullable=False,
+        doc="Nome del titolo nobiliare (es. Bronze, Silver, Gold)")
+    level = db.Column(db.Integer,
+                      unique=True,
+                      nullable=False,
+                      doc="Livello gerarchico del titolo (1, 2, 3)")
+    bonus_rate_id = db.Column(
+        db.Integer,
+        db.ForeignKey('bonus_rates.id'),
+        nullable=True,
+        doc="Chiave esterna a BonusRate")  # Relazione con BonusRate
+    description = db.Column(db.String(200),
+                            doc="Descrizione opzionale del titolo")
+
+    bonus_rate = db.relationship('BonusRate',
+                                 backref='noble_ranks')  # Relazione SQLAlchemy
+
+    def __repr__(self):
+        return f"<NobleRank {self.name} (Level {self.level})>"
+
 
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime

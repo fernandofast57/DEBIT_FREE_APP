@@ -6,9 +6,10 @@ from app.middleware.transaction_validator_middleware import validate_transaction
 bp = Blueprint('transfers', __name__, url_prefix='/api/v1/transfers')
 transfer_service = BatchCollectionService()
 
+
 @bp.route('/process', methods=['POST'])
 @validate_transaction_flow()
-@validate_glossary_terms()
+# @validate_glossary_terms()
 def process_transfer():
     """
     Processa un singolo bonifico
@@ -35,6 +36,7 @@ def process_transfer():
 
     return jsonify(result)
 
+
 @bp.route('/batch/process', methods=['POST'])
 async def process_batch():
     """
@@ -60,11 +62,13 @@ async def process_batch():
         }), 400
 
     result = asyncio.run(transfer_service.process_batch_transfers(transfers))
-    
+
     if result['status'] == 'error':
         return jsonify(result), 400
 
     return jsonify(result)
+
+
 def add_to_batch():
     """
     Aggiunge un bonifico al batch settimanale
@@ -97,11 +101,12 @@ def add_to_batch():
         'message': 'Bonifico aggiunto al batch'
     })
 
+
 @bp.route('/fixing/purchase', methods=['POST'])
 def process_fixing_purchase():
     """Processa l'acquisto dell'oro al fixing"""
     data = request.get_json()
-    
+
     try:
         technician_id = int(data.get('technician_id'))
         fixing_price = Decimal(str(data.get('fixing_price')))
@@ -111,19 +116,19 @@ def process_fixing_purchase():
             'message': 'Parametri non validi'
         }), 400
 
-    result = asyncio.run(transformation_service.process_fixing_purchase(technician_id, fixing_price))
-    
+    result = asyncio.run(
+        transformation_service.process_fixing_purchase(technician_id,
+                                                       fixing_price))
+
     if result['status'] == 'error':
         return jsonify(result), 400
 
     return jsonify(result)
+
 
 @bp.route('/batch/pending', methods=['GET'])
 def get_pending_batch():
     """Recupera la lista dei bonifici in attesa"""
     pending = transfer_service.get_pending_batch()
 
-    return jsonify({
-        'status': 'success',
-        'pending_transfers': pending
-    })
+    return jsonify({'status': 'success', 'pending_transfers': pending})

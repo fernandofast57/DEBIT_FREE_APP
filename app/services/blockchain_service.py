@@ -12,7 +12,9 @@ from app.utils.monitoring.monitoring_manager import get_performance_monitor
 
 logger = get_logger(__name__)
 
+
 class BlockchainService:
+
     def __init__(self):
         self.web3_client = None
         self.noble_contract = None
@@ -38,7 +40,7 @@ class BlockchainService:
             raise
 
     async def initialize(self) -> None:
-        await self._setup_web3()
+        await self.initialize_web3()
 
     async def initialize_web3(self) -> None:
         if os.getenv('BLOCKCHAIN_MODE', 'offline') == 'offline':
@@ -66,17 +68,20 @@ class BlockchainService:
 
             try:
                 self.logger.info(f"Attempting connection to: {endpoint}")
-                provider = Web3.HTTPProvider(endpoint, request_kwargs={
-                    'timeout': 60, 
-                    'verify': True
-                })
+                provider = Web3.HTTPProvider(endpoint,
+                                             request_kwargs={
+                                                 'timeout': 60,
+                                                 'verify': True
+                                             })
                 self.web3_client = Web3(provider)
-                self.web3_client.middleware_onion.inject(geth_poa_middleware, layer=0)
+                self.web3_client.middleware_onion.inject(geth_poa_middleware,
+                                                         layer=0)
 
                 if self.web3_client.eth.block_number:
                     self._setup_contract()
                     self._setup_account()
-                    self.logger.info(f"Connected to blockchain node: {endpoint}")
+                    self.logger.info(
+                        f"Connected to blockchain node: {endpoint}")
                     return True
 
             except Exception as e:
@@ -93,9 +98,7 @@ class BlockchainService:
         try:
             abi = self._get_contract_abi()
             self.noble_contract = self.web3_client.eth.contract(
-                address=contract_address,
-                abi=abi
-            )
+                address=contract_address, abi=abi)
         except Exception as e:
             self.logger.error(f"Contract setup failed: {e}")
             raise
@@ -117,25 +120,29 @@ class BlockchainService:
             raise ValueError("Blockchain connection not initialized")
 
         try:
-            gas_price = min(
-                self.web3_client.eth.gas_price,
-                self.web3_client.to_wei('100', 'gwei')
-            )
+            gas_price = min(self.web3_client.eth.gas_price,
+                            self.web3_client.to_wei('100', 'gwei'))
 
             transaction = func_call.build_transaction({
-                'from': self.account.address,
-                'nonce': self.web3_client.eth.get_transaction_count(self.account.address),
-                'gas': 200000,
-                'gasPrice': gas_price,
-                'value': value
+                'from':
+                self.account.address,
+                'nonce':
+                self.web3_client.eth.get_transaction_count(
+                    self.account.address),
+                'gas':
+                200000,
+                'gasPrice':
+                gas_price,
+                'value':
+                value
             })
 
             signed_txn = self.web3_client.eth.account.sign_transaction(
-                transaction, 
-                os.getenv('PRIVATE_KEY')
-            )
-            tx_hash = self.web3_client.eth.send_raw_transaction(signed_txn.rawTransaction)
-            receipt = self.web3_client.eth.wait_for_transaction_receipt(tx_hash)
+                transaction, os.getenv('PRIVATE_KEY'))
+            tx_hash = self.web3_client.eth.send_raw_transaction(
+                signed_txn.rawTransaction)
+            receipt = self.web3_client.eth.wait_for_transaction_receipt(
+                tx_hash)
 
             if receipt.status != 1:
                 raise ValueError("Transaction failed")
@@ -151,8 +158,8 @@ class BlockchainService:
             return {'status': 'error', 'message': str(e)}
 
     def is_connected(self) -> bool:
-        return bool(self.web3_client and self.web3_client.is_connected() and 
-                   self.account and self.noble_contract)
+        return bool(self.web3_client and self.web3_client.is_connected()
+                    and self.account and self.noble_contract)
 
     async def get_transaction_stats(self) -> Dict[str, Any]:
         if not self.is_connected():
@@ -180,24 +187,28 @@ class BlockchainService:
 
         self.performance_monitor.start_timer('update_noble_rank')
         result = await self.send_transaction(
-            self.noble_contract.functions.updateNobleRank(address, rank)
-        )
+            self.noble_contract.functions.updateNobleRank(address, rank))
         self.performance_monitor.stop_timer('update_noble_rank')
         return result
 
-    async def record_gold_transaction(self, address: str, euro_amount: float, 
-                                    gold_grams: float, validation_status: str = None) -> Dict[str, Any]:
+    async def record_gold_transaction(
+            self,
+            address: str,
+            euro_amount: float,
+            gold_grams: float,
+            validation_status: str = None) -> Dict[str, Any]:
         if not validation_status or validation_status != 'approved':
             self.logger.error("Transaction not approved by administrator")
-            return {'status': 'error', 'message': 'Transaction requires approval before blockchain recording'}
+            return {
+                'status':
+                'error',
+                'message':
+                'Transaction requires approval before blockchain recording'
+            }
 
         self.performance_monitor.start_timer('record_gold_transaction')
         result = await self.send_transaction(
             self.noble_contract.functions.transformGold(
-                address,
-                int(euro_amount * 100),
-                int(gold_grams * 10000)
-            )
-        )
+                address, int(euro_amount * 100), int(gold_grams * 10000)))
         self.performance_monitor.stop_timer('record_gold_transaction')
         return result

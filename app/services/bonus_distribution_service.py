@@ -1,28 +1,29 @@
-from decimal import Decimal, ROUND_DOWN
+from decimal import Decimal
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 from app.models import db, NobleRelation, BonusRate, User, GoldAccount, GoldReward
 from app.utils.logging_config import get_logger
 from app.services.blockchain_service import BlockchainService
-from app.utils.errors import InvalidRankError, InsufficientBalanceError
+from app.utils.errors import InvalidRankError
 from datetime import datetime
 from typing import Dict
 
 logger = get_logger(__name__)
 
+
 class BonusDistributionService:
     MAX_BONUS_LEVEL = 3
 
     def __init__(self):
-        self._init_bonus_rates()
+        from flask import current_app
+        with current_app.app_context():
+            self._init_bonus_rates()
 
     def _init_bonus_rates(self):
         """Initialize or verify bonus rates"""
-        rates = [
-            (1, Decimal('0.007'), 'Bronze'),
-            (2, Decimal('0.005'), 'Silver'),
-            (3, Decimal('0.005'), 'Gold')
-        ]
+        rates = [(1, Decimal('0.007'), 'Bronze'),
+                 (2, Decimal('0.005'), 'Silver'),
+                 (3, Decimal('0.005'), 'Gold')]
 
         for level, rate, name in rates:
             existing = BonusRate.query.filter_by(level=level).first()
@@ -41,9 +42,11 @@ class BonusDistributionService:
         Returns:
             True se l'importo è valido, False altrimenti
         """
-        return amount > Decimal('0') and amount.quantize(Decimal('.0001')) == amount
+        return amount > Decimal('0') and amount.quantize(
+            Decimal('.0001')) == amount
 
-    async def calculate_purchase_bonuses(self, user_id: int, purchase_amount: Decimal) -> dict:
+    async def calculate_purchase_bonuses(self, user_id: int,
+                                         purchase_amount: Decimal) -> dict:
         """Calculate bonuses for a purchase through the network (both upline and downline)
 
         Args:
@@ -57,10 +60,12 @@ class BonusDistributionService:
 
         # Ottimizzazione: Carica utente e relazioni in una singola query
         current_user = await db.session.execute(
-            select(User).options(
-                joinedload(User.noble_relations)
-            ).filter_by(id=user_id)
+            select(User).options(joinedload(
+                User.noble_relations)).filter_by(id=user_id)
         ).scalar_one_or_none()
+        db.session.execute(
+            select(User).options(joinedload(User.noble_relations)).filter_by(
+                id=user_id)).scalar_one_or_none()
 
         if not current_user:
             logger.warning(f"Utente {user_id} non trovato")
@@ -74,7 +79,8 @@ class BonusDistributionService:
             if referrer:
                 rate = self._get_bonus_rate(current_level)
                 if rate > 0:
-                    bonus_amount = (purchase_amount * rate).quantize(Decimal('0.0001'))
+                    bonus_amount = (purchase_amount * rate).quantize(
+                        Decimal('0.0001'))
                     bonuses[referrer.id] = {
                         'level': current_level,
                         'amount': bonus_amount,
@@ -86,14 +92,14 @@ class BonusDistributionService:
 
         # Calculate downline bonuses (only from first 3 levels)
         downline_relations = await NobleRelation.query.filter(
-            NobleRelation.referrer_id == user_id,
-            NobleRelation.level <= self.MAX_BONUS_LEVEL
-        ).all()
+            NobleRelation.referrer_id == user_id, NobleRelation.level
+            <= self.MAX_BONUS_LEVEL).all()
 
         for relation in downline_relations:
             rate = self._get_bonus_rate(relation.level)
             if rate > 0:
-                bonus_amount = (purchase_amount * rate).quantize(Decimal('0.0001'))
+                bonus_amount = (purchase_amount * rate).quantize(
+                    Decimal('0.0001'))
                 bonuses[user_id] = {
                     'level': relation.level,
                     'amount': bonus_amount,
@@ -108,7 +114,7 @@ class BonusDistributionService:
         rates = {
             1: Decimal('0.007'),  # Bronze - 0.7%
             2: Decimal('0.005'),  # Silver - 0.5%
-            3: Decimal('0.005')   # Gold - 0.5%
+            3: Decimal('0.005')  # Gold - 0.5%
         }
         return rates.get(level, Decimal('0'))
 
@@ -119,8 +125,9 @@ class BonusDistributionService:
             async with db.session.begin_nested():
                 for user_id, bonus_info in bonuses.items():
                     if not self.validate_bonus_amount(bonus_info['amount']):
-                        raise ValueError(f"Invalid bonus amount for user {user_id}")
-                    
+                        raise ValueError(
+                            f"Invalid bonus amount for user {user_id}")
+
                     user = await User.query.get(user_id)
                     if user:
                         await self._credit_bonus(user, bonus_info['amount'])
@@ -130,7 +137,9 @@ class BonusDistributionService:
                             'level': bonus_info['level'],
                             'type': bonus_info['type']
                         }
-                        logger.info(f"Credited {bonus_info['type']} bonus {bonus_info['amount']} to user {user_id} at level {bonus_info['level']}")
+                        logger.info(
+                            f"Credited {bonus_info['type']} bonus {bonus_info['amount']} to user {user_id} at level {bonus_info['level']}"
+                        )
 
             await db.session.commit()
             return {'status': 'success', 'distributions': distribution_results}
@@ -142,7 +151,8 @@ class BonusDistributionService:
 
     async def _credit_bonus(self, user: User, amount: Decimal) -> None:
         """Credit bonus to user's account"""
-        gold_account = await GoldAccount.query.filter_by(user_id=user.id).first()
+        gold_account = await GoldAccount.query.filter_by(user_id=user.id
+                                                         ).first()
         if not gold_account:
             raise ValueError("Gold account not found for user")
         gold_account.balance += amount
@@ -150,6 +160,7 @@ class BonusDistributionService:
 
 
 class PremiumDistributionService:
+
     def __init__(self):
         self.blockchain_service = BlockchainService()
         self._init_premium_rates()
@@ -193,13 +204,16 @@ class PremiumDistributionService:
         if validated_amount <= 0:
             raise ValueError("L'importo del bonus deve essere positivo")
         if validated_amount * 100 != int(validated_amount * 100):
-            raise ValueError("L'importo deve essere in centesimi di grammo pieni")
+            raise ValueError(
+                "L'importo deve essere in centesimi di grammo pieni")
         return validated_amount
 
-    async def distribute_gold_bonus(self, user_id: int, amount: Decimal) -> Dict:
+    async def distribute_gold_bonus(self, user_id: int,
+                                    amount: Decimal) -> Dict:
         try:
             amount = self.validate_gold_amount(amount)
-            gold_account = await GoldAccount.query.filter_by(user_id=user_id).first()
+            gold_account = await GoldAccount.query.filter_by(user_id=user_id
+                                                             ).first()
 
             if not gold_account:
                 raise ValueError("Account oro non trovato")
@@ -210,7 +224,8 @@ class PremiumDistributionService:
 
             await db.session.commit()
 
-            logger.info(f"Bonus oro distribuito: {amount} all'utente {user_id}")
+            logger.info(
+                f"Bonus oro distribuito: {amount} all'utente {user_id}")
             return {
                 "success": True,
                 "previous_balance": str(previous_balance),
@@ -223,7 +238,8 @@ class PremiumDistributionService:
             await db.session.rollback()
             raise
 
-    async def distribute_rewards(self, user_id: int, euro_amount: Decimal, fixing_price: Decimal) -> Dict:
+    async def distribute_rewards(self, user_id: int, euro_amount: Decimal,
+                                 fixing_price: Decimal) -> Dict:
         """Distribute both structure and achievement rewards"""
         try:
             if not isinstance(euro_amount, Decimal):
@@ -231,8 +247,10 @@ class PremiumDistributionService:
             if not isinstance(fixing_price, Decimal):
                 fixing_price = Decimal(str(fixing_price))
 
-            structure_rewards = await self.distribute_structure_bonus(user_id, euro_amount, fixing_price)
-            achievement_reward = await self.distribute_achievement_reward(user_id, euro_amount, fixing_price)
+            structure_rewards = await self.distribute_structure_bonus(
+                user_id, euro_amount, fixing_price)
+            achievement_reward = await self.distribute_achievement_reward(
+                user_id, euro_amount, fixing_price)
 
             return {
                 'structure_rewards': structure_rewards,
@@ -244,15 +262,21 @@ class PremiumDistributionService:
             logger.error(f"Invalid rank error for user {user_id}: {str(e)}")
             raise
         except Exception as e:
-            logger.error(f"Error distributing rewards for user {user_id}: {str(e)}")
+            logger.error(
+                f"Error distributing rewards for user {user_id}: {str(e)}")
             raise
 
-    async def distribute_structure_bonus(self, user_id: int, euro_amount: Decimal, fixing_price: Decimal) -> Dict:
+    async def distribute_structure_bonus(self, user_id: int,
+                                         euro_amount: Decimal,
+                                         fixing_price: Decimal) -> Dict:
         """Distribute structure bonus with improved validation"""
         distribution_results = {}
         async with db.session.begin_nested():
             try:
-                current_user = await User.query.get(user_id)
+                current_user = await db.session.execute(
+                    select(User).options(joinedload(
+                        User.noble_relations)).filter_by(id=user_id)
+                ).scalar_one_or_none()
                 if not current_user:
                     raise ValueError(f"User {user_id} not found")
 
@@ -262,18 +286,15 @@ class PremiumDistributionService:
                     if not referrer:
                         break
 
-                    bonus_gold = (euro_amount * self.bonus_rates[f'livello{level}']).quantize(Decimal('0.01'), rounding=ROUND_DOWN)
+                    bonus_gold = (
+                        euro_amount *
+                        self.bonus_rates[f'livello{level}']).quantize(
+                            Decimal('0.01'), rounding=ROUND_DOWN)
 
                     if bonus_gold > 0:
                         await self._create_and_save_reward(
-                            referrer.id,
-                            bonus_gold,
-                            'structure',
-                            level,
-                            euro_amount,
-                            fixing_price,
-                            euro_amount
-                        )
+                            referrer.id, bonus_gold, 'structure', level,
+                            euro_amount, fixing_price, euro_amount)
 
                         distribution_results[referrer.id] = {
                             'level': level,
@@ -287,25 +308,26 @@ class PremiumDistributionService:
                 await db.session.commit()
 
             except Exception as e:
-                logger.error(f"Error in structure bonus distribution: {str(e)}")
+                logger.error(
+                    f"Error in structure bonus distribution: {str(e)}")
                 await db.session.rollback()
                 raise
 
         return distribution_results
 
     async def _create_and_save_reward(self, user_id: int, gold_amount: Decimal,
-                                    reward_type: str, level: int, euro_amount: Decimal,
-                                    fixing_price: Decimal, threshold_reached: Decimal) -> None:
+                                      reward_type: str, level: int,
+                                      euro_amount: Decimal,
+                                      fixing_price: Decimal,
+                                      threshold_reached: Decimal) -> None:
         """Helper method to create and save rewards"""
-        reward = GoldReward(
-            user_id=user_id,
-            gold_amount=gold_amount,
-            reward_type=reward_type,
-            level=level,
-            euro_amount=euro_amount,
-            fixing_price=fixing_price,
-            threshold_reached=threshold_reached
-        )
+        reward = GoldReward(user_id=user_id,
+                            gold_amount=gold_amount,
+                            reward_type=reward_type,
+                            level=level,
+                            euro_amount=euro_amount,
+                            fixing_price=fixing_price,
+                            threshold_reached=threshold_reached)
         db.session.add(reward)
 
         user = await User.query.get(user_id)
@@ -313,28 +335,33 @@ class PremiumDistributionService:
             raise ValueError(f"User {user_id} or their gold account not found")
         user.gold_account.balance += gold_amount
 
-    async def _handle_operational_fee(self, euro_amount: Decimal, fixing_price: Decimal) -> None:
+    async def _handle_operational_fee(self, euro_amount: Decimal,
+                                      fixing_price: Decimal) -> None:
         """Handle operational fee distribution"""
         if not self.operational_wallet:
             logger.warning("Operational wallet not configured")
             return
 
-        operational_fee_euro = (euro_amount * self.bonus_rates['operational']).quantize(Decimal('0.01'), rounding=ROUND_DOWN)
-        operational_fee_gold = (operational_fee_euro / fixing_price).quantize(Decimal('0.0001'), rounding=ROUND_DOWN)
+        operational_fee_euro = (euro_amount *
+                                self.bonus_rates['operational']).quantize(
+                                    Decimal('0.01'), rounding=ROUND_DOWN)
+        operational_fee_gold = (operational_fee_euro / fixing_price).quantize(
+            Decimal('0.0001'), rounding=ROUND_DOWN)
 
         if operational_fee_gold > 0:
-            reward = GoldReward(
-                user_id=None,
-                gold_amount=operational_fee_gold,
-                reward_type='operational',
-                euro_amount=operational_fee_euro,
-                fixing_price=fixing_price,
-                threshold_reached=euro_amount
-            )
+            reward = GoldReward(user_id=None,
+                                gold_amount=operational_fee_gold,
+                                reward_type='operational',
+                                euro_amount=operational_fee_euro,
+                                fixing_price=fixing_price,
+                                threshold_reached=euro_amount)
             db.session.add(reward)
-            logger.info(f"Operational fee of {operational_fee_gold}g distributed")
+            logger.info(
+                f"Operational fee of {operational_fee_gold}g distributed")
 
-    async def distribute_achievement_reward(self, user_id: int, euro_amount: Decimal, fixing_price: Decimal) -> Dict:
+    async def distribute_achievement_reward(self, user_id: int,
+                                            euro_amount: Decimal,
+                                            fixing_price: Decimal) -> Dict:
         """Distribute achievement rewards based on thresholds"""
         try:
             user = await User.query.get(user_id)
@@ -344,13 +371,18 @@ class PremiumDistributionService:
             total_volume = await self._calculate_total_volume(user_id)
             achieved_level = None
 
-            for level, threshold in sorted(self.achievement_thresholds.items(), key=lambda x: x[1], reverse=True):
+            for level, threshold in sorted(self.achievement_thresholds.items(),
+                                           key=lambda x: x[1],
+                                           reverse=True):
                 if total_volume >= threshold:
                     achieved_level = level
                     break
 
             if not achieved_level:
-                return {"status": "no_achievement", "total_volume": str(total_volume)}
+                return {
+                    "status": "no_achievement",
+                    "total_volume": str(total_volume)
+                }
 
             reward_amount = self.achievement_rewards[achieved_level]
             await self._create_and_save_reward(
@@ -360,8 +392,7 @@ class PremiumDistributionService:
                 0,  # Level 0 for achievements
                 euro_amount,
                 fixing_price,
-                total_volume
-            )
+                total_volume)
 
             return {
                 "status": "success",
