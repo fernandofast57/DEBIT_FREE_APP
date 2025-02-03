@@ -4,6 +4,7 @@
 ## Core Entities
 
 ### Account Management
+- EuroAccount: Primary euro currency account with high precision balance tracking (Decimal 10,2), manages user deposits and withdrawals
 - MoneyAccount: Euro balance management with precision tracking (Decimal 10,2)
 - GoldAccount: Gold balance management with blockchain verification (Decimal 10,4)
 - User: Main user entity with authentication and KYC data
