@@ -51,15 +51,16 @@
 ```
 
 ## Gold Operations
-### Purchase Gold [POST /api/v1/gold/purchase]
-- Description: Purchase physical gold
+
+### Transform Euro to Gold [POST /api/v1/oro/trasforma]
+- Description: Transform Euro to physical gold
 - Authentication: Required (Bearer Token)
 - Rate Limit: 50 requests/hour
 - Request Body:
 ```json
 {
-    "amount": 500.00,
-    "currency": "EUR"
+    "euro_amount": 500.00,
+    "fixing_price": 59.17
 }
 ```
 - Response (200):
@@ -76,6 +77,46 @@
     }
 }
 ```
+
+### Transform Gold to Euro [POST /api/v1/oro/da_euro]
+- Description: Transform gold back to Euro
+- Authentication: Required (Bearer Token)
+- Request Body:
+```json
+{
+    "gold_grams": 8.45,
+    "fixing_price": 59.17
+}
+```
+- Response (200):
+```json
+{
+    "success": true,
+    "data": {
+        "transaction_id": "tr_123457",
+        "euro_amount": 500.00,
+        "price_per_gram": 59.17,
+        "status": "completed",
+        "timestamp": "2024-01-29T10:20:00Z"
+    }
+}
+```
+
+### Get Gold Balance [GET /api/v1/saldo]
+- Description: Get user's current gold balance
+- Authentication: Required (Bearer Token)
+- Response (200):
+```json
+{
+    "success": true,
+    "data": {
+        "balance": 8.45,
+        "last_update": "2024-01-29T10:15:00Z"
+    }
+}
+```
+
+## Noble System
 
 ### Get Noble Rank [GET /api/v1/noble/rank]
 - Description: Gets the user's current noble rank
@@ -94,27 +135,32 @@
 }
 ```
 
-## Noble System
-
-The platform implements a multi-level affiliate marketing system where users are rewarded based on the gold purchases made within their network.
-
-### Key Features:
-- Unlimited levels in the affiliate network structure
-- Three bonus tiers:
-  - Bronze: Level 1 (direct referrals) - 0.7% bonus
-  - Silver: Level 2 (referrals of referrals) - 0.5% bonus
-  - Gold: Level 3 (referrals of referrals of referrals) - 0.5% bonus
-- Unlimited direct referrals per user
-- Bonuses calculated on gold purchases up to the third level
-- Dual role system: Users act as both affiliates and network leaders
-
-### Example Scenario:
-When a Level 3 user purchases gold:
-- Their direct referrer (Level 1) receives 0.7% bonus
-- Level 2 referrer receives 0.5% bonus
-- Level 3 referrer receives 0.5% bonus
+### Get Rank Requirements [GET /api/v1/noble/requirements]
+- Description: Get requirements for all noble ranks
+- Authentication: Required (Bearer Token)
+- Response (200):
+```json
+{
+    "success": true,
+    "data": [
+        {
+            "level": 1,
+            "bonus_rate": 0.007
+        },
+        {
+            "level": 2,
+            "bonus_rate": 0.005
+        },
+        {
+            "level": 3,
+            "bonus_rate": 0.005
+        }
+    ]
+}
+```
 
 ## Error Responses
+
 ### 400 Bad Request
 ```json
 {
