@@ -14,6 +14,7 @@
 - Transaction: Core transaction entity for all financial operations
 - GoldTransformation: Euro to Gold transformation with blockchain validation
 - BonusTransaction: Noble system bonus distribution tracking
+- GoldReward: Noble system gold rewards tracking and distribution
 
 ### Gold Management
 - GoldAllocation: Physical gold allocation tracking system
