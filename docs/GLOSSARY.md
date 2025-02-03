@@ -8,6 +8,7 @@
 - MoneyAccount: Euro balance management with precision tracking (Decimal 10,2)
 - GoldAccount: Gold balance management with blockchain verification (Decimal 10,4)
 - User: Main user entity with authentication and KYC data
+- KYCDetail: User identity verification details including document type, status and verification timestamps
 
 ### Transaction Management
 - Transaction: Core transaction entity for all financial operations
