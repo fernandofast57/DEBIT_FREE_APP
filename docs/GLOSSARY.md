@@ -79,6 +79,9 @@
 - CustomerCodeFormat: String(10)
 - TimestampFormat: ISO-8601
 
+### System Configuration
+- Parameter: System configuration entity storing key-value pairs for application settings
+
 ### System Limits
 - OperationLimits:
   - min_purchase: 100
