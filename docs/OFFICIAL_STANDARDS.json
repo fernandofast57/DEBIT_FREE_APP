@@ -1,19 +1,20 @@
 {
-  "version": "1.4",
-  "last_updated": "2024-01-25",
+  "version": "1.5",
+  "last_updated": "2024-01-30",
   "platform_name": "Gold Investment Platform",
   "standard_definitions": {
     "core_entities": {
       "User": {
-        "description": "Main user entity with authentication details",
-        "required_fields": ["email", "password_hash", "kyc_status", "two_factor_enabled"]
+        "description": "Main user entity with authentication and KYC",
+        "required_fields": ["email", "password_hash", "kyc_status", "two_factor_enabled", "customer_code"]
       },
       "EuroAccount": {
         "description": "Euro balance management",
         "precision": "Decimal(10,2)",
         "validation_rules": {
           "min_balance": 0,
-          "max_transaction": 100000
+          "max_transaction": 100000,
+          "min_transaction": 100
         }
       },
       "GoldAccount": {
@@ -21,119 +22,91 @@
         "precision": "Decimal(10,4)",
         "validation_rules": {
           "min_balance": 0,
-          "max_transaction": 1000
+          "max_transaction": 1000,
+          "min_transaction": 0.0001
         }
       },
-      "GoldTrace": "Gold-Euro conversion registry",
-      "GoldAllocation": "User gold allocation management",
-      "GoldBar": "Physical gold bars registry",
-      "BonusTransaction": "Bonus and rewards management",
-      "GoldPrize": "Gold rewards system",
-      "NobleRelation": "Noble ranks management",
+      "GoldTrace": "Gold-Euro conversion registry with blockchain validation",
+      "GoldAllocation": "Physical gold allocation tracking",
+      "GoldBar": "Physical gold bars registry with certification",
+      "BonusTransaction": "Noble system bonus distribution",
+      "NobleRelation": "Noble ranks hierarchy management",
       "KYCDetails": {
         "description": "User identity verification",
-        "document_types": ["passport", "id_card", "drivers_license"],
-        "status_types": ["pending", "approved", "rejected"]
+        "document_types": ["passport", "id_card", "drivers_license", "utility_bill"],
+        "status_types": ["pending", "approved", "rejected", "expired"]
       },
-      "Parameter": "System configuration parameters"
+      "Parameter": "System configuration with versioning"
     },
     "monitoring": {
-      "PerformanceMonitor": "System performance and metrics monitoring",
-      "BlockchainMonitor": "Blockchain transactions and gas monitoring",
-      "TransformationMonitor": "Gold-to-euro transformations monitoring",
+      "PerformanceMonitor": "System performance tracking",
+      "BlockchainMonitor": "Blockchain transaction verification",
+      "TransformationMonitor": "Gold transformation tracking",
       "AsyncMonitor": "Asynchronous operations monitoring",
-      "DependencyMonitor": "System dependencies monitoring",
-      "SecurityMonitor": "System security monitoring"
+      "SecurityMonitor": "Security and access monitoring",
+      "AuditMonitor": "Complete system audit trail"
     },
     "metrics": {
       "performance": {
         "database_response": "50ms",
         "api_response": "150ms",
         "transaction_processing": "1.5s",
+        "blockchain_verification": "5s",
         "security_checks": "30ms",
         "weekly_transformation": "5m"
       },
       "spread": {
         "base": "5.0",
-        "additional": "1.7"
+        "operational": "1.7"
       },
       "noble_bonus": {
-        "bronzo": "0.7",
-        "argento": "0.5",
-        "oro": "0.5"
+        "bronze": "0.7",
+        "silver": "0.5",
+        "gold": "0.5"
       }
     },
     "states_and_types": {
-      "AccountStatus": ["active", "suspended", "verifying"],
-      "OperationType": ["gold_purchase", "gold_sale", "gold_transfer"],
-      "OperationStatus": ["pending", "in_progress", "completed", "failed"],
+      "AccountStatus": ["active", "suspended", "verifying", "to_verify"],
+      "OperationType": ["gold_purchase", "gold_sale", "gold_transfer", "bonus_distribution"],
+      "OperationStatus": ["pending", "processing", "completed", "failed", "cancelled"],
       "ValidationStatus": ["pending", "approved", "rejected"],
-      "NobleRank": ["bronze", "silver", "gold"]
+      "NobleRank": ["bronze", "silver", "gold"],
+      "DocumentStatus": ["incomplete", "verifying", "verified", "rejected"]
     },
     "services": {
       "core": {
-        "AccountManagementService": "Account operations management",
-        "TransformationService": "Euro-gold conversion management",
-        "BlockchainService": "Blockchain transactions management",
-        "NobleService": "Noble system management",
-        "NotificationService": "Notification system",
-        "KYCService": "Customer identity verification",
-        "AnalyticsService": "System metrics analysis"
+        "AccountManagementService": "Account operations handling",
+        "TransformationService": "Gold-Euro conversion management",
+        "BlockchainService": "Blockchain integration",
+        "NobleService": "Noble system operations",
+        "NotificationService": "User notifications",
+        "KYCService": "Identity verification",
+        "AnalyticsService": "System analytics",
+        "AuditService": "Operation auditing"
       },
       "validators": {
-        "TransactionValidator": "Financial operations validation",
-        "BlockchainValidator": "Blockchain transactions validation",
-        "BonusValidator": "Bonus calculation validation",
-        "NobleValidator": "Noble ranks validation",
-        "KYCValidator": "Identity document validation",
+        "TransactionValidator": "Financial operation validation",
+        "BlockchainValidator": "Blockchain verification",
+        "BonusValidator": "Bonus calculation",
+        "NobleValidator": "Noble rank validation",
+        "KYCValidator": "Identity verification",
         "StructureValidator": "Data structure validation"
       }
     },
-    "monitors": {
-      "PerformanceMonitor": "Monitoring system performance and metrics",
-      "BlockchainMonitor": "Blockchain transactions monitoring",
-      "AsyncMonitor": "Asynchronous operations monitoring",
-      "DependencyMonitor": "System dependencies monitoring",
-      "SecurityMonitor": "System security monitoring",
-      "MetricsCollector": {
-        "description": "Standardized metrics collection",
-        "metrics": {
-          "response_times": "System response times",
-          "transaction_count": "Transaction count",
-          "error_rate": "System error rate",
-          "gas_usage": "Blockchain gas consumption",
-          "block_times": "Block confirmation times",
-          "memory_usage": "System memory consumption",
-          "cpu_load": "CPU usage metrics"
-        }
-      }
-    },
     "formats": {
-      "GoldPrecision": "Decimal(10,4)", 
+      "GoldPrecision": "Decimal(10,4)",
       "EuroPrecision": "Decimal(10,2)",
       "IBANFormat": "String(27)",
       "CustomerCodeFormat": "String(10)",
       "TimestampFormat": "ISO-8601"
-    },
-    "system_constants": {
-      "OperationLimits": {
-        "min_purchase_amount": 100,
-        "max_purchase_amount": 100000,
-        "min_sale_amount": 1,
-        "max_sale_amount": 50000
-      },
-      "BatchIntervals": {
-        "processing": 3600,
-        "backup": 86400,
-        "cleanup": 604800
-      }
     },
     "security_standards": {
       "password_policy": {
         "min_length": 12,
         "require_special": true,
         "require_numbers": true,
-        "require_uppercase": true
+        "require_uppercase": true,
+        "max_age_days": 90
       },
       "due_diligence": {
         "document_types": ["identity_card_front", "identity_card_back", "tax_id", "utility_bill"],
@@ -146,11 +119,6 @@
           "test_transfer_required": true,
           "min_test_amount": 0.01,
           "max_test_amount": 1.00
-        },
-        "payment_settings": {
-          "min_monthly_amount": 100,
-          "max_monthly_amount": 10000,
-          "sepa_required": true
         }
       },
       "rate_limits": {
@@ -162,17 +130,17 @@
         "storage": "redis_primary"
       }
     },
-    "noble_system": {
-      "ranks": {
-        "bronze": {
-          "commission": 0.7
-        },
-        "silver": {
-          "commission": 0.5
-        },
-        "gold": {
-          "commission": 0.5
-        }
+    "system_constants": {
+      "OperationLimits": {
+        "min_purchase": 100,
+        "max_purchase": 100000,
+        "min_sale": 1,
+        "max_sale": 50000
+      },
+      "BatchIntervals": {
+        "processing": 3600,
+        "backup": 86400,
+        "cleanup": 604800
       }
     },
     "transformation_rules": {
@@ -182,7 +150,8 @@
         "operational": 1.7
       },
       "minimum_amount": 100,
-      "maximum_amount": 100000
+      "maximum_amount": 100000,
+      "blockchain_confirmations": 12
     }
   },
   "checksum": "SHA256"
