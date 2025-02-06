@@ -28,7 +28,7 @@ def setup_monitoring(app: Flask) -> None:
     async def finalize_request_monitoring(response):
         execution_time = (datetime.utcnow() -
                           request.start_timestamp).total_seconds() * 1000
-        await metrics_collector.record_metric(
+        await metrics_collector.collect_metric(
             'response_time_ms',
             execution_time)  # <-- USO CORRETTO: metrics_collector
         return response
