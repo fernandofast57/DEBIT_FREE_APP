@@ -18,6 +18,11 @@ migrate = Migrate()
 login_manager = LoginManager()  # <-- INIZIALIZZAZIONE LoginManager
 login_manager.login_view = 'auth.login'
 
+@login_manager.user_loader
+def load_user(user_id):
+    from app.models.models import User
+    return User.query.get(int(user_id))
+
 
 def create_app(config_object=Config):
     app = Flask(__name__)
