@@ -3,20 +3,24 @@ from decimal import Decimal
 from enum import Enum
 from sqlalchemy.orm import validates
 import re
+from flask_login import UserMixin
 from . import db
 from .notification import Notification
 from app.middleware.class_validator_middleware import validate_class_names
 
-class UserRole:
+
+class UserRole(Enum):
     USER = 'user'
     ADMIN = 'admin'
     OPERATOR = 'operator'
 
-class KYCStatus:
+
+class KYCStatus(Enum):
     PENDING = 'pending'
     APPROVED = 'approved'
     REJECTED = 'rejected'
     TO_VERIFY = 'to_verify'
+
 
 @validate_class_names()
 class User(UserMixin, db.Model):
@@ -27,54 +31,78 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     # Unique identifiers
-    customer_code = db.Column(db.String(50), unique=True, nullable=False, 
-                            comment='Unique customer identifier code')
-    email = db.Column(db.String(120), unique=True, nullable=False, 
-                     comment='User email address')
+    customer_code = db.Column(db.String(50),
+                              unique=True,
+                              nullable=False,
+                              index=True,
+                              comment='Unique customer identifier code')
+    email = db.Column(db.String(120),
+                      unique=True,
+                      nullable=False,
+                      index=True,
+                      comment='User email address')
 
     # Authentication fields
-    password_hash = db.Column(db.String(128), nullable=False, 
-                            comment='Hashed password')
-    two_factor_secret = db.Column(db.String(32), nullable=True, 
-                                 comment='2FA secret key')
-    two_factor_enabled = db.Column(db.Boolean, default=False, 
-                                 comment='2FA enabled status')
+    password_hash = db.Column(db.String(128),
+                              nullable=False,
+                              comment='Hashed password')
+    two_factor_secret = db.Column(db.String(32),
+                                  nullable=True,
+                                  comment='2FA secret key')
+    two_factor_enabled = db.Column(db.Boolean,
+                                   default=False,
+                                   comment='2FA enabled status')
 
     # Personal information
-    name = db.Column(db.String(100), nullable=False, 
-                    comment='Full name of user')
-    tax_code = db.Column(db.String(16), unique=True, nullable=False, 
-                        comment='Tax identification code')
+    name = db.Column(db.String(100),
+                     nullable=False,
+                     comment='Full name of user')
+    tax_code = db.Column(db.String(16),
+                         unique=True,
+                         nullable=False,
+                         comment='Tax identification code')
 
     # Status and role
-    kyc_status = db.Column(db.String(20), nullable=False, default=KYCStatus.PENDING,
-                          comment='KYC verification status')
-    role = db.Column(db.String(20), nullable=False, default=UserRole.USER,
-                    comment='User role in the system')
-    is_active = db.Column(db.Boolean, default=True, 
-                         comment='Account active status')
+    kyc_status = db.Column(db.Enum(KYCStatus),
+                           nullable=False,
+                           default=KYCStatus.PENDING.value,
+                           comment='KYC verification status')
+    role = db.Column(db.Enum(UserRole),
+                     nullable=False,
+                     default=UserRole.USER.value,
+                     comment='User role in the system')
+    is_active = db.Column(db.Boolean,
+                          default=True,
+                          comment='Account active status')
 
     # Timestamps
-    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow,
-                          comment='Account creation timestamp')
-    last_login = db.Column(db.DateTime, nullable=True,
-                          comment='Last login timestamp')
+    created_at = db.Column(db.DateTime,
+                           nullable=False,
+                           server_default=db.func.now(),
+                           comment='Account creation timestamp')
+    last_login = db.Column(db.DateTime,
+                           nullable=True,
+                           comment='Last login timestamp')
 
     # Relationships
     transactions = db.relationship('Transaction', back_populates='user')
-    kyc_documents = db.relationship('KYCDetail', back_populates='user', 
-                                  foreign_keys='KYCDetail.user_id')
-    euro_account = db.relationship('EuroAccount', back_populates='user', 
-                                 uselist=False)
-    gold_account = db.relationship('GoldAccount', back_populates='user', 
-                                 uselist=False)
+    kyc_documents = db.relationship('KYCDetail',
+                                    back_populates='user',
+                                    foreign_keys='KYCDetail.user_id')
+    euro_account = db.relationship('EuroAccount',
+                                   back_populates='user',
+                                   uselist=False)
+    gold_account = db.relationship('GoldAccount',
+                                   back_populates='user',
+                                   uselist=False)
 
     @validates('email')
     def validate_email(self, key, email):
         """Validate email format"""
         if not email:
             raise ValueError('Email cannot be empty')
-        if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+        if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                        email):
             raise ValueError('Invalid email format')
         return email
 
@@ -366,6 +394,7 @@ class NobleRank(db.Model):
 
     def __repr__(self):
         return f"<NobleRank {self.name} (Level {self.level})>"
+
 
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
