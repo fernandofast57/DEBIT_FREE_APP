@@ -21,6 +21,7 @@ externalPort = 3000
 channel = "stable-24_05"
 
 [workflows]
+runButton = "Backend"
 
 [[workflows.workflow]]
 name = "Run"
@@ -37,3 +38,28 @@ author = 31077556
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python main.py"
+
+[[workflows.workflow]]
+name = "Backend"
+author = 31077556
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python main.py"
+
+[[workflows.workflow]]
+name = "Blockchain"
+author = 31077556
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npx hardhat node"
+
+[[workflows.workflow]]
+name = "Frontend"
+author = 31077556
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run start"

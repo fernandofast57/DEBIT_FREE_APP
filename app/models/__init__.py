@@ -2,7 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-from .user import User
+from .models import User  # <-- IMPORTAZIONE *CORRETTA* DA app/models/models.py
 from .models import NobleRank
 from .models import (EuroAccount, GoldAccount, Transaction, NobleRelation,
                      GoldBar, Parameter, BonusTransaction, KYCDetail,
