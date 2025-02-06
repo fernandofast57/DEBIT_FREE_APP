@@ -52,9 +52,9 @@ class SystemPerformanceMonitor:
 
     def track_time(self, operation_name: str):
         def decorator(func):
-            async def wrapper(*args, **kwargs):
+            def wrapper(*args, **kwargs):
                 start_time = datetime.now()
-                result = await func(*args, **kwargs)
+                result = func(*args, **kwargs)
                 end_time = datetime.now()
                 execution_time = (end_time - start_time).total_seconds() * 1000
                 self.record_metrics(execution_time)
