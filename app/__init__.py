@@ -1,11 +1,8 @@
 from flask import Flask, render_template
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-from app.config.settings import Config
-import asyncio
-from flask import Flask, render_template
-from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_login import LoginManager  # <-- IMPORTAZIONE LoginManager
 from app.config.settings import Config
 import asyncio
 from app.utils.monitoring.monitoring_setup import setup_monitoring
@@ -17,13 +14,20 @@ asyncio.set_event_loop(loop)
 loop.run_until_complete(cache_manager.initialize())
 
 db = SQLAlchemy()
+migrate = Migrate()
+login_manager = LoginManager()  # <-- INIZIALIZZAZIONE LoginManager
+login_manager.login_view = 'auth.login'
 
-def create_app(config_class=Config):
+
+def create_app(config_object=Config):
     app = Flask(__name__)
-    app.config.from_object(config_class)
+    app.config.from_object(config_object)
 
     CORS(app)
     db.init_app(app)
+    migrate.init_app(app, db)
+    setup_monitoring(app)
+    login_manager.init_app(app)  # <-- INIZIALIZZAZIONE LoginManager
 
     from app.routes.main import main_bp
     app.register_blueprint(main_bp)
@@ -41,15 +45,12 @@ def create_app(config_class=Config):
 
     return app
 
+
 # Configurazione per l'esecuzione diretta
 if __name__ == '__main__':
     app = create_app()
-    app.run(
-        host='0.0.0.0',
-        port=8080,
-        debug=False,
-        use_reloader=False,
-        threaded=True
-    )
-# Package initialization
-# Package initialization
+    app.run(host='0.0.0.0',
+            port=8080,
+            debug=False,
+            use_reloader=False,
+            threaded=True)
