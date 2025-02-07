@@ -10,7 +10,22 @@ services:
     environment:
       - FLASK_APP=main.py
       - FLASK_DEBUG=1  # Set to 0 for production
-      - DATABASE_URL=sqlite:///instance/gold_investment.db  # Percorso database SQLite (esempio)
+      - DATABASE_URL=sqlite:///instance/gold_investment.db  
+      # Flask Configuration
+      SECRET_KEY=<secure-random-key>  # Required: Used for session security
+      DATABASE_URL=sqlite:///compravendita_oro.db  # Required: Database connection string
+
+      # Blockchain Configuration 
+      CONTRACT_ADDRESS=0x742d35Cc6634C0532925a3b844Bc454e4438f44e  # Required: Smart contract address
+      PRIVATE_KEY=0xd74e125f9d9060a984a78fd87386a72e2cf609809bc1e556ed53fa09465d060b  # Required: Your wallet private key
+
+      # RPC Configuration
+      RPC_ENDPOINTS=https://polygon-mumbai.g.alchemy.com/v2/your-key,https://rpc-mumbai.maticvigil.com  # Required: Comma-separated RPC endpoints
+
+      # Optional Configuration
+      DEBUG=False  # Optional: Enable debug mode
+      TESTING=False  # Optional: Enable testing mode
+    # Percorso database SQLite (esempio)
       # ... (aggiungi qui *tutte le altre variabili d'ambiente* necessarie per il backend Flask, es. SECRET_KEY, RPC_ENDPOINTS, CONTRACT_ADDRESS, PRIVATE_KEY, ecc.) ...
     volumes:
       - ./instance:/app/instance  # Mappa la cartella "instance" locale alla cartella "/app/instance" nel container (per persistere il database SQLite)
