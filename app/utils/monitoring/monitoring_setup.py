@@ -21,8 +21,7 @@ def setup_monitoring(app: Flask) -> None:
             'method': request.method,
             'path': request.path
         }
-        metrics_collector.collect_system_metrics(
-        )  # <-- USO CORRETTO: metrics_collector
+        await metrics_collector.collect_system_metrics()
 
     @app.after_request
     async def finalize_request_monitoring(response):
