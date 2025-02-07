@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - FLASK_APP=main.py
+      - FLASK_DEBUG=1  # Set to 0 for production
+      - DATABASE_URL=sqlite:///instance/gold_investment.db  # Percorso database SQLite (esempio)
+      # ... (aggiungi qui *tutte le altre variabili d'ambiente* necessarie per il backend Flask, es. SECRET_KEY, RPC_ENDPOINTS, CONTRACT_ADDRESS, PRIVATE_KEY, ecc.) ...
+    volumes:
+      - ./instance:/app/instance  # Mappa la cartella "instance" locale alla cartella "/app/instance" nel container (per persistere il database SQLite)
+    depends_on:
+      - blockchain  # Il backend dipende dalla blockchain: Docker Compose si assicura che la blockchain parta *prima* del backend
+
+  blockchain:
+    build:
+      context: .
+      dockerfile: Dockerfile-blockchain
+    ports:
+      - "8545:8545"  # Porta standard di Hardhat JSON-RPC
+    volumes:
+      - ./blockchain:/blockchain-app  # Mappa la cartella "blockchain" locale alla cartella "/blockchain-app" nel container (per persistere i dati della blockchain, se necessario)
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile-frontend
+    ports:
+      - "3000:3000"  # Porta standard del frontend React
+    depends_on:
+      - backend      # Il frontend dipende dal backend: Docker Compose si assicura che il backend parta *prima* del frontend
+    environment:
+      - VITE_BACKEND_API_URL=http://localhost:8080/api/v1  # URL API del backend Flask (nel container Docker, localhost si riferisce al *container del backend*)

@@ -1,0 +1,11 @@
+FROM node:18
+
+WORKDIR /blockchain-app
+
+COPY blockchain/package*.json ./
+
+RUN npm install
+
+COPY blockchain .
+
+CMD ["npx", "hardhat", "node"]
