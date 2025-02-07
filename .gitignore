@@ -5,6 +5,7 @@ __pycache__/
 *$py.class
 *.so
 .Python
+env/
 build/
 develop-eggs/
 dist/
@@ -17,25 +18,21 @@ parts/
 sdist/
 var/
 *.egg-info/
-.installed.cfg
-*.egg
-
-# Environment
-.env
-.venv
-env/
-venv/
-ENV/
 
 # Database
-instance/
 *.db
 *.db-shm
 *.db-wal
+instance/
 
 # Logs
 logs/
 *.log
+
+# Environment
+.env
+.venv
+.env.local
 
 # IDE
 .idea/
