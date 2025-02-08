@@ -1,0 +1,61 @@
+2025-01-22 10:54:36,348 INFO: Tentativo di connessione a: https://polygon-mumbai.g.alchemy.com/v2/your-key [in /home/runner/workspace/app/services/blockchain_service.py:65]
+2025-01-22 10:54:37,569 WARNING: Connessione fallita a https://polygon-mumbai.g.alchemy.com/v2/your-key: HTTPSConnectionPool(host='polygon-mumbai.g.alchemy.com', port=443): Max retries exceeded with url: /v2/your-key (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7fbfb1f4a490>: Failed to resolve 'polygon-mumbai.g.alchemy.com' ([Errno -2] Name or service not known)")) [in /home/runner/workspace/app/services/blockchain_service.py:79]
+2025-01-22 10:54:37,570 INFO: Tentativo di connessione a: https://rpc-mumbai.maticvigil.com [in /home/runner/workspace/app/services/blockchain_service.py:65]
+2025-01-22 10:54:38,786 WARNING: Connessione fallita a https://rpc-mumbai.maticvigil.com: HTTPSConnectionPool(host='rpc-mumbai.maticvigil.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7fbfb1f4a110>: Failed to resolve 'rpc-mumbai.maticvigil.com' ([Errno -2] Name or service not known)")) [in /home/runner/workspace/app/services/blockchain_service.py:79]
+2025-01-22 10:54:38,786 WARNING: Attempt 3 failed: Connessione fallita a tutti gli endpoint RPC - verificare la configurazione RPC_ENDPOINTS [in /home/runner/workspace/app/utils/retry.py:20]
+2025-01-22 10:54:38,786 ERROR: All 3 attempts failed [in /home/runner/workspace/app/utils/retry.py:25]
+2025-01-22 10:55:46,721 INFO: Gold Investment App startup [in /home/runner/workspace/app/__init__.py:36]
+[2025-01-22 10:55:46] [INFO] [app:36] Gold Investment App startup
+2025-01-22 10:55:46,721 INFO: Registered new server: 0.0.0.0:8080 [in /home/runner/workspace/app/utils/load_balancer.py:24]
+[2025-01-22 10:55:46] [INFO] [app.utils.load_balancer:24] Registered new server: 0.0.0.0:8080
+2025-01-22 10:55:46,722 INFO: Registered new server: 0.0.0.0:8081 [in /home/runner/workspace/app/utils/load_balancer.py:24]
+[2025-01-22 10:55:46] [INFO] [app.utils.load_balancer:24] Registered new server: 0.0.0.0:8081
+[2025-01-22 10:55:46] [INFO] [sqlalchemy.engine.Engine:2699] BEGIN (implicit)
+[2025-01-22 10:55:46] [INFO] [sqlalchemy.engine.Engine:1846] PRAGMA journal_mode=WAL
+[2025-01-22 10:55:46] [INFO] [sqlalchemy.engine.Engine:1846] [generated in 0.00024s] ()
+2025-01-22 10:55:46,733 INFO: Successfully executed: PRAGMA journal_mode=WAL [in /home/runner/workspace/app/utils/optimization.py:23]
+[2025-01-22 10:55:46] [INFO] [app.utils.optimization:23] Successfully executed: PRAGMA journal_mode=WAL
+[2025-01-22 10:55:46] [INFO] [sqlalchemy.engine.Engine:1846] PRAGMA synchronous=NORMAL
+[2025-01-22 10:55:46] [INFO] [sqlalchemy.engine.Engine:1846] [generated in 0.00023s] ()
+2025-01-22 10:55:46,733 INFO: Successfully executed: PRAGMA synchronous=NORMAL [in /home/runner/workspace/app/utils/optimization.py:23]
+[2025-01-22 10:55:46] [INFO] [app.utils.optimization:23] Successfully executed: PRAGMA synchronous=NORMAL
+[2025-01-22 10:55:46] [INFO] [sqlalchemy.engine.Engine:1846] PRAGMA cache_size=10000
+[2025-01-22 10:55:46] [INFO] [sqlalchemy.engine.Engine:1846] [generated in 0.00015s] ()
+2025-01-22 10:55:46,734 INFO: Successfully executed: PRAGMA cache_size=10000 [in /home/runner/workspace/app/utils/optimization.py:23]
+[2025-01-22 10:55:46] [INFO] [app.utils.optimization:23] Successfully executed: PRAGMA cache_size=10000
+[2025-01-22 10:55:46] [INFO] [sqlalchemy.engine.Engine:1846] PRAGMA temp_store=MEMORY
+[2025-01-22 10:55:46] [INFO] [sqlalchemy.engine.Engine:1846] [generated in 0.00019s] ()
+2025-01-22 10:55:46,734 INFO: Successfully executed: PRAGMA temp_store=MEMORY [in /home/runner/workspace/app/utils/optimization.py:23]
+[2025-01-22 10:55:46] [INFO] [app.utils.optimization:23] Successfully executed: PRAGMA temp_store=MEMORY
+[2025-01-22 10:55:46] [INFO] [sqlalchemy.engine.Engine:2705] COMMIT
+2025-01-22 10:55:46,735 INFO: Query optimization completed successfully [in /home/runner/workspace/app/utils/optimization.py:27]
+[2025-01-22 10:55:46] [INFO] [app.utils.optimization:27] Query optimization completed successfully
+2025-01-22 10:55:47,454 INFO: Tentativo di connessione a: https://polygon-mumbai.g.alchemy.com/v2/your-key [in /home/runner/workspace/app/services/blockchain_service.py:62]
+[2025-01-22 10:55:47] [INFO] [app.services.blockchain_service:62] Tentativo di connessione a: https://polygon-mumbai.g.alchemy.com/v2/your-key
+2025-01-22 10:55:48,671 WARNING: Connessione fallita a https://polygon-mumbai.g.alchemy.com/v2/your-key: HTTPSConnectionPool(host='polygon-mumbai.g.alchemy.com', port=443): Max retries exceeded with url: /v2/your-key (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7fbc88a00550>: Failed to resolve 'polygon-mumbai.g.alchemy.com' ([Errno -2] Name or service not known)")) [in /home/runner/workspace/app/services/blockchain_service.py:76]
+[2025-01-22 10:55:48] [WARNING] [app.services.blockchain_service:76] Connessione fallita a https://polygon-mumbai.g.alchemy.com/v2/your-key: HTTPSConnectionPool(host='polygon-mumbai.g.alchemy.com', port=443): Max retries exceeded with url: /v2/your-key (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7fbc88a00550>: Failed to resolve 'polygon-mumbai.g.alchemy.com' ([Errno -2] Name or service not known)"))
+2025-01-22 10:55:48,672 INFO: Tentativo di connessione a: https://rpc-mumbai.maticvigil.com [in /home/runner/workspace/app/services/blockchain_service.py:62]
+[2025-01-22 10:55:48] [INFO] [app.services.blockchain_service:62] Tentativo di connessione a: https://rpc-mumbai.maticvigil.com
+2025-01-22 10:55:49,886 WARNING: Connessione fallita a https://rpc-mumbai.maticvigil.com: HTTPSConnectionPool(host='rpc-mumbai.maticvigil.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7fbc88a26c90>: Failed to resolve 'rpc-mumbai.maticvigil.com' ([Errno -2] Name or service not known)")) [in /home/runner/workspace/app/services/blockchain_service.py:76]
+[2025-01-22 10:55:49] [WARNING] [app.services.blockchain_service:76] Connessione fallita a https://rpc-mumbai.maticvigil.com: HTTPSConnectionPool(host='rpc-mumbai.maticvigil.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7fbc88a26c90>: Failed to resolve 'rpc-mumbai.maticvigil.com' ([Errno -2] Name or service not known)"))
+2025-01-22 10:55:49,886 WARNING: Attempt 1 failed: Connessione fallita a tutti gli endpoint RPC - verificare la configurazione RPC_ENDPOINTS [in /home/runner/workspace/app/utils/retry.py:20]
+[2025-01-22 10:55:49] [WARNING] [app.utils.retry:20] Attempt 1 failed: Connessione fallita a tutti gli endpoint RPC - verificare la configurazione RPC_ENDPOINTS
+2025-01-22 10:55:50,887 INFO: Tentativo di connessione a: https://polygon-mumbai.g.alchemy.com/v2/your-key [in /home/runner/workspace/app/services/blockchain_service.py:62]
+[2025-01-22 10:55:50] [INFO] [app.services.blockchain_service:62] Tentativo di connessione a: https://polygon-mumbai.g.alchemy.com/v2/your-key
+2025-01-22 10:55:52,103 WARNING: Connessione fallita a https://polygon-mumbai.g.alchemy.com/v2/your-key: HTTPSConnectionPool(host='polygon-mumbai.g.alchemy.com', port=443): Max retries exceeded with url: /v2/your-key (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7fbc88a32d50>: Failed to resolve 'polygon-mumbai.g.alchemy.com' ([Errno -2] Name or service not known)")) [in /home/runner/workspace/app/services/blockchain_service.py:76]
+[2025-01-22 10:55:52] [WARNING] [app.services.blockchain_service:76] Connessione fallita a https://polygon-mumbai.g.alchemy.com/v2/your-key: HTTPSConnectionPool(host='polygon-mumbai.g.alchemy.com', port=443): Max retries exceeded with url: /v2/your-key (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7fbc88a32d50>: Failed to resolve 'polygon-mumbai.g.alchemy.com' ([Errno -2] Name or service not known)"))
+2025-01-22 10:55:52,103 INFO: Tentativo di connessione a: https://rpc-mumbai.maticvigil.com [in /home/runner/workspace/app/services/blockchain_service.py:62]
+[2025-01-22 10:55:52] [INFO] [app.services.blockchain_service:62] Tentativo di connessione a: https://rpc-mumbai.maticvigil.com
+2025-01-22 10:55:53,319 WARNING: Connessione fallita a https://rpc-mumbai.maticvigil.com: HTTPSConnectionPool(host='rpc-mumbai.maticvigil.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7fbc88a31b10>: Failed to resolve 'rpc-mumbai.maticvigil.com' ([Errno -2] Name or service not known)")) [in /home/runner/workspace/app/services/blockchain_service.py:76]
+[2025-01-22 10:55:53] [WARNING] [app.services.blockchain_service:76] Connessione fallita a https://rpc-mumbai.maticvigil.com: HTTPSConnectionPool(host='rpc-mumbai.maticvigil.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7fbc88a31b10>: Failed to resolve 'rpc-mumbai.maticvigil.com' ([Errno -2] Name or service not known)"))
+2025-01-22 10:55:53,319 WARNING: Attempt 2 failed: Connessione fallita a tutti gli endpoint RPC - verificare la configurazione RPC_ENDPOINTS [in /home/runner/workspace/app/utils/retry.py:20]
+[2025-01-22 10:55:53] [WARNING] [app.utils.retry:20] Attempt 2 failed: Connessione fallita a tutti gli endpoint RPC - verificare la configurazione RPC_ENDPOINTS
+2025-01-22 10:55:55,319 INFO: Tentativo di connessione a: https://polygon-mumbai.g.alchemy.com/v2/your-key [in /home/runner/workspace/app/services/blockchain_service.py:62]
+[2025-01-22 10:55:55] [INFO] [app.services.blockchain_service:62] Tentativo di connessione a: https://polygon-mumbai.g.alchemy.com/v2/your-key
+[2025-01-22 10:55:56] [WARNING] [app.services.blockchain_service:76] Connessione fallita a https://polygon-mumbai.g.alchemy.com/v2/your-key: HTTPSConnectionPool(host='polygon-mumbai.g.alchemy.com', port=443): Max retries exceeded with url: /v2/your-key (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7fbc88a25a10>: Failed to resolve 'polygon-mumbai.g.alchemy.com' ([Errno -2] Name or service not known)"))
+[2025-01-22 10:55:56] [INFO] [app.services.blockchain_service:62] Tentativo di connessione a: https://rpc-mumbai.maticvigil.com
+[2025-01-22 10:55:57] [WARNING] [app.services.blockchain_service:76] Connessione fallita a https://rpc-mumbai.maticvigil.com: HTTPSConnectionPool(host='rpc-mumbai.maticvigil.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7fbc88a26010>: Failed to resolve 'rpc-mumbai.maticvigil.com' ([Errno -2] Name or service not known)"))
+[2025-01-22 10:55:57] [WARNING] [app.utils.retry:20] Attempt 3 failed: Connessione fallita a tutti gli endpoint RPC - verificare la configurazione RPC_ENDPOINTS
+[2025-01-22 10:55:57] [ERROR] [app.utils.retry:25] All 3 attempts failed
+[2025-01-22 10:55:57] [ERROR] [__main__:122] Failed to start application: Connessione fallita a tutti gli endpoint RPC - verificare la configurazione RPC_ENDPOINTS
+[2025-01-22 10:55:57] [INFO] [root:53] Saving metrics before shutdown: {'response_time': {'average': 0.0, 'count': 0, 'latest': 0}, 'database_query_times': {'average': 0.0, 'count': 0, 'latest': 0}, 'blockchain_operation_times': {'average': 0.0, 'count': 0, 'latest': 0}}

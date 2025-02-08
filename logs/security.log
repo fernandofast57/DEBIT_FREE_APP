@@ -1,0 +1,836 @@
+2025-01-29 15:44:37,243 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-29 15:45:54,868 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-29 15:47:19,494 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-29 15:49:24,783 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-29 15:49:39,659 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-29 15:51:11,227 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-29 15:51:13,478 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-29 15:51:15,569 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 11:41:14,736 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 11:42:07,622 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 11:43:05,552 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 11:44:19,642 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 11:45:05,557 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 11:57:50,251 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 11:59:50,433 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 12:02:16,812 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 12:03:11,561 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 12:05:45,551 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 15:25:58,362 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 15:28:01,770 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 15:29:31,602 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 15:36:12,747 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 15:37:16,921 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 15:38:56,170 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 15:59:01,115 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 16:02:19,691 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 16:03:15,701 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 16:31:37,307 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 16:34:41,925 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 16:36:04,777 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 16:38:00,429 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 16:45:23,652 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 16:49:45,095 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 17:03:03,088 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 17:05:49,700 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 17:06:55,376 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 17:11:32,668 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 17:12:59,547 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 17:26:09,367 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 17:31:04,698 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 17:34:59,506 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 17:43:15,503 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 17:45:41,668 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-30 17:50:53,109 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 10:25:46,260 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 10:31:58,116 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 10:46:01,615 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 10:47:54,498 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 10:49:36,763 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 10:50:29,342 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 10:51:20,627 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 10:52:56,935 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 13:08:12,765 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 13:08:32,907 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 13:09:51,328 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 13:11:13,151 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 13:12:47,916 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 13:12:58,474 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 13:22:29,912 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 13:24:11,848 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 13:25:58,215 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 13:37:50,096 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 13:37:50,172 - __main__ - ERROR - Debug Error: invalid syntax (bonuses.py, line 43)
+Traceback (most recent call last):
+  File "/home/runner/workspace/debug_app.py", line 19, in debug_application
+    app = create_app()
+          ^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/index.py", line 2, in <module>
+    from . import (
+  File "/home/runner/workspace/app/api/v1/bonuses.py", line 43
+    return jsonify({'error': str(e)}), 500```
+                                          ^
+SyntaxError: invalid syntax
+2025-01-31 13:40:31,693 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 13:40:31,774 - __main__ - ERROR - Debug Error: invalid syntax (bonuses.py, line 43)
+Traceback (most recent call last):
+  File "/home/runner/workspace/debug_app.py", line 19, in debug_application
+    app = create_app()
+          ^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/index.py", line 2, in <module>
+    from . import (
+  File "/home/runner/workspace/app/api/v1/bonuses.py", line 43
+    return jsonify({'error': str(e)}), 500```
+                                          ^
+SyntaxError: invalid syntax
+2025-01-31 13:52:25,880 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 13:52:25,967 - __main__ - ERROR - Debug Error: cannot import name 'rate_limit' from 'app.utils.security.rate_limiter' (/home/runner/workspace/app/utils/security/rate_limiter.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/debug_app.py", line 19, in debug_application
+    app = create_app()
+          ^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/index.py", line 2, in <module>
+    from . import (
+  File "/home/runner/workspace/app/api/v1/bonuses.py", line 4, in <module>
+    from app.utils.security.rate_limiter import rate_limit
+ImportError: cannot import name 'rate_limit' from 'app.utils.security.rate_limiter' (/home/runner/workspace/app/utils/security/rate_limiter.py)
+2025-01-31 13:52:47,144 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 13:52:47,224 - __main__ - ERROR - Debug Error: cannot import name 'rate_limit' from 'app.utils.security.rate_limiter' (/home/runner/workspace/app/utils/security/rate_limiter.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/debug_app.py", line 19, in debug_application
+    app = create_app()
+          ^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/index.py", line 2, in <module>
+    from . import (
+  File "/home/runner/workspace/app/api/v1/bonuses.py", line 4, in <module>
+    from app.utils.security.rate_limiter import rate_limit
+ImportError: cannot import name 'rate_limit' from 'app.utils.security.rate_limiter' (/home/runner/workspace/app/utils/security/rate_limiter.py)
+2025-01-31 13:52:50,736 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 13:52:57,258 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 13:54:39,255 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 13:56:21,554 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 14:22:33,722 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 14:22:33,900 - __main__ - ERROR - Debug Error: cannot import name 'rate_limit' from 'app.utils.security.robust_rate_limiter' (/home/runner/workspace/app/utils/security/robust_rate_limiter.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/debug_app.py", line 19, in debug_application
+    app = create_app()
+          ^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/index.py", line 2, in <module>
+    from . import (
+  File "/home/runner/workspace/app/api/v1/bonuses.py", line 4, in <module>
+    from app.utils.security.robust_rate_limiter import rate_limit
+ImportError: cannot import name 'rate_limit' from 'app.utils.security.robust_rate_limiter' (/home/runner/workspace/app/utils/security/robust_rate_limiter.py)
+2025-01-31 14:22:48,686 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 14:22:48,850 - __main__ - ERROR - Debug Error: cannot import name 'rate_limit' from 'app.utils.security.robust_rate_limiter' (/home/runner/workspace/app/utils/security/robust_rate_limiter.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/debug_app.py", line 19, in debug_application
+    app = create_app()
+          ^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/index.py", line 2, in <module>
+    from . import (
+  File "/home/runner/workspace/app/api/v1/bonuses.py", line 4, in <module>
+    from app.utils.security.robust_rate_limiter import rate_limit
+ImportError: cannot import name 'rate_limit' from 'app.utils.security.robust_rate_limiter' (/home/runner/workspace/app/utils/security/robust_rate_limiter.py)
+2025-01-31 14:25:44,966 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 14:26:03,997 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 14:26:04,082 - __main__ - ERROR - Debug Error: cannot import name 'rate_limit' from 'app.utils.security.robust_rate_limiter' (/home/runner/workspace/app/utils/security/robust_rate_limiter.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/debug_app.py", line 19, in debug_application
+    app = create_app()
+          ^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/index.py", line 2, in <module>
+    from . import (
+  File "/home/runner/workspace/app/api/v1/bonuses.py", line 4, in <module>
+    from app.utils.security.robust_rate_limiter import rate_limit
+ImportError: cannot import name 'rate_limit' from 'app.utils.security.robust_rate_limiter' (/home/runner/workspace/app/utils/security/robust_rate_limiter.py)
+2025-01-31 14:27:15,198 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 14:27:15,283 - __main__ - ERROR - Debug Error: cannot import name 'RateLimit' from 'app.utils.security.robust_rate_limiter' (/home/runner/workspace/app/utils/security/robust_rate_limiter.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/debug_app.py", line 19, in debug_application
+    app = create_app()
+          ^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/__init__.py", line 4, in <module>
+    from .transformations import transformations_bp
+  File "/home/runner/workspace/app/api/v1/transformations.py", line 6, in <module>
+    from app.middleware.rate_limit import rate_limit
+  File "/home/runner/workspace/app/middleware/rate_limit.py", line 4, in <module>
+    from app.utils.security.robust_rate_limiter import RobustRateLimiter, RateLimit
+ImportError: cannot import name 'RateLimit' from 'app.utils.security.robust_rate_limiter' (/home/runner/workspace/app/utils/security/robust_rate_limiter.py)
+2025-01-31 17:54:16,095 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 17:54:42,480 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 17:55:19,927 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 19:25:25,219 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 19:49:37,721 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-01-31 19:49:37,756 - app.middleware.standards_enforcer_middleware - ERROR - Error during validation of app/services/workflow_service.py: expected 'except' or 'finally' block (<unknown>, line 43)
+2025-01-31 19:49:37,766 - app.middleware.standards_enforcer_middleware - ERROR - Error during validation of app/services/validators/workflow_validator.py: expected 'except' or 'finally' block (<unknown>, line 20)
+2025-01-31 19:49:37,859 - __main__ - ERROR - Standard violations found:
+2025-01-31 19:49:37,859 - __main__ - ERROR - Non-standard name 'track_distribution_metrics' found in app/prometheus_config.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,860 - __main__ - ERROR - Non-standard name 'init_db' found in app/init_db.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,860 - __main__ - ERROR - Non-standard name 'DatabaseManager' found in app/database.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,860 - __main__ - ERROR - Non-standard name '__init__' found in app/database.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,860 - __main__ - ERROR - Non-standard name '_setup_logging' found in app/database.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,861 - __main__ - ERROR - Non-standard name 'create_app' found in app/__init__.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,861 - __main__ - ERROR - Non-standard name 'not_found_error' found in app/__init__.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,861 - __main__ - ERROR - Non-standard name 'internal_error' found in app/__init__.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,861 - __main__ - ERROR - Non-standard name 'WeeklyDistributionLog' found in app/models/distribution.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,862 - __main__ - ERROR - Non-standard name 'DistributionSnapshot' found in app/models/distribution.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,862 - __main__ - ERROR - Non-standard name 'GoldInventory' found in app/models/accounting.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,862 - __main__ - ERROR - Non-standard name 'AccountingEntry' found in app/models/accounting.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,862 - __main__ - ERROR - Non-standard name 'init_noble_ranks' found in app/models/init_noble_ranks.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,862 - __main__ - ERROR - Non-standard name 'Notification' found in app/models/notification.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,863 - __main__ - ERROR - Non-standard name 'to_dict' found in app/models/notification.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,863 - __main__ - ERROR - Non-standard name 'SistemaNobile' found in app/models/noble_system.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,864 - __main__ - ERROR - Non-standard name '__init__' found in app/models/noble_system.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,864 - __main__ - ERROR - Non-standard name '__repr__' found in app/models/noble_system.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,864 - __main__ - ERROR - Non-standard name 'StatoKYC' found in app/models/kyc.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,864 - __main__ - ERROR - Non-standard name 'DocumentType' found in app/models/kyc.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,865 - __main__ - ERROR - Non-standard name 'validate_document_number' found in app/models/kyc.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,865 - __main__ - ERROR - Non-standard name 'validate_document_type' found in app/models/kyc.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,865 - __main__ - ERROR - Non-standard name '__repr__' found in app/models/kyc.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,865 - __main__ - ERROR - Non-standard name 'TicketStatus' found in app/models/ticket.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,866 - __main__ - ERROR - Non-standard name 'Ticket' found in app/models/ticket.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,866 - __main__ - ERROR - Non-standard name 'Contract' found in app/models/contract.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,866 - __main__ - ERROR - Non-standard name '__repr__' found in app/models/contract.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,866 - __main__ - ERROR - Non-standard name 'WeeklyAmount' found in app/models/weekly_amount.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,866 - __main__ - ERROR - Non-standard name '__repr__' found in app/models/weekly_amount.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,867 - __main__ - ERROR - Non-standard name 'validate_email' found in app/models/user.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,867 - __main__ - ERROR - Non-standard name 'validate_username' found in app/models/user.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,867 - __main__ - ERROR - Non-standard name '__repr__' found in app/models/models.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,867 - __main__ - ERROR - Non-standard name '__repr__' found in app/models/models.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,868 - __main__ - ERROR - Non-standard name 'validate_amount' found in app/models/models.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,868 - __main__ - ERROR - Non-standard name '__repr__' found in app/models/models.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,868 - __main__ - ERROR - Non-standard name '__repr__' found in app/models/models.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,868 - __main__ - ERROR - Non-standard name 'get_rate' found in app/models/models.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,869 - __main__ - ERROR - Non-standard name '__repr__' found in app/models/models.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,869 - __main__ - ERROR - Non-standard name '__repr__' found in app/models/models.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,869 - __main__ - ERROR - Non-standard name '__repr__' found in app/models/models.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,869 - __main__ - ERROR - Non-standard name 'TwoFactorService' found in app/services/two_factor_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,870 - __main__ - ERROR - Non-standard name '__init__' found in app/services/two_factor_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,870 - __main__ - ERROR - Non-standard name 'generate_secret' found in app/services/two_factor_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,870 - __main__ - ERROR - Non-standard name 'generate_qr_code' found in app/services/two_factor_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,870 - __main__ - ERROR - Non-standard name 'verify_2fa' found in app/services/two_factor_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,871 - __main__ - ERROR - Non-standard name 'PaymentService' found in app/services/payment_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,871 - __main__ - ERROR - Non-standard name 'calculate_processing_fee' found in app/services/payment_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,871 - __main__ - ERROR - Non-standard name 'ContractService' found in app/services/contract_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,871 - __main__ - ERROR - Non-standard name 'WeeklyAmountService' found in app/services/weekly_amount_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,872 - __main__ - ERROR - Non-standard name 'ServizioNobileBlockchain' found in app/services/blockchain_noble_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,872 - __main__ - ERROR - Non-standard name '__init__' found in app/services/blockchain_noble_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,872 - __main__ - ERROR - Non-standard name 'MockBlockchainService' found in app/services/mock_blockchain_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,872 - __main__ - ERROR - Non-standard name '__new__' found in app/services/mock_blockchain_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,873 - __main__ - ERROR - Non-standard name '__init__' found in app/services/mock_blockchain_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,873 - __main__ - ERROR - Non-standard name 'setup_mocks' found in app/services/mock_blockchain_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,873 - __main__ - ERROR - Non-standard name 'is_connected' found in app/services/mock_blockchain_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,873 - __main__ - ERROR - Non-standard name 'ServizioAutenticazione' found in app/services/auth_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,874 - __main__ - ERROR - Non-standard name 'genera_token' found in app/services/auth_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,874 - __main__ - ERROR - Non-standard name 'valida_token' found in app/services/auth_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,874 - __main__ - ERROR - Non-standard name 'ServizioRuoli' found in app/services/role_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,874 - __main__ - ERROR - Non-standard name '__init__' found in app/services/notification_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,874 - __main__ - ERROR - Non-standard name 'ReferralService' found in app/services/referral_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,875 - __main__ - ERROR - Non-standard name 'BatchCollectionService' found in app/services/batch_collection_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,875 - __main__ - ERROR - Non-standard name '__init__' found in app/services/batch_collection_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,875 - __main__ - ERROR - Non-standard name 'process_transaction_batch' found in app/services/batch_collection_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,875 - __main__ - ERROR - Non-standard name 'handle_transaction_batch' found in app/services/batch_collection_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,876 - __main__ - ERROR - Non-standard name 'AccountingService' found in app/services/accounting_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,876 - __main__ - ERROR - Non-standard name '__init__' found in app/services/accounting_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,876 - __main__ - ERROR - Non-standard name '__init__' found in app/services/transformation_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,876 - __main__ - ERROR - Non-standard name '_calculate_spread' found in app/services/transformation_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,877 - __main__ - ERROR - Non-standard name '_validate_amount' found in app/services/transformation_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,877 - __main__ - ERROR - Non-standard name 'WeeklyProcessor' found in app/services/weekly_processing_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,877 - __main__ - ERROR - Non-standard name 'WeeklyProcessingService' found in app/services/weekly_processing_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,877 - __main__ - ERROR - Non-standard name '__init__' found in app/services/weekly_processing_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,878 - __main__ - ERROR - Non-standard name '__init__' found in app/services/weekly_processing_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,878 - __main__ - ERROR - Non-standard name 'DocumentType' found in app/services/kyc_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,878 - __main__ - ERROR - Non-standard name '__init__' found in app/services/analytics_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,879 - __main__ - ERROR - Non-standard name 'TicketAnalyticsService' found in app/services/ticket_analytics_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,879 - __main__ - ERROR - Non-standard name '__init__' found in app/services/blockchain_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,879 - __main__ - ERROR - Non-standard name 'performance_monitor' found in app/services/blockchain_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,879 - __main__ - ERROR - Non-standard name '_get_contract_abi' found in app/services/blockchain_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,879 - __main__ - ERROR - Non-standard name '_setup_contract' found in app/services/blockchain_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,879 - __main__ - ERROR - Non-standard name '_setup_account' found in app/services/blockchain_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,880 - __main__ - ERROR - Non-standard name 'is_connected' found in app/services/blockchain_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,880 - __main__ - ERROR - Non-standard name '__init__' found in app/services/noble_rank_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,880 - __main__ - ERROR - Non-standard name 'BonusDistributionService' found in app/services/bonus_distribution_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,881 - __main__ - ERROR - Non-standard name 'PremiumDistributionService' found in app/services/bonus_distribution_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,881 - __main__ - ERROR - Non-standard name '__init__' found in app/services/bonus_distribution_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,881 - __main__ - ERROR - Non-standard name '_init_bonus_rates' found in app/services/bonus_distribution_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,881 - __main__ - ERROR - Non-standard name 'validate_bonus_amount' found in app/services/bonus_distribution_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,882 - __main__ - ERROR - Non-standard name '_get_bonus_rate' found in app/services/bonus_distribution_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,882 - __main__ - ERROR - Non-standard name '__init__' found in app/services/bonus_distribution_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,882 - __main__ - ERROR - Non-standard name '_init_premium_rates' found in app/services/bonus_distribution_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,882 - __main__ - ERROR - Non-standard name '_init_thresholds' found in app/services/bonus_distribution_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,883 - __main__ - ERROR - Non-standard name 'validate_gold_amount' found in app/services/bonus_distribution_service.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,883 - __main__ - ERROR - Non-standard name '__init__' found in app/services/validators/bonus_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,883 - __main__ - ERROR - Non-standard name 'validate_bonus_calculation' found in app/services/validators/bonus_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,883 - __main__ - ERROR - Non-standard name 'validate_distribution' found in app/services/validators/bonus_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,884 - __main__ - ERROR - Non-standard name 'validate_noble_bonus' found in app/services/validators/bonus_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,884 - __main__ - ERROR - Non-standard name 'ValidatoreBlockchain' found in app/services/validators/blockchain_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,884 - __main__ - ERROR - Non-standard name '__init__' found in app/services/validators/blockchain_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,885 - __main__ - ERROR - Non-standard name 'valida_transazione' found in app/services/validators/blockchain_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,885 - __main__ - ERROR - Non-standard name 'ValidatoreTransazione' found in app/services/validators/transaction_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,885 - __main__ - ERROR - Non-standard name '__init__' found in app/services/validators/transaction_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,885 - __main__ - ERROR - Non-standard name 'validate_transaction_workflow' found in app/services/validators/transaction_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,886 - __main__ - ERROR - Non-standard name 'certify_transaction' found in app/services/validators/transaction_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,886 - __main__ - ERROR - Non-standard name '_preliminary_checks' found in app/services/validators/transaction_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,886 - __main__ - ERROR - Non-standard name '_validate_data' found in app/services/validators/transaction_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,886 - __main__ - ERROR - Non-standard name '_security_checks' found in app/services/validators/transaction_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,887 - __main__ - ERROR - Non-standard name 'validate_transformation' found in app/services/validators/transaction_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,887 - __main__ - ERROR - Non-standard name 'DistributionBackup' found in app/services/gold/distribution_backup.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,887 - __main__ - ERROR - Non-standard name '__init__' found in app/services/gold/distribution_backup.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,888 - __main__ - ERROR - Non-standard name 'create_snapshot' found in app/services/gold/distribution_backup.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,888 - __main__ - ERROR - Non-standard name 'restore_latest_snapshot' found in app/services/gold/distribution_backup.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,888 - __main__ - ERROR - Non-standard name 'verify_snapshot_integrity' found in app/services/gold/distribution_backup.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,888 - __main__ - ERROR - Non-standard name 'log_error' found in app/services/gold/distribution_backup.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,889 - __main__ - ERROR - Non-standard name 'DistributionValidator' found in app/services/gold/distribution_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,889 - __main__ - ERROR - Non-standard name '__init__' found in app/services/gold/distribution_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,889 - __main__ - ERROR - Non-standard name 'WeeklyGoldDistribution' found in app/services/gold/weekly_distribution.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,889 - __main__ - ERROR - Non-standard name '__init__' found in app/services/gold/weekly_distribution.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,890 - __main__ - ERROR - Non-standard name 'SecretRotator' found in app/utils/secret_rotation.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,890 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/secret_rotation.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,890 - __main__ - ERROR - Non-standard name 'needs_rotation' found in app/utils/secret_rotation.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,890 - __main__ - ERROR - Non-standard name 'rotate_secrets' found in app/utils/secret_rotation.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,890 - __main__ - ERROR - Non-standard name 'initialize_system' found in app/utils/advanced_config.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,891 - __main__ - ERROR - Non-standard name 'SecurityManager' found in app/utils/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,891 - __main__ - ERROR - Non-standard name 'validate_address' found in app/utils/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,891 - __main__ - ERROR - Non-standard name 'sanitize_input' found in app/utils/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,891 - __main__ - ERROR - Non-standard name 'require_valid_address' found in app/utils/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,892 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,892 - __main__ - ERROR - Non-standard name 'validate_address' found in app/utils/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,892 - __main__ - ERROR - Non-standard name 'sanitize_input' found in app/utils/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,892 - __main__ - ERROR - Non-standard name 'decorated' found in app/utils/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,893 - __main__ - ERROR - Non-standard name 'retry_with_backoff' found in app/utils/retry.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,893 - __main__ - ERROR - Non-standard name 'decorator' found in app/utils/retry.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,893 - __main__ - ERROR - Non-standard name 'BackupManager' found in app/utils/backup_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,893 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/backup_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,894 - __main__ - ERROR - Non-standard name '_ensure_backup_dir' found in app/utils/backup_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,894 - __main__ - ERROR - Non-standard name '_calculate_checksum' found in app/utils/backup_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,894 - __main__ - ERROR - Non-standard name 'create_backup' found in app/utils/backup_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,894 - __main__ - ERROR - Non-standard name 'verify_backup' found in app/utils/backup_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,895 - __main__ - ERROR - Non-standard name 'RollbackManager' found in app/utils/rollback_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,895 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/rollback_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,895 - __main__ - ERROR - Non-standard name 'transaction' found in app/utils/rollback_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,895 - __main__ - ERROR - Non-standard name 'record_change' found in app/utils/rollback_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,896 - __main__ - ERROR - Non-standard name '_rollback_transaction' found in app/utils/rollback_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,896 - __main__ - ERROR - Non-standard name '_delete_record' found in app/utils/rollback_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,896 - __main__ - ERROR - Non-standard name '_restore_record' found in app/utils/rollback_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,896 - __main__ - ERROR - Non-standard name '_recreate_record' found in app/utils/rollback_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,897 - __main__ - ERROR - Non-standard name '_get_model_class' found in app/utils/rollback_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,897 - __main__ - ERROR - Non-standard name 'APIError' found in app/utils/errors.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,897 - __main__ - ERROR - Non-standard name 'InvalidRankError' found in app/utils/errors.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,897 - __main__ - ERROR - Non-standard name 'InsufficientBalanceError' found in app/utils/errors.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,898 - __main__ - ERROR - Non-standard name 'handle_api_error' found in app/utils/errors.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,898 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/errors.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,898 - __main__ - ERROR - Non-standard name 'to_dict' found in app/utils/errors.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,898 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/errors.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,898 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/errors.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,899 - __main__ - ERROR - Non-standard name 'LoadBalancer' found in app/utils/load_balancer.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,899 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/load_balancer.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,899 - __main__ - ERROR - Non-standard name 'setup_logging' found in app/utils/logging_config.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,899 - __main__ - ERROR - Non-standard name 'get_logger' found in app/utils/logging_config.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,900 - __main__ - ERROR - Non-standard name 'GlossaryComplianceLogger' found in app/utils/logging_config.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,900 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/logging_config.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,900 - __main__ - ERROR - Non-standard name 'log_validation' found in app/utils/logging_config.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,900 - __main__ - ERROR - Non-standard name 'require_operator_approval' found in app/utils/audit_logger.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,900 - __main__ - ERROR - Non-standard name 'require_admin_approval' found in app/utils/audit_logger.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,901 - __main__ - ERROR - Non-standard name 'TransformationAuditLogger' found in app/utils/audit_logger.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,901 - __main__ - ERROR - Non-standard name 'DetailedAuditLogger' found in app/utils/audit_logger.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,901 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/audit_logger.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,902 - __main__ - ERROR - Non-standard name 'log_action' found in app/utils/audit_logger.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,902 - __main__ - ERROR - Non-standard name 'decorated' found in app/utils/audit_logger.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,902 - __main__ - ERROR - Non-standard name 'decorated' found in app/utils/audit_logger.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,902 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/audit_logger.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,903 - __main__ - ERROR - Non-standard name 'log_transformation' found in app/utils/audit_logger.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,903 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/audit_logger.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,903 - __main__ - ERROR - Non-standard name 'log_transformation' found in app/utils/audit_logger.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,903 - __main__ - ERROR - Non-standard name 'atomic_transaction' found in app/utils/transaction_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,904 - __main__ - ERROR - Non-standard name 'AsyncEventHandler' found in app/utils/async_handler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,904 - __main__ - ERROR - Non-standard name 'async_handler' found in app/utils/async_handler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,904 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/async_handler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,904 - __main__ - ERROR - Non-standard name 'get_loop' found in app/utils/async_handler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,905 - __main__ - ERROR - Non-standard name 'register_event_handler' found in app/utils/async_handler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,905 - __main__ - ERROR - Non-standard name 'decorator' found in app/utils/async_handler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,905 - __main__ - ERROR - Non-standard name 'optimize_database_queries' found in app/utils/optimization.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,905 - __main__ - ERROR - Non-standard name 'create_indexes' found in app/utils/optimization.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,905 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/blockchain_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,906 - __main__ - ERROR - Non-standard name 'record_blockchain_metric' found in app/utils/blockchain_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,906 - __main__ - ERROR - Non-standard name 'record_blockchain_error' found in app/utils/blockchain_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,906 - __main__ - ERROR - Non-standard name 'get_monitoring_report' found in app/utils/blockchain_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,906 - __main__ - ERROR - Non-standard name 'SystemMonitor' found in app/utils/system_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,907 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/system_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,907 - __main__ - ERROR - Non-standard name 'collect_system_metrics' found in app/utils/system_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,907 - __main__ - ERROR - Non-standard name 'log_request' found in app/utils/system_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,907 - __main__ - ERROR - Non-standard name 'log_error' found in app/utils/system_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,908 - __main__ - ERROR - Non-standard name 'log_response_time' found in app/utils/system_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,908 - __main__ - ERROR - Non-standard name 'get_average_response_time' found in app/utils/system_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,908 - __main__ - ERROR - Non-standard name 'ValidationReport' found in app/utils/validation_report.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,908 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/validation_report.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,909 - __main__ - ERROR - Non-standard name 'BusinessError' found in app/utils/error_handler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,909 - __main__ - ERROR - Non-standard name 'SecurityError' found in app/utils/error_handler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,909 - __main__ - ERROR - Non-standard name 'ValidationError' found in app/utils/error_handler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,909 - __main__ - ERROR - Non-standard name 'SystemError' found in app/utils/error_handler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,909 - __main__ - ERROR - Non-standard name 'handle_errors' found in app/utils/error_handler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,910 - __main__ - ERROR - Non-standard name 'log_error' found in app/utils/error_handler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,910 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/error_handler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,910 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/error_handler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,910 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/error_handler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,911 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/error_handler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,911 - __main__ - ERROR - Non-standard name 'wrapper' found in app/utils/error_handler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,911 - __main__ - ERROR - Non-standard name 'admin_required' found in app/utils/auth.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,911 - __main__ - ERROR - Non-standard name 'operator_required' found in app/utils/auth.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,912 - __main__ - ERROR - Non-standard name 'AuthManager' found in app/utils/auth.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,912 - __main__ - ERROR - Non-standard name 'auth_required' found in app/utils/auth.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,912 - __main__ - ERROR - Non-standard name 'decorated_function' found in app/utils/auth.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,912 - __main__ - ERROR - Non-standard name 'decorated_function' found in app/utils/auth.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,913 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/auth.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,913 - __main__ - ERROR - Non-standard name 'generate_token' found in app/utils/auth.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,913 - __main__ - ERROR - Non-standard name 'verify_token' found in app/utils/auth.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,914 - __main__ - ERROR - Non-standard name 'decorated' found in app/utils/auth.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,914 - __main__ - ERROR - Non-standard name 'StandardsChecker' found in app/utils/standards_checker.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,914 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/standards_checker.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,914 - __main__ - ERROR - Non-standard name '_load_standards' found in app/utils/standards_checker.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,915 - __main__ - ERROR - Non-standard name '_load_glossary' found in app/utils/standards_checker.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,915 - __main__ - ERROR - Non-standard name 'validate_name' found in app/utils/standards_checker.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,915 - __main__ - ERROR - Non-standard name 'validate_glossary_compliance' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,915 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,916 - __main__ - ERROR - Non-standard name '_load_glossary' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,916 - __main__ - ERROR - Non-standard name 'validate_models' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,916 - __main__ - ERROR - Non-standard name 'validate_status_codes' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,916 - __main__ - ERROR - Non-standard name 'validate_modification' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,917 - __main__ - ERROR - Non-standard name 'validate_bonus_rate' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,917 - __main__ - ERROR - Non-standard name 'validate_blockchain_config' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,917 - __main__ - ERROR - Non-standard name 'validate_service_names' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,918 - __main__ - ERROR - Non-standard name 'validate_api_endpoints' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,918 - __main__ - ERROR - Non-standard name 'validate_blockchain_transactions' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,918 - __main__ - ERROR - Non-standard name 'validate_schema_definitions' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,918 - __main__ - ERROR - Non-standard name 'validate_security_config' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,919 - __main__ - ERROR - Non-standard name 'validate_structure' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,919 - __main__ - ERROR - Non-standard name 'validate_business_rules' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,919 - __main__ - ERROR - Non-standard name 'validate_noble_system' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,920 - __main__ - ERROR - Non-standard name 'validate_operations' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,920 - __main__ - ERROR - Non-standard name 'validate_accounts' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,920 - __main__ - ERROR - Non-standard name 'validate_bonus_system' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,921 - __main__ - ERROR - Non-standard name 'validate_transaction_processes' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,921 - __main__ - ERROR - Non-standard name 'validate_workflow_processes' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,921 - __main__ - ERROR - Non-standard name 'validate_investment_tracking' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,921 - __main__ - ERROR - Non-standard name 'validate_performance_analytics' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,922 - __main__ - ERROR - Non-standard name 'validate_risk_assessment' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,922 - __main__ - ERROR - Non-standard name 'validate_batch_transactions' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,923 - __main__ - ERROR - Non-standard name 'log_modification' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,923 - __main__ - ERROR - Non-standard name '_validate_standards' found in app/utils/structure_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,923 - __main__ - ERROR - Non-standard name 'validate_standards' found in app/utils/pre_commit_hook.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,924 - __main__ - ERROR - Non-standard name 'run_pre_commit_hook' found in app/utils/pre_commit_hook.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,924 - __main__ - ERROR - Non-standard name 'AutoRecoverySystem' found in app/utils/auto_recovery.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,924 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/auto_recovery.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,925 - __main__ - ERROR - Non-standard name 'SecurityManager' found in app/utils/security/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,925 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/security/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,925 - __main__ - ERROR - Non-standard name 'validate_address' found in app/utils/security/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,925 - __main__ - ERROR - Non-standard name 'sanitize_input' found in app/utils/security/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,926 - __main__ - ERROR - Non-standard name 'DeviceConfig' found in app/utils/security/config_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,926 - __main__ - ERROR - Non-standard name 'AdvancedConfig' found in app/utils/security/config_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,926 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/security/config_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,926 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/security/config_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,927 - __main__ - ERROR - Non-standard name 'get_device_config' found in app/utils/security/config_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,927 - __main__ - ERROR - Non-standard name 'check_secrets_rotation' found in app/utils/security/config_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,928 - __main__ - ERROR - Non-standard name 'SecurityManager' found in app/utils/security/security_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,928 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/security/security_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,928 - __main__ - ERROR - Non-standard name 'generate_token' found in app/utils/security/security_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,928 - __main__ - ERROR - Non-standard name 'verify_token' found in app/utils/security/security_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,929 - __main__ - ERROR - Non-standard name 'revoke_token' found in app/utils/security/security_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,929 - __main__ - ERROR - Non-standard name 'CircuitBreaker' found in app/utils/security/circuit_breaker.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,929 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/security/circuit_breaker.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,930 - __main__ - ERROR - Non-standard name '__call__' found in app/utils/security/circuit_breaker.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,930 - __main__ - ERROR - Non-standard name '_handle_failure' found in app/utils/security/circuit_breaker.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,930 - __main__ - ERROR - Non-standard name 'wrapper' found in app/utils/security/circuit_breaker.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,931 - __main__ - ERROR - Non-standard name 'JWTValidator' found in app/utils/security/jwt_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,931 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/security/jwt_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,931 - __main__ - ERROR - Non-standard name 'validate_token' found in app/utils/security/jwt_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,932 - __main__ - ERROR - Non-standard name 'AuthManager' found in app/utils/security/auth_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,932 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/security/auth_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,932 - __main__ - ERROR - Non-standard name 'TokenManager' found in app/utils/security/token_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,932 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/security/token_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,932 - __main__ - ERROR - Non-standard name 'validate_token' found in app/utils/security/token_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,933 - __main__ - ERROR - Non-standard name 'generate_secure_token' found in app/utils/security/security_utils.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,933 - __main__ - ERROR - Non-standard name 'hash_password' found in app/utils/security/security_utils.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,933 - __main__ - ERROR - Non-standard name 'JWTManager' found in app/utils/security/jwt_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,933 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/security/jwt_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,934 - __main__ - ERROR - Non-standard name 'generate_token' found in app/utils/security/jwt_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,934 - __main__ - ERROR - Non-standard name 'verify_token' found in app/utils/security/jwt_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,934 - __main__ - ERROR - Non-standard name 'RateLimiter' found in app/utils/security/rate_limiter.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,934 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/security/rate_limiter.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,934 - __main__ - ERROR - Non-standard name 'is_allowed' found in app/utils/security/rate_limiter.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,935 - __main__ - ERROR - Non-standard name '_is_blocked' found in app/utils/security/rate_limiter.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,935 - __main__ - ERROR - Non-standard name '_block_key' found in app/utils/security/rate_limiter.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,935 - __main__ - ERROR - Non-standard name '_clean_old_requests' found in app/utils/security/rate_limiter.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,935 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/security/robust_rate_limiter.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,936 - __main__ - ERROR - Non-standard name 'is_allowed' found in app/utils/security/robust_rate_limiter.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,936 - __main__ - ERROR - Non-standard name 'MigrationManager' found in app/utils/database/migrations.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,936 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/database/migrations.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,936 - __main__ - ERROR - Non-standard name 'init_migrations' found in app/utils/database/migrations.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,936 - __main__ - ERROR - Non-standard name 'create_migration' found in app/utils/database/migrations.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,937 - __main__ - ERROR - Non-standard name 'apply_migrations' found in app/utils/database/migrations.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,937 - __main__ - ERROR - Non-standard name 'GestoreDatabase' found in app/utils/database/connection.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,937 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/database/connection.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,938 - __main__ - ERROR - Non-standard name '_setup_logging' found in app/utils/database/connection.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,938 - __main__ - ERROR - Non-standard name '_create_engine' found in app/utils/database/connection.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,938 - __main__ - ERROR - Non-standard name 'session_scope' found in app/utils/database/connection.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,938 - __main__ - ERROR - Non-standard name 'check_connection' found in app/utils/database/connection.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,939 - __main__ - ERROR - Non-standard name 'DictCache' found in app/utils/cache/redis_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,939 - __main__ - ERROR - Non-standard name 'GestoreCache' found in app/utils/cache/redis_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,939 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/cache/redis_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,939 - __main__ - ERROR - Non-standard name '__new__' found in app/utils/cache/redis_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,940 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/cache/redis_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,940 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/async_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,940 - __main__ - ERROR - Non-standard name 'get_metrics_report' found in app/utils/monitoring/async_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,940 - __main__ - ERROR - Non-standard name 'clear_old_metrics' found in app/utils/monitoring/async_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,941 - __main__ - ERROR - Non-standard name 'AnalyticsDashboard' found in app/utils/monitoring/analytics_dashboard.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,941 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/analytics_dashboard.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,941 - __main__ - ERROR - Non-standard name 'create_dashboard' found in app/utils/monitoring/analytics_dashboard.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,941 - __main__ - ERROR - Non-standard name 'AutomatedReportGenerator' found in app/utils/monitoring/automated_reports.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,942 - __main__ - ERROR - Non-standard name 'AutomatedReports' found in app/utils/monitoring/automated_reports.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,942 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/automated_reports.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,942 - __main__ - ERROR - Non-standard name 'generate_system_report' found in app/utils/monitoring/automated_reports.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,942 - __main__ - ERROR - Non-standard name 'get_report_history' found in app/utils/monitoring/automated_reports.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,943 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/automated_reports.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,943 - __main__ - ERROR - Non-standard name '_count_transaction_status' found in app/utils/monitoring/automated_reports.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,943 - __main__ - ERROR - Non-standard name 'HealthCheck' found in app/utils/monitoring/health_check.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,943 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/health_check.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,943 - __main__ - ERROR - Non-standard name 'check_service' found in app/utils/monitoring/health_check.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,944 - __main__ - ERROR - Non-standard name 'AuditSystem' found in app/utils/monitoring/audit_system.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,944 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/audit_system.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,944 - __main__ - ERROR - Non-standard name 'log_audit_event' found in app/utils/monitoring/audit_system.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,944 - __main__ - ERROR - Non-standard name 'get_user_audit_trail' found in app/utils/monitoring/audit_system.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,945 - __main__ - ERROR - Non-standard name 'PerformanceProfiler' found in app/utils/monitoring/performance_profiler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,945 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/performance_profiler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,945 - __main__ - ERROR - Non-standard name 'profile' found in app/utils/monitoring/performance_profiler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,945 - __main__ - ERROR - Non-standard name '_record_profile' found in app/utils/monitoring/performance_profiler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,945 - __main__ - ERROR - Non-standard name 'decorator' found in app/utils/monitoring/performance_profiler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,946 - __main__ - ERROR - Non-standard name 'wrapper' found in app/utils/monitoring/performance_profiler.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,946 - __main__ - ERROR - Non-standard name 'CollettoreMetriche' found in app/utils/monitoring/metrics_collector.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,946 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/metrics_collector.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,946 - __main__ - ERROR - Non-standard name 'collect_metric' found in app/utils/monitoring/metrics_collector.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,946 - __main__ - ERROR - Non-standard name 'get_metrics' found in app/utils/monitoring/metrics_collector.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,947 - __main__ - ERROR - Non-standard name 'MonitorRisorse' found in app/utils/monitoring/resource_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,947 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/resource_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,947 - __main__ - ERROR - Non-standard name 'track_resource_usage' found in app/utils/monitoring/resource_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,947 - __main__ - ERROR - Non-standard name 'MonitorDipendenze' found in app/utils/monitoring/dependency_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,948 - __main__ - ERROR - Non-standard name 'LegacyDependencyMonitor' found in app/utils/monitoring/dependency_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,948 - __main__ - ERROR - Non-standard name 'validate_system_dependencies' found in app/utils/monitoring/dependency_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,948 - __main__ - ERROR - Non-standard name 'check_application_dependencies' found in app/utils/monitoring/dependency_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,948 - __main__ - ERROR - Non-standard name 'log_dependency_check_results' found in app/utils/monitoring/dependency_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,949 - __main__ - ERROR - Non-standard name 'check_dependency_version' found in app/utils/monitoring/dependency_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,949 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/dependency_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,949 - __main__ - ERROR - Non-standard name 'check_dependency' found in app/utils/monitoring/dependency_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,950 - __main__ - ERROR - Non-standard name 'get_all_dependencies' found in app/utils/monitoring/dependency_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,950 - __main__ - ERROR - Non-standard name 'validate_required_dependencies' found in app/utils/monitoring/dependency_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,950 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/dependency_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,950 - __main__ - ERROR - Non-standard name 'get_report' found in app/utils/monitoring/dependency_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,951 - __main__ - ERROR - Non-standard name 'clear_old_metrics' found in app/utils/monitoring/dependency_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,951 - __main__ - ERROR - Non-standard name 'GestoreIncidenti' found in app/utils/monitoring/incident_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,951 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/incident_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,951 - __main__ - ERROR - Non-standard name 'GestoreLog' found in app/utils/monitoring/logging_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,951 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/logging_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,952 - __main__ - ERROR - Non-standard name 'setup_logging' found in app/utils/monitoring/logging_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,952 - __main__ - ERROR - Non-standard name 'AggregatoreMetriche' found in app/utils/monitoring/metrics_aggregator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,952 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/metrics_aggregator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,952 - __main__ - ERROR - Non-standard name 'add_metric' found in app/utils/monitoring/metrics_aggregator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,953 - __main__ - ERROR - Non-standard name 'get_aggregated_stats' found in app/utils/monitoring/metrics_aggregator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,953 - __main__ - ERROR - Non-standard name 'clear_old_metrics' found in app/utils/monitoring/metrics_aggregator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,953 - __main__ - ERROR - Non-standard name 'NotificheOperatore' found in app/utils/monitoring/operator_notifications.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,953 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/operator_notifications.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,954 - __main__ - ERROR - Non-standard name 'CollettoreAnalisi' found in app/utils/monitoring/analytics_collector.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,954 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/analytics_collector.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,954 - __main__ - ERROR - Non-standard name 'collect_metric' found in app/utils/monitoring/analytics_collector.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,954 - __main__ - ERROR - Non-standard name 'get_analytics' found in app/utils/monitoring/analytics_collector.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,955 - __main__ - ERROR - Non-standard name 'HealthMetric' found in app/utils/monitoring/system_health.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,955 - __main__ - ERROR - Non-standard name 'SaluteSistema' found in app/utils/monitoring/system_health.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,955 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/system_health.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,955 - __main__ - ERROR - Non-standard name 'collect_health_metrics' found in app/utils/monitoring/system_health.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,956 - __main__ - ERROR - Non-standard name '_get_network_stats' found in app/utils/monitoring/system_health.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,956 - __main__ - ERROR - Non-standard name '_get_uptime' found in app/utils/monitoring/system_health.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,956 - __main__ - ERROR - Non-standard name '_update_metrics_history' found in app/utils/monitoring/system_health.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,956 - __main__ - ERROR - Non-standard name '_get_status' found in app/utils/monitoring/system_health.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,957 - __main__ - ERROR - Non-standard name '_log_critical_metrics' found in app/utils/monitoring/system_health.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,957 - __main__ - ERROR - Non-standard name 'get_system_status' found in app/utils/monitoring/system_health.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,957 - __main__ - ERROR - Non-standard name 'get_historical_metrics' found in app/utils/monitoring/system_health.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,957 - __main__ - ERROR - Non-standard name 'SistemaTelemetria' found in app/utils/monitoring/telemetry.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,958 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/telemetry.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,958 - __main__ - ERROR - Non-standard name 'record_event' found in app/utils/monitoring/telemetry.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,958 - __main__ - ERROR - Non-standard name 'get_events_by_type' found in app/utils/monitoring/telemetry.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,958 - __main__ - ERROR - Non-standard name 'track_distribution_metrics' found in app/utils/monitoring/gold_metrics.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,959 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/transformation_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,959 - __main__ - ERROR - Non-standard name 'record_transformation' found in app/utils/monitoring/transformation_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,959 - __main__ - ERROR - Non-standard name 'get_metrics' found in app/utils/monitoring/transformation_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,959 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/transformation_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,960 - __main__ - ERROR - Non-standard name 'ServiceMonitor' found in app/utils/monitoring/service_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,960 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/service_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,960 - __main__ - ERROR - Non-standard name 'update_service_status' found in app/utils/monitoring/service_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,960 - __main__ - ERROR - Non-standard name 'get_service_metrics' found in app/utils/monitoring/service_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,961 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/service_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,961 - __main__ - ERROR - Non-standard name 'log_security_event' found in app/utils/monitoring/service_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,961 - __main__ - ERROR - Non-standard name 'register_access_attempt' found in app/utils/monitoring/service_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,961 - __main__ - ERROR - Non-standard name 'get_security_metrics' found in app/utils/monitoring/service_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,962 - __main__ - ERROR - Non-standard name 'setup_monitoring' found in app/utils/monitoring/monitoring_setup.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,962 - __main__ - ERROR - Non-standard name 'SistemaAllarmi' found in app/utils/monitoring/alert_system.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,962 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/alert_system.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,962 - __main__ - ERROR - Non-standard name 'add_alert' found in app/utils/monitoring/alert_system.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,963 - __main__ - ERROR - Non-standard name '_trigger_emergency_protocols' found in app/utils/monitoring/alert_system.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,963 - __main__ - ERROR - Non-standard name 'check_threshold' found in app/utils/monitoring/alert_system.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,963 - __main__ - ERROR - Non-standard name 'get_active_alerts' found in app/utils/monitoring/alert_system.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,963 - __main__ - ERROR - Non-standard name 'clear_alerts' found in app/utils/monitoring/alert_system.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,964 - __main__ - ERROR - Non-standard name 'TransparencyValidator' found in app/utils/monitoring/transparency_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,964 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/transparency_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,964 - __main__ - ERROR - Non-standard name 'validate_transaction' found in app/utils/monitoring/transparency_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,965 - __main__ - ERROR - Non-standard name '_execute_validation' found in app/utils/monitoring/transparency_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,965 - __main__ - ERROR - Non-standard name '_record_result' found in app/utils/monitoring/transparency_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,965 - __main__ - ERROR - Non-standard name 'get_report' found in app/utils/monitoring/transparency_validator.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,965 - __main__ - ERROR - Non-standard name 'MetricsCollector' found in app/utils/monitoring/performance_metrics.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,965 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/performance_metrics.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,966 - __main__ - ERROR - Non-standard name 'collect_metric' found in app/utils/monitoring/performance_metrics.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,966 - __main__ - ERROR - Non-standard name 'get_metrics' found in app/utils/monitoring/performance_metrics.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,966 - __main__ - ERROR - Non-standard name 'reset' found in app/utils/monitoring/performance_metrics.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,966 - __main__ - ERROR - Non-standard name 'record_operation_time' found in app/utils/monitoring/performance_metrics.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,967 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/performance_metrics.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,967 - __main__ - ERROR - Non-standard name 'track_transformation' found in app/utils/monitoring/performance_metrics.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,967 - __main__ - ERROR - Non-standard name 'track_blockchain_operation' found in app/utils/monitoring/performance_metrics.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,967 - __main__ - ERROR - Non-standard name 'MonitoringManager' found in app/utils/monitoring/monitoring_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,968 - __main__ - ERROR - Non-standard name 'get_performance_monitor' found in app/utils/monitoring/monitoring_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,968 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/monitoring_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,968 - __main__ - ERROR - Non-standard name 'collect_metrics' found in app/utils/monitoring/monitoring_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,969 - __main__ - ERROR - Non-standard name '_update_metrics' found in app/utils/monitoring/monitoring_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,969 - __main__ - ERROR - Non-standard name '_check_thresholds' found in app/utils/monitoring/monitoring_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,969 - __main__ - ERROR - Non-standard name 'log_request' found in app/utils/monitoring/monitoring_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,969 - __main__ - ERROR - Non-standard name 'log_error' found in app/utils/monitoring/monitoring_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,970 - __main__ - ERROR - Non-standard name 'log_response_time' found in app/utils/monitoring/monitoring_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,970 - __main__ - ERROR - Non-standard name 'get_average_response_time' found in app/utils/monitoring/monitoring_manager.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,970 - __main__ - ERROR - Non-standard name 'SystemPerformanceMonitor' found in app/utils/monitoring/performance_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,971 - __main__ - ERROR - Non-standard name 'init_performance_monitor' found in app/utils/monitoring/performance_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,971 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/performance_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,971 - __main__ - ERROR - Non-standard name 'start_monitoring' found in app/utils/monitoring/performance_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,971 - __main__ - ERROR - Non-standard name 'stop_monitoring' found in app/utils/monitoring/performance_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,972 - __main__ - ERROR - Non-standard name 'record_metrics' found in app/utils/monitoring/performance_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,972 - __main__ - ERROR - Non-standard name 'get_metrics' found in app/utils/monitoring/performance_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,972 - __main__ - ERROR - Non-standard name 'track_time' found in app/utils/monitoring/performance_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,973 - __main__ - ERROR - Non-standard name 'save_metrics' found in app/utils/monitoring/performance_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,973 - __main__ - ERROR - Non-standard name 'decorator' found in app/utils/monitoring/performance_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,973 - __main__ - ERROR - Non-standard name 'BlockchainTransaction' found in app/utils/monitoring/blockchain_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,973 - __main__ - ERROR - Non-standard name 'BlockchainMetricsCollector' found in app/utils/monitoring/blockchain_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,974 - __main__ - ERROR - Non-standard name 'init_performance_monitor' found in app/utils/monitoring/blockchain_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,974 - __main__ - ERROR - Non-standard name 'ValidatoreBlockchain' found in app/utils/monitoring/blockchain_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,974 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/blockchain_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,974 - __main__ - ERROR - Non-standard name 'get_report' found in app/utils/monitoring/blockchain_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,974 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/blockchain_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,974 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/monitoring/blockchain_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,975 - __main__ - ERROR - Non-standard name 'ensure_monitor' found in app/utils/monitoring/blockchain_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,975 - __main__ - ERROR - Non-standard name '_check_thresholds' found in app/utils/monitoring/blockchain_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,975 - __main__ - ERROR - Non-standard name 'get_performance_report' found in app/utils/monitoring/blockchain_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,975 - __main__ - ERROR - Non-standard name 'clean_old_metrics' found in app/utils/monitoring/blockchain_monitor.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,976 - __main__ - ERROR - Non-standard name 'SystemAnalytics' found in app/utils/analytics/system_analytics.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,976 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/analytics/system_analytics.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,976 - __main__ - ERROR - Non-standard name 'MarketAnalysis' found in app/utils/analytics/market_analysis.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,976 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/analytics/market_analysis.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,977 - __main__ - ERROR - Non-standard name 'analyze_price_trend' found in app/utils/analytics/market_analysis.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,977 - __main__ - ERROR - Non-standard name 'DistributionAnalytics' found in app/utils/analytics/distribution_analytics.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,977 - __main__ - ERROR - Non-standard name '__init__' found in app/utils/analytics/distribution_analytics.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,977 - __main__ - ERROR - Non-standard name 'get_network' found in app/routes/affiliate.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,977 - __main__ - ERROR - Non-standard name 'get_stats' found in app/routes/affiliate.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,978 - __main__ - ERROR - Non-standard name 'initialize_services' found in app/routes/main.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,978 - __main__ - ERROR - Non-standard name 'index' found in app/routes/main.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,978 - __main__ - ERROR - Non-standard name 'health' found in app/routes/main.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,978 - __main__ - ERROR - Non-standard name 'dashboard' found in app/routes/main.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,979 - __main__ - ERROR - Non-standard name 'client_dashboard' found in app/routes/main.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,979 - __main__ - ERROR - Non-standard name 'operator_dashboard' found in app/routes/main.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,979 - __main__ - ERROR - Non-standard name 'admin_dashboard' found in app/routes/main.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,979 - __main__ - ERROR - Non-standard name 'admin_required' found in app/routes/auth.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,980 - __main__ - ERROR - Non-standard name 'register' found in app/routes/auth.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,980 - __main__ - ERROR - Non-standard name 'login' found in app/routes/auth.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,980 - __main__ - ERROR - Non-standard name 'logout' found in app/routes/auth.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,980 - __main__ - ERROR - Non-standard name 'login_status' found in app/routes/auth.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,981 - __main__ - ERROR - Non-standard name 'admin_dashboard' found in app/routes/auth.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,981 - __main__ - ERROR - Non-standard name 'users' found in app/routes/auth.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,981 - __main__ - ERROR - Non-standard name 'transactions' found in app/routes/auth.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,982 - __main__ - ERROR - Non-standard name 'decorated_function' found in app/routes/auth.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,982 - __main__ - ERROR - Non-standard name 'get_balance' found in app/routes/gold.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,982 - __main__ - ERROR - Non-standard name 'get_transactions' found in app/routes/gold.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,982 - __main__ - ERROR - Non-standard name 'check_async_operation' found in app/api/v1/async_operations.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,983 - __main__ - ERROR - Non-standard name 'get_notifications' found in app/api/v1/notifications.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,983 - __main__ - ERROR - Non-standard name 'process_transfer' found in app/api/v1/transfers.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,983 - __main__ - ERROR - Non-standard name 'add_to_batch' found in app/api/v1/transfers.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,983 - __main__ - ERROR - Non-standard name 'process_fixing_purchase' found in app/api/v1/transfers.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,984 - __main__ - ERROR - Non-standard name 'get_pending_batch' found in app/api/v1/transfers.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,984 - __main__ - ERROR - Non-standard name 'get_user_rank' found in app/api/v1/noble.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,984 - __main__ - ERROR - Non-standard name 'get_rank_requirements' found in app/api/v1/noble.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,984 - __main__ - ERROR - Non-standard name 'get_pending_transactions' found in app/api/v1/admin_approvals.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,985 - __main__ - ERROR - Non-standard name 'validate_transaction' found in app/api/v1/admin_approvals.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,985 - __main__ - ERROR - Non-standard name 'certify_transaction' found in app/api/v1/admin_approvals.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,985 - __main__ - ERROR - Non-standard name 'get_balance' found in app/api/v1/accounting.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,986 - __main__ - ERROR - Non-standard name 'get_inventory' found in app/api/v1/accounting.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,986 - __main__ - ERROR - Non-standard name 'SecureModelView' found in app/admin/__init__.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,986 - __main__ - ERROR - Non-standard name 'AdminHomeView' found in app/admin/__init__.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,986 - __main__ - ERROR - Non-standard name 'is_accessible' found in app/admin/__init__.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,986 - __main__ - ERROR - Non-standard name 'inaccessible_callback' found in app/admin/__init__.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,987 - __main__ - ERROR - Non-standard name 'index' found in app/admin/__init__.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,987 - __main__ - ERROR - Non-standard name 'admin_required' found in app/admin/views.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,987 - __main__ - ERROR - Non-standard name 'dashboard' found in app/admin/views.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,988 - __main__ - ERROR - Non-standard name 'system_status' found in app/admin/views.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,988 - __main__ - ERROR - Non-standard name 'parameters' found in app/admin/views.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,988 - __main__ - ERROR - Non-standard name 'noble_system' found in app/admin/views.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,988 - __main__ - ERROR - Non-standard name 'blockchain' found in app/admin/views.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,989 - __main__ - ERROR - Non-standard name 'refresh_cache' found in app/admin/views.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,989 - __main__ - ERROR - Non-standard name 'generate_report' found in app/admin/views.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,989 - __main__ - ERROR - Non-standard name 'users' found in app/admin/views.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,989 - __main__ - ERROR - Non-standard name 'transactions' found in app/admin/views.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,989 - __main__ - ERROR - Non-standard name 'decorated_function' found in app/admin/views.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,990 - __main__ - ERROR - Non-standard name 'get_mobile_endpoints' found in app/config/mobile.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,990 - __main__ - ERROR - Non-standard name 'setup_logging' found in app/config/logging_config.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,990 - __main__ - ERROR - Non-standard name 'Config' found in app/config/settings.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,990 - __main__ - ERROR - Non-standard name 'DevelopmentConfig' found in app/config/settings.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,991 - __main__ - ERROR - Non-standard name 'ProductionConfig' found in app/config/settings.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,991 - __main__ - ERROR - Non-standard name 'TestingConfig' found in app/config/settings.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,991 - __main__ - ERROR - Non-standard name 'TestConfig' found in app/config/constants.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,991 - __main__ - ERROR - Non-standard name 'RedisConfig' found in app/config/redis.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,992 - __main__ - ERROR - Non-standard name '__init__' found in app/config/redis.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,992 - __main__ - ERROR - Non-standard name 'get_connection_url' found in app/config/redis.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,992 - __main__ - ERROR - Non-standard name 'validate_structure' found in app/middleware/structure_validator_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,992 - __main__ - ERROR - Non-standard name 'decorated_function' found in app/middleware/structure_validator_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,993 - __main__ - ERROR - Non-standard name 'validate_transaction_flow' found in app/middleware/transaction_validator_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,993 - __main__ - ERROR - Non-standard name 'verify_account_balances' found in app/middleware/transaction_validator_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,993 - __main__ - ERROR - Non-standard name 'validate_transaction_flow' found in app/middleware/transaction_validator_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,993 - __main__ - ERROR - Non-standard name 'decorator' found in app/middleware/transaction_validator_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,994 - __main__ - ERROR - Non-standard name 'decorator' found in app/middleware/transaction_validator_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,994 - __main__ - ERROR - Non-standard name 'decorated_function' found in app/middleware/transaction_validator_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,994 - __main__ - ERROR - Non-standard name 'decorated_function' found in app/middleware/transaction_validator_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,994 - __main__ - ERROR - Non-standard name 'check_glossary_compliance' found in app/middleware/glossary_compliance_checker.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,994 - __main__ - ERROR - Non-standard name 'decorator' found in app/middleware/glossary_compliance_checker.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,995 - __main__ - ERROR - Non-standard name 'wrapper' found in app/middleware/glossary_compliance_checker.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,995 - __main__ - ERROR - Non-standard name 'CodeStandardizationMiddleware' found in app/middleware/code_standardization_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,995 - __main__ - ERROR - Non-standard name '__init__' found in app/middleware/code_standardization_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,995 - __main__ - ERROR - Non-standard name 'validate_file' found in app/middleware/code_standardization_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,996 - __main__ - ERROR - Non-standard name 'validate_name' found in app/middleware/code_standardization_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,996 - __main__ - ERROR - Non-standard name '_matches_glossary' found in app/middleware/code_standardization_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,996 - __main__ - ERROR - Non-standard name '_load_glossary_terms' found in app/middleware/code_standardization_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,996 - __main__ - ERROR - Non-standard name 'validate_glossary_terms' found in app/middleware/glossary_validator_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,997 - __main__ - ERROR - Non-standard name 'decorator' found in app/middleware/glossary_validator_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,997 - __main__ - ERROR - Non-standard name 'decorated_function' found in app/middleware/glossary_validator_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,997 - __main__ - ERROR - Non-standard name 'StandardsEnforcer' found in app/middleware/standards_enforcer_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,997 - __main__ - ERROR - Non-standard name '__init__' found in app/middleware/standards_enforcer_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,997 - __main__ - ERROR - Non-standard name '_load_glossary_terms' found in app/middleware/standards_enforcer_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,998 - __main__ - ERROR - Non-standard name '_load_official_standards' found in app/middleware/standards_enforcer_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,998 - __main__ - ERROR - Non-standard name 'validate_file' found in app/middleware/standards_enforcer_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,998 - __main__ - ERROR - Non-standard name '_is_standard_compliant' found in app/middleware/standards_enforcer_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,998 - __main__ - ERROR - Non-standard name '_check_official_standards' found in app/middleware/standards_enforcer_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,998 - __main__ - ERROR - Non-standard name 'check_dict' found in app/middleware/standards_enforcer_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,999 - __main__ - ERROR - Non-standard name 'validate_class_names' found in app/middleware/class_validator_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,999 - __main__ - ERROR - Non-standard name 'decorator' found in app/middleware/class_validator_middleware.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,999 - __main__ - ERROR - Non-standard name 'SecurityMiddleware' found in app/middleware/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,999 - __main__ - ERROR - Non-standard name '__init__' found in app/middleware/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:37,999 - __main__ - ERROR - Non-standard name 'require_auth' found in app/middleware/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:38,000 - __main__ - ERROR - Non-standard name 'rate_limit' found in app/middleware/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:38,000 - __main__ - ERROR - Non-standard name 'require_role' found in app/middleware/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:38,000 - __main__ - ERROR - Non-standard name 'decorated' found in app/middleware/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:38,000 - __main__ - ERROR - Non-standard name 'decorator' found in app/middleware/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:38,001 - __main__ - ERROR - Non-standard name 'decorator' found in app/middleware/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:38,001 - __main__ - ERROR - Non-standard name 'decorated_function' found in app/middleware/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:38,001 - __main__ - ERROR - Non-standard name 'decorated' found in app/middleware/security.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:38,001 - __main__ - ERROR - Non-standard name 'audit_log' found in app/middleware/audit_log.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:38,002 - __main__ - ERROR - Non-standard name 'decorator' found in app/middleware/audit_log.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:38,002 - __main__ - ERROR - Non-standard name 'rate_limit' found in app/middleware/rate_limit.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:38,002 - __main__ - ERROR - Non-standard name 'decorator' found in app/middleware/rate_limit.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:38,002 - __main__ - ERROR - Non-standard name 'decorated_function' found in app/middleware/rate_limit.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:38,003 - __main__ - ERROR - Non-standard name 'TransformationSchema' found in app/schemas/transformation_schema.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:38,003 - __main__ - ERROR - Non-standard name 'GoldInvestmentError' found in app/core/exceptions.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:38,003 - __main__ - ERROR - Non-standard name 'TransformationError' found in app/core/exceptions.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:38,003 - __main__ - ERROR - Non-standard name 'NobleSystemError' found in app/core/exceptions.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:38,004 - __main__ - ERROR - Non-standard name 'SecurityError' found in app/core/exceptions.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:38,004 - __main__ - ERROR - Non-standard name 'GoldInvestmentError' found in app/core/exceptions.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:38,004 - __main__ - ERROR - Non-standard name 'TransformationError' found in app/core/exceptions.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:49:38,004 - __main__ - ERROR - Non-standard name 'NobleSystemError' found in app/core/exceptions.py. Please refer to GLOSSARY.md and OFFICIAL_STANDARDS.json
+2025-01-31 19:51:03,397 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 06:35:35,381 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 06:47:56,186 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 06:51:08,610 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 06:59:44,148 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 07:11:57,431 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 07:19:07,736 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 07:27:41,795 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 07:28:50,934 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 07:31:53,951 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 07:36:32,948 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 13:40:33,926 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 13:46:58,919 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 13:55:25,242 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 14:18:44,445 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 14:36:04,108 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 14:41:30,467 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 14:50:17,521 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 15:00:44,795 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 15:06:42,175 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 15:29:51,920 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 15:32:07,224 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-01 15:42:23,933 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-03 16:14:17,351 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-03 16:41:58,774 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-03 17:04:25,086 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-03 17:17:27,409 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-03 17:40:37,100 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-04 14:32:01,575 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-04 14:34:43,784 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-04 14:43:25,402 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-05 08:34:38,585 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-05 08:59:36,124 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 15:28:07,552 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 16:25:26,824 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 16:26:28,052 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 16:40:19,377 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:02:28,291 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:02:44,985 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:02:53,824 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:02:58,642 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:03:39,254 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:03:50,838 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:05:33,899 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:06:00,640 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:08:44,377 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:08:48,973 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:23:09,728 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:32:02,019 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:41:32,820 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:43:20,905 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:43:28,977 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:44:02,804 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:47:08,610 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:47:25,144 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:48:03,585 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:49:02,400 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:49:15,769 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:49:18,175 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-06 17:50:00,818 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-07 08:27:44,044 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-07 08:39:18,362 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-07 08:44:59,796 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-07 08:45:00,188 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-07 10:00:51,575 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-07 10:03:06,314 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-07 10:04:11,432 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-07 10:04:21,651 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-07 10:05:10,413 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-07 10:05:40,944 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-07 10:05:50,253 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-07 10:42:35,242 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-07 14:01:06,676 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-07 14:55:54,882 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-08 10:27:26,415 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache

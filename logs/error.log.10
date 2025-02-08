@@ -1,0 +1,4 @@
+2025-01-24 15:54:08,604 INFO: Registered new server: 0.0.0.0:8080 [in /home/runner/workspace/app/utils/load_balancer.py:24]
+2025-01-24 15:54:08,606 INFO: Registered new server: 0.0.0.0:8081 [in /home/runner/workspace/app/utils/load_balancer.py:24]
+2025-01-24 15:54:08,610 INFO: Monitoring has been set up [in /home/runner/workspace/app/utils/monitoring/monitoring_setup.py:27]
+2025-01-24 15:54:08,614 INFO: Database initialized successfully [in /home/runner/workspace/app/__init__.py:100]

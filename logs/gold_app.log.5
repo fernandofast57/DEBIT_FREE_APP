@@ -1,0 +1,101 @@
+2025-01-22 10:58:54,435 INFO: Tentativo di connessione a: https://rpc-mumbai.maticvigil.com [in /home/runner/workspace/app/services/blockchain_service.py:70]
+2025-01-22 10:58:55,651 WARNING: Connessione fallita a https://rpc-mumbai.maticvigil.com: HTTPSConnectionPool(host='rpc-mumbai.maticvigil.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f002801ecd0>: Failed to resolve 'rpc-mumbai.maticvigil.com' ([Errno -2] Name or service not known)")) [in /home/runner/workspace/app/services/blockchain_service.py:84]
+2025-01-22 10:58:55,651 WARNING: Attempt 3 failed: Connessione fallita a tutti gli endpoint RPC - verificare la configurazione RPC_ENDPOINTS [in /home/runner/workspace/app/utils/retry.py:20]
+2025-01-22 10:58:55,651 ERROR: All 3 attempts failed [in /home/runner/workspace/app/utils/retry.py:25]
+2025-01-22 10:59:55,865 INFO: Gold Investment App startup [in /home/runner/workspace/app/__init__.py:36]
+[2025-01-22 10:59:55] [INFO] [app:36] Gold Investment App startup
+2025-01-22 10:59:55,866 INFO: Registered new server: 0.0.0.0:8080 [in /home/runner/workspace/app/utils/load_balancer.py:24]
+[2025-01-22 10:59:55] [INFO] [app.utils.load_balancer:24] Registered new server: 0.0.0.0:8080
+2025-01-22 10:59:55,866 INFO: Registered new server: 0.0.0.0:8081 [in /home/runner/workspace/app/utils/load_balancer.py:24]
+[2025-01-22 10:59:55] [INFO] [app.utils.load_balancer:24] Registered new server: 0.0.0.0:8081
+[2025-01-22 10:59:55] [INFO] [sqlalchemy.engine.Engine:2699] BEGIN (implicit)
+[2025-01-22 10:59:55] [INFO] [sqlalchemy.engine.Engine:1846] PRAGMA journal_mode=WAL
+[2025-01-22 10:59:55] [INFO] [sqlalchemy.engine.Engine:1846] [generated in 0.00035s] ()
+2025-01-22 10:59:55,877 INFO: Successfully executed: PRAGMA journal_mode=WAL [in /home/runner/workspace/app/utils/optimization.py:23]
+[2025-01-22 10:59:55] [INFO] [app.utils.optimization:23] Successfully executed: PRAGMA journal_mode=WAL
+[2025-01-22 10:59:55] [INFO] [sqlalchemy.engine.Engine:1846] PRAGMA synchronous=NORMAL
+[2025-01-22 10:59:55] [INFO] [sqlalchemy.engine.Engine:1846] [generated in 0.00019s] ()
+2025-01-22 10:59:55,877 INFO: Successfully executed: PRAGMA synchronous=NORMAL [in /home/runner/workspace/app/utils/optimization.py:23]
+[2025-01-22 10:59:55] [INFO] [app.utils.optimization:23] Successfully executed: PRAGMA synchronous=NORMAL
+[2025-01-22 10:59:55] [INFO] [sqlalchemy.engine.Engine:1846] PRAGMA cache_size=10000
+[2025-01-22 10:59:55] [INFO] [sqlalchemy.engine.Engine:1846] [generated in 0.00019s] ()
+2025-01-22 10:59:55,878 INFO: Successfully executed: PRAGMA cache_size=10000 [in /home/runner/workspace/app/utils/optimization.py:23]
+[2025-01-22 10:59:55] [INFO] [app.utils.optimization:23] Successfully executed: PRAGMA cache_size=10000
+[2025-01-22 10:59:55] [INFO] [sqlalchemy.engine.Engine:1846] PRAGMA temp_store=MEMORY
+[2025-01-22 10:59:55] [INFO] [sqlalchemy.engine.Engine:1846] [generated in 0.00022s] ()
+2025-01-22 10:59:55,879 INFO: Successfully executed: PRAGMA temp_store=MEMORY [in /home/runner/workspace/app/utils/optimization.py:23]
+[2025-01-22 10:59:55] [INFO] [app.utils.optimization:23] Successfully executed: PRAGMA temp_store=MEMORY
+[2025-01-22 10:59:55] [INFO] [sqlalchemy.engine.Engine:2705] COMMIT
+2025-01-22 10:59:55,879 INFO: Query optimization completed successfully [in /home/runner/workspace/app/utils/optimization.py:27]
+[2025-01-22 10:59:55] [INFO] [app.utils.optimization:27] Query optimization completed successfully
+2025-01-22 10:59:56,550 ERROR: Nessun endpoint RPC valido configurato [in /home/runner/workspace/app/services/blockchain_service.py:62]
+[2025-01-22 10:59:56] [ERROR] [app.services.blockchain_service:62] Nessun endpoint RPC valido configurato
+2025-01-22 10:59:56,550 WARNING: Attempt 1 failed: Configurazione RPC mancante o non valida [in /home/runner/workspace/app/utils/retry.py:20]
+[2025-01-22 10:59:56] [WARNING] [app.utils.retry:20] Attempt 1 failed: Configurazione RPC mancante o non valida
+2025-01-22 10:59:57,550 ERROR: Nessun endpoint RPC valido configurato [in /home/runner/workspace/app/services/blockchain_service.py:62]
+[2025-01-22 10:59:57] [ERROR] [app.services.blockchain_service:62] Nessun endpoint RPC valido configurato
+2025-01-22 10:59:57,551 WARNING: Attempt 2 failed: Configurazione RPC mancante o non valida [in /home/runner/workspace/app/utils/retry.py:20]
+[2025-01-22 10:59:57] [WARNING] [app.utils.retry:20] Attempt 2 failed: Configurazione RPC mancante o non valida
+2025-01-22 10:59:59,551 ERROR: Nessun endpoint RPC valido configurato [in /home/runner/workspace/app/services/blockchain_service.py:62]
+[2025-01-22 10:59:59] [ERROR] [app.services.blockchain_service:62] Nessun endpoint RPC valido configurato
+2025-01-22 10:59:59,551 WARNING: Attempt 3 failed: Configurazione RPC mancante o non valida [in /home/runner/workspace/app/utils/retry.py:20]
+[2025-01-22 10:59:59] [WARNING] [app.utils.retry:20] Attempt 3 failed: Configurazione RPC mancante o non valida
+2025-01-22 10:59:59,552 ERROR: All 3 attempts failed [in /home/runner/workspace/app/utils/retry.py:25]
+[2025-01-22 10:59:59] [ERROR] [app.utils.retry:25] All 3 attempts failed
+[2025-01-22 10:59:59] [ERROR] [__main__:122] Failed to start application: Configurazione RPC mancante o non valida
+[2025-01-22 10:59:59] [INFO] [root:53] Saving metrics before shutdown: {'response_time': {'average': 0.0, 'count': 0, 'latest': 0}, 'database_query_times': {'average': 0.0, 'count': 0, 'latest': 0}, 'blockchain_operation_times': {'average': 0.0, 'count': 0, 'latest': 0}}
+2025-01-22 11:01:26,419 INFO: Gold Investment App startup [in /home/runner/workspace/app/__init__.py:36]
+[2025-01-22 11:01:26] [INFO] [app:36] Gold Investment App startup
+2025-01-22 11:01:26,420 INFO: Registered new server: 0.0.0.0:8080 [in /home/runner/workspace/app/utils/load_balancer.py:24]
+[2025-01-22 11:01:26] [INFO] [app.utils.load_balancer:24] Registered new server: 0.0.0.0:8080
+2025-01-22 11:01:26,420 INFO: Registered new server: 0.0.0.0:8081 [in /home/runner/workspace/app/utils/load_balancer.py:24]
+[2025-01-22 11:01:26] [INFO] [app.utils.load_balancer:24] Registered new server: 0.0.0.0:8081
+[2025-01-22 11:01:26] [INFO] [sqlalchemy.engine.Engine:2699] BEGIN (implicit)
+[2025-01-22 11:01:26] [INFO] [sqlalchemy.engine.Engine:1846] PRAGMA journal_mode=WAL
+[2025-01-22 11:01:26] [INFO] [sqlalchemy.engine.Engine:1846] [generated in 0.00028s] ()
+2025-01-22 11:01:26,431 INFO: Successfully executed: PRAGMA journal_mode=WAL [in /home/runner/workspace/app/utils/optimization.py:23]
+[2025-01-22 11:01:26] [INFO] [app.utils.optimization:23] Successfully executed: PRAGMA journal_mode=WAL
+[2025-01-22 11:01:26] [INFO] [sqlalchemy.engine.Engine:1846] PRAGMA synchronous=NORMAL
+[2025-01-22 11:01:26] [INFO] [sqlalchemy.engine.Engine:1846] [generated in 0.00022s] ()
+2025-01-22 11:01:26,432 INFO: Successfully executed: PRAGMA synchronous=NORMAL [in /home/runner/workspace/app/utils/optimization.py:23]
+[2025-01-22 11:01:26] [INFO] [app.utils.optimization:23] Successfully executed: PRAGMA synchronous=NORMAL
+[2025-01-22 11:01:26] [INFO] [sqlalchemy.engine.Engine:1846] PRAGMA cache_size=10000
+[2025-01-22 11:01:26] [INFO] [sqlalchemy.engine.Engine:1846] [generated in 0.00017s] ()
+2025-01-22 11:01:26,433 INFO: Successfully executed: PRAGMA cache_size=10000 [in /home/runner/workspace/app/utils/optimization.py:23]
+[2025-01-22 11:01:26] [INFO] [app.utils.optimization:23] Successfully executed: PRAGMA cache_size=10000
+[2025-01-22 11:01:26] [INFO] [sqlalchemy.engine.Engine:1846] PRAGMA temp_store=MEMORY
+[2025-01-22 11:01:26] [INFO] [sqlalchemy.engine.Engine:1846] [generated in 0.00021s] ()
+2025-01-22 11:01:26,433 INFO: Successfully executed: PRAGMA temp_store=MEMORY [in /home/runner/workspace/app/utils/optimization.py:23]
+[2025-01-22 11:01:26] [INFO] [app.utils.optimization:23] Successfully executed: PRAGMA temp_store=MEMORY
+[2025-01-22 11:01:26] [INFO] [sqlalchemy.engine.Engine:2705] COMMIT
+2025-01-22 11:01:26,434 INFO: Query optimization completed successfully [in /home/runner/workspace/app/utils/optimization.py:27]
+[2025-01-22 11:01:26] [INFO] [app.utils.optimization:27] Query optimization completed successfully
+2025-01-22 11:01:27,353 INFO: MockBlockchainService initialized [in /home/runner/workspace/app/services/mock_blockchain_service.py:23]
+[2025-01-22 11:01:27] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-01-22 11:01:27] [ERROR] [__main__:122] Failed to start application: 'MockBlockchainService' object has no attribute 'account'
+[2025-01-22 11:01:27] [INFO] [root:53] Saving metrics before shutdown: {'response_time': {'average': 0.0, 'count': 0, 'latest': 0}, 'database_query_times': {'average': 0.0, 'count': 0, 'latest': 0}, 'blockchain_operation_times': {'average': 0.0, 'count': 0, 'latest': 0}}
+2025-01-22 11:02:11,894 INFO: Gold Investment App startup [in /home/runner/workspace/app/__init__.py:36]
+[2025-01-22 11:02:11] [INFO] [app:36] Gold Investment App startup
+2025-01-22 11:02:11,894 INFO: Registered new server: 0.0.0.0:8080 [in /home/runner/workspace/app/utils/load_balancer.py:24]
+[2025-01-22 11:02:11] [INFO] [app.utils.load_balancer:24] Registered new server: 0.0.0.0:8080
+2025-01-22 11:02:11,894 INFO: Registered new server: 0.0.0.0:8081 [in /home/runner/workspace/app/utils/load_balancer.py:24]
+[2025-01-22 11:02:11] [INFO] [app.utils.load_balancer:24] Registered new server: 0.0.0.0:8081
+[2025-01-22 11:02:11] [INFO] [sqlalchemy.engine.Engine:2699] BEGIN (implicit)
+[2025-01-22 11:02:11] [INFO] [sqlalchemy.engine.Engine:1846] PRAGMA journal_mode=WAL
+[2025-01-22 11:02:11] [INFO] [sqlalchemy.engine.Engine:1846] [generated in 0.00024s] ()
+2025-01-22 11:02:11,905 INFO: Successfully executed: PRAGMA journal_mode=WAL [in /home/runner/workspace/app/utils/optimization.py:23]
+[2025-01-22 11:02:11] [INFO] [app.utils.optimization:23] Successfully executed: PRAGMA journal_mode=WAL
+[2025-01-22 11:02:11] [INFO] [sqlalchemy.engine.Engine:1846] PRAGMA synchronous=NORMAL
+[2025-01-22 11:02:11] [INFO] [sqlalchemy.engine.Engine:1846] [generated in 0.00017s] ()
+[2025-01-22 11:02:11] [INFO] [app.utils.optimization:23] Successfully executed: PRAGMA synchronous=NORMAL
+[2025-01-22 11:02:11] [INFO] [sqlalchemy.engine.Engine:1846] PRAGMA cache_size=10000
+[2025-01-22 11:02:11] [INFO] [sqlalchemy.engine.Engine:1846] [generated in 0.00018s] ()
+[2025-01-22 11:02:11] [INFO] [app.utils.optimization:23] Successfully executed: PRAGMA cache_size=10000
+[2025-01-22 11:02:11] [INFO] [sqlalchemy.engine.Engine:1846] PRAGMA temp_store=MEMORY
+[2025-01-22 11:02:11] [INFO] [sqlalchemy.engine.Engine:1846] [generated in 0.00017s] ()
+[2025-01-22 11:02:11] [INFO] [app.utils.optimization:23] Successfully executed: PRAGMA temp_store=MEMORY
+[2025-01-22 11:02:11] [INFO] [sqlalchemy.engine.Engine:2705] COMMIT
+[2025-01-22 11:02:11] [INFO] [app.utils.optimization:27] Query optimization completed successfully
+[2025-01-22 11:02:12] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-01-22 11:02:12] [INFO] [app:99] Application startup complete
+[2025-01-22 11:02:12] [INFO] [__main__:91] Starting application on 0.0.0.0:8080 in production mode

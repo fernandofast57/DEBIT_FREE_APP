@@ -1,0 +1,1445 @@
+[2025-01-29 15:44:37] [ERROR] [__main__:128] Failed to start application: cannot import name 'GestoreJWT' from 'app.utils.security.jwt_manager' (/home/runner/workspace/app/utils/security/jwt_manager.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 11, in <module>
+    from app.middleware.security import security
+  File "/home/runner/workspace/app/middleware/security.py", line 6, in <module>
+    from app.utils.security.robust_rate_limiter import RobustRateLimiter
+  File "/home/runner/workspace/app/utils/security/__init__.py", line 3, in <module>
+    from .jwt_manager import GestoreJWT
+ImportError: cannot import name 'GestoreJWT' from 'app.utils.security.jwt_manager' (/home/runner/workspace/app/utils/security/jwt_manager.py)
+[2025-01-29 15:45:54] [ERROR] [__main__:128] Failed to start application: cannot import name 'GestoreJWT' from 'app.utils.security.jwt_manager' (/home/runner/workspace/app/utils/security/jwt_manager.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 11, in <module>
+    from app.middleware.security import security
+  File "/home/runner/workspace/app/middleware/security.py", line 6, in <module>
+    from app.utils.security.robust_rate_limiter import RobustRateLimiter
+  File "/home/runner/workspace/app/utils/security/__init__.py", line 3, in <module>
+    from .jwt_manager import GestoreJWT
+ImportError: cannot import name 'GestoreJWT' from 'app.utils.security.jwt_manager' (/home/runner/workspace/app/utils/security/jwt_manager.py)
+[2025-01-29 15:47:19] [ERROR] [__main__:128] Failed to start application: cannot import name 'GestoreJWT' from 'app.utils.security.jwt_manager' (/home/runner/workspace/app/utils/security/jwt_manager.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 11, in <module>
+    from app.middleware.security import security
+  File "/home/runner/workspace/app/middleware/security.py", line 6, in <module>
+    from app.utils.security.robust_rate_limiter import RobustRateLimiter
+  File "/home/runner/workspace/app/utils/security/__init__.py", line 3, in <module>
+    from .jwt_manager import GestoreJWT
+ImportError: cannot import name 'GestoreJWT' from 'app.utils.security.jwt_manager' (/home/runner/workspace/app/utils/security/jwt_manager.py)
+[2025-01-30 15:28:01] [ERROR] [__main__:128] Failed to start application: cannot import name 'ContoEuro' from 'app.models' (/home/runner/workspace/app/models/__init__.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 9, in <module>
+    from app.models import User, ContoEuro, ContoOro, Transaction
+ImportError: cannot import name 'ContoEuro' from 'app.models' (/home/runner/workspace/app/models/__init__.py)
+[2025-01-30 15:29:32] [ERROR] [__main__:128] Failed to start application: cannot import name 'ServizioBlockchain' from 'app.services.blockchain_service' (/home/runner/workspace/app/services/blockchain_service.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 4, in <module>
+    from .blockchain_service import ServizioBlockchain
+ImportError: cannot import name 'ServizioBlockchain' from 'app.services.blockchain_service' (/home/runner/workspace/app/services/blockchain_service.py)
+[2025-01-30 15:36:12] [ERROR] [__main__:128] Failed to start application: cannot import name 'BonusRate' from 'app.models' (/home/runner/workspace/app/models/__init__.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 5, in <module>
+    from .bonus_distribution_service import BonusDistributionService
+  File "/home/runner/workspace/app/services/bonus_distribution_service.py", line 4, in <module>
+    from app.models import db, NobleRelation, BonusRate, User, GoldAccount, GoldReward
+ImportError: cannot import name 'BonusRate' from 'app.models' (/home/runner/workspace/app/models/__init__.py)
+[2025-01-30 15:37:17] [ERROR] [__main__:128] Failed to start application: cannot import name 'GoldReward' from 'app.models' (/home/runner/workspace/app/models/__init__.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 5, in <module>
+    from .bonus_distribution_service import BonusDistributionService
+  File "/home/runner/workspace/app/services/bonus_distribution_service.py", line 4, in <module>
+    from app.models import db, NobleRelation, BonusRate, User, GoldAccount, GoldReward
+ImportError: cannot import name 'GoldReward' from 'app.models' (/home/runner/workspace/app/models/__init__.py)
+[2025-01-30 15:38:56] [ERROR] [__main__:128] Failed to start application: cannot import name 'ContoEuro' from 'app.models.models' (/home/runner/workspace/app/models/models.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 8, in <module>
+    from .weekly_processing_service import WeeklyProcessingService
+  File "/home/runner/workspace/app/services/weekly_processing_service.py", line 6, in <module>
+    from app.models.models import User, ContoEuro, ContoOro, GoldTransformation
+ImportError: cannot import name 'ContoEuro' from 'app.models.models' (/home/runner/workspace/app/models/models.py)
+[2025-01-30 15:59:01] [ERROR] [__main__:128] Failed to start application: cannot import name 'performance_monitor' from 'app.utils.monitoring.performance_monitor' (/home/runner/workspace/app/utils/monitoring/performance_monitor.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 8, in <module>
+    from .weekly_processing_service import WeeklyProcessingService
+  File "/home/runner/workspace/app/services/weekly_processing_service.py", line 7, in <module>
+    from app.utils.monitoring.performance_monitor import performance_monitor
+ImportError: cannot import name 'performance_monitor' from 'app.utils.monitoring.performance_monitor' (/home/runner/workspace/app/utils/monitoring/performance_monitor.py)
+[2025-01-30 16:03:15] [ERROR] [root:139] Errore durante l'avvio dell'applicazione: name 'SystemPerformanceMonitor' is not defined
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 136, in <module>
+    application = ApplicationManager()
+                  ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 52, in __init__
+    self.performance_monitor = SystemPerformanceMonitor()
+                               ^^^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'SystemPerformanceMonitor' is not defined
+[2025-01-30 16:45:24] [ERROR] [__main__:128] Failed to start application: cannot import name 'performance_monitor' from 'app.utils.monitoring.performance_monitor' (/home/runner/workspace/app/utils/monitoring/performance_monitor.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 8, in <module>
+    from .weekly_processing_service import WeeklyProcessingService
+  File "/home/runner/workspace/app/services/weekly_processing_service.py", line 7, in <module>
+    from app.utils.monitoring.performance_monitor import performance_monitor
+ImportError: cannot import name 'performance_monitor' from 'app.utils.monitoring.performance_monitor' (/home/runner/workspace/app/utils/monitoring/performance_monitor.py)
+[2025-01-30 16:45:24] [ERROR] [root:139] Errore durante l'avvio dell'applicazione: 'SystemPerformanceMonitor' object has no attribute 'save_metrics'
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 8, in <module>
+    from .weekly_processing_service import WeeklyProcessingService
+  File "/home/runner/workspace/app/services/weekly_processing_service.py", line 7, in <module>
+    from app.utils.monitoring.performance_monitor import performance_monitor
+ImportError: cannot import name 'performance_monitor' from 'app.utils.monitoring.performance_monitor' (/home/runner/workspace/app/utils/monitoring/performance_monitor.py)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 129, in run
+    raise SystemExit(1)
+SystemExit: 1
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 137, in <module>
+    application.run()
+  File "/home/runner/workspace/main.py", line 131, in run
+    self.performance_monitor.save_metrics()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'SystemPerformanceMonitor' object has no attribute 'save_metrics'
+[2025-01-30 16:49:45] [ERROR] [__main__:128] Failed to start application: cannot import name 'Notification' from 'app.models.models' (/home/runner/workspace/app/models/models.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 10, in <module>
+    from .notification_service import NotificationService
+  File "/home/runner/workspace/app/services/notification_service.py", line 5, in <module>
+    from app.models.models import User, Notification
+ImportError: cannot import name 'Notification' from 'app.models.models' (/home/runner/workspace/app/models/models.py)
+[2025-01-30 16:49:45] [ERROR] [root:139] Errore durante l'avvio dell'applicazione: 'SystemPerformanceMonitor' object has no attribute 'save_metrics'
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 10, in <module>
+    from .notification_service import NotificationService
+  File "/home/runner/workspace/app/services/notification_service.py", line 5, in <module>
+    from app.models.models import User, Notification
+ImportError: cannot import name 'Notification' from 'app.models.models' (/home/runner/workspace/app/models/models.py)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 129, in run
+    raise SystemExit(1)
+SystemExit: 1
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 137, in <module>
+    application.run()
+  File "/home/runner/workspace/main.py", line 131, in run
+    self.performance_monitor.save_metrics()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'SystemPerformanceMonitor' object has no attribute 'save_metrics'
+[2025-01-30 17:03:03] [ERROR] [__main__:128] Failed to start application: cannot import name 'Notification' from 'app.models.models' (/home/runner/workspace/app/models/models.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 10, in <module>
+    from .notification_service import NotificationService
+  File "/home/runner/workspace/app/services/notification_service.py", line 5, in <module>
+    from app.models.models import User, Notification
+ImportError: cannot import name 'Notification' from 'app.models.models' (/home/runner/workspace/app/models/models.py)
+[2025-01-30 17:03:03] [ERROR] [root:139] Errore durante l'avvio dell'applicazione: 'SystemPerformanceMonitor' object has no attribute 'save_metrics'
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 10, in <module>
+    from .notification_service import NotificationService
+  File "/home/runner/workspace/app/services/notification_service.py", line 5, in <module>
+    from app.models.models import User, Notification
+ImportError: cannot import name 'Notification' from 'app.models.models' (/home/runner/workspace/app/models/models.py)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 129, in run
+    raise SystemExit(1)
+SystemExit: 1
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 137, in <module>
+    application.run()
+  File "/home/runner/workspace/main.py", line 131, in run
+    self.performance_monitor.save_metrics()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'SystemPerformanceMonitor' object has no attribute 'save_metrics'
+[2025-01-30 17:05:49] [ERROR] [__main__:128] Failed to start application: cannot import name 'Notification' from 'app.models.models' (/home/runner/workspace/app/models/models.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 10, in <module>
+    from .notification_service import NotificationService
+  File "/home/runner/workspace/app/services/notification_service.py", line 5, in <module>
+    from app.models.models import User, Notification
+ImportError: cannot import name 'Notification' from 'app.models.models' (/home/runner/workspace/app/models/models.py)
+[2025-01-30 17:06:55] [ERROR] [__main__:128] Failed to start application: name 'performance_monitor' is not defined
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 11, in <module>
+    from .kyc_service import KYCService
+  File "/home/runner/workspace/app/services/kyc_service.py", line 25, in <module>
+    @performance_monitor.track_time('kyc_service') # Assumed performance_monitor is defined elsewhere
+     ^^^^^^^^^^^^^^^^^^^
+NameError: name 'performance_monitor' is not defined
+[2025-01-30 17:11:32] [ERROR] [__main__:128] Failed to start application: name 'performance_monitor' is not defined
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 11, in <module>
+    from .kyc_service import KYCService
+  File "/home/runner/workspace/app/services/kyc_service.py", line 25, in <module>
+    @performance_monitor.track_time('kyc_service') # Assumed performance_monitor is defined elsewhere
+     ^^^^^^^^^^^^^^^^^^^
+NameError: name 'performance_monitor' is not defined
+[2025-01-30 17:12:59] [ERROR] [__main__:128] Failed to start application: cannot import name 'KYCService' from 'app.services.kyc_service' (/home/runner/workspace/app/services/kyc_service.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 11, in <module>
+    from .kyc_service import KYCService
+ImportError: cannot import name 'KYCService' from 'app.services.kyc_service' (/home/runner/workspace/app/services/kyc_service.py)
+[2025-01-30 17:26:09] [ERROR] [__main__:128] Failed to start application: 'SecurityMiddleware' object has no attribute 'rate_limit'
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 79, in <module>
+    @security.rate_limit('auth')
+     ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'SecurityMiddleware' object has no attribute 'rate_limit'
+[2025-01-30 17:31:04] [ERROR] [__main__:128] Failed to start application: No module named 'app.middleware.rate_limit'
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/__init__.py", line 4, in <module>
+    from .transformations import transformations_bp
+  File "/home/runner/workspace/app/api/v1/transformations.py", line 6, in <module>
+    from app.middleware.rate_limit import rate_limit # Assuming this function exists
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'app.middleware.rate_limit'
+[2025-01-30 17:34:59] [ERROR] [__main__:128] Failed to start application: No module named 'app.middleware.audit_log'
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/__init__.py", line 4, in <module>
+    from .transformations import transformations_bp
+  File "/home/runner/workspace/app/api/v1/transformations.py", line 7, in <module>
+    from app.middleware.audit_log import audit_log # Assuming this function exists
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'app.middleware.audit_log'
+[2025-01-30 17:43:15] [ERROR] [__main__:128] Failed to start application: cannot import name 'MetricsCollector' from 'app.utils.monitoring.performance_metrics' (/home/runner/workspace/app/utils/monitoring/performance_metrics.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 2, in <module>
+    from .accounting_service import AccountingService
+  File "/home/runner/workspace/app/services/accounting_service.py", line 8, in <module>
+    from app.services.blockchain_service import BlockchainService
+  File "/home/runner/workspace/app/services/blockchain_service.py", line 11, in <module>
+    from app.utils.monitoring.performance_metrics import MetricsCollector
+ImportError: cannot import name 'MetricsCollector' from 'app.utils.monitoring.performance_metrics' (/home/runner/workspace/app/utils/monitoring/performance_metrics.py)
+[2025-01-30 17:45:41] [ERROR] [__main__:128] Failed to start application: cannot import name 'performance_monitor' from 'app.utils.monitoring.performance_metrics' (/home/runner/workspace/app/utils/monitoring/performance_metrics.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 2, in <module>
+    from .accounting_service import AccountingService
+  File "/home/runner/workspace/app/services/accounting_service.py", line 8, in <module>
+    from app.services.blockchain_service import BlockchainService
+  File "/home/runner/workspace/app/services/blockchain_service.py", line 15, in <module>
+    from app.utils.monitoring.performance_metrics import performance_monitor
+ImportError: cannot import name 'performance_monitor' from 'app.utils.monitoring.performance_metrics' (/home/runner/workspace/app/utils/monitoring/performance_metrics.py)
+[2025-01-30 17:50:53] [ERROR] [__main__:128] Failed to start application: cannot import name 'performance_monitor' from 'app.utils.monitoring.performance_monitor' (/home/runner/workspace/app/utils/monitoring/performance_monitor.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 87, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 56, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 2, in <module>
+    from .accounting_service import AccountingService
+  File "/home/runner/workspace/app/services/accounting_service.py", line 8, in <module>
+    from app.services.blockchain_service import BlockchainService
+  File "/home/runner/workspace/app/services/blockchain_service.py", line 15, in <module>
+    from app.utils.monitoring.performance_monitor import performance_monitor
+ImportError: cannot import name 'performance_monitor' from 'app.utils.monitoring.performance_monitor' (/home/runner/workspace/app/utils/monitoring/performance_monitor.py)
+[2025-01-31 10:51:20] [ERROR] [__main__:107] Failed to start application: cannot import name 'system_performance_monitor' from 'app.utils.monitoring.performance_monitor' (/home/runner/workspace/app/utils/monitoring/performance_monitor.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 8, in <module>
+    from .weekly_processing_service import WeeklyProcessingService
+  File "/home/runner/workspace/app/services/weekly_processing_service.py", line 7, in <module>
+    from app.utils.monitoring.performance_monitor import system_performance_monitor
+ImportError: cannot import name 'system_performance_monitor' from 'app.utils.monitoring.performance_monitor' (/home/runner/workspace/app/utils/monitoring/performance_monitor.py)
+[2025-01-31 10:52:57] [ERROR] [__main__:107] Failed to start application: No module named 'app.middleware.audit_log'
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/__init__.py", line 4, in <module>
+    from .transformations import transformations_bp
+  File "/home/runner/workspace/app/api/v1/transformations.py", line 7, in <module>
+    from app.middleware.audit_log import audit_log # Assuming this function exists
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'app.middleware.audit_log'
+[2025-01-31 13:08:13] [ERROR] [__main__:107] Failed to start application: No module named 'app.middleware.audit_log'
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/__init__.py", line 4, in <module>
+    from .transformations import transformations_bp
+  File "/home/runner/workspace/app/api/v1/transformations.py", line 7, in <module>
+    from app.middleware.audit_log import audit_log # Assuming this function exists
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'app.middleware.audit_log'
+[2025-01-31 13:08:33] [ERROR] [__main__:107] Failed to start application: No module named 'app.middleware.audit_log'
+Traceback (most recent call last):
+  File "main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/__init__.py", line 4, in <module>
+    from .transformations import transformations_bp
+  File "/home/runner/workspace/app/api/v1/transformations.py", line 7, in <module>
+    from app.middleware.audit_log import audit_log # Assuming this function exists
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'app.middleware.audit_log'
+[2025-01-31 13:09:51] [ERROR] [__main__:107] Failed to start application: name 'validate_glossary_terms' is not defined
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/__init__.py", line 4, in <module>
+    from .transformations import transformations_bp
+  File "/home/runner/workspace/app/api/v1/transformations.py", line 17, in <module>
+    @validate_glossary_terms() #Added decorator
+     ^^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'validate_glossary_terms' is not defined
+[2025-01-31 13:11:13] [ERROR] [__main__:107] Failed to start application: name 'validate_glossary_terms' is not defined
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/__init__.py", line 4, in <module>
+    from .transformations import transformations_bp
+  File "/home/runner/workspace/app/api/v1/transformations.py", line 17, in <module>
+    @validate_glossary_terms() #Added decorator
+     ^^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'validate_glossary_terms' is not defined
+[2025-01-31 13:12:47] [ERROR] [__main__:107] Failed to start application: rate_limit() got an unexpected keyword argument 'max_requests'
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/__init__.py", line 4, in <module>
+    from .transformations import transformations_bp
+  File "/home/runner/workspace/app/api/v1/transformations.py", line 19, in <module>
+    @rate_limit(max_requests=100, window_seconds=3600)  # As per OFFICIAL_STANDARDS.json
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: rate_limit() got an unexpected keyword argument 'max_requests'
+[2025-01-31 13:12:58] [ERROR] [__main__:107] Failed to start application: rate_limit() got an unexpected keyword argument 'max_requests'
+Traceback (most recent call last):
+  File "main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/__init__.py", line 4, in <module>
+    from .transformations import transformations_bp
+  File "/home/runner/workspace/app/api/v1/transformations.py", line 19, in <module>
+    @rate_limit(max_requests=100, window_seconds=3600)  # As per OFFICIAL_STANDARDS.json
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: rate_limit() got an unexpected keyword argument 'max_requests'
+[2025-01-31 13:22:30] [ERROR] [__main__:107] Failed to start application: rate_limit() got an unexpected keyword argument 'max_requests'
+Traceback (most recent call last):
+  File "main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/__init__.py", line 4, in <module>
+    from .transformations import transformations_bp
+  File "/home/runner/workspace/app/api/v1/transformations.py", line 19, in <module>
+    @rate_limit(max_requests=100, window_seconds=3600)  # As per OFFICIAL_STANDARDS.json
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: rate_limit() got an unexpected keyword argument 'max_requests'
+[2025-01-31 13:24:12] [ERROR] [__main__:107] Failed to start application: rate_limit() got an unexpected keyword argument 'max_requests'
+Traceback (most recent call last):
+  File "main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/__init__.py", line 4, in <module>
+    from .transformations import transformations_bp
+  File "/home/runner/workspace/app/api/v1/transformations.py", line 19, in <module>
+    @rate_limit(max_requests=100, window_seconds=3600)  # As per OFFICIAL_STANDARDS.json
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: rate_limit() got an unexpected keyword argument 'max_requests'
+[2025-01-31 13:25:58] [ERROR] [__main__:107] Failed to start application: invalid syntax (bonuses.py, line 43)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/index.py", line 2, in <module>
+    from . import (
+  File "/home/runner/workspace/app/api/v1/bonuses.py", line 43
+    return jsonify({'error': str(e)}), 500```
+                                          ^
+SyntaxError: invalid syntax
+[2025-01-31 17:54:16] [ERROR] [__main__:107] Failed to start application: No module named 'app.utils.robust_rate_limiter'
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/__init__.py", line 4, in <module>
+    from .transformations import transformations_bp
+  File "/home/runner/workspace/app/api/v1/transformations.py", line 6, in <module>
+    from app.middleware.rate_limit import rate_limit
+  File "/home/runner/workspace/app/middleware/rate_limit.py", line 4, in <module>
+    from app.utils.robust_rate_limiter import RobustRateLimiter, RateLimit
+ModuleNotFoundError: No module named 'app.utils.robust_rate_limiter'
+[2025-01-31 17:54:42] [ERROR] [__main__:107] Failed to start application: No module named 'app.utils.robust_rate_limiter'
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/__init__.py", line 4, in <module>
+    from .transformations import transformations_bp
+  File "/home/runner/workspace/app/api/v1/transformations.py", line 6, in <module>
+    from app.middleware.rate_limit import rate_limit
+  File "/home/runner/workspace/app/middleware/rate_limit.py", line 4, in <module>
+    from app.utils.robust_rate_limiter import RobustRateLimiter, RateLimit
+ModuleNotFoundError: No module named 'app.utils.robust_rate_limiter'
+[2025-01-31 17:55:20] [ERROR] [__main__:107] Failed to start application: No module named 'app.utils.robust_rate_limiter'
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/__init__.py", line 4, in <module>
+    from .transformations import transformations_bp
+  File "/home/runner/workspace/app/api/v1/transformations.py", line 6, in <module>
+    from app.middleware.rate_limit import rate_limit
+  File "/home/runner/workspace/app/middleware/rate_limit.py", line 4, in <module>
+    from app.utils.robust_rate_limiter import RobustRateLimiter, RateLimit
+ModuleNotFoundError: No module named 'app.utils.robust_rate_limiter'
+[2025-01-31 19:25:26] [ERROR] [__main__:107] Failed to start application: No module named 'app.utils.robust_rate_limiter'
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/__init__.py", line 4, in <module>
+    from .transformations import transformations_bp
+  File "/home/runner/workspace/app/api/v1/transformations.py", line 6, in <module>
+    from app.middleware.rate_limit import rate_limit
+  File "/home/runner/workspace/app/middleware/rate_limit.py", line 4, in <module>
+    from app.utils.robust_rate_limiter import RobustRateLimiter, RateLimit
+ModuleNotFoundError: No module named 'app.utils.robust_rate_limiter'
+[2025-01-31 19:51:03] [ERROR] [__main__:107] Failed to start application: No module named 'app.utils.robust_rate_limiter'
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/__init__.py", line 4, in <module>
+    from .transformations import transformations_bp
+  File "/home/runner/workspace/app/api/v1/transformations.py", line 6, in <module>
+    from app.middleware.rate_limit import rate_limit
+  File "/home/runner/workspace/app/middleware/rate_limit.py", line 4, in <module>
+    from app.utils.robust_rate_limiter import RobustRateLimiter, RateLimit
+ModuleNotFoundError: No module named 'app.utils.robust_rate_limiter'
+[2025-02-01 06:35:35] [ERROR] [__main__:107] Failed to start application: No module named 'app.utils.robust_rate_limiter'
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/__init__.py", line 4, in <module>
+    from .transformations import transformations_bp
+  File "/home/runner/workspace/app/api/v1/transformations.py", line 6, in <module>
+    from app.middleware.rate_limit import rate_limit
+  File "/home/runner/workspace/app/middleware/rate_limit.py", line 4, in <module>
+    from app.utils.robust_rate_limiter import RobustRateLimiter, RateLimit
+ModuleNotFoundError: No module named 'app.utils.robust_rate_limiter'
+[2025-02-01 06:47:56] [ERROR] [__main__:107] Failed to start application: No module named 'app.utils.robust_rate_limiter'
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/__init__.py", line 4, in <module>
+    from .transformations import transformations_bp
+  File "/home/runner/workspace/app/api/v1/transformations.py", line 6, in <module>
+    from app.middleware.rate_limit import rate_limit
+  File "/home/runner/workspace/app/middleware/rate_limit.py", line 4, in <module>
+    from app.utils.robust_rate_limiter import RobustRateLimiter, RateLimit
+ModuleNotFoundError: No module named 'app.utils.robust_rate_limiter'
+[2025-02-01 06:51:08] [ERROR] [__main__:107] Failed to start application: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/index.py", line 2, in <module>
+    from . import (
+  File "/home/runner/workspace/app/api/v1/bonuses.py", line 9, in <module>
+    bonus_service = BonusDistributionService()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/services/bonus_distribution_service.py", line 17, in __init__
+    self._init_bonus_rates()
+  File "/home/runner/workspace/app/services/bonus_distribution_service.py", line 28, in _init_bonus_rates
+    existing = BonusRate.query.filter_by(level=level).first()
+               ^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/model.py", line 23, in __get__
+    cls, session=cls.__fsa__.session()  # type: ignore[arg-type]
+                 ^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/orm/scoping.py", line 220, in __call__
+    sess = self.registry()
+           ^^^^^^^^^^^^^^^
+  File "/nix/store/311mpmxk4759nkmbpgbj6ka44w9pgaqm-python3.11-sqlalchemy-2.0.30/lib/python3.11/site-packages/sqlalchemy/util/_collections.py", line 632, in __call__
+    key = self.scopefunc()
+          ^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask_sqlalchemy/session.py", line 111, in _app_ctx_id
+    return id(app_ctx._get_current_object())  # type: ignore[attr-defined]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/0krcky469imsipiwsdvbv8qs696d228n-python3.11-werkzeug-3.0.3/lib/python3.11/site-packages/werkzeug/local.py", line 519, in _get_current_object
+    raise RuntimeError(unbound_message) from None
+RuntimeError: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+[2025-02-01 06:59:44] [ERROR] [__main__:107] Failed to start application: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/index.py", line 2, in <module>
+    from . import (
+  File "/home/runner/workspace/app/api/v1/bonuses.py", line 9, in <module>
+    bonus_service = BonusDistributionService()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/services/bonus_distribution_service.py", line 19, in __init__
+    with current_app.app_context(
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/0krcky469imsipiwsdvbv8qs696d228n-python3.11-werkzeug-3.0.3/lib/python3.11/site-packages/werkzeug/local.py", line 318, in __get__
+    obj = instance._get_current_object()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/0krcky469imsipiwsdvbv8qs696d228n-python3.11-werkzeug-3.0.3/lib/python3.11/site-packages/werkzeug/local.py", line 519, in _get_current_object
+    raise RuntimeError(unbound_message) from None
+RuntimeError: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+[2025-02-01 07:11:57] [ERROR] [__main__:107] Failed to start application: unexpected indent (bonus_distribution_service.py, line 16)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 5, in <module>
+    from .bonus_distribution_service import BonusDistributionService
+  File "/home/runner/workspace/app/services/bonus_distribution_service.py", line 16
+    def __init__(self):
+IndentationError: unexpected indent
+[2025-02-01 07:19:07] [ERROR] [__main__:107] Failed to start application: invalid syntax (bonus_distribution_service.py, line 4)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 5, in <module>
+    from .bonus_distribution_service import BonusDistributionService
+  File "/home/runner/workspace/app/services/bonus_distribution_service.py", line 4
+    self._init_bonus_rates()from decimal import Decimal, ROUND_DOWN
+                            ^^^^
+SyntaxError: invalid syntax
+[2025-02-01 07:27:41] [ERROR] [__main__:107] Failed to start application: unindent does not match any outer indentation level (bonus_distribution_service.py, line 16)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 5, in <module>
+    from .bonus_distribution_service import BonusDistributionService
+  File "/home/runner/workspace/app/services/bonus_distribution_service.py", line 16
+    def __init__(self):
+                       ^
+IndentationError: unindent does not match any outer indentation level
+[2025-02-01 07:28:50] [ERROR] [__main__:107] Failed to start application: invalid syntax (bonus_distribution_service.py, line 62)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 5, in <module>
+    from .bonus_distribution_service import BonusDistributionService
+  File "/home/runner/workspace/app/services/bonus_distribution_service.py", line 62
+    current_user = await 
+                         ^
+SyntaxError: invalid syntax
+[2025-02-01 07:31:54] [ERROR] [__main__:107] Failed to start application: invalid syntax (bonus_distribution_service.py, line 258)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 5, in <module>
+    from .bonus_distribution_service import BonusDistributionService
+  File "/home/runner/workspace/app/services/bonus_distribution_service.py", line 258
+    current_user = await db.session.execute(select(User).options(joinedload(User.noble_relations)).filter_by(id=user_id)).scalar_one_or_none()User.query.get(user_id)
+                                                                                                                                              ^^^^
+SyntaxError: invalid syntax
+[2025-02-01 07:36:33] [ERROR] [__main__:107] Failed to start application: name 'Decimal' is not defined
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 5, in <module>
+    from .bonus_distribution_service import BonusDistributionService
+  File "/home/runner/workspace/app/services/bonus_distribution_service.py", line 13, in <module>
+    class BonusDistributionService:
+  File "/home/runner/workspace/app/services/bonus_distribution_service.py", line 38, in BonusDistributionService
+    def validate_bonus_amount(amount: Decimal) -> bool:
+                                      ^^^^^^^
+NameError: name 'Decimal' is not defined
+[2025-02-01 13:40:34] [ERROR] [__main__:107] Failed to start application: name 'Decimal' is not defined
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 28, in create_app
+    from app.routes.main import main_bp
+  File "/home/runner/workspace/app/routes/__init__.py", line 2, in <module>
+    from app.routes.auth import auth_bp
+  File "/home/runner/workspace/app/routes/auth.py", line 12, in <module>
+    from app.services.two_factor_service import TwoFactorService
+  File "/home/runner/workspace/app/services/__init__.py", line 5, in <module>
+    from .bonus_distribution_service import BonusDistributionService
+  File "/home/runner/workspace/app/services/bonus_distribution_service.py", line 13, in <module>
+    class BonusDistributionService:
+  File "/home/runner/workspace/app/services/bonus_distribution_service.py", line 38, in BonusDistributionService
+    def validate_bonus_amount(amount: Decimal) -> bool:
+                                      ^^^^^^^
+NameError: name 'Decimal' is not defined
+[2025-02-01 13:46:59] [ERROR] [__main__:107] Failed to start application: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/index.py", line 2, in <module>
+    from . import (
+  File "/home/runner/workspace/app/api/v1/bonuses.py", line 9, in <module>
+    bonus_service = BonusDistributionService()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/services/bonus_distribution_service.py", line 19, in __init__
+    with current_app.app_context():
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/0krcky469imsipiwsdvbv8qs696d228n-python3.11-werkzeug-3.0.3/lib/python3.11/site-packages/werkzeug/local.py", line 318, in __get__
+    obj = instance._get_current_object()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/0krcky469imsipiwsdvbv8qs696d228n-python3.11-werkzeug-3.0.3/lib/python3.11/site-packages/werkzeug/local.py", line 519, in _get_current_object
+    raise RuntimeError(unbound_message) from None
+RuntimeError: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+[2025-02-01 13:55:25] [ERROR] [__main__:107] Failed to start application: cannot import name 'NobleRank' from 'app.models.models' (/home/runner/workspace/app/models/models.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/index.py", line 2, in <module>
+    from . import (
+  File "/home/runner/workspace/app/api/v1/noble.py", line 2, in <module>
+    from app.models.models import User, NobleRank
+ImportError: cannot import name 'NobleRank' from 'app.models.models' (/home/runner/workspace/app/models/models.py)
+[2025-02-01 14:18:44] [ERROR] [__main__:107] Failed to start application: cannot import name 'rate_limit' from 'app.utils.security.rate_limiter' (/home/runner/workspace/app/utils/security/rate_limiter.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/index.py", line 2, in <module>
+    from . import (
+  File "/home/runner/workspace/app/api/v1/noble.py", line 4, in <module>
+    from app.utils.security.rate_limiter import rate_limit
+ImportError: cannot import name 'rate_limit' from 'app.utils.security.rate_limiter' (/home/runner/workspace/app/utils/security/rate_limiter.py)
+[2025-02-01 14:36:04] [ERROR] [__main__:107] Failed to start application: name 'validate_glossary_terms' is not defined
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/index.py", line 2, in <module>
+    from . import (
+  File "/home/runner/workspace/app/api/v1/noble.py", line 12, in <module>
+    @validate_glossary_terms()
+     ^^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'validate_glossary_terms' is not defined
+[2025-02-01 14:41:30] [ERROR] [__main__:107] Failed to start application: cannot import name 'performance_monitor' from 'app.utils.monitoring.performance_monitor' (/home/runner/workspace/app/utils/monitoring/performance_monitor.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/index.py", line 2, in <module>
+    from . import (
+  File "/home/runner/workspace/app/api/v1/system.py", line 11, in <module>
+    from app.utils.monitoring.performance_monitor import performance_monitor
+ImportError: cannot import name 'performance_monitor' from 'app.utils.monitoring.performance_monitor' (/home/runner/workspace/app/utils/monitoring/performance_monitor.py)
+[2025-02-01 14:50:18] [ERROR] [__main__:107] Failed to start application: cannot import name 'MonitorSistema' from 'app.utils.monitoring.system_monitor' (/home/runner/workspace/app/utils/monitoring/system_monitor.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/index.py", line 2, in <module>
+    from . import (
+  File "/home/runner/workspace/app/api/v1/system.py", line 47, in <module>
+    from app.utils.monitoring.system_monitor import MonitorSistema
+ImportError: cannot import name 'MonitorSistema' from 'app.utils.monitoring.system_monitor' (/home/runner/workspace/app/utils/monitoring/system_monitor.py)
+[2025-02-01 15:00:44] [ERROR] [__main__:107] Failed to start application: cannot import name 'MonitorTransformazioni' from 'app.utils.monitoring.transformation_monitor' (/home/runner/workspace/app/utils/monitoring/transformation_monitor.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/index.py", line 2, in <module>
+    from . import (
+  File "/home/runner/workspace/app/api/v1/system.py", line 48, in <module>
+    from app.utils.monitoring.transformation_monitor import MonitorTransformazioni
+ImportError: cannot import name 'MonitorTransformazioni' from 'app.utils.monitoring.transformation_monitor' (/home/runner/workspace/app/utils/monitoring/transformation_monitor.py)
+[2025-02-01 15:06:42] [ERROR] [__main__:107] Failed to start application: cannot import name 'admin_required' from 'app.middleware.security' (/home/runner/workspace/app/middleware/security.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/index.py", line 2, in <module>
+    from . import (
+  File "/home/runner/workspace/app/api/v1/system.py", line 49, in <module>
+    from app.middleware.security import admin_required
+ImportError: cannot import name 'admin_required' from 'app.middleware.security' (/home/runner/workspace/app/middleware/security.py)
+[2025-02-01 15:29:52] [ERROR] [__main__:107] Failed to start application: name 'validate_glossary_terms' is not defined
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 31, in create_app
+    from app.api.v1.index import api_v1
+  File "/home/runner/workspace/app/api/v1/index.py", line 2, in <module>
+    from . import (
+  File "/home/runner/workspace/app/api/v1/transfers.py", line 11, in <module>
+    @validate_glossary_terms()
+     ^^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'validate_glossary_terms' is not defined
+[2025-02-01 15:32:07] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-01 15:42:24] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-01 15:42:25] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-03 16:14:18] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-03 16:14:19] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-03 16:41:59] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-03 17:04:25] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-03 17:04:26] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-03 17:05:13] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-03 17:17:27] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-03 17:17:29] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-03 17:17:29] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-03 17:40:37] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-03 17:40:38] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-03 17:41:02] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-04 14:32:02] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-04 14:32:03] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-04 14:32:04] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-04 14:34:43] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-04 14:35:34] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-04 14:36:39] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-04 14:43:25] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-04 14:43:26] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-04 14:43:26] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-04 14:44:01] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-05 08:34:40] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-05 08:34:41] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-05 08:34:53] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-05 08:34:58] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-05 08:59:36] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-05 08:59:37] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-06 15:28:08] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-06 15:28:09] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-06 15:28:50] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-06 16:25:28] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-06 16:25:29] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-06 16:26:28] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-06 16:38:46] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-06 16:40:19] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-06 16:40:19] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-06 16:40:36] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-06 17:02:28] [ERROR] [__main__:107] Failed to start application: cannot import name 'AlertSystem' from 'app.utils.monitoring.alert_system' (/home/runner/workspace/app/utils/monitoring/alert_system.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 29, in create_app
+    setup_monitoring(app)
+  File "/home/runner/workspace/app/utils/monitoring/monitoring_setup.py", line 12, in setup_monitoring
+    from .performance_metrics import performance_monitor
+  File "/home/runner/workspace/app/utils/monitoring/performance_metrics.py", line 5, in <module>
+    from app.utils.monitoring.alert_system import AlertSystem
+ImportError: cannot import name 'AlertSystem' from 'app.utils.monitoring.alert_system' (/home/runner/workspace/app/utils/monitoring/alert_system.py)
+[2025-02-06 17:02:45] [ERROR] [__main__:107] Failed to start application: cannot import name 'AlertSystem' from 'app.utils.monitoring.alert_system' (/home/runner/workspace/app/utils/monitoring/alert_system.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 29, in create_app
+    setup_monitoring(app)
+  File "/home/runner/workspace/app/utils/monitoring/monitoring_setup.py", line 12, in setup_monitoring
+    from .performance_metrics import performance_monitor
+  File "/home/runner/workspace/app/utils/monitoring/performance_metrics.py", line 5, in <module>
+    from app.utils.monitoring.alert_system import AlertSystem
+ImportError: cannot import name 'AlertSystem' from 'app.utils.monitoring.alert_system' (/home/runner/workspace/app/utils/monitoring/alert_system.py)
+[2025-02-06 17:02:53] [ERROR] [__main__:107] Failed to start application: cannot import name 'AlertSystem' from 'app.utils.monitoring.alert_system' (/home/runner/workspace/app/utils/monitoring/alert_system.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 29, in create_app
+    setup_monitoring(app)
+  File "/home/runner/workspace/app/utils/monitoring/monitoring_setup.py", line 12, in setup_monitoring
+    from .performance_metrics import performance_monitor
+  File "/home/runner/workspace/app/utils/monitoring/performance_metrics.py", line 5, in <module>
+    from app.utils.monitoring.alert_system import AlertSystem
+ImportError: cannot import name 'AlertSystem' from 'app.utils.monitoring.alert_system' (/home/runner/workspace/app/utils/monitoring/alert_system.py)
+[2025-02-06 17:02:58] [ERROR] [__main__:107] Failed to start application: cannot import name 'AlertSystem' from 'app.utils.monitoring.alert_system' (/home/runner/workspace/app/utils/monitoring/alert_system.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 29, in create_app
+    setup_monitoring(app)
+  File "/home/runner/workspace/app/utils/monitoring/monitoring_setup.py", line 12, in setup_monitoring
+    from .performance_metrics import performance_monitor
+  File "/home/runner/workspace/app/utils/monitoring/performance_metrics.py", line 5, in <module>
+    from app.utils.monitoring.alert_system import AlertSystem
+ImportError: cannot import name 'AlertSystem' from 'app.utils.monitoring.alert_system' (/home/runner/workspace/app/utils/monitoring/alert_system.py)
+[2025-02-06 17:03:39] [ERROR] [__main__:107] Failed to start application: cannot import name 'AlertSystem' from 'app.utils.monitoring.alert_system' (/home/runner/workspace/app/utils/monitoring/alert_system.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 29, in create_app
+    setup_monitoring(app)
+  File "/home/runner/workspace/app/utils/monitoring/monitoring_setup.py", line 12, in setup_monitoring
+    from .performance_metrics import performance_monitor
+  File "/home/runner/workspace/app/utils/monitoring/performance_metrics.py", line 5, in <module>
+    from app.utils.monitoring.alert_system import AlertSystem
+ImportError: cannot import name 'AlertSystem' from 'app.utils.monitoring.alert_system' (/home/runner/workspace/app/utils/monitoring/alert_system.py)
+[2025-02-06 17:03:50] [ERROR] [__main__:107] Failed to start application: cannot import name 'AlertSystem' from 'app.utils.monitoring.alert_system' (/home/runner/workspace/app/utils/monitoring/alert_system.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 29, in create_app
+    setup_monitoring(app)
+  File "/home/runner/workspace/app/utils/monitoring/monitoring_setup.py", line 12, in setup_monitoring
+    from .performance_metrics import performance_monitor
+  File "/home/runner/workspace/app/utils/monitoring/performance_metrics.py", line 5, in <module>
+    from app.utils.monitoring.alert_system import AlertSystem
+ImportError: cannot import name 'AlertSystem' from 'app.utils.monitoring.alert_system' (/home/runner/workspace/app/utils/monitoring/alert_system.py)
+[2025-02-06 17:05:33] [ERROR] [__main__:107] Failed to start application: cannot import name 'AlertSystem' from 'app.utils.monitoring.alert_system' (/home/runner/workspace/app/utils/monitoring/alert_system.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 29, in create_app
+    setup_monitoring(app)
+  File "/home/runner/workspace/app/utils/monitoring/monitoring_setup.py", line 12, in setup_monitoring
+    from .performance_metrics import performance_monitor
+  File "/home/runner/workspace/app/utils/monitoring/performance_metrics.py", line 5, in <module>
+    from app.utils.monitoring.alert_system import AlertSystem
+ImportError: cannot import name 'AlertSystem' from 'app.utils.monitoring.alert_system' (/home/runner/workspace/app/utils/monitoring/alert_system.py)
+[2025-02-06 17:06:00] [ERROR] [__main__:107] Failed to start application: cannot import name 'AlertSystem' from 'app.utils.monitoring.alert_system' (/home/runner/workspace/app/utils/monitoring/alert_system.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 29, in create_app
+    setup_monitoring(app)
+  File "/home/runner/workspace/app/utils/monitoring/monitoring_setup.py", line 12, in setup_monitoring
+    from .performance_metrics import performance_monitor
+  File "/home/runner/workspace/app/utils/monitoring/performance_metrics.py", line 5, in <module>
+    from app.utils.monitoring.alert_system import AlertSystem
+ImportError: cannot import name 'AlertSystem' from 'app.utils.monitoring.alert_system' (/home/runner/workspace/app/utils/monitoring/alert_system.py)
+[2025-02-06 17:08:44] [ERROR] [__main__:107] Failed to start application: cannot import name 'AlertSystem' from 'app.utils.monitoring.alert_system' (/home/runner/workspace/app/utils/monitoring/alert_system.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 29, in create_app
+    setup_monitoring(app)
+  File "/home/runner/workspace/app/utils/monitoring/monitoring_setup.py", line 12, in setup_monitoring
+    from .performance_metrics import performance_monitor
+  File "/home/runner/workspace/app/utils/monitoring/performance_metrics.py", line 5, in <module>
+    from app.utils.monitoring.alert_system import AlertSystem
+ImportError: cannot import name 'AlertSystem' from 'app.utils.monitoring.alert_system' (/home/runner/workspace/app/utils/monitoring/alert_system.py)
+[2025-02-06 17:08:49] [ERROR] [__main__:107] Failed to start application: cannot import name 'AlertSystem' from 'app.utils.monitoring.alert_system' (/home/runner/workspace/app/utils/monitoring/alert_system.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 29, in create_app
+    setup_monitoring(app)
+  File "/home/runner/workspace/app/utils/monitoring/monitoring_setup.py", line 12, in setup_monitoring
+    from .performance_metrics import performance_monitor
+  File "/home/runner/workspace/app/utils/monitoring/performance_metrics.py", line 5, in <module>
+    from app.utils.monitoring.alert_system import AlertSystem
+ImportError: cannot import name 'AlertSystem' from 'app.utils.monitoring.alert_system' (/home/runner/workspace/app/utils/monitoring/alert_system.py)
+[2025-02-06 17:23:09] [ERROR] [__main__:107] Failed to start application: cannot import name 'performance_monitor' from 'app.utils.monitoring.performance_metrics' (/home/runner/workspace/app/utils/monitoring/performance_metrics.py)
+Traceback (most recent call last):
+  File "/home/runner/workspace/main.py", line 76, in run
+    self.app = self.initialize_app()
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/main.py", line 50, in initialize_app
+    self.app = create_app(Config())
+               ^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/app/__init__.py", line 29, in create_app
+    setup_monitoring(app)
+  File "/home/runner/workspace/app/utils/monitoring/monitoring_setup.py", line 12, in setup_monitoring
+    from .performance_metrics import performance_monitor
+ImportError: cannot import name 'performance_monitor' from 'app.utils.monitoring.performance_metrics' (/home/runner/workspace/app/utils/monitoring/performance_metrics.py)
+[2025-02-06 17:32:02] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-06 17:41:33] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-06 17:41:34] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-06 17:43:21] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-06 17:43:21] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-06 17:43:29] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-06 17:44:03] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-06 17:47:08] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-06 17:47:25] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-06 17:48:03] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-06 17:48:04] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-06 17:49:02] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-06 17:49:03] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-06 17:49:16] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-06 17:49:16] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-06 17:49:18] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-06 17:50:00] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-06 17:50:01] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-07 08:27:44] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-07 08:27:46] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-07 08:39:18] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-07 08:39:19] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-07 08:45:00] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-07 08:45:00] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-07 08:45:01] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-07 08:45:31] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-07 08:45:49] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-07 10:00:52] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-07 10:00:53] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-07 10:03:06] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-07 10:03:07] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-07 10:04:11] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-07 10:04:21] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-07 10:04:22] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-07 10:05:10] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-07 10:05:41] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-07 10:05:41] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-07 10:05:50] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-07 10:05:50] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-07 10:42:35] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-07 10:42:36] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-07 14:55:55] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-07 14:55:56] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized
+[2025-02-08 10:27:27] [INFO] [__main__:80] Starting application on 0.0.0.0:8080 in production mode
+[2025-02-08 10:27:28] [INFO] [app.services.mock_blockchain_service:23] MockBlockchainService initialized

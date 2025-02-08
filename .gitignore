@@ -1,4 +1,3 @@
-
 # Python
 __pycache__/
 *.py[cod]
@@ -23,11 +22,9 @@ var/
 *.db
 *.db-shm
 *.db-wal
-instance/
-
-# Logs
+# instance/  <--- RIGA *SCOMMENTATA*: Instance ora *sarà* inclusa nel repository Git
+# Logs     <--- RIGA *SCOMMENTATA*: Logs ora *sarà* inclusa nel repository Git
 logs/
-*.log
 
 # Environment
 .env
