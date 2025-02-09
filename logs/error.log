@@ -834,3 +834,4 @@ ImportError: cannot import name 'RateLimit' from 'app.utils.security.robust_rate
 2025-02-07 14:01:06,676 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
 2025-02-07 14:55:54,882 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
 2025-02-08 10:27:26,415 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
+2025-02-09 16:14:31,863 - app.utils.cache.redis_manager - WARNING - Redis connection failed: Error 111 connecting to 0.0.0.0:6379. 111., using fallback cache
